@@ -148,10 +148,10 @@ WLAN network topologies
 - Ad-hoc mode
   - V podstate hotspot na mobile?
 
-IEEE terminology
+### IEEE terminology
 
 - AP - Access Point
-- STA - Station - konocove zariadenie
+- STA - Station - koncove zariadenie
 - BSS - Basic Service Set - zariadenia pripojene na jedno AP
 - ESS - Extended Service Set - zariadenia pripojene na 2+ APs
 - IBSS - Independent Basic Service Set - Ad-hoc
@@ -175,17 +175,91 @@ IEEE terminology
 
 #### Modulacia
 
-- Amplitudova
-- Frekvencna
-- Fazova
-
-- BPSK - Binary Phase Shift Keying - otocime fazu o 180 stupnov
-- QPSK - Quadrature Phase Shift Keying - otocime fazu o nasobok 45 stupnov
-- QAM - Faza + amplituda? - QAM-16, QAM-64, QAM-256
+- Analogova
+  - FM - Amplitudova
+  - AM - Frekvencna
+  - PM - Fazova
+- Digitalna
+  - FSK - Frequency key shifting
+  - ASK - Amplitude key shifting
+  - PSK - Phase key shifting
+    - BPSK - Binary Phase Shift Keying - otocime fazu o 180 stupnov
+    - QPSK - Quadrature Phase Shift Keying - otocime fazu o nasobok 45 stupnov
+    - QAM - Faza + amplituda - QAM-16, QAM-64, QAM-256
 
 #### Znizenie interferencie
 
-- FHSS - Frequency Hopping Spread Spectrum - rychle prepinanie kanalov - starsie
+- FHSS - Frequency Hopping Spread Spectrum
+  - (Pseudonahodne) Rychle prepinanie kanalov
 - DSSS - Direct Squece Spread Spectrum
+  - Encoding with 11-chip Barker sequence
+  - Used only at 1 or 2 Mbps
 - CCK - Complementary Code Keying
+  - Set of 4 or 64 8-bit code words (symbols) used to encode data for 5.5 or 11 Mbps
 - OFDM - Orthogonal Frequency Division Multiplexing
+  - The information is carried using orthogonal subcarriers
+  - While one signal is at it's peak, others are at 0
+  - Allows to pack more data into a smaller range of frequency
+
+### MCS
+
+Modulation Code Schemes
+
+### Multiple Access Protocols
+
+> 3.3.2025
+
+- Random Access Protocols
+- \_ Access Protocols
+- Channelized Access Protocols
+
+#### ALOHA
+
+Ak nevies ci niekto rozprava tak povedz, uvidis
+
+#### CSMA
+
+Carrier Sense Multiple Access
+
+- CSMA/CD - Collision Detection
+  - Pocuvame ci niekto nevysiela
+  - Ak nikto nevysiela, tak mozem vysielat ja
+- CSMA/CA - Collision Avoidance
+  - Kolizia se nedetekuje, iba sa im vyhybaju (resp. minimalizuju pravdepodobnost)
+  - Chceme vyslat ramec, ale este predtym pocuvame ci prebieha nejaka komunikacia
+    - Ak prebieha, tak pockame nejaku dobu a skusime dalej
+    - Ak neprebieha,
+- Token Ring - uz sa nepouziva
+  - Medzi zariadeniami sa posuva "zeton"
+  - Kto ma zeton moze vysielat, potom posle zeton dalej
+- Token Bus - uz sa nepouziva
+  - Podobne ako Token Ring, ale zeton je virtualny
+
+##### RTS/CTS
+
+Request to Send/Clear to Send  
+Ziadame si povolenie o vysielanie
+
+---
+
+Hidden Node problem
+
+- Povedzme ze mame 3 nodes - `A`, `B`, `C`
+- `B` je v strede medzi `A` a `C`
+- `B` vidi aj `A` aj `C`
+- `A` ale nevie o `C` a zaroven `C` nevie o `A`
+
+---
+
+NAV - Network Allocation Vector
+
+---
+
+### Authentication and Association
+
+1. Unauthenticated & Unassociated
+1. Authenticated & Unassociated
+1. Authenticated & Asssociated
+
+Authentication - posleme poziadavku, AP si zaeviduje a povoli nam  
+Association -
