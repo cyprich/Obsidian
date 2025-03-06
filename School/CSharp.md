@@ -228,3 +228,133 @@ public class Person2
     }
 }
 ```
+
+## Polia (arrays)
+
+- "Stvorcove"
+  - Jednorozmerne `type[]`
+  - Dvojrozmerne `type[,]`
+  - Trojrozmerne `type[,,]`
+  - Stvorrozmerne `type[,,,]`
+  - Max. 32-rozmerne
+- Pole poli / zubate / jagged
+  - `type[][]`
+  - `type[][,]`
+  - `type[][][]`
+
+Velkost je nemenna  
+Alokuju sa na halde (heap)
+
+```cs
+int[] numbers;
+int[] numbers2 = new int[4];
+int[] numbers3 = new int[] { 1, 2, 4, 5, 9 };
+int[] numbers4 = { 1, 2, 4, 5, 9 };
+int[] numbers5 = [ 1, 2, 4, 5, 9 ];
+
+Console.WriteLine(numbers[0])  // prvy
+Console.WriteLine(numbers[numbers.Lenght - 1])  // posledny
+Console.WriteLine(numbers.LongLength)
+
+// [] sa vola indexer
+numbers[0] = 9;
+
+Person[] people = new Person[2];
+people[0] = new("Jozko", "Mrkvicka");
+people[1] = new("Ferko", "Mrkvicka");
+```
+
+Viacrozmerne polia
+
+```cs
+int[,] twodim = new int[3, 4];
+twodim[0, 0] = 1;
+twodim[0, 1] = 2;
+twodim[2, 3] = 9;
+twodim[3, 4] = 9;
+
+int[,] another =
+{
+    {1, 2},
+    {3, 4}
+};
+
+Console.WriteLine(twodim.Rank);  // pocet rozmerov
+Console.WriteLine(twodim.Length);  // pocet prvkov
+Console.WriteLine(twodim.GetLength(0));
+
+for (...twodim.GetLength(0)...)
+{
+    for (...twodim.GetLength(0)...)
+    {
+        // ...
+    }
+};
+
+foreach (var i in twodim)
+{
+    // ...
+};
+
+int[][] jagged =
+{
+    {1, 2},
+    {3, 4, 5, 6},
+    {7}
+};  // toto mi pride ako normalny array z inych jazykov
+```
+
+`myArray.Rank` pocet dimenzii  
+`myArray.Length` pocet prvkov
+
+Zakladom vsetkeho je abstraktna trieda `System.Array`
+
+```cs
+Array.Sort();
+Array.Clone();  // shallow copy
+// pre deep copy idealne serializovat a deserializovat
+Array.CreateInstance();
+Array.IndexOf();
+Array.LastIndexOf();
+Array.Exists();
+Array.CopyTo();
+Array.Reverse();
+Array.Clear();
+Array.FindAll();
+Array.ForEach();
+```
+
+Priklad
+
+```cs
+var intArray = Array.CreateInstance(typeof(int), 5);
+int[] numbers = (int[])intArray;  // aby sa mohol pouzit indexer
+
+// ak chceme indexy nie od 0
+int[] lengths = {2, 3};
+int[] lowerBounds = {1, 10};
+Array array = Array.CreateInstance(typeof(string), lengths, lowerBounds);
+array.SetValue("A", 1, 10);
+
+string[,] matrix = (string[,])array;
+matrix[1, 11] = "B";
+matrix[2, 11] = "C";
+```
+
+## Ranges and Indices
+
+```cs
+int[] data = {1, 2, 3, 4, 5, 6};
+
+Console.WriteLine(data[0]);  // first
+Console.WriteLine(data[^1]);  // last
+// "^1" je akoze "data.Length - 1"
+// to iste ako v pythone [-1]
+
+ShowRange(data[..])  // all elements
+ShowRange(data[0..4])  // first to 4th
+ShowRange(data[..4])  // also first to 4th
+ShowRange(data[^3..^0])  // last 3 elements
+ShowRange(data[^3..])  // also last 3 elements
+
+```
