@@ -91,3 +91,56 @@ Smart pointers - unique pointers,
 - Objektove typy
   - Alokuje pamat + vola konstruktor
   - Pri destrukcii najprv zavola destruktor a potom uvolni pamat
+
+#### Expanzna strategia
+
+- konstantna - $m + 10$
+- linearna - $m * 2$
+- geometricka - $m ^2$
+
+##
+
+### Logicke usporiadanie udajovych struktur
+
+![obrazok](../others/images/aus_logicke_usporiadanie_stuktur.png)
+
+- Sekvencia (asi pole) - 1 predchodca, 1 nasledovnik - `1:1`
+- Hierarchia (vyzera ako strom) - 1 predchodca, n nasledovnickov `1:n`
+- Siet (total mess) - m predchodcov, n nasledovnikov - `m:n`
+
+### Abstraktny pamatovy typ (APT)
+
+Rozhranie, ktore urci ako su organizovane bloky v pamati (sekvencne, hierarchicky, siet)
+
+### Abstraktna pamatova struktura (APS)
+
+Kombinuje APT a spravcu pamate
+
+- Sekvencia
+  - Implicitna sekvencia + Spravca suvislej pamate
+  - Obojstranne zretazena sekvencia + Spravca suvislej pamate
+  - Obojstranne zretazena sekvencia + Spravca nesuvislej pamate
+  - `...`
+- Hierarchia
+  - `...`
+
+Problem - strasne vela kombinacii  
+Riesenie - kompozicia (no idea what that is, informatika 1 flashbacks) namiesto dedicnosti
+
+Mozu byt implicitne (v pamati za sebou - compact memory manager) a explicitne (rozhadzane v pamati)
+
+### Iteratory
+
+_"Iterator je prst"_  
+Ukazuje na nejaku poziciu v strukture a moze sa pohybovat na dalsie miesto  
+Zapuzdruje \_  
+Musi byt fess rychly - zlozitost `O(1)` (skoro vzdy)
+
+Typy
+
+- Standardny
+- Dopredny - viem citat od niekam po niekam
+- Obojsmerny - viem posuvat aj dozadu
+- S nahodnym pristupom - posun sa o niekolko
+
+Prehliadky
