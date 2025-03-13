@@ -356,5 +356,116 @@ ShowRange(data[0..4])  // first to 4th
 ShowRange(data[..4])  // also first to 4th
 ShowRange(data[^3..^0])  // last 3 elements
 ShowRange(data[^3..])  // also last 3 elements
+```
 
+## Struktury
+
+Ako keby odlahcena trieda  
+Hodnotove typy vytvarane na zasobniku (ak nie je v triede ako field)  
+Boxing - z hodnotoveho typu spravime referencny  
+Daju sa oznacit ako `ref struct` - nenastava boxing, nemoze byt ako field, je rychlejsia  
+Neda sa dedit, maju vzdy bezparametricky konstruktor, moze implementovat viac interfaces, nemoze byt null  
+Je rychlejsia ako class, pouziva sa na male objekty  
+Vytvara sa deep copy? (aj ked asi nie?)  
+Moze byt nemenna - immutable - modifikator `readonly`
+
+```cs
+public readonly struct Coords { ... }
+```
+
+## Records
+
+Poskytuje vstavane funkcionality pre classes alebo structs  
+`record class`, `record struct`  
+[sharplab](https://sharplab.io)
+
+```cs
+public record Person(string FirstName, string LastName);
+
+public record class Person(string FirstName, string LastName);
+
+public record Person(string FirstName, string LastName)
+{
+    // vlastne srandicky ak treba
+}
+```
+
+Vytvoria sa
+
+- konstruktory
+- dekonstruktor
+- gettery, settery
+- metody `Equals()`, `GetHash()`, `ToString()`,
+- interfaces `IEquatable`,
+- vsetky mozne operatory
+
+```cs
+Person p = new("Jozko", "Mrkvicka");
+Person p2 = p with { LastName="Kalerab" }
+```
+
+```cs
+public readonly record struct Point(int x, int y);
+```
+
+## Anonymous types
+
+Trieda bez mena  
+Da sa iba citat
+
+```cs
+var doctor = new
+{
+    FirstName = "Jozko";
+    LastName = "Mrkvicka";
+}
+
+Console.WriteLine(doctor.FirstName);
+```
+
+## Enums
+
+Hodnotove typy, v podstate `int`
+
+```cs
+enum Season
+{
+    Spring,
+    Summer,
+    Autumn,
+    Winter
+}  // implicitne 0, 1, 2, 3
+
+enum ErrorCode: ushort  // vlastny typ
+{
+    None = 0;
+    Unknown = 1;
+    ConnectionLost = 100;  // vlastne hodnoty
+    OutlierReading = 200;
+}
+
+Color c = Color.Red;
+
+Console.WriteLine(c);
+Console.WriteLine((short)c);
+Console.WriteLine((Color)2);
+```
+
+### Atribut `[Flags]`
+
+Hodnoty by sa mali zadavat v bitoch
+
+```cs
+[Flags]
+public enum Days
+{
+    None    = 0b_0000_0000,
+    Monday  = 0b_0000_0001,
+    Tuesday = 0b_0000_0010,
+    ...
+    Synday  = 0b_0100_0000,
+    Weekend = Saturday | Sunday
+}
+
+Days meetingDays = Days.Monday | Days.Wendesday;
 ```
