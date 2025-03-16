@@ -7,14 +7,14 @@ Prikazy PS2
 Show prikazy
 
 ```
-show ip eigrp neighbors
-show ip eigrp topology
-show ip eigrp topology all-links  # aj susedia co nesplnaju FC
+do show ip eigrp neighbors
+do show ip eigrp topology
+do show ip eigrp topology all-links  # aj susedia co nesplnaju FC
 
-show ip eigrp interfaces
-show ip protocols
-show ip eigrp traffic
-show ip eigrp events
+do show ip eigrp interfaces
+do show ip protocols
+do show ip eigrp traffic
+do show ip eigrp events
 ```
 
 Konfiguracia
@@ -129,6 +129,94 @@ ip hold-time eigrp AS_NUMBER HOLD_TIME
 ## OSPF
 
 ```
+do show ip protocols
+do show ip route
+do show ip route ospf
+
 do show ip osfp neighbor
+do show ip osfp neighbor detail
+do show ip osfp database
 do show ip osfp interface g0/0
+do show ip ospf
+```
+
+OSPF process, routes, networks + more
+
+```
+router ospf PROCESS-ID  # lokalne cislo pre dany router
+	network IP-ADD WILDCARD area AREA-ID
+	
+	# pri zmene router id treba aj restartovat proces
+	router-id 1.1.1.1
+	do clear ip ospf process
+
+	area 2 range IP_ADDRESS MASK  # sumarizacia (iba na ABR)
+
+	passive-interface g0/0 
+	passive-interface default  # vsetky
+
+	default-information originate [always]
+
+	ip ospf hello-interval SECONDS
+	ip ospf dead-interval SECONDS
+
+	area 1 auth message-digest
+
+router ospf PROCESS-ID [vfr VPN-NAME] 
+
+int g0/0
+	ip ospf PROCESS-ID area AREA-ID
+	ip ospf PROCESS-ID area AREA-ID [secondaries none]
+```
+
+Restart procesu - volba DR/BDR
+
+```
+do clear ip ospf process
+```
+
+Zmena metriky
+
+```
+router ospf PROCESS-ID  
+	auto-cost reference-bandwidth REF_BANDWIDTH  # prepocita sa (REF_BANDWIDTH/bandwidth)
+
+int g0/0
+	ip ospf NEW_COST_VALUE
+```
+
+Zmena priority
+
+```
+int g0/0
+	ip ospf priority NUMBER  # 0-255
+```
+
+Autentifikacia
+
+```
+# md5
+router ospf 1
+	area 1 auth message-digest
+
+int g0/0
+	ip ospf message-digest-key 1 md5 HESLO
+
+# plaintext
+router ospf 1
+	area 1 auth 
+
+int g0/0
+	ip ospf authentication-key HESLO
+```
+
+## IPv6
+
+```
+ipv router ospf 1
+	router-id 1.1.1.1
+	passive-interface g0/0
+
+int g0/0
+	ipv ospf 1 area 1
 ```

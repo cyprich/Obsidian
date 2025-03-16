@@ -326,16 +326,11 @@ Pomerne casto sa pouziva
 Smerovanie vo vnutri sieti (autonomneho systemu)  
 Event-Driven (nie az tak optimalizovany ako EIGRP)
 
-Metrika - **cost** (`100 / Bandwidth`)
-
-- V dnesnych sietach (1Gb+) by to znamenalo ze vzdy bude metrika 1
-- Da sa zmenit
-
 > T1 pri linke = 1.5 Mbps  
 > Stav konvergencie = prepocitavam - nieco sa na sieti deje
 
-OSPFv1 vs. OSPFv2 je nieco ako RIPv2 vs. RIPng  
-Prikaz `OSPFv3` je prikaz na pomylenie - nieco s Cisco deamonom - nie je to iny protokol, len Cisco implementacia?
+
+> Prikaz `OSPFv3` je prikaz na pomylenie - nieco s Cisco deamonom - nie je to iny protokol, len Cisco implementacia?
 
 ### Link-state
 
@@ -343,10 +338,16 @@ Smerovace si vymienaju parcialnu informaciu o topologii
 Reprezentovane grafom  
 Strom najkratsich ciest  
 Pamatovo aj vypoctovo narocnejsie  
-Routre su identifikovane pomocou tzv. Router ID  
-LSA, LSP  
-Single-area, multi-area
+Vhodne pre vacsie siete  
+Hierarchicky dizajn siete - mame jednu chrbticovu siet, ostatne siete (oblasti?) sa na nu napajaju  
+Sumarizovat siete mozno iba na hraniciach tychto oblasti  
 
+#### Ako to funguje
+1. Popis okolia smerovaca - router zisti priamo pripojene siete a ostatne smerovace
+2. Odosielanie LSP/LSA (Link-state Packet/Link-state Advertisement) kde presne popise svoje spojenia s ostatnymi na multicast
+3. Preposielanie LSP v celej sieti - co prijmem bez zmeny preposlem - v ramci danej oblasti  
+4. LS databaza
+5. SPF (Shortest Path First) tree - algoritmom hladam najkratsie cesty do danych sieti na zaklade info z tabulky (kazdy router za seba - nie je jeden celkovy strom) 
 ### OSPF
 
 Open Shortest Path First  
@@ -354,66 +355,151 @@ Najrozsirenejsi LS routing protocol
 Otvoreny protokol (RFC 2328)  
 Classless, VLSM, lubovolna sumarizacia (iba na hraniciach oblasti!), autentifikacia, rychla konvergencia
 
+Metrika - odvodena od rychlosti linky - **cost**  `= ceil(100 / Bandwidth)`
+
+- V dnesnych sietach (1Gb+) by to znamenalo ze vzdy bude metrika 1
+- Da sa zmenit
+
+
+V sucasnosti 2 verzie
+- OSPFv2 pre IPv4
+- OSPFv3 pre IPv6
+
 Multicast
 
-- `224.0.0.5` alebo `FF02::5`
-- `224.0.0.6` alebo `FF02::6`
+- `224.0.0.5` alebo `FF02::5` - vsetky OSFP smerovace
+- `224.0.0.6` alebo `FF02::6` - DR/DBR smerovace
+
+Destination MAC L2 frame bud `0100:5e00:0005` alebo `0100:5e00:0006`
+
+Policko `protocol` v hlavicke L3 packetu ma cislo `89`
+
+Routre su identifikovane pomocou tzv. Router ID  
+LSA, LSP  
+Single-area, multi-area
+
+> Dijkstra Algorithm
 
 ### Pojmy v OSPF
 
 - Link - interface
-- Link-state - informacie o linke (metrika, typ siete, ...)
-- Link-state ID -
+- Link-state - informacie/vlastnosti o linke (adresa, maska, metrika, typ siete, neigh)
+- Link-state ID - unikatny identifikator **linky** v databaze, zvycajne zhodne s Router ID, DR router IP
 - Router ID
-  - jedinecny identifikator kazdeho routra v topologickej oblasti
-  - da sa zmenit prikazom `router id`
-  - by default najvyssia IP spomedzi loopbacks
-  - ak nie su loopbacks tak najvyssia IP zo vsetkych rozhrani
+	 - Jedinecny identifikator kazdeho routra v topologickej oblasti
+	 - Da sa zmenit prikazom `router id`
+	 - By default najvyssia IP spomedzi loopbacks
+	 - Ak nie su loopbacks tak najvyssia IP zo vsetkych rozhrani a subrozhrani
+	 - Da sa konfiguracne zmenit
 - Oblast (Area)
-  - Identifikovana 4B cislom
-  - Kazda oblast musi byt spojena s oblastou `0` (backbone)
-  - Hranica oblasti je na routeri (nie na linke)
-- Area Border Router (ABR)
-  - Musi byt clenom oblasti `0`
-- Autonomous System Border Router (ASBR)
-  - Medzi AS a vonkajsim svetom
-- Databazy v OSPF
-  - LSBA
-- Link-State Advertisements (LSAs)
-  - Datova struktura, nie paket?
-  - Viacej struktur sa moze zabalit do paketu a poslat
-  - Popisuje linku
-  - Je ich 12, pouziva sa 6, na CCNA budu 2
+	- Mnozina sieti a smerovacov, ktore poznaju spolocnu topo
+	- Identifikovana 4B cislom
+	- Kazda oblast musi byt spojena s oblastou `AREA 0` (Backbone Area)
+	- Hranica oblasti je na routeri (nie na linke)
+- Hranicny router - na rozhrani medzi dvoma oblastami 
+	- Area Border Router (ABR) - musi byt clenom oblasti `0`; Robi sirenie, filtrovanie a sumarizaciu medzi oblastami
+	- Autonomous System Border Router (ASBR) - tiez ABR + hranica medzi AS a vonkajsim svetom
+
+Databazy v OSPF
+- Adjacency Database - `show ip ospf neigh` - susedia a komunikacne vztahy medzi nimi  
+- Link-State Database (LSDB) - `show ip ospf database` - topologicka db, obsahuje graf siete; vsetky routre v rovnakej oblasi maju rovnaku LSDB
+- Frowarding Database - `show ip route ospf` - info o vsetkych dosianutelnych sietach a next hopoch (router teoreticky pozna vsetko o sieti, tu je len vycuc potrebny pre smerovanie)
+
+Link-State Advertisements (LSAs)
+- Prenasa topologicku informaciu
+- Datova struktura, nie paket; v jednom pakete moze byt viac LSAs
+- Popisuje linku
+- Posielana pri zmene topo na multicast (az po hranicu oblasti)
+- Je ich 12, pouziva sa 6, na CCNA budu 2
+
+Typy/funkcie routerov v OSPF? 
 - Designated Router (DR)
-  - "Ako nejaky boss"
-  - Ostatne spravia vztah iba s tymto routerom, nie s ostatnymi
-  - Komunikujem iba s nim
+	- "Ako nejaky boss", hovorca
+	- Ostatne spravia vztah iba s tymto routerom, nie sami medzi sebou
+	- Komunikujem iba s nim (v danom segmente (segment != area pozor na to!!))
 - Backup Designated Router (BDR)
-  - Sleduje ci DR zije, ak zomre tak prevezme funkciu
-- Vztahy smerovacov
-  - Neighborhood - jednoduchsi, lahsi vztah
-  - Adjacency - vaznejsi vztah
+	- Sleduje ci DR zije, ak zomre tak prevezme funkciu
+	- Nemusi existovat
+- Ostatni (DROTHER)
+	- Komunikuju s DR, nie medzi sebou
+	
+Vztahy smerovacov
+- Neighborhood 
+	- Jednoduchsi, lahsi vztah
+	- Medzi lubovolnymi smerovacmi v OSPF
+	- Neprenasa sa routing info, iba info o schopnosti komunikovat
+- Adjacency 
+	- Vaznejsi vztah
+	- Vymienaju si aj routing info
 
 ### OSPF packety
 
 - Hello
-  - Posiela sa kazdych 10 alebo 30 sekund
-  - Dead interval `4 x hello interval`
-- DBD (DDP)
-  - Volba Master/Slave
-- LSU
-- LSR
+	- Posiela sa kazdych 10 (broadcast siete a Point-to-Point) alebo 30 sekund (NBMA siete a Point-to-Multipoint (starsie))
+	- Dead interval = `4 x hello interval`
+	- V OSPF musia mat susedia rovnake casovace **!!!** Ak treba zmenit, tak treba vsade
+- DDP (DBD) - Database Description Packet
+	- Volba Master/Slave pocas Exstart
+	- Prenasa len "titulky", "nadpisy"
+- LSR - Link-state Request 
+	- Ziadost konkretnej polozky z topologickej db suseda
+- LSU - Link-state Update
+	- Prenos samotnej topologickej informacie
+	- Obsahuje 1+ LSA poloziek
 - LSAck
+	- Potvrdenie prijatia LSA
+	- V jednom LSAck sa moze potvrdit viac LSA
 
 Vkladane priamo do packetu  
 Kazdy ma svoju vlastnu hlavicku
 
 Prechody medzi stavmi
 
-1. Down
-1. Init
-1. Two-Way
-1. ExStart
-1. Exchange
-1. Loading
-1. Full
+1. Down - pociatocny stav
+2. Init - pocujem suseda, ale neviem ci on pocuje mna
+3. Two-Way - vzajomne sa pocujeme so susedom, voli sa DR/BDR 
+4. ExStart - dohodneme sa kto bude porovnavat databazy (Master/Slave)
+5. Exchange - porovnavanie databaz (DDP)
+6. Loading - prenos/vymienanie informacii v db
+7. Full - susedia maju rovnaky obsah databaz
+
+- Kroky 1-3
+	- Lokalizovanie susedov
+	- Vytvorenie komunikacnych vztahov
+	- Volba DR/BDR (ak je treba) (`do show ip ospf neigh`)
+		- Podla priority (0-255, default = 1)
+			- Najvyssia priorita = DR
+			- Druha najvyssia = BDR
+			- Priorita 0 = nezucastnuje sa volieb - mozeme vyuzit na nejaky vykonovo slaby router 
+			- Ak priorita nerozhodne, pouzije sa Router ID
+		- By default nepreemptivne (navzdy) 
+	- Pomocou Hello paketov na multicast
+	- Co sa musi zhodovat aby boli smerovace susedia  
+		- Spolocnu siet a masku
+		- Cislo a typ oblasti 
+		- Autentifikaciu
+		- Hello a Dead interval
+- Kroky 4-6
+	- Synchronizacia topologickych databaz
+- Krok 7
+	- Vypocet stromu najkratsich ciest
+	- Naplnenie smerovacej tabulky
+	- Udrziavanie aktualneho stavu smerovacej db
+
+### Typy OSPF sieti
+Point-to-Point (PPP?)
+- Dva routre su priamo pripojene linkou
+- Casto vo WAN
+
+Broadcast Multiaccess (BMA)
+- Viacej routerov prepojenych v Ethernetovej sieti
+
+Non-broadcast Multiaccess (NMBA)
+- Viacej routerov prepojenych v sieti, ktora nepodporuje broadcast (Frame Relay)
+
+Point-to-Multipoint
+- Viacej routerov prepojenych v hub-and-spoke topologii v NBMA
+
+Virtual links
+- Specialna OSPF siet, ktora prepaja vzdialene OSPF oblasti s chrbticovou sietou (backbone area)
+- Ak sa nejaka siet neda priamo pripojit na backbone, tak sa vytvori virtualny link (nejaky tunel) cez existujucu areu k backbone
