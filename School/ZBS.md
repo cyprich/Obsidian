@@ -263,3 +263,51 @@ NAV - Network Allocation Vector
 
 Authentication - posleme poziadavku, AP si zaeviduje a povoli nam  
 Association -
+
+## Mobile communications
+
+Generacie
+
+- 1G (NMT - Nordic Mobile Telephone) - 1980s - Analog 2kbps
+- 2G (GSM - Global System for Mobile) - 1991 - 270 kbps
+- 3G (UMTS - Universal Mobile Telecommunication System) - 1998 - 3Mbps
+- 4G (LTE - Long Term Evolution) - 2008 - 1Gbps
+- 5G (NR - New Radio) - 2020 - 10Gbps
+
+Pokles/utlm signalu (exponencialny) - decibely - 10dB = jeden rad
+
+### 1G - Nordic Mobile Telephone
+
+Vznikli v Nordic krajinach (Norsko, Svedsko) kde bola ich potreba  
+Ericson, Nobira (Nokia)  
+Analogova komunikacia, FM modulacia  
+Ziadne SIM, zle zabezpecenie, vacsinou nie pre beznych pouzivatelov?
+
+V amerike AMPS, moc sa neuchytilo  
+NTT v Japonsku
+
+U nas Eurotel - rozdelil sa na Slovak Telecom a O2 v Cesku
+
+25KHz kanaly, 200 uplikov, 200 downlinkov
+
+Architektura
+
+- Mobile station (MS)
+- Base station (BS)
+- Mobile Telephone Exchange (MTX)
+- Home Location Register (HLR)
+
+Rozdelenie na oblasti - vacsinou 4 alebo 7
+
+### 2G - Global System for Mobile
+
+Vzniklo vo Finsku, 1991, ETSI
+Prvy digitalny  
+Urcene na SMS, nie na prenost dat, bola zvysena security oproti 1G  
+Rozsirenie sluzby o prenos dat - od roku 2000 - to je to ked je na mobile pri datach `E`
+
+IMSI (International Mobile subscriber Identity) - jedinecny identifikator, sklada sa z
+
+- MCC (Mobile Country Code) - pre slovensko `421`
+- MNC (Mobile Network Code) - podla operatora: T-Mobile (2, 4), Orange (1, 5, 15), ...
+- MSIN (Mobile Subscriber Identification Number)
