@@ -417,3 +417,62 @@ Prechody medzi stavmi
 1. Exchange
 1. Loading
 1. Full
+
+## PPPoE
+
+PPP over Ethernet  
+RFC 2516  
+Basically enkapsulacia do enkapsulacie PPP na L2 do Ethernetu
+
+Potreba technologie, ktora umoznuje medzi ISP a zakaznikom podporu autentifikacie  
+Nad ehternetom si zakaznik spravi session s PPP serverom (oznacovany aj ako AC, BNG, BRAS, ...)  
+Okrem auth aj pridelenie IP, DNS, kompresia, sifrovanie
+
+### Fazy
+
+1. Active Dirscovery
+   - Klient lokalizuje PPPoE server
+   - 4 kroky (podobne ako DHCP DORA)
+     - PADI - PPPoE Active Discovery Initiation (Jedina ako broadcast)
+     - PAD) - PPPoE Active Discovery Offer
+     - PADR - PPPoE Active Discovery Request
+     - PADS - PPPoE Active Discovery Session-confirmation - dostanem Session ID
+2. Faza PPP Session
+   - LCP + AUTH + NCP (ako v PPP)
+3. Faza ukoncenia
+   - Termination request cez PPPoE Active Discovery Terminate (PADT)
+   - Posiela klient alebo server
+   - Prijatie vedie k uvolnenie zdrojov
+
+## External BGP (eBGP)
+
+External Border Gateway Protocol  
+Internet je skupina navzajom poprepajanych Autonomnych Systemov (AS) - ISP, firma, ...
+
+3 tiery providerov
+
+Doteraz sa brali IGP (interior gateway) protokoly, toto je EGP (exterior gateway)
+
+- IGP - detailne pozna vnutro, vonkajsok moze byt zahmleny pod default route
+- EGP - vonkajsia topologia AS medzi sebou
+
+Nepracuje s metrikou, ale s atributami (hop-count, nejaky custom label, local preference)
+
+Niekolko typov AS
+
+- Tiez private a public ako aj IP adresy
+
+Core routre by nemali mat default route, mali by mat routovaciu tabulku celeho internetu (momentalne >800k poloziek)
+
+Vymena prefixov a atributov  
+Typu Path vector  
+Garantuje bezsluckovost  
+Admin distance - eBGP 20, iBGP 200  
+TCP, port 179
+
+### Pojmy
+
+Komponenty
+
+- BGP speaker
+- BGP neighbor
