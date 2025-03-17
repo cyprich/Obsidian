@@ -181,3 +181,141 @@ while True:
 
 # pwm.deinit()
 ```
+
+## Vstupy
+
+### Prerusenie od tlacidla
+
+### Dotykovy snimac
+
+Kondenzator - uchovavanie naboja (energie) - kapacita $C = \epsilon \cdot \dfrac{S}{d}$  
+Pri dotyku (dotykovy displej?) sa meni kapacita kondenzatora
+
+Pri dotyku sa znizuje hodnota  
+Idealne kalibrovat  
+Snimac by mal byt odizolovany od tela (staticka el.)
+
+```pyton
+t = TouchPad(Pin(14))
+
+while True:
+    print(t.read())
+    time.sleep(1)
+```
+
+## Casovac
+
+Vola sa callback funkcia pravidelne v danom intervale
+
+```python
+t = Timer(id, mode=Timer.PERIODIC, freq=-1, period=-1, callback=None)
+# mode moze byt aj Timer.ONE_SHOT
+```
+
+```python
+def MyCallback():
+    pass
+
+tim = Timer(0)
+tim.init(mode=Timer.PERIODIC, freq=1000, callback=MyCallback)
+tim.deinit()
+```
+
+Lambda funkcia
+
+- mala anonymna funkcia
+- vyhodnocuje jeden vyraz
+
+```python
+tim = Timer(2, freq=2, callback=lambda x: print(".", end=""))
+```
+
+Trieda
+
+```python
+class Blik:
+    def __init__(self, timer, period, led):
+        self.led = Pin(led, Pin.OUT)
+        self.tim = Timer(timer, period=period, mode=Timer.PERIODIC, callback=self.callback)
+
+    def callback(self, tim):
+        self.led.value(not self.led.value())
+
+red = Blik(0, 2000, 21)  # actually to bude kazdu sekundu, nie 2, nevieme preco
+green = Blik(2, 4000, 11)
+```
+
+### Watchdog casovac
+
+Strazi zariadenie predtym, aby nezamrzlo  
+Ak ho nenakrmime do `timeout` milisekund, ✨zacne vyvadzat✨ a resetuje zariadenie  
+Hardwarova zalezitost
+
+Co moze resetovat
+
+- Vyvolat prerusenie
+- CPU reset (by default)
+- Core reset - CPU, WDT, periferie
+- System reset - vsetko = +napajanie
+
+```python
+wdt = WDT(timeout=3000)
+wdt.feed()
+```
+
+## Prevodniky
+
+- Analogovo cislocovy prevodnik - AC (ADC)
+- Cislicovo analogovy prevodnik - CA (DAC)
+
+### CA prevodnik (DAC)
+
+Generovanie spojiteho, analogoveho vystupu  
+Diskretne -> Spojite
+
+$U_{vyst} = \dfrac{\text{vstupny kod}}{2^N - 1} \cdot U_{ref}$
+
+Chyby - offsetu, zosielnenia, diferencialna nelinearita, integralna nelinearita, monotonnost
+
+```python
+dac = DAC(Pin(25))
+dac.write(128)  # 0-255
+```
+
+> ESP32-C6 ho nema
+
+Nejde od 0V po 3.3V, ale kusok menej
+
+### AC prevodnik (ADC)
+
+Analogove -> Diskretne (digitalne)  
+Diskretny aj v case aj v hodnote  
+Sampling - vzorkovanie - poseka sa v case (CD - ~44kHz)  
+Quantization - priradenie hodnoty nejakej urovni (CD - 16bit)
+
+ESP32-C6
+
+- Jeden 12bit prevodnik (4096 hodnot)
+- Krok - $\dfrac{3.3V}{4096} \approx 0.8mV$
+- GPIO Kanaly 0 az 6
+
+```python
+adc = ADC(Pin(3))
+val = adc.read()  # 12 bit
+val = adc.read_u16()  # softwarovo 16 bit
+val = adc.read_uv()  # mikrovolty
+# ak chceme co najpresnejsie hodnoty, pouzit read_uv()
+
+adc.width(ADC.WIDTH_9BIT)  # 9 - 12 bit
+
+acd.atten(ADC.ATTN_11DB) # utlm - (ake napatie mozeme pripojit?)
+```
+
+## Fotorezistor
+
+Meni svoj odpor v zavislosti od osvetlenia
+
+- neosvetleny ~50k ohm
+- osvetleny ~20 ohm
+
+ESP32-C6 - GPIO 3
