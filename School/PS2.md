@@ -515,6 +515,207 @@ Virtual links
 - Specialna OSPF siet, ktora prepaja vzdialene OSPF oblasti s chrbticovou sietou (backbone area)
 - Ak sa nejaka siet neda priamo pripojit na backbone, tak sa vytvori virtualny link (nejaky tunel) cez existujucu areu k backbone
 
+## WAN technologie
+
+Wide Area Network  
+Geograficky vacsia rozloha  
+Prepojenie viacej LAN medzi sebou  
+Nie kazdy moze vybudovat WAN - financna narocnost (tahanie stoviek metrov kablov) - ISP, Telekomunikacne firmy
+
+### Private vs. Public WAN
+
+Private
+
+- Urcene pre firmy
+- Vyrazne vyssia cena, garantovane pripojenie, stabilita, technicka podpora atd.
+- Service Level Agreement (SLA) - podpisana zmluva kde sa urcuju tieto podmienky
+- Pre predstavu - rychlost okolo 10-20Mbps za 3000 evri mesacne
+- Rozdelenie
+  - Dedicated - Leased Lines
+    - Fyzicky je nejaka kapacita linky, ktoru ISP prenajima
+    - Rychlosti napr. T1/E1 (1.5Mbps) alebo T3/E3 (43Mbps)
+    - Ja mam rezervovanu svoju "ruru" a nikto iny ju nemoze pouzivat -> z polhadu ISP neefektivne
+    - Dnes uz sa nepouziva
+  - Switched - efektivnejsie ako Leased Lines, teoreticky viem predat vacsiu kapacitu ako mam (nebude sa na 100% vyuzivat stale)
+    - Circuit-switched
+      - PSTN, ISDN
+      - Dnes uz sa nepouziva
+    - Packet-switched
+      - Dnes najbeznejsie **MPLS** (Multi Protocol Label Switching), existuje aj Metro Ethernet, Frame Relay, ATM
+
+Public
+
+- Pre beznych pouzivatelov, male firmy, kto si nemoze dovolit tolko investovat
+- Negarantovane, lacnejsie
+- Internet - Broadband VPN
+- Pouzivane technologie - DSL, Cable, Wireless
+
+### WAN na ISO/OSI
+
+- L1
+  - Hardware - elektricke, mechanicke, ... parametre fyzickej linky
+  - Organizacie ISO, EIA, ITU-T
+  - Protokoly/Standardy? SDH, SONET, DWDM; v labe V.35 (max. 2.048Mbps)
+- L2 software
+  - Frame Relay, ATM, HDLC
+  - Protokoly Ethernet WAN (Metro Ethernet), DSL, Wireless, MPLS, PPP (Point-to-Point Protocol), HDLC
+
+### WAN topologie
+
+Topologie
+
+- Point-to-Point - 2 zariadenia prepojene medzi sebou
+- Full mesh - kazdy s kazdym
+- Hub-and-Spoke - najbeznejsie - Hub (centrala) kde su pripojeni Spokes (zakaznici); Spokes nie su spojeni medzi sebou
+- Dual-homed - Ako Hub-and-Spoke, ale s redundanciou
+
+![topologie](../others/images/ps2_wan_topologie.png)
+
+Single-Homed vs. Dual-Homed
+
+- Single-Homed - jeden uplink na jedneho ISP - SPOF
+- Dual-Homed - jeden uplink, dvaja ISP
+- Multihomed - dva uplinky, jeden ISP
+- Dual-Multihomed - dva uplinky, dvaja ISP - redundancia
+
+![vsetky mozne homed](../others/images/ps2_wan_homed.png)
+
+### Terminilogia
+
+- Local loop
+  - Last mile
+  - Technologia (linka) ktorou sa ja ako zakaznik pripajam na ISP
+  - To najdrahsie (vykopove prace, ...)
+- Demarcation point
+  - Miesto kde sa oddeluju zakaznicke zariadenia od zariadeni ISP
+  - Tu konci zodpovednost ISP
+- Data terminal Equipment (DTE)
+  - L3
+  - Router, Terminal, PC
+  - Pripaja sa cez DCE na Local loop
+- Data Communications Equipment (DCE)
+  - L1, L2
+  - Vacsinou Modem, dnes DSL Modem alebo Cable Modem
+  - Moze byt aj Optical Converter, ak je opticky kabel od ISP
+  - Prisposobuje data na WAN technologiu
+
+### Komunikacia na WAN
+
+- Paralelna
+  - Viac bitov naraz
+  - Vzajomne rusenie a sum - CrossTalk
+  - Bity nepridu naraz - skew time - treba sync
+  - Vacsia cena
+  - Rychlejsie
+- Seriova
+  - Bit po bite
+
+### Prepojovanie okruhov
+
+- Prepojovanie okruhov (Circuit-switching)
+  - Dedikovana cesta az kym sa neuvolni, ale plytvanie zdrojov
+  - Synchronny prenos - Linka bola v case rozdelena do casovych slotov (TDM), zakaznik dostal jeden slot
+  - V sucasnosti optika - Dense Wavelength Division Multiplexing (DWDM) - zakaznik ma poskytnutu frekvenciu svetla
+- Prepojovanie paketov (Packet-switching)
+  - Pred vstupom do siete su data delene, rozkuskovane
+  - Treba dodatocne info -> prenos "neuzitocnych" dat
+
+### Moderne sposoby riesenia WAN
+
+- Private WAN
+
+  - Dedikovany broadband
+    - Optika - "dark fiber" - ISP poskytne opticke vlakno, rob si s nim co chces
+  - Packet-switched
+    - Metro Ethernet - Ethernet v MAN/WAN
+    - MPLS (MultiProtocol Label switching) - pri privatnych sietach
+      - Casto pouzivane
+      - L2.5 - pomocou Labelov, Tagov - dohodneme si s ISP rovnake labels
+
+- Public WAN
+  - Digital Subscriber Line - xDLS - vyuziva existujuce telefonne dvojlinky
+  - Cable - cez kablove TV - koaxial
+  - Wireless - WiFi, 3G, 4G, LTE
+
+## HDLC a PPP
+
+Nad seriovymi linkami - tie bleskove kable v Packet Tracer
+
+### DTE a DCE
+
+Digital Terminal Equipment a Data Circuit Equipment  
+Router a Modem
+
+DCE vacsinou generuje clock rate - female kabel, novsie boxy automaticky  
+Cisco prikaz napr. `clock-rate 128000` bude 128kbps
+
+### HDLC
+
+High-level Data Link Control  
+L2, Point-to-Point, full duplex, vyzaduje clock na L1
+
+ISO standard, vlastny header  
+Cisco proprietary implementacia - cHDLC - pridana info o L3 protokole, ked sa povie HDLC tak sa vacsinou mysli cHDLC
+
+```
+int s0/0/0
+    encapsulation hdlc
+
+do show int s0/0/0
+do show ip int brief
+do show controller s0/0/0  # ci je DCE alebo DTE
+```
+
+### PPP
+
+Novsia verzia HDLC, stavana nad nim, format ma ako on  
+RFC 1661, 1662  
+Je mu v podstate jedno co je na L1 aj L3
+
+Dva podprotokoly
+
+- LCP - Link Control Protocol - zostavenie a ukoncenie linky, konfig
+  - Da sa specifikovat autentifikacia, kompresia, kontrola chyb a kvality, multilink (nieco ako EtherChannel), PPP Callback (basically prezvonim firmu, aby mi zvolali naspat, nech neplatim za dobu pripojenia) a dalsie
+- NCP - Network Control Protocol - aky L3 protocol budem pouzivat
+
+Zalozenie linky malo fazy
+
+- Faza vytvorenia spoja - dohodnutie pozadovanej kvality, kompresie, multilink, auth, ... nejakym two-way handshakom
+- Faza auth a overenie kvality (optional)
+- Faza negociacia L3 protokolov - dohoda na IPv4 alebo IPv4 alebo CDP alebo dalsie
+- Faza ukoncenia spoja
+
+### Autentifikacia v PPP
+
+"Doma mate typicky Ethernet, ten ale nepodporuje autentifikaciu. PPPoE (PPP over Ethernet) je PPP nad Ethernetom, cize podporuje aj auth"
+
+- PAP - Password Authentication Protocol
+- CHAP - Challenge Handshake Authentication Protocol
+- EAP - Extensible Authentication Protocol
+
+#### PAP
+
+Klient (zakaznik) a Server (ISP)
+
+2-way handshake
+
+1. Klient posiela meno a heslo serveru
+2. Server prejde lokalnu databazu a hlada tam toto meno a heslo, potom posle Accep/Reject
+
+Nevyhody - plain text, trial-and-error attack (skusam mena a hesla, ako keby brute-force)
+
+#### CHAP
+
+3-way handshake
+
+1. Server posle challenge
+2. Klient posle meno a heslo - tu uz je to hash (md5)
+3. Server posle Accept/Reject
+
+Server posle: ID challenge, random retazec, hostname servera  
+Klient da do md5: ID, random, heslo ktore nasiel k menu hostname servera  
+Server spravil md5 s heslom ktore on pozna pre daneho usera a porovnal ho s hashou ktora mu prisla od klienta
+
 ## PPPoE
 
 PPP over Ethernet  

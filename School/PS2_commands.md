@@ -144,29 +144,29 @@ OSPF process, routes, networks + more
 
 ```
 router ospf PROCESS-ID  # lokalne cislo pre dany router
-	network IP-ADD WILDCARD area AREA-ID
-	
-	# pri zmene router id treba aj restartovat proces
-	router-id 1.1.1.1
-	do clear ip ospf process
+ network IP-ADD WILDCARD area AREA-ID
 
-	area 2 range IP_ADDRESS MASK  # sumarizacia (iba na ABR)
+ # pri zmene router id treba aj restartovat proces
+ router-id 1.1.1.1
+ do clear ip ospf process
 
-	passive-interface g0/0 
-	passive-interface default  # vsetky
+ area 2 range IP_ADDRESS MASK  # sumarizacia (iba na ABR)
 
-	default-information originate [always]
+ passive-interface g0/0
+ passive-interface default  # vsetky
 
-	ip ospf hello-interval SECONDS
-	ip ospf dead-interval SECONDS
+ default-information originate [always]
 
-	area 1 auth message-digest
+ ip ospf hello-interval SECONDS
+ ip ospf dead-interval SECONDS
 
-router ospf PROCESS-ID [vfr VPN-NAME] 
+ area 1 auth message-digest
+
+router ospf PROCESS-ID [vfr VPN-NAME]
 
 int g0/0
-	ip ospf PROCESS-ID area AREA-ID
-	ip ospf PROCESS-ID area AREA-ID [secondaries none]
+ ip ospf PROCESS-ID area AREA-ID
+ ip ospf PROCESS-ID area AREA-ID [secondaries none]
 ```
 
 Restart procesu - volba DR/BDR
@@ -178,18 +178,18 @@ do clear ip ospf process
 Zmena metriky
 
 ```
-router ospf PROCESS-ID  
-	auto-cost reference-bandwidth REF_BANDWIDTH  # prepocita sa (REF_BANDWIDTH/bandwidth)
+router ospf PROCESS-ID
+ auto-cost reference-bandwidth REF_BANDWIDTH  # prepocita sa (REF_BANDWIDTH/bandwidth)
 
 int g0/0
-	ip ospf NEW_COST_VALUE
+ ip ospf NEW_COST_VALUE
 ```
 
 Zmena priority
 
 ```
 int g0/0
-	ip ospf priority NUMBER  # 0-255
+ ip ospf priority NUMBER  # 0-255
 ```
 
 Autentifikacia
@@ -197,26 +197,94 @@ Autentifikacia
 ```
 # md5
 router ospf 1
-	area 1 auth message-digest
+ area 1 auth message-digest
 
 int g0/0
-	ip ospf message-digest-key 1 md5 HESLO
+ ip ospf message-digest-key 1 md5 HESLO
 
 # plaintext
 router ospf 1
-	area 1 auth 
+ area 1 auth
 
 int g0/0
-	ip ospf authentication-key HESLO
+ ip ospf authentication-key HESLO
 ```
 
-## IPv6
+### IPv6
 
 ```
 ipv router ospf 1
-	router-id 1.1.1.1
-	passive-interface g0/0
+ router-id 1.1.1.1
+ passive-interface g0/0
 
 int g0/0
-	ipv ospf 1 area 1
+ ipv ospf 1 area 1
 ```
+
+## HDLC
+
+```
+int s0/0/0
+    encapsulation hdlc
+
+do show int s0/0/0
+do show ip int brief
+do show controller s0/0/0  # ci je DCE alebo DTE
+```
+
+## PPP
+
+```
+int s0/0/0
+    encapsulation ppp
+    compress ?
+    ppp quality ?
+    ppp multilink ?
+
+do show ip int brief
+```
+
+#### PAP
+
+Klient
+
+```
+int s0/0/0
+    encapsulation ppp
+    ppp pap sent-username MENO password HESLO
+```
+
+Server
+
+```
+username MENO password HESLO
+int s0/0/0
+    encapsulation ppp
+    ppp authentication pap
+```
+
+Ak chceme obojsmerny auth, treba obidve spravit na obidvoch zariadeniach
+
+#### CHAP
+
+Kedze sa predstavuju pomocou hostname, tak ja musim mat v databaze meno toho druheho, obidvaja musime mat rovnake heslo
+
+Klient
+
+```
+username MENO-SERVERA password HESLO
+int s0/0/0
+    encapsulation ppp
+```
+
+Server
+
+```
+username MENO-KLIENTA password HESLO
+int s0/0/0
+    encapsulation ppp
+    ppp authentication chap
+```
+
+Mozeme kombinovat ze aj PAP aj CHAP naraz
+
