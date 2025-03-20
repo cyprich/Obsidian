@@ -422,3 +422,233 @@ Vzdy neindetifikacny
 #### Generalizacia
 
 #### Specializacia
+
+## Select 2
+
+### Join
+
+#### Inner join
+
+Doteraz sme pouzivali **Inner Join** - vysledok spojenia bol iba prienik tabuliek - co mali rovnake
+
+```sql
+select * from os_udaje join student using(rod_cislo);
+select * from os_udaje inner join student using(rod_cislo);  -- to iste, nepovinny parameter inner
+```
+
+**Semi Join** - hladam tie osoby, ktore niekedy boli studentami - `in`, `exists`
+
+```sql
+select * from os_udaje
+    where rod_cislo in (select rod_cislo fro mstudent);
+
+select * from st_odbory
+    where exists (select 'x' from student
+        where student.st_odbory=st_odbory.st_odbor and student.st_zameranie=st_odbory.st_zameranie)  -- tolko podmienok, kolko atributov ma PK
+```
+
+**Anti Join** - osoby, ktore nikdy studentami neboli - `not in`, `not exists`
+
+```sql
+select * from os_udaje
+    where rod_cislo not in (select rod_cislo from student);
+
+select * from os_udaje o
+    where not exists (select 'x' from student s where s.rod_cislo=o.rod_cislo);
+```
+
+---
+
+```sql
+select os_udaje.*
+    from os_udaje join student on (os_udaje.rod_cislo=student.rod_cislo);  -- tento vrati viac hodnot - kardinalita 1:n
+
+-- fix - doplnime distinct
+select distinct os_udaje.* ...
+
+select *
+    from os_udaje
+        where rod_cislo in (select rod_cislo form student);  -- toto bude rychlejsie
+```
+
+#### Outer join - Left, Right, Full
+
+**Left** Join - zoberiem vsetko z lavej tabulky (os_udaje) + to co sa da z pravej tabulky (student)
+
+```sql
+select * from os_udaje
+    LEFT join student using (rod_cislo);
+-- pri nejakej osobe mame studentske hodnoty NULL - nikdy neboli studentami
+
+-- cize teoreticky ak chcem zistit osoby ktore neboli studentami - NEPOUZIVAT - NEEFEKTIVNE!!
+select *
+    from os_udaje
+    left join student using (rod_cislo)
+    where os_cislo is null
+```
+
+`left join` = `left outer join`
+
+**Right** Join - to iste len naopak
+
+```sql
+select * from student
+    right join os_udaje using (rod_cislo);
+
+
+select * from os_udaje  -- to iste co priklad v LEFT, ale pouzijem RIGHT - v tomto pripade to nema zmysel - nemoze existovat student bez os_udajov
+    RIGHT join student using (rod_cislo);
+-- v tomto pripade by bolo efektivnejsie INNER join
+```
+
+**Full** Join
+
+```sql
+select ico, rod_cislo, id_platitela
+    from p_platitel
+        join p_osoba on (id_platitela=rod_cislo)
+        join p_zamestnavatel on (ico=id_platitela); -- nevrati nic - nikto nema rovnake ico a rodne cislo
+
+select ico, rod_cislo, id_platitela
+    from p_platitel
+        full join p_osoba on (id_platitela=rod_cislo)
+        full join p_zamestnavatel on (ico=id_platitela)
+        order by rod_cislo nulls first; -- vrati vela vela - mam platitela vzdy + bud osobu alebo zamestnavatela
+```
+
+Dalsi priklad - kontakty - mozu byt bud na osoby alebo na firmu  
+Dalsi priklad - ked mame nepovinne clenstvo
+
+```sql
+select * from personal_data full join contact using (personal_id);  -- osoby ku ktorym mam kontakty, ku ktorym nemam kontakty + kontakty ku ktorym nemam osobu
+```
+
+### Agregacne funkcie
+
+Doteraz `min()`, `max()` `avg()`, `sum()`, `count()`, `mod()`
+
+```sql
+select count(*) from os_udaje; -- kolko zaznamov mame v tabulke os_udaje
+-- namiesto * moze byt hocico
+```
+
+Agregacne funkcie ignoruju NULL hodnoty
+
+```sql
+select count(*), count(ukoncenie), count('ahoj') from student;
+```
+
+```sql
+select min(rocnik), max(rocnik) from student;
+select min(to_number(rocnik)), max(to_number(rocnik)) from student;
+
+select count(*), count(cis_predmetu), count(disctinct cis_predmetu) from zap_predmety;
+```
+
+#### Group by
+
+**Group by** - vsetko co je v selecte (okrem agregacnej funkcie) musi ist do group by, moze byt aj nieco naviac
+
+```sql
+select os_cislo, count(*) from zap_predmety group by os_cislo;
+
+select meno, priezvisko, count(rod_cislo) from os_udaje
+    join student using (rod_cislo)
+    group by meno, priezvisko;  -- problem ak sa 2 osoby volaju rovnako
+
+-- fix
+select meno, priezvisko, count(rod_cislo) from os_udaje
+    join student using (rod_cislo)
+    group by meno, priezvisko, rod_cislo;
+```
+
+Pre kazdu osobu, kolko mala zapisanych predmetov
+
+```sql
+select meno, priezvisko, count(*)
+    from os_udaje join student using(rod_cislo)
+    join zap_predmety using (os_cislo)
+    group by meno, priezvisko, rod_cislo;
+
+-- iba unikatne predmety?
+select meno, priezvisko, count(disctinct cis_predmetu)
+    from os_udaje join student using(rod_cislo)
+    join zap_predmety using (os_cislo)
+    group by meno, priezvisko, rod_cislo;
+
+-- niekto by mohol byt viac krat
+select meno, priezvisko, count(disctinct cis_predmetu)
+    from os_udaje join student using(rod_cislo)
+    join zap_predmety using (os_cislo)
+    group by meno, priezvisko, os_cislo;
+
+-- nieco uplne ine??
+select distinct meno, priezvisko, count(disctinct cis_predmetu)
+    from os_udaje join student using(rod_cislo)
+    join zap_predmety using (os_cislo)
+    group by meno, priezvisko, os_cislo;
+```
+
+Kazda osoba kolko krat bola studentom
+
+```sql
+select meno, priezvisko, count(os_cislo)  -- nie *, nie rod_cislo - treba dat PK z tabulky ktora moze nadobudnut null
+    from os_udaje left join student using (rod_cislo)  -- vsetko z os_udaje
+    group by meno, priezvisko, rod_cislo
+    order by 3;  -- podla tretieho stlpca
+```
+
+---
+
+Osoby ktore mali >5 zap predmetov
+
+```sql
+select meno, priezvisko, count(*)
+    from os_udaje
+        join student using (rod_cislo)
+        join zap_predmety using (os_cislo)
+    -- where count(*) > 5 -- TOTO DA NEDA
+    group by meno, priezvisko, rod_cislo
+    having count(*) > 5;  -- TUTO TO TREBA - vyhodnocuje sa az neskor
+```
+
+Student, ktory ma najviac zapisanych predmetov
+
+V `having` sa nemozu vnarat agregacne funkcie, iba v `select`
+
+```sql
+select meno, priezvisko, count(*)
+    from os_udaje
+        join student using (rod_cislo)
+        join zap_predmety using (os_cislo)
+    group by meno, priezvisko, rod_cislo
+    having count(*) =
+        (select max(count(*))
+            from zap_predmety
+            join student using (rod_cislo)
+            join zap_predmety using (os_cislo)
+            group by (meno, priezvisko, rod_cislo));
+
+-- da sa vyhadzat nieco co nepotrebujem, ale neviem co to je
+```
+
+V niektorych databazovych systemoch sa neda vnarat agregacne funkcie ani v selecte - treba urobit dvojfazovo - vnoreny select
+
+---
+
+Vypisat zaznamy kde predmet_bod.ects != zap_predmety.ects
+
+```sql
+select os_cislo, cis_predm, zp.ects realne_ects, pb.ects predpokladane_ects
+    from zap_predmety zp
+    join predmet using (cis_predm)
+    join predm_bod pb using (cis_predm)
+    where zp.skrok=pb.skrok
+        and zp.exts <> pd.ects;
+
+-- realne z tabulky predmet nic neberiem - viem 2 tabulky spojit pomocou cis_predm a skrok
+select os_cislo, cis_predm, zp.ects realne_ects, pb.ects predpokladane_ects
+    from zap_predmety zp
+    join predm_bod pb using (cis_predm, skrok)
+    where zp.ects <> pd.ects;
+```
