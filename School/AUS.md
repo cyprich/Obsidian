@@ -144,3 +144,69 @@ Typy
 - S nahodnym pristupom - posun sa o niekolko
 
 Prehliadky
+
+## Sekvencia
+
+Linearny pamatovy abstraktny typ  
+Jeden predchodca, jeden nasledovnik
+
+## Hierarchia
+
+Stromova struktura  
+Kazdy blok pamate sa oznacuje ako vrchol
+
+### Terminologia
+
+Otec, syn  
+Predok, potomok  
+Koren, list
+
+Stupen = pocet synov  
+Uroven = ako daleko od korena som (koren = 0, jeho synovia = 1)  
+Hlbka = najvacsia uroven  
+Mohutnost = pocet vrcholov
+
+### Klasifikacia
+
+Viaccestne hierarchie
+
+- Pocet synov vrcholu nie je obmedzeny
+- Napr. suborovy system
+
+K-cestne
+
+- Binarne - K=2 - vrchol moze mat max 2 synov
+- Trojcestne
+- Stvorcestne
+- Dalej sa delia na usporiadane a neusporiadane
+  - Usporiadane - synov je mozne pomenovat nejakou vlastnostou - najstarsi, najmladsi, lavy, pravy, ...
+  - Neusporiadane
+
+### Vlastnosti
+
+Vyvazena hierarchia - vsetky listy v hierarchii lezia takmer v rovnakej hlbke
+
+Pre K-cestne
+
+- Kompletnost - zaplname hierarchiu postupne - nevytvarame novu uroven, ak este momentalna uroven nie je uplne zaplnena
+- Plnost - kazby vrchol ma prave `0` alebo `n` synov
+- Perfektnost - je kompletne zaplnena, vsetky listy su na jednej urovni, taky pekny trojuholnik
+
+### Prehliadky
+
+Je mozne prehliadat do hlbky a do sirky
+
+- Prehliadka do hlbky
+  - Prehliadka v priamom poradi (preorder) - najprv spracujem seba, potom synov - basically prehladavame od korena smerom dole k listom
+  - Prehliadka v spatnom poradi (postorder) - najprv spracujem synov, potom seba - bsically prehladavame od listov smerom hore ku korenu
+  - Specialny pripad - Prehladka vo vnutornom poradi (inorder)
+    - Iba v Binarnej hierarchii
+    - Ak mam laveho syna tak ho spracujem, potom spracujem seba, potom praveho syna
+    - V konecnom dosleku spracujem celu mapu zlava doprava
+  - Max. pocet ramcov (rekurzia) = hlbka
+- Prehliadka do sirky (level order) - po jednotlivych urovniach - nie je rekurzivna (max. 1 ramec)
+
+### Dotazy
+
+JeKoren (SpristupniOtca, ak je null)  
+JeSyn ()
