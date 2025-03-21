@@ -467,5 +467,127 @@ public enum Days
     Weekend = Saturday | Sunday
 }
 
-Days meetingDays = Days.Monday | Days.Wendesday;
+Days meetingDays = Days.Monday | Days.Wednesday;
 ```
+
+## OOP
+
+Abstrakcia, Zapuzdrenie, Dedicnost, Polymorfizmus
+
+```c#
+public class Point3D : Point  // trieda Point3D dedi od Point
+{ ... }
+```
+
+Predok je oznacovany ako `base` namiesto `super`  
+`virtual` alebo `abstract` pri metode ak ju chceme polymorfne prekryvat v potomkoch  
+`override` pri metode potomka, ak chceme metody prekryt  
+`sealed` - zapecateda trieda, neda sa prekryvat/dedit? (v Jave `final`)
+
+```c#
+public class BaseClass
+{
+    protected virtual void MyMethod { ... }
+}
+
+public class DerivedClass : BaseClass
+{
+    protected override void MyMethod { ... }
+}
+```
+
+`new` pri metodach, neviem co to robi, nieco skryva (implementaciu povodnej?), ma to zvlastne spravanie a neoporuca sa pouzivat
+
+```c#
+public class BaseClass
+{
+    protected void MyMethod { ... }
+}
+
+public class DerivedClass : BaseClass
+{
+    protected new void MyMethod { ... }
+}
+```
+
+Mozeme dedit aj `record` - funguje to tak isto ako pri triedach
+
+### Pristupove modifikatory
+
+\*Vo vnutri triedy
+
+`private` - dostupne uplne vsade  
+`public` - dostupne iba v danom type  
+`protected` - dostupne vo vnutri typu a potomkoch  
+`internal` - v ramci daneho projektu (zostavenia (assembly))  
+`protected internal` alebo `internal protected` - moze byt v ramci projektu, alebo v potomkoch, alebo v potomkoch ineho projektu  
+`private protected` alebo `protected private` - iba v potomkoch v ramci daneho projektu (skor by to mohlo byt ze `private internal`)
+
+![obrazok1](../others/images/csharp-modifiers1.png)
+
+![obrazok2](../others/images/csharp-modifiers2.png)
+
+Ak neuvediem, akeho typu je trieda, tak by default je `internal` (`class MyClass { ... }` je to iste ako `internal class MyClass { ... }`)  
+Okrem `internal` mozem pouzit iba `public`  
+Ak je trieda vnorena (trieda v triede) tak na vnorenu triedu mozem pouzit vsetkych 6 modifikatorov
+
+## Nullable
+
+Velky rozdiel medzi hodnotovymi a referencnymi typmi
+
+### Nullable hodnotove typy
+
+Napr. `int` nemoze byt `null`, lebo nie je referencny typ  
+Da sa oklamat obalenim do `Nullable<int>`, alebo rovno `int?`
+
+```c#
+Nullable<int> a = null;
+int? b = null;  // s tymto spravi kompilator vlastne to iste co riadok predtym
+
+if (a.HasValue) { ... }
+if (a != null) { ... }
+if (a is not null) { ... }
+```
+
+### Nullable referencne typy
+
+Ked pouzijeme referencny typ s otaznikom, nepreraba sa do `Nullable`  
+Treba pouzivat, ked vieme, ze hodnota moze nadobudat hodnotu `null`
+
+```c#
+string s1 = GetString();
+string? s2 = GetStringOrNull();  // ked viem, ze metoda moze vratit aj null
+
+if (s2 is not null)
+{
+    s1 = s2;
+}
+
+void Method(string? s)
+{
+    // Console.WriteLine(s.Length);  // warning
+    if (s is not null)
+    {
+        Console.WriteLine(s.Length);
+    }
+}
+```
+
+#### Povolenie/Zakazanie Nullable
+
+Teraz by default povolene  
+Da sa v `.csproj` subore zapnut (`<Nullable>Enable</Nullable>`) alebo vypnut (`<Nullable>Enable</Nullable>`)
+
+Da sa pouzit ✨direktiva preprocesora✨
+
+```c#
+#nullable enable
+    string? message = "Hello";
+#nullable disable
+    string message2 = null;  // nebude kontrolovat null, neoporuca sa
+```
+
+#### Atributy
+
+`[MemberNotNull]`  
+`[NotNullWhen(true)]`
