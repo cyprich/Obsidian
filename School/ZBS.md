@@ -311,3 +311,35 @@ IMSI (International Mobile subscriber Identity) - jedinecny identifikator, sklad
 - MCC (Mobile Country Code) - pre slovensko `421`
 - MNC (Mobile Network Code) - podla operatora: T-Mobile (2, 4), Orange (1, 5, 15), ...
 - MSIN (Mobile Subscriber Identification Number)
+
+[esims.io](esims.io)
+
+Conventional vs. Distributed BTS site  
+BTS components: Duplexer, Diplesers (splitter/combiner), MHA (Mast Head Amplifier)
+
+Frekvencne pasma GSM-900, GSM-1800, GSM-1900, GSM-850
+
+GSM speech coding - Full Rate, Half Rate
+
+GSM modulation - FSK, MSK
+
+Protocol Stack - uplne ine protokoly ako v normalnych IP sietach
+
+Authentication triplet (RAND, SRES, Kc)
+
+### 2.5G - General Packet Radio Service
+
+### 3G - Universal Mobile Telecommunication System
+
+3GPP - 3rd Generation Partnership Project
+
+V podstate len rozsirenie GSM  
+Zasadna zmena - CDMA Principle - umoznuje radovo vyssie rychlosti
+
+### 4G - Long Term Evolution
+
+Zasadne ine od ostatnych  
+Modulacia - OFDMA  
+Uz sa viacej podoba IP sietam
+
+### 5G - New Radio
