@@ -288,3 +288,139 @@ int s0/0/0
 
 Mozeme kombinovat ze aj PAP aj CHAP naraz
 
+## PPPoE
+
+### Rozsierenie konfiguracie PPP a pridelenim IP a default route
+
+R1 - Server - Prideli IPcku
+
+```
+username R2 password cisco2
+ip local pool PPP_POOL 10.0.0.10 10.0.0.20
+
+int s0/0/0
+    ip add 10.0.0.1 255.0.0.0
+    encapsulation ppp
+    peer default ip address pool PPP_POOL
+    ppp authentication pap
+```
+
+R2 - Klient - Dosatne IPcku
+
+```
+int s0/0/0
+    ip address negotiated  ! vypyta si ipcku
+    encapsulation ppp
+    ppp pap sent-username R2 password cisco2
+    ppp ipcp route default
+```
+
+### Dialer?
+
+PPPoE server
+
+```
+int lo 0
+    ip add 10.0.0.254 255.255.255.0
+
+username pouzivatel1 password heslo heslo1
+username pouzivatel1 autocommand logout
+
+ip local pool PPPoE-POOL 10.0.0.10 10.0.0.20
+
+interface virtual-template 1
+    ip unnumbered loop 0
+    mtu 1492
+    ppp mtu adaptive
+    ip tcp adjust-mss 1452
+    peer default ip address pool PPPoE-POOL
+    ppp authentication chap
+    ppp ipcp dns 8.8.8.8
+
+bba-group pppoe global
+    virtual-template 1
+
+int f0/0
+    pppeo enable group global
+```
+
+PPPoE klient
+
+```
+interface dialer 1
+    encapsulation ppp
+    mtu 1492
+    dialer pool 1
+
+    ppp chap hostname pouzivatel1
+    ppp chap password heslo1
+
+    ppp ipcp route default
+    ! dialer persistent
+
+! ip route 0.0.0.0 0.0.0.0 dialer 1
+
+int f0/0
+    no ip address
+    pppoe enable group global
+    pppoe-client dial-pool-number 1
+    no shut
+```
+
+PC s WIN ako klient
+
+```
+int lo 0
+    ip add 10.0.0.1 255.255.255.255
+
+bba-group pppoe global
+    virtual template 1
+    sesions per-mac throttle 100 1 2
+
+ip local pool ADRESY-PPPoE-KLIENTOV 192.168.1.1 192.168.1.254
+
+interface virtual-template 1
+    ip unnumbered loopback 0
+    peer default ip address pool ADRESY-PPPoE-KLIENTOV
+    mtu 1492
+    ppp mtu adaptive
+    ip tcp adjust-mss 1452
+    ppp authentication ms-chap-v2 ms-chap chap
+    ppp ipcp dns 8.8.8.8
+
+int g0/0
+    pppoe enable group global
+    no shut
+
+username user1 priv 0 password heslo1
+username user2 priv 0 password heslo2
+username user1 autocommand logout
+username user2 autocommand logout
+```
+
+### Overenie a diagnostika
+
+```
+do show ip int b
+do show interface dialer
+do show pppoe session
+```
+
+## BGP
+
+Zapnutie BGP
+
+```
+router bgp AS-NUMBER
+    neighbor IP-ADDRESS remote-as AS-NUMBER
+    network NETWORK-ADDRESS [mask NETWORK-MASK]
+```
+
+Show prikazy
+
+```
+do show ip bgp neigh
+do show ip bgp summary
+do show ip bgp
+do show ip route bgp
+```

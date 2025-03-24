@@ -729,48 +729,106 @@ Okrem auth aj pridelenie IP, DNS, kompresia, sifrovanie
 ### Fazy
 
 1. Active Dirscovery
-   - Klient lokalizuje PPPoE server
-   - 4 kroky (podobne ako DHCP DORA)
-     - PADI - PPPoE Active Discovery Initiation (Jedina ako broadcast)
-     - PAD0 - PPPoE Active Discovery Offer
-     - PADR - PPPoE Active Discovery Request
-     - PADS - PPPoE Active Discovery Session-confirmation - dostanem Session ID
+   - Klient lokalizuje PPPoE server, ziska jeho MAC, zalozi spojenie, ziska Session ID
+     - Server moze mat viac mien - Access Concentrator (AC), Broadband Network Gateway (BNG), Broadband Access Server (BRAS)
+   - 4 kroky - Initiation, Offer, Request, Session-confirmation (podobne ako DHCP DORA)
+     - PADI - PPPoE Active Discovery Initiation - Jedina ako broadcast, klient ziada o sluzbu/spojenie
+     - PADO - PPPoE Active Discovery Offer - AC odpovie so svojim menom a detailami o sluzbe
+     - PADR - PPPoE Active Discovery Request - Vyberie si jednu offer (moze dostat od viacerych AS) a poziada on cez PADR
+     - PADS - PPPoE Active Discovery Session-confirmation - AC odpovie a prideli Session ID klientovi
 2. Faza PPP Session
+   - Dohodnu sa volitelne nastavenia a autentifikacia
    - LCP + AUTH + NCP (ako v PPP)
 3. Faza ukoncenia
    - Termination request cez PPPoE Active Discovery Terminate (PADT)
    - Posiela klient alebo server
-   - Prijatie vedie k uvolnenie zdrojov
+   - Prijatie vedie k uvolneniu zdrojov
+
+### PPPoE config v Cisco
+
+Pomocou tzv. **Templates** - vytvaraju/rusia sa virtualne rozhrania ako sa pripajaju/odpajaju klienti  
+PPPoE **BroadBand Aggregator Profiles** - jedno zariadenie moze mat viac Profiles (rozne parametre), kazdy Profile moze mat viac Templates
 
 ## External BGP (eBGP)
 
-External Border Gateway Protocol  
-Internet je skupina navzajom poprepajanych Autonomnych Systemov (AS) - ISP, firma, ...
+External Border Gateway Protocol
 
-3 tiery providerov
+Internet je skupina navzajom poprepajanych Autonomnych Systemov (AS) - ISP, firma, ...  
+Z vonka posobi jeden AS ako jedna nerozdelena entita
+
+IPX - Internet Packet Exchange - sposob, ako sa prepajaju ISP's  
+Bod, v ktorom sa IPS's prepajaju sa nazyva IXP - Internet Exchange Point  
+IPS's sa prepajaju navzajom za ucelom vzajomnej vymeny dat  
+Na slovensku su 3 IPX - [six.sk](six.sk), [nix.sk](nix.sk), [peering.cz](peering.cz)
+
+3 tiery providerov - Tier 1 posiela na Tier 2, Tier 2 na Tier 3, Tier 3 do sveta?
+
+### BGP
 
 Doteraz sa brali IGP (interior gateway) protokoly, toto je EGP (exterior gateway)
 
 - IGP - detailne pozna vnutro, vonkajsok moze byt zahmleny pod default route
 - EGP - vonkajsia topologia AS medzi sebou
 
-Nepracuje s metrikou, ale s atributami (hop-count, nejaky custom label, local preference)
-
-Niekolko typov AS
-
-- Tiez private a public ako aj IP adresy
-
+BGP je jediny prakticky pouzivany inter-AS protokol  
+Je typu Path Vector - vymena zoznamu sieti a zoznamu parametrov (atributov) o nich (metrika)  
+Admin Distance - 20 pre eBGP, 200 pre iBGP  
+Bezi nad TCP, port 179  
+Aktualna verzia BGPv4 - RFC 4271  
+Velmi velmi komplexny protokol  
+Smerovanie medzi AS musi byt bezsluckove  
+Susedne routre EGP musia byt explicitne nakonfigurovane na dohode spravcov (pri IGP je to automaticky)  
+Nepracuje s metrikou, ale s atributami (hop-count, nejaky custom label, local preference), ktore su dohodnute  
+Niekolko typov AS - Tiez private a public ako aj IP adresy  
 Core routre by nemali mat default route, mali by mat routovaciu tabulku celeho internetu (momentalne >800k poloziek)
 
-Vymena prefixov a atributov  
-Typu Path vector  
-Garantuje bezsluckovost  
-Admin distance - eBGP 20, iBGP 200  
-TCP, port 179
-
-### Pojmy
+#### Pojmy
 
 Komponenty
 
-- BGP speaker
-- BGP neighbor
+- BGP speaker - kazdy kto hovori BGP protokolom - je na nom spusteny BGP
+- BGP neighbor alebo BGP peer - dvojica navzajom komunikujucich BGP spekerov
+
+---
+
+Druhy AS
+
+- Single-homed
+  - Jediny hranicny router do okoliteho sveta
+  - Castokrat vobec nepodporuju EGP routing
+  - Typicky firmy/podniky
+- Multihomed
+  - Viacero hranicnych routerov do okoliteho sveta
+  - Napriek tomu, ze sa pripaja viacerymi bodmi, nedovoluje aby cez neho tiekla cudzia prevadzka
+- Transit
+  - Viacero hranicnych routerov
+  - Sluzi na prenos tranzitnej prevadzky (mezdi inymi AS)
+  - Typicky ISP
+
+Prepojenie zakaznika k ISP - obvykle 3 moznosti
+
+- Prijatie len Default route
+  - Jednoduche, nenarocne pre router zakaznika
+  - Moze viest k neoptimalnemu smerovaniu mimo siet zakaznika
+- Default route a siete inych zakaznikov daneho ISP
+  - Zakaznik moze optimalizovat routes do sieti inych zakaznikov toho isteho ISP
+  - Zvysok sveta nahradeny default route - moze viest k neoptimalnemu smerovaniu mimo ISP
+- Prijatie vsetkych ciest
+  - Cela routing table celeho internetu
+  - Najpresnejsie smerovanie kdekolvek
+  - Narocne na hardware - momentalne >800k routes len pre IPv4
+
+Kedy pouzit BGP - idealne ak je jedna z tychto situacii
+
+- Nas AS ma viacere pripojenia na iny AS
+- Nas AS umoznuje tranzit paketom cez seba na ceste do inych AS
+- Je potrebna manipulacia s cestami pre pakety ktore opustaju nas AS
+- Firma chce odlisit svoju prevadzku od prevadzky ISP
+
+Kedy nepouzit BGP - v tychto pripadoch lepsie pouzit Default Route alebo staticke smerovanie
+
+- Nas AS ma jedno pripojenie do internetu/k ISP
+- Slabe zariadenie na okraji AS (malo pamate, nizky vykon)
+- Slabe vedomosti o filtracii ciest a cinnosti BGP
+
+###
