@@ -4,8 +4,10 @@
 
 DML - Select, Update, Delete, Insert  
 DDL (Data Definition Language) - Create, Alter, Drop - automaticky robi commit  
-DCL  
+DCL - Grant, Revoke
 TCL (Transaction Control Language, niekedy aj DAS) - Commit, Rollback
+
+SQL je neproceduralny jazyk -
 
 ### Datove typy
 
@@ -651,4 +653,229 @@ select os_cislo, cis_predm, zp.ects realne_ects, pb.ects predpokladane_ects
     from zap_predmety zp
     join predm_bod pb using (cis_predm, skrok)
     where zp.ects <> pd.ects;
+```
+
+## PL/SQL
+
+- Anonymny/nepomenovany blok prikazov
+- Pomenovany blok prikazov
+  - Procedura
+  - Funkcia - `to_char()` - nemoze robit insert, update, commit, ...
+- DML Trigger - vykona sa ked nastane nejaka situacia, napr. Update
+  - Kedy
+    - Before
+    - After
+  - Kolko krat - vykoname Update, zmeni sa 5 zaznamov
+    - Moze sa vyvolat 1 krat (1 update)
+    - Moze sa vyvolat 5 krat (5 zaznamov)
+
+SQL nepozna boolean, iba PL/SQL, dal by sa namodelovat `char(1) check (... in ('T', 'F'))`
+
+```sql
+declare  -- nepovinne, tu sa deklaruju premenne
+
+begin
+    null;  -- nic sa nevykona
+end;
+/
+```
+
+Premenne
+
+- `premenna` `typ` `;`
+- `premenna` `typ` `:=` `init_hodnota` `;`
+- `premenna` `os_udaje.meon%type` `;`
+- `premenna` `os_udaje%rowtype` `;`
+
+If, Else, Elsif
+
+```sql
+if podmienka then
+    prikazy;
+elsif podmienka2 then
+    prikazy;
+[else
+    prikazy;]
+endif
+
+```
+
+Case
+
+```sql
+case premenna
+    when hodnota1 then prikazy1;
+    when hodnota2 then prikazy2;  -- neda sa skontrolovat ci je null, pretoze sa porovnava cez =
+    else prikazy
+end case;
+
+case
+    when podmienka1 then prikazy1;
+    when podmienka2 then prikazy2;  -- neda sa skontrolovat ci je null, pretoze sa porovnava cez =
+    else prikazy
+end case;
+```
+
+Loop - nekonecny cyklus
+
+```sql
+loop
+    prikazy
+end loop;
+
+loop
+    if podmienka then
+        exit;
+    end if;
+end loop
+
+loop
+    exit when podmienka
+end loop;
+```
+
+While
+
+```sql
+while podmienka loop
+    prikazy
+end loop
+```
+
+For
+
+```sql
+for premenna in min..max loop  -- premenna (i) sa zadeklaruje automaticky (netreba manualne deklarovat), ma platnost iba vo vnutri for
+    prikazy;
+end loop;
+
+for premenna in reverse min..max loop
+    prikazy;
+end loop;
+```
+
+Nepomenovany blok prikazov  
+Jednorazovo vykonane
+
+```sql
+declare
+    [premenna typ[:=init_hodnota];]
+begin
+    prikazy;
+    [
+        exception
+            when typ_vynimky then
+                prikazy;
+            [when...]
+    ]
+end;
+/
+```
+
+Procedura  
+Nezadavat velkost typu - `varchar2(11)` nie, `varchar2` ano
+
+```sql
+create [or replace] procedure nazov_procedury
+    [( nazov1 [mode1] typ1,
+       nazov2 [mode2] typ2 )]
+is | as
+    [nazov_premennej typ [:= init_hodnota]; ]
+begin
+    prikazy;
+    [exceptions]
+end [nazov_procedury];
+/
+
+```
+
+Funkcia  
+Ako Procedura, ale ma navratovu hodnotu
+
+```sql
+create [or replace] function nazov_funkcie
+    ...
+return datatype
+is | as
+    ...
+begin
+    ...
+    return vyraz;
+end
+/
+```
+
+Typ argumentu
+
+- IN
+- OUT
+- IN OUT
+
+Priklad
+
+```sql
+create or replace procedure query_stud
+    (v_oc in student.os_cislo%type,
+    v_meno out varchar2,
+    v_skupina out student.st_skupina%type)
+is
+begin
+    select meno || ' ' || priezvisko, st_skupina
+    into v_meno, v_skupina  -- vlozi do premennych
+    from ...
+    where student.os_cislo = v_oc
+end query_stud
+/
+```
+
+---
+
+```sql
+select zoznam_stlpcov
+into zoznam_premennych
+from zoznam_tabuliek
+```
+
+```sql
+declare
+    p_meno os_udaje.meno%type;
+    p_priezv os_daje.priezvisko%type;
+    pocet integer;
+begin
+select meno, priezvisko, count(*)
+into p_meno, p_priezv, pocet
+from os_udaje ou
+join student st using (rod_cislo)
+left join zap_predmety using (os_cislo)
+where os_cislo = 550807
+group by meno, priezvisko;
+
+dbms_output.put_line('Pocet predmeetov studenta - ' || p_meno || ' ' || p_priezv || ' je ' || pocet );
+end;
+/
+```
+
+Vynimky
+
+| Exception | Oracle Error | Error Code |
+| --------- | ------------ | ---------- |
+|           |              |            |
+|           |              |            |
+
+Vlastne vynimky
+
+```sql
+raise_application_error(cislo_chyby, text_chyby);
+```
+
+`cislo_chyby` je cislo z intervalu `< -20999, -20000>`
+
+---
+
+Triggre
+
+```sql
+create [or replace] nazov_triggra
+before | after
+...
 ```
