@@ -591,3 +591,106 @@ Da sa pouzit ✨direktiva preprocesora✨
 
 `[MemberNotNull]`  
 `[NotNullWhen(true)]`
+
+## Kolekcie
+
+- `System.Collections` - `ArrayList`, `Hashtable`, `Queue`, `Stack` - uz stare, nepouzivat, negenericke, pomale, iba kvoli spatnej kompatibilite
+- `System.Collections.Generic` - `List<T>`, `Dictionary<TKey, TValue>`, ... - toto pouzivat
+- `System.Collections.Concurrent` - `BlockingCollection<T>`, `ConcurrentDictionary<T>`, `Concurrent` vsetko mozne - pri praci s vlaknami
+- `System.Collections.Immutable` - `ImmutableList<T>`, `ImmutableArray` - nemenne
+
+`ObservableCollection<T>` - upozornuje pri pridavani a odstranovani prvkov (pouzivane pri GUI)  
+`SortedList<TKey, TValue>` vs. `SortedDictionary<TKey, TValue>` - na vonok ziadny rozdiel, vnutri inplementovane ako list vs. binarny strom  
+Genericke a negenericke su 2 samostatne objekty, subory, nie ako v Jave
+
+## Interfaces
+
+Rozhrania
+
+- `IEnumberable`
+- `ICollection` - zakladne - vsetky kolekcie (okrem immutable) - Add(), Remove(), Contains(), CopyTo()
+- `IList` (dedi od `ICollection`) - indexovanie, Insert(), RemoveAt()
+- `IDictionary` () - TryGetValue()
+- `ISet` - mnozina bez duplikacii - UnionWith(), IntersectWith(), SetEquals()
+- `ILookup` - vyhladavanie podla klucu
+
+Genericke interfaces (`IEnumberable<T>`, `ICollection<T>`) implementuju ich prislusne negenericke interfaces  
+Vsetko co implementuje `IEnumerable` moze byt pouzite vo `foreach`
+
+```c#
+public interface IEnumberable
+{
+    IEnumberator GetEnumerator();
+}
+
+public interface IEnumerable<out T> : IEnumerable
+{
+    IEnumerator<T> GetEnumerator();
+}
+```
+
+```c#
+public interface IEnumberable
+{
+    bool MoveNext();
+    object Current { get; }
+    void Reset();  // nemusi sa implementovat, ked tak vyhodit vynimku
+}
+
+public interface IEnumerable<out T> : IDisposable, IEnumerable
+{
+    T Current { get; }
+}
+```
+
+## Yield
+
+Klucove slovo, ktore viacia prvky
+
+```c#
+yield return vyraz;  // vrati vyraz, ale neukonci metodu?
+yield break; // = return - ukonci metodu
+```
+
+```c#
+public IEnumberable<int> GetNumbers()
+{
+    yield return 0;
+    yield return 1;
+    yield return 2;
+    yield return 3;
+    yield return 4;
+    yield return 5;
+}
+
+foreach (var number in GetNumbers())
+{
+    Console.WriteLine(number);  // dostaneme cisla od 0 do 5
+}
+```
+
+> Priklad s power
+
+Da sa spravit aj manualne, cez triedu ktora implementuje `IEnumerable<T>` a `IEnumerator<T>`, je to nadlho
+
+## Delegat
+
+Odkaz (reference) na metodu alebo na metody - smerniky na metody?
+
+```c#
+public delegate in OperationDelegate(int x, inty);
+
+public int Add(int a, int b)
+{
+    return a + b;
+}
+
+OperationDelegate operation = Add;  // musia mat zhodne navratovy typ a parametre
+Console.WriteLine(operation(7, 3));  // = 10
+
+operation = (x, y) => x = y;
+Console.WriteLine(operation(7, 3));  // = 4
+
+// mozem pouzit aj += namiesto len priradenia
+// ked to zavolam, vyvolaju sa vsetky priradene metody, nie je zarucene poradie
+```
