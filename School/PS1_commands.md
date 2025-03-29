@@ -1,12 +1,14 @@
 # Siete - Commands
+
 Prikazy na konfiguraciu v Cisco IOS  
-Podrobnejsie poznamky v subore [Siete.md](./Siete.md)  
+Podrobnejsie poznamky v subore [Siete.md](./Siete.md)
 
 # Basic config
+
 ```
 hostname
 banner motd ""
-line console 0 
+line console 0
     logg sync
 no ip domain lookup
 
@@ -15,7 +17,7 @@ username admin priv 15 secret admin
 line con 0
     login local
 line vty 0 15
-    login local 
+    login local
     transport input ssh
 service password-encryption
 enable secret class
@@ -27,6 +29,7 @@ ip ssh version 2
 ```
 
 # Staticke smerovanie
+
 ```
 ip route {siet} {maska} {vystupna siet | vystupne rozhranie} [metrika]
 
@@ -38,6 +41,7 @@ ip route 0.0.0.0 0.0.0.0 192.168.1.1
 ```
 
 Show Commands
+
 ```
 do show ip route
 do show ip route static
@@ -50,6 +54,7 @@ do show cdp neighbors detail
 ```
 
 IPv6
+
 ```
 ipv6 unicast-routing
 ipv6 route {siet/prefix} {vystupna siet | vystupne rozhranie} [metrika]
@@ -58,6 +63,7 @@ ipv6 route ::/0 s0/0/0
 ```
 
 # RIP
+
 ```
 router rip
     version 2
@@ -66,7 +72,7 @@ router rip
     network 192.168.2.0
 
     passive-int g0/0
-    
+
     passive-int default
     no passive-int g0/0
 
@@ -79,6 +85,7 @@ ip route 192.168.1.0 255.255.255.0 Null0
 ```
 
 Show commands
+
 ```
 do show ip route
 do show ip route rip
@@ -86,12 +93,14 @@ do show ip protocols
 ```
 
 Manualna sumarizacia
+
 ```
 int g0/0
     ip summary-address rip 192.168.1.0 255.255.255.0
 ```
 
 RIPng
+
 ```
 ipv6 unicast-routing
 
@@ -106,10 +115,11 @@ do show ipv6 protocols
 
 ```
 
-Autentifikacia 
+Autentifikacia
+
 ```
 key chain KLUCENKA
-    key 1 
+    key 1
         key-string h@slisko
 
 int g0/0
@@ -121,6 +131,7 @@ do show ip proto
 ```
 
 # VLAN
+
 ```
 delete vlan.dat
 
@@ -146,6 +157,7 @@ int vlan 99
 ```
 
 Show commands
+
 ```
 do show vlan
 do show vlan brief
@@ -157,6 +169,7 @@ do show dtp int g0/1
 ```
 
 Zmena `trunk` -> `access`
+
 ```
 int g0/1
     no switchport trunk allowed vlan
@@ -164,8 +177,8 @@ int g0/1
     switchport mode access
 ```
 
-
 DTP (dynamicke urcenie `trunk`/`access`)
+
 ```
 int g0/1
     switchport mode dynamic desirable  # trunk
@@ -173,6 +186,7 @@ int g0/1
 ```
 
 VTP (redistribucia VLAN)
+
 ```
 vtp domain MENO_DOMENY
 tp mode {client | server | transparent}
@@ -187,6 +201,7 @@ do show vtp counters
 
 **Smerovanie medzi VLAN**
 Router on Stick
+
 ```
 int g0/0.10
     encapsulation dot1q 10
@@ -198,6 +213,7 @@ int g0/0.20
 ```
 
 Multi-layer switching
+
 ```
 ip routing
 
@@ -212,11 +228,13 @@ int vlan 20
 ```
 
 Enable QoS
+
 ```
 mls qos trust cos
 ```
 
 # STP
+
 ```
 spanning-tree vlan 1
 no spanning-tree vlan 1
@@ -232,6 +250,7 @@ spanning-tree portfast default
 ```
 
 Show commands
+
 ```
 do show spanning-tree
 do show spanning-tree summary
@@ -241,6 +260,7 @@ do show spanning-tree active
 ```
 
 RPVST
+
 ```
 spanning-tree mode rapid-pvst
 
@@ -250,11 +270,13 @@ spanning-tree vlan 1 root secondary
 
 int g0/1
     spanning-tree portfast
-    spanning-tree link-type point-to-point 
+    spanning-tree link-type point-to-point
 ```
 
 # ACL
+
 Standard ACL
+
 ```
 access-list 10 remark Nejaky randomny ACL
 access-list 10 deny host 192.168.1.2 [log]
@@ -271,6 +293,7 @@ ip access list standard MOJ_PRVY_ACL
 ```
 
 Extended ACL
+
 ```
 access-list 110 {pemit | deny} {tcp | udp | ip | ...} {source wildcard_mask} [operator port] {destination wildcard_mask} [operator port]
 
@@ -284,6 +307,7 @@ ip access-list extended MOJ_DRUHY_ACL
 ```
 
 Aplikovanie ACL
+
 ```
 int g0/0
     ip access-group {name | number} {in | out}
@@ -294,6 +318,7 @@ line vty 0 15
 ```
 
 Show commands
+
 ```
 do show access-list
 do show access-list 10
@@ -304,6 +329,7 @@ do show run | include access-list 10
 ```
 
 Vymazanie ACL
+
 ```
 int g0/0
     no ip access-group 10
@@ -312,25 +338,28 @@ no access-list 10
 ```
 
 # EtherChannel & FHRP
+
 HSRP
+
 ```
 int f0/0.1
-	encapsulation dot1q 1
-	ip add 192.168.1.101 255.255.255.0
-	standby version 2
-	standby 1 priority 150
-	standby 1 ip 192.168.1.1
-	standby 1 preempt
-	
+ encapsulation dot1q 1
+ ip add 192.168.1.101 255.255.255.0
+ standby version 2
+ standby 1 priority 150
+ standby 1 ip 192.168.1.1
+ standby 1 preempt
+
 int f0/0.2
-	encapsulation dot1q 2
-	ip add 192.168.1.101 255.255.255.0
-	standby version 2
-	standby 2 ip 192.168.2.1
-	standby 2 preempt
+ encapsulation dot1q 2
+ ip add 192.168.1.101 255.255.255.0
+ standby version 2
+ standby 2 ip 192.168.2.1
+ standby 2 preempt
 ```
 
 HSRP show commands
+
 ```
 do show standby
 do show standby brief
@@ -340,22 +369,24 @@ debug standby packets terse
 ```
 
 PAgP
+
 ```
 int range f0/1 - f0/2
-	channel-group GROUP_NUMBER mode MODE
-	[channel-port {pagp | lacp}]
+ channel-group GROUP_NUMBER mode MODE
+ [channel-port {pagp | lacp}]
 
 int port-channel GROUP_NUMBER
-	# dalsia konfiguracia ako normalne 
-	sw mode access
-	sw access vlan 10
-	...
+ # dalsia konfiguracia ako normalne
+ sw mode access
+ sw access vlan 10
+ ...
 
 port-channel load-balance TYPE
 do show etherchannel load-balance
 ```
 
 EtherChannel show commands
+
 ```
 do show ip int b
 
@@ -371,30 +402,34 @@ do show interface TYPE SPEC etherchannel
 ```
 
 Vymazanie etherchannel
+
 ```
 no int port-channel 1
 int range f0/1 - f0/2
-	no channel-group 1 MODE
-	no shut
+ no channel-group 1 MODE
+ no shut
 ```
 
 # DHCP
-DHCP server  
+
+DHCP server
+
 ```
 service dhcp  # on by default
 
 ip dhcp pool NAZOV_POOLU
-	network 192.168.1.0 255.255.255.128
-	default-router 192.168.1.1
-	dns-server 195.146.132.59
-	domain-name b303.sk
-	lease {days [hours [minutes]] | infinite}
-	?
+ network 192.168.1.0 255.255.255.128
+ default-router 192.168.1.1
+ dns-server 195.146.132.59
+ domain-name b303.sk
+ lease {days [hours [minutes]] | infinite}
+ ?
 
 ip dhcp excluded-address 192.168.1.1 [192.168.1.10]
 ```
 
-Show commands  
+Show commands
+
 ```
 do show ip dhcp binding
 do show ip dhcp server statistics
@@ -405,15 +440,17 @@ do show run | section dhcp
 do show run | include no service dhcp  # ci nie je dhcp vypnute
 ```
 
-DHCP client (Cisco router) (neodporuca sa)  
+DHCP client (Cisco router) (neodporuca sa)
+
 ```
 int g0/0
-	ip address dhcp
+ ip address dhcp
 
 do show ip int g0/0
 ```
 
-Windows  
+Windows
+
 ```
 ipconfig /release
 ipconfig /renew
@@ -421,15 +458,19 @@ ipconfig /all
 ipconfig /?
 ```
 
-Relay Agent  
+Relay Agent
+
 > IP adresa servera za routerom
+
 ```
 int g0/0
-	ip helper-address 192.168.2.1
+ ip helper-address 192.168.2.1
 ```
 
 # NAT
-Konfiguracia  
+
+Konfiguracia
+
 ```
 int g0/0
     ip nat inside  # vnutorne, privatne adresy
@@ -438,7 +479,8 @@ int g0/1
     ip nat outside  # vonkajsie, verejne adresy
 ```
 
-Pri pouziti VLAN sa pouzivaju subinterfaces (logicke rozhranie)  
+Pri pouziti VLAN sa pouzivaju subinterfaces (logicke rozhranie)
+
 ```
 int g0/0.10
     ip nat inside
@@ -447,6 +489,7 @@ int g0/0.20
 ```
 
 Show prikazy
+
 ```
 do show ip nat translations
 do show ip nat statistics
@@ -455,13 +498,15 @@ do show run | include nat
 do debug ip nat
 ```
 
-Staticky NAT preklad  
+Staticky NAT preklad
+
 ```
-ip nat inside source static INSIDE_LOCAL_ADD INSIDE_GLOBAL_ADD  
-ip nat inside source static 192.168.1.20 200.1.1.1  
+ip nat inside source static INSIDE_LOCAL_ADD INSIDE_GLOBAL_ADD
+ip nat inside source static 192.168.1.20 200.1.1.1
 ```
 
-Dynamicky NAT preklad  
+Dynamicky NAT preklad
+
 ```
 ip nat pool MENO_POOLU FIRST_IP LAST_IP netmask MASKA
 ip nat pool MOJ_ROZSAH 211.2.2.8 211.2.2.10 netmask 255.255.255.252
@@ -474,11 +519,13 @@ ip nat inside source list 1 pool MOJ_ROZSAH
 ```
 
 Vymazanie NAT tabulky
+
 ```
 clear ip nat translations *
 ```
 
 PAT
+
 ```
 access-list CISLO_ACL_LISTU permit SOURCE WILDCARD_MASK
 ip nat inside source list CISLO_ACL_LISTU interface s0/0 overload
@@ -489,6 +536,7 @@ ip nat inside source list 1 interface s0/0 overload
 ```
 
 Pretazenie adresneho rozsahu (`n:m`)
+
 ```
 access-list CISLO_ACL_LISTU permit SOURCE WILDCARD_MASK
 ip nat pool MENO_POOLU FIRST_IP LAST_IP netmask MASKA
@@ -496,8 +544,8 @@ ip nat pool MENO_POOLU FIRST_IP LAST_IP netmask MASKA
 ip nat inside source list CISLO_ACL_LISTU pool MENO_POOLU overload
 ```
 
-Port Forwarding 
+Port Forwarding
+
 ```
 ip nat inside source static tcp 192.168.10.254 80 209.165.200.255 8080
 ```
-
