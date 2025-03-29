@@ -210,3 +210,27 @@ Je mozne prehliadat do hlbky a do sirky
 
 JeKoren (SpristupniOtca, ak je null)  
 JeSyn ()
+
+## Udajove struktury
+
+Abstraktnu udajovy typ - AUT - podobne ako pamatovy, ale uz s konkretnymi datami/hodnotami?  
+Datova cast APT (bez vztahovej casti)
+
+Nie vsetko podporuje iterovanie - nie ze by sa nedalo, ale nedavalo by zmysel  
+Iteratory sa mozu zdedit okrem metody `spristupni()`, z ktorej musime vratit len data
+
+Maju typ `<T>` namiesto `<TypBloku>`
+
+### Konkretne AUT
+
+- Zoznam
+  - Basically len obalka sekvencie
+  - Moze byt napr ArrayList (ArrayList v jednom jazyku nemusi byt to iste ako ArrayList v druhom jazyku)
+  - Pristup na zaklade indexu
+  - Specialny typ - cyklicky zoznam - prvy a posledny prvok su prepojene
+  - Podporuje iterovanie
+  - `VseobecnyZoznam<T, TypSekvencie>`
+  - ImplicitnyZoznam, JednostranneZretazenyZoznam, JednostranneZretazenyZoznam, + Cyklicka verzia ku kazdemu
+- Strom
+  - Obalka hierarchie
+  - `VseobecnyStrom<T, TypHierarchie>`
