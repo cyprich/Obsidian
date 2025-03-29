@@ -276,6 +276,38 @@ services:
 Now instead of running the previous long `docker run ...` command, run `docker compose up`  
 > Note: You might get `Permissioin Denied` error. Simply run `sudo docker compose up` instead  
 
+#### Docker Compose example
+```yaml
+services:
+  backend:
+    build:
+      context: ./backend/
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    environment:
+      FLASK_ENV: development
+  frontend:
+    build:
+      context: ./frontend/
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    command: npm run dev -- --host
+```
+
+```bash
+docker-compose up --build
+docker-compose down --rmi all --volumes --remove-orphans 
+```
+
+
+
 But this still doesn't fully solve the problem  
 Whenever we change `package.json` file, we need to rebuild it  
 Here, we can use Docker Compose Watch
