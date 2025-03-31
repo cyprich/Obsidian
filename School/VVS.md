@@ -319,3 +319,143 @@ Meni svoj odpor v zavislosti od osvetlenia
 - osvetleny ~20 ohm
 
 ESP32-C6 - GPIO 3
+
+```python
+foto = ADC(Pin(3, Pin.IN))
+foto.atten(ADC.ATTN_11DB)
+
+while True:
+    val = foto.read_u16()
+    print(val)
+    time.sleep(0.5)
+```
+
+Thonny - view - plotter
+
+## NeoPixel
+
+Seriove LED na doske
+
+Napajanie by malo byt >0.7 \* vstupne napatie  
+Problem - napajanie 5V, $5 \cdot 0.7 = 3.5$, my mame len 3.3V napajanie  
+Seriova komunikacia 800kHz  
+8 bitov na farbu, spolu 24bit
+
+```python
+np = neopixelNeoPixel(Pin(8), 3)
+np[0] = (32, 64, 128)
+np.fill(255, 0, 0)
+np.write()
+r, g, b = np[0]
+```
+
+## Seriovy port - UART
+
+Unversal Asynchronous Receiver Transmitter  
+Start bit, data, (parita), stop bit  
+Rychlost 1200, 9600, 115200 bit/s (87us per znak)
+
+```python
+uart = UART.init(baudrate=9600, bits=8, parity=None, stop=1, ...)
+
+uart.any()  # vrati pocet znakov k dispozicii na citanie
+uart.read([nbytes])
+uart.readinto(buf, [nbytes])
+uart.realine()
+uart.write(buf)
+uart.deinit()
+```
+
+### stdin
+
+```python
+import sys
+bytes_read = sys.stdin.buffer.readinto(buf, nbytes)
+
+# prenos ctrl-c
+import micropython
+micropython.kbd_intr(-1)  # zakazanie
+micropython.kbd_intr(3)  # povolenie (znak 3 = ctrl-c)
+```
+
+## Ultrazvukovy snimac
+
+Meranie vzdialenosti ultrazvukom  
+40 kHz
+
+> HCSR04
+
+Napajanie 5V
+
+Ako to funguje
+
+1. Trigger - na prikaz sa nieco spusti (krok 2)
+2. Vysle sa 8 ultrazvukovych period - Cycle Sonic Burst
+3. Meria sa \_
+4. Z nemaraneho casu sa pomocou rychlosti zvuku (~340m/s) - d = (v\*t)/2
+
+```python
+start = time.ticks_us()
+# ...
+end = time.ticks_us()
+time_length_time.ticks_diff(start, end)  # vrati cas v mikrosekundach
+```
+
+Alebo
+
+```python
+machine.time_pulse_us(pin, level, timeout_us)
+```
+
+Alebo
+
+```python
+from hcsr04 import HCSR04
+
+hcsr = HCSR04(trigger_pin=15, echo_pin=23)
+
+while true:
+    dist = hcsr.distance_cm()
+    print(dist)
+    time.sleep(0.5)
+```
+
+## Optosnimac CNY70
+
+Led + fototranzistor
+
+Zasvieti sa led na zaklade odrazeneho svetla (farby?), ktoru zaznamena fototranzistor  
+Filter denneho svetla
+
+> GPIO4, GPIO0, GPIO1, vyuziva ADC
+
+## Akcelerometer a Gyroskop
+
+MEMS = Micro-Electro-Mechanical System (mikro zavazia na pruzinkach + elektronika)
+
+3D akcelerometer
+
+- do +- 16G, (default 2G)
+- 16bit
+- pozor na offset
+
+3D gyroskop
+
+- do +- 2000 stupnov/s (default 250)
+- 16 bit
+
+Moznost kombinacie - komplementarny filter
+
+### I2C - paralelny prenos dat - MPU6050
+
+```python
+i2c = I2C(scl=Pin(7), sda=Pin(6), freq=100000)
+
+i2c.start()
+i2c.writeto(0x68, bytearray([107, 0]))
+i2c.stop()
+
+i2c.start()
+i2c.readfrom_mem(0x68, 0x3B, 14)  # adresa zariadenia, adresa dat, pocet dat
+i2c.stop()
+```
