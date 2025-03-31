@@ -832,3 +832,96 @@ Kedy nepouzit BGP - v tychto pripadoch lepsie pouzit Default Route alebo statick
 - Slabe vedomosti o filtracii ciest a cinnosti BGP
 
 ###
+
+## VPN, IPsec
+
+## Manazment, udrzba a monitoring siete
+
+Objavovanie zariadeni - CDP, LLDP
+
+### Sprava zadiadeni
+
+#### NTP - Network Time Protocol
+
+Ako nastavit systemove hodiny
+
+- Manualne - reboot
+- Nakonfigurovat NTP
+
+UDP 123, RFC 1305
+
+Hierarchicky system zdrojov casu
+
+- Stratum 0 - spolahlivy zdroj, refrence clock - nastavuje cas?
+- Zazdy dalsi pripojeny je Stratum 1 (nie cez sietovu linku), Stratum 2 (ano cez sietovu linku), ...
+- Max. Stratum 15; 16 uz je nesynchronizovany
+
+Presnost 10us pri Stratum 1, 0.5-100 ms pri Stratum 2+
+
+Je zalozeny na UTC  
+Nerozlisuje letny/zimny cas, ani casove pasma  
+Za toto su zodpovedne OS serverov/klientov
+
+#### Syslog
+
+Zbierame data zo zariadeni  
+UDP 514, FRC3164  
+Posielaju sa data na syslog server
+
+Format spravy
+
+- Zavaznost sprav od 0 (najzavaznejsie) do 7 (najmenej zavazne)
+- Facility - identifikacia sluzby
+- Timestamp
+
+`syslog`, `rsyslog`, `syslog-ng`
+
+### Udrzba zariadeni
+
+IOS Systemove subory
+
+> Commands
+
+### Bezpecnost
+
+L2
+
+- CDP prieskumne utoky
+- Telnet
+- zahltenie MAC tabulky - port security, zakaz DTP, DHCP snooping, AAA, 802.1X
+- VLAN utoky
+- DHCP utoky
+
+#### SNMP
+
+Single Network Management Protocol
+SNMP manager a agents, MIB (databaza)
+
+Umoznuje
+
+- Spravovanie
+- Monitorovanie
+- Hladanie a riesenie problemov
+- Planovanie rozsirovania siete
+
+Operacie
+
+- Trap
+- Get
+- Set
+
+MIB - Management Information Base
+
+- Stromova struktura
+- OID - object identifier
+- Vacsinou `.1.3.6.1`
+
+Typ udajov
+
+- Skalarne - jeden udaj
+- Tabularne - viacero udajov
+
+### SPAN
+
+Cisco Switch Port Analyzer  
+Zrkadlenie celej prevadzky - Port Mirroring

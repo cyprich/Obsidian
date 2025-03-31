@@ -424,3 +424,84 @@ do show ip bgp summary
 do show ip bgp
 do show ip route bgp
 ```
+
+## Sprava zadiadeni
+
+### NTP
+
+```cisco
+ntp server IP-ADDRESS
+do show ntp associations
+do show ntp status
+do show clock [detail]
+```
+
+### Syslog
+
+```cisco
+logging monitor LEVEL
+logging IP-ADD
+logging trap LEVEL
+logging source-interface g0/0
+
+do show logging
+```
+
+## Udrzba zariadeni
+
+```cisco
+! general
+show file systems
+dir
+pwd
+cd
+
+! zaloha na tftp
+copy run tftp
+copy start tftp
+
+! usb porty
+show file systems
+dir usbflash0:
+copy run usbflash0:/
+
+! sprava obrazov
+show flash
+copy SOURCE tftp
+copy tftp: DESTINATION-URL
+boot system FILE-URL
+
+! licencie
+show license udi
+license install LOCATION
+reload
+show version
+show license
+license accept end user agreement
+! vela dalsich srandiciek ...
+
+```
+
+## Bezpecnost
+
+### SNMP
+
+```cisco
+access-list 1 permit 10.1.1.0 0.0.0.255
+snmp-server community cisco RO 0  ! read-only, 0=ACL
+snmp-server community xyz123 RW 1  ! read-write, 1=ACL
+snmp-server location LOCATION-NAME
+snmp-server contact ADMIN-NAME
+snmp-server host 10.1.1.50 xyz123
+snmp-server enable traps ?
+
+do show snmp
+do show snmp community
+```
+
+### SPAN
+
+```cisco
+monitor session NUMBER source [ int g0/0 | vlan 1 ]
+monitor session NUMBER destination [ int g0/0 | vlan 1 ]
+```
