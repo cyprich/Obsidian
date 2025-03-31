@@ -425,6 +425,94 @@ do show ip bgp
 do show ip route bgp
 ```
 
+## VPN
+
+### GRE
+
+```cisco
+hostname Bratislava
+int s0/0/0
+    ip add 209.165.201.1 255.255.255.0
+    no shut
+int tunnel 0
+    bandwidth 1000  ! default je 9kbps
+    tunnel source { s0/0/0 | 209.165.201.1 }
+    tunnel destination 223.1.2.3
+    tunnel mode gre ip  ! nepovinne
+    ip add 192.168.2.1 255.255.255.0
+
+router ospf 1
+    network 192.168.2.0 0.0.0.255 area 0
+```
+
+```cisco
+Hostname Kosice
+int s0/0/0
+    ip add 223.1.2.3 255.255.255.0
+    no shut
+int tunnel 7
+    bandwidth 1000
+    tunnel source { s0/0/0 | 223.1.2.3 }
+    tunnel destination 209.165.201.1
+    tunnel mode gre ip  ! nepovinne
+    ip add 192.168.2.2 255.255.255.0
+router ospf 1
+    network 192.168.2.0 0.0.0.255 area 0
+
+```
+
+Overenie
+
+```cisco
+do show ip int tunnel 0
+do ping
+do tracert
+```
+
+### IPsec
+
+```cisco
+crypto isakmp policy 1
+    encryption aes 256
+    hash sha
+    lifetime 3600
+    authentication pre-shared
+    group 24
+crypto isakmp key cisco123 address 209.165.200.266
+
+!
+
+crypto ipsec transform-set MOJA-TR-SADA esp-aes esp-sha-hmac esp-3des
+
+!
+
+access-list 110 permit ip 192.168.1.0 0.0.0.255 10.10.10.0 0.0.0.255
+
+!
+
+crypto map MOJA-MAPA 10 ipsec-isakmp
+    set transform-set MOJA-TR-SADA
+    set peer 209.165.200.266
+    match address 110
+
+!
+
+crypto map MOJA-MAPA
+```
+
+Overenie
+
+```cisco
+do show crypto isakmp policy
+do show crypto isakmp key
+do show crypto isakmp sa
+do show crypto ipsec sa
+do show crypto map
+do show crypto session
+```
+
+### GRE over IPsec
+
 ## Sprava zadiadeni
 
 ### NTP

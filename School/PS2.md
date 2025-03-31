@@ -831,9 +831,202 @@ Kedy nepouzit BGP - v tychto pripadoch lepsie pouzit Default Route alebo statick
 - Slabe zariadenie na okraji AS (malo pamate, nizky vykon)
 - Slabe vedomosti o filtracii ciest a cinnosti BGP
 
-###
+## VPN
 
-## VPN, IPsec
+Virtual Private Network  
+Firmy bezne potrebuju riesit vzdialene pripojenie do siete z roznych dovodov  
+Je vytvorene point-to-point spojenie medzi koncovym pouzivatelom a VPN koncentratorom  
+Vsetok traffic sa z hosta routuje na koncentrator
+
+Realizacia - vytvorenie vitrualneho prepojenia - sietoveho tunela nad existujucimi sietami ISP
+
+- Vytvorenie tzv. **Overlay** (siet VPN tunelov) nad tzv. **Underlay** (siete ISP)
+
+Poziadavky na riesenie
+
+- Sirokopasmovy/rychly pristup
+  - `> j1Mb` az `j10Mb` - Cable, DSL, WiFi, WiMAX, Fiber ("Always on" technologie)
+  - Je potrebne zvazit cenu, rychlost, bezpecnost, jednoduchost spolahlivost
+- Bezpecny pristup
+  - Privatne VPN sluzby ISP - napr. VPLS cez MPLS na SK
+  - L3 VPN cez verejny internet
+
+### Tunelovanie
+
+Ked je potrebne vytvorit iluziu novej siete nad aktualne existujucou sietou  
+Existujucu siet chceme vyuzit len ako transport, ale pre sluzby ma byt (takmer) neviditelna  
+Existujuce pakety za enkapsuluju do novych paketov, z povodnych paketov sa stava payload
+
+#### Terminologia
+
+Prenasany protokol (passenger protocol)
+
+- Povodny protokol, ktory musime zabalit
+- Z tohto sa stane payload
+
+Pomocny tunelovaci protokol (carrier protocol)
+
+- Doplnkovy protokol, ktory sa pridava
+- Umoznuje identifikovat prenasany protokol, realizovat zabezpecenie, auth, ...
+
+Nosny protokol (transport protocol)
+
+- Protokol, ktory aktualne bezi na fyzickej sieti
+- Hlavicku tohto protokolu pridavame paketom
+
+#### Tunelovacie protokoly
+
+Tunelovanie je mozne realizovat s nim aj bez neho  
+Pridava moznost auth, viacnasobne tunely, sifrovanie, ...
+
+Napr. GRE, L2TP, PPTP, IPsec
+
+Ak sa nepouzije, tak sa povodne pakety priamo vkladaju do novych paketov  
+Minimalna rezia  
+Napr. IPv6-in-IPv4
+
+### Co potrebujeme na realizaciu VPN
+
+#### VPN brana/brany (VPN gateway)
+
+Typicky router (vykonnejsi), Firewall, Cisco Adaptive Security Appliance (ASA), VPN server, VPN koncentrator  
+Idealne aby toto zariadenie malo hardware podporu sifrovania
+
+#### VPN klient
+
+VPN soft beziaci na OS hosta
+
+### Typy VPN
+
+#### Z pohladu moznosti nasadenia
+
+Site-to-Site VPN
+
+- Prepajanie vacsich celkov - pobocky firmy z centralou
+- Nakonfigurovane na routeri pobocky
+- Vsetko riesene na routri pobocky, klienti nemusia nic robit
+
+- Split routing - okrajovy router vie co ma poslat na centralu a co do internetu (menej pouzivane)
+
+Remote-access VPN
+
+- Vznika on-demand - na vyziadanie, na urcity cas
+- Nastavenie v OS klienta
+
+#### Z pohladu kto ich manazuje
+
+Podnikove VPN
+
+- Firma si manazuje sama
+- Protokoly pre site-to-site
+  - GRE (nesifrovana), VxLAN, IPsec (sifrovana), GRE over IPsec (sifrovana)
+  - Cisco - Cisco Dynamic Multipoint VPN (DMVPN), Cisco IPsec Virtual Tunnel Interface (VTI)
+- Protokoly pre Remote-access
+  - Vyuzivajuce VPN klienta - IPsec VPN
+  - Nevyuzivajuce VPN klienta - SSL VPN
+
+Privatne VPN sluzby poskytovane ISP
+
+- Spravuje ISP
+- Aktualne rozlisujeme
+  - L2 MPLS VPN
+  - L3 MPLS VPN
+
+### Remote Access VPN
+
+Primarne urcene pre mobilnych pracovnikov  
+Klient sa pripaja do siete zamestnavatela  
+Vytvara tunel zo svojho zariadenia na nakonfigurovanu VPN branu  
+Zabezpeceny typ dynamickej VPN (len na urcity cas)
+
+2 typy
+
+- Client-based VPN - IPsec VPN
+  - L3
+  - Kazdy klient si nainstaluje na svoje zariadenie soft
+- Client-less VPN - SSL VPN
+  - L4
+  - Bez potreby istalacie u klienta
+  - Vyuziva PKI infrastrukturu klucov a certifikatov
+  - Popularne
+  - Vhodne len pre niektore L4 a vyssie aplikacie
+  - Cez web browser
+
+### Site-to-Site VPN
+
+Vo firme konfiguracia routera na pobocke a na centrale  
+Klienti netusia ze sa nieco deje, vsetko riesi rouer  
+Trvale riesenie
+
+#### GRE
+
+Pomocny tunelovaci protokol  
+L3  
+Nesifrovany, nepouziva sa  
+Pridava paketom dalsiu hlavicku  
+Bezstavove, bez riadenia toku dat  
+Overhead 24B
+
+Konfig pomocou `int tunnel`
+
+#### GRE over IPsec
+
+Vyuziva vyhody GRE a IPsec  
+Nad IPsec sa neda spustit routovanie  
+Basically sa original prevadza zabali do GRE, a to sa zabali do IPsec?
+
+#### Dynamic multipoint VPN (DMVPN)
+
+Cisco riesenie  
+Cast konfiguracie je nahradena automatizovanym procesom  
+Vhodne pre vela pobociek
+Odporucane pre hub-and-spoke
+
+### IPsec VPNs
+
+Nie je konkretny protokol, ale sada standardov  
+Sifrovany
+L3
+Otvoreny standard  
+Primarny ucel - vybudovat zabezpeceny tunel na L3  
+Primarne na site-to-site, pre remote trochu zlozitejsia (malo klientov?)
+
+Framework viacerych otvorenych standardov  
+Poskytuje CIA vlastnosti (Confidentiality, Integrity, Authentication)
+Stavebne bloky
+
+- IPsec framework protocol
+  - Authentication Header (AH) - nesifrovane, ma problem s NAT, niektore zariadenia vobec nepodporuju
+  - Encapsulation Security Payload (ESP)
+- Utajenie udajov (Confidentiality) - sifrovanie
+  - Symetricke sifrovacie algoritmy - rovnaky kluc pre sifrovanie aj desifrovanie - DES, 3DES, AES, SEAL, RC sifry
+  - Asymetricke sifrovacie algoritmy - iny kluc pre sifrovanie, iny pre desifrovanie, privatny a verejny kluc - RSA, PKI
+- Integrita dat (Integrity) - dokaz, ze sprava nebola zamanena (MD5, SHA)
+  - Hashovanie
+  - MD5 (182bit kluc)(uz sa neoporuca), SHA (160, 256, 512-bit kluc)
+  - Zoberie sa plain text - prezenie sa cez Hash function - mame hashovanu message
+  - Problemom je ze sa nevie overit ci sa nemanipulovalo s hashom
+  - V realite sa toto cele este zasifruje
+- Autentifikacia odosielatela (Authentication) - dokaz, ze sprava prichadza od toho, kto si myslim ze je (PSK, RSA)
+  - Pre-shared key (PSK) (problem s vymenou kluca), Signatury Rivest Shamir Adleman (RSA) (digitalne certifikaty)
+- Diffie-Hellman - bezpecna vymena klucov
+  - Nie je sifrovaci algoritmus (je pomaly)
+  - Umoznuje, aby si strany dohodli spolocne kluce bez vymeny klucov samotnych
+
+> Kluce by sa mali casto vymienat
+
+Da sa realizovat v dvoch rezimoch
+
+- Tunelovaci - kompletne nova hlavicka + ESP header + paticka
+- Transportny - pouziva staru hlavicku + ESP header + paticka
+
+#### Vytvorenie spojenie medzi IPsec susedmi
+
+1. ?
+2. IKE Phase 1 (IKE SA) - zalozi sa sifrovane spojenie
+3. IKE Phase 2 (IPsec SA) - dohodnu sa vlastnosti sifrovaneho tunela
+4. IPsec tunnel - zostavenie samotneho tunela
+5. IPsec tunnel is terminated - po nejakej dobe - bud sa zrusi alebo vytvori nanovo
 
 ## Manazment, udrzba a monitoring siete
 
