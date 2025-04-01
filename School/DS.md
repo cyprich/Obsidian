@@ -879,3 +879,289 @@ create [or replace] nazov_triggra
 before | after
 ...
 ```
+
+## Pohlady
+
+Vysledok selectu je docasna tabulka  
+Preto aj vo `from (...)` mozem pouzit nejaky tabulky  
+Pohlad - `view` - je len pomenovany select
+
+```sql
+create or replace view studenti_2_rocnik
+as select os_cislo, st_odbor, st_zameranie, rod_cislo
+from student
+where rocnik=2;
+
+select *
+from studenti_2_rocnik;
+
+insert into studenti_2_rocnik values (...);  -- neobsahuje not null hodnoty ktore vyzaduje student
+```
+
+```sql
+create or replace view studenti_ZA
+as select *
+from os_udaje
+join student using (rod_cislo)
+where obec='Zilina';
+
+-- tu nevieme vkladat, pretoze mozeme vkladat len do jednej tabulky naraz
+```
+
+```sql
+create or replace view osoby_ZA
+as select *
+from os_udaje
+where obec='Zilina';
+
+insert into osoby_ZA values ('112233/4455', 'Peter', 'Databazovy', null, null, null);
+
+select * from os_udaje where rod_cislo='112233/4455';
+select * from osoby_ZA where rod_cislo='112233/4455';  -- tuto nebude lebo nie je zo ziliny
+
+-- fix
+-- update osoby_ZA set obec='Zilina';
+
+create or replace view osoby_ZA
+as select * from os_udaje
+where obec='Zilina'
+with check option;  -- povoli iba platne operacie, aby sa potom zobrazili v tomto view
+```
+
+```sql
+create or replace view zilincania_petrovia
+as select * from osoby_ZA
+where meno='Peter';
+
+insert into zilincania_petrovia
+values('121212/1212', 'Peter', 'Databazovy', null, null, null);  -- neprejde - nie je zo ziliny
+values('121212/1212', 'Peter', 'Databazovy', null, null, 'Zilina');  -- prejde
+
+create or replace view zilincania_petrovia
+as select * from osoby_ZA
+where meno='Peter'
+with check option;
+values('131313/1313', 'Milan', 'Databazovy', null, null, 'Zilina');  -- neprejde - nie je Peter
+
+-- vzdy sa checkuju aj 'zdedene podmienky'
+```
+
+```sql
+create or replace view studenti_za
+as select *
+from os_udaje
+join student using (rod_cislo)
+where obec='Zilina';
+
+-- TRIGGER - funkcia ktora sa automaticky vyvola ak vykonam nejaku operaciu
+alter table os_udaje
+add kto varchar(30);
+
+-- moze sa viazat len na jednu tabulku
+create or replace trigger tig_kto_os_udaje
+before insert or update on os_udaje
+for each row  -- riadkovy
+begin
+    :NEW.kto := user;  -- aktualne prihlaseny pouzivatel
+end;
+\
+
+update os_udaje
+set obec='Zilina'
+where meno='Peter';
+
+select * from os_udaje
+order by kto;
+
+update os_udaje
+set obec='Zilina', kto='Dekan'  -- toto nespravi dekana, kvoli triggeru
+where meno='Marek';
+```
+
+```sql
+-- chcem iny nazov tomu dat
+create or replace view osoba_view (krstne_meno, priezv)
+as select meno, priezvsisko from os_udaje;
+
+create or replace view osoba_view
+as select meno as krstne_meno, priezvsisko as priezv from os_udaje;
+```
+
+```sql
+-- logujeme
+create teble log_osoba (
+    rod_cislo char(11),
+    povodne_priezvisko varchar(30),
+    nove_priezvisko varchar(30),
+    kto varchar(30),
+    kedy date
+);
+
+create or replace trigger trig_log_osoba
+before update on os_udaje
+for each row  -- vzdy ak chcem pristupit k :OLD alebo :NEW
+begin
+    insert into log_osoba values (
+        :OLD.rod_cislo,
+        :OLD.priezvisko,
+        :NEW.priezvisko,
+        user,
+        sysdate
+    )
+end;
+\
+
+update os_udaje
+set priezvisko='Neznamy'
+where meno='Peter';
+
+select * from log_osoba;
+
+update os_udaje
+set priezvisko=priezvisko;  -- tu sa udpatuje vsetko, ale realne sa nic nezmenilo
+
+-- fix - doplnime do triggera
+-- trigger sa ale spusti pre kazdy zaznam
+...
+if :OLD.priezvisko <> :NEW.priezvisko
+then
+    ... to co tam je normalne
+end if;
+
+
+-- aby sa spustil iba ak plati podmienka - efektivnejsie
+
+create or replace trigger trig_log_osoba
+before update on os_udaje
+for each row  -- vzdy ak chcem pristupit k :OLD alebo :NEW
+when OLD.priezvisko <> NEW.priezvisko
+begin
+...
+\
+
+-- ak by sme namiesto before pouzivali after, robilo by to to iste
+```
+
+```sql
+-- atribut ukoncenie v student moze nastavit iba dekan
+
+create or replace trigger trig_ukoncenie_st
+before update on student
+for each row
+when (user <> 'DEKAN')
+begin
+    raise_application_error(-20000, 'nie si dekan');  -- update sa zastavi
+    -- neodchytava vynimky, inak by update presiel
+end;
+\
+
+-- ak chcem spustit trigger ak updatujem ukoncenie
+
+create or replace trigger trig_ukoncenie_st
+before update of ukoncenie on student
+...
+\
+```
+
+Ak budem mat viac triggerov nad jednou operaciou, tak sa vykonaju v nahodnom poradi  
+Ak potrebujeme specificke poradie, treba spravit jeden komplexny trigger
+
+```sql
+-- chcem logovat kto co kedy spravil
+create table log_tab_predmet (cp char(4), operacia char(1), kto varchar(20), kedy sysdate)
+
+create or replace trigger trig_predmet
+before insert or update or delete on predmet
+declare v_operacia char(1);
+for each row
+begin
+    if inserting then
+        insert into log_tab_predmet values (
+            :NEW.cis_predm,  -- tuto special case - musi byt NEW lebo insert nepozna OlD
+            'I',
+            user,
+            sysdate
+        )
+    end if;
+
+    if deleting then v_operacia:='U' end if;
+    if updating then v_operacia:='D' end if;
+    insert into log_tab_predmet values (
+        :OLD.cis_predm,
+        v_operacia,
+        user,
+        sysdate
+    )
+end;
+\
+```
+
+```
+
+-- nerobit update v triggeri, lebo sa zacykli donekonecna
+```
+
+```sql
+-- ak chcem nieco vlozit cez toto...
+create or replace view studenti_za
+select * from os_udaje
+join student using (rod_cislo)
+where obec='Zilina';
+
+-- toto neprejde
+insert into studenti_ZA (rod_cislo, meno, priezvisko, ulica, psc, obec, os_cislo, st_odbor, st_zmaeranie, rocnik, st_skupin, stav, dat_zapisu, ukoncenie)
+values ('000000/0000', 'Peter', 'Sikovny', null, null, null, '1234567', 100, 0, 1, '5ZI011', 'S', sysdate, null)
+
+-- treba takto - rozbit na 2 operacie pomocou triggera
+create or replace trigger vloz_studenti_za
+instead of insert on studenti_za  -- iba pre pohlady
+for each row  -- vzdy, automaticky
+begin
+    insert into os_udaje(rod_cislo, meno, priezvisko, ulica, psc, obec)
+    values (:new.rod_cislo, :new.meno, ...)
+
+    insert into student (...)
+    values (:new.os_cislo, ...)
+end;
+\
+```
+
+```sql
+-- taky nejaky fejkovy autoincrement?
+create or replace sequence sekv_OC start with 100000
+
+create or replace trigger trig_nastav_oc
+before insert on student
+for each row
+begin
+    :new.os_cislo:=sekv_OC.nextval;
+end;
+\
+```
+
+Ak chcem zmenit PK/FK
+
+1. Vytvorim novu osobu s novym rodnym cislom
+2. Update?
+3. Vymazem staru osobu
+
+Mozem si spravit trigger co to spravi za mna
+
+```sql
+create or replace trigger kaskada_rc
+before update on us_udaje
+for each row
+begin
+    update student set rod_cislo=:new.rod_cislo
+    where rod_cislo=:old_rod_cislo;
+end;
+\
+
+select rod_cislo from student;
+
+update os_udaje
+set rod_cislo='881224/1234'
+where rod_cislo='771224/1234';
+```
+
+> skusme si spravit update rodneho cisla v soc poistovni
