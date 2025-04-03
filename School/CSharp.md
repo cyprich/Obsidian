@@ -694,3 +694,94 @@ Console.WriteLine(operation(7, 3));  // = 4
 // mozem pouzit aj += namiesto len priradenia
 // ked to zavolam, vyvolaju sa vsetky priradene metody, nie je zarucene poradie
 ```
+
+## GUI
+
+Myslienka - udalostne programovanie  
+Aplikacia caka na udalost, ked nastane tak nieco spravi
+
+Udalosti
+
+- Z mysi - pohyb, klik, dvojklik
+- Z klavesnice - stlacenie, uvolenenie klavesy
+- Z okna - tlacidlo v okne, menu, focus, ...
+
+### WinForms
+
+Raster grafika
+
+GUI je zalozene na 2 triedach - Form a Control
+
+- Form - cele okno s ramikom, stara sa o svoje vnutro, obsahuje >= 0 controls (o samotny ramik sa stara window manager)
+- Control
+
+Modifikacia vzhladu a vlastnosti
+
+- AutoScroll
+- BackgroundImage
+- ControlBox
+- Icon
+- Location
+- Size
+- Text (windows's caption)
+
+Zmeny sa prejavuju okamzite
+
+Akcie okna
+
+- Activate
+- Close - zatvorenie a vytvorenie zdrojov
+- Hide - skryt, ale zdroje existuju
+- Refresh
+- Show - zobrazenie a aktivacia nemodalne
+- ShowDialog - zobrazenie a aktivacia modalne (neda sa s nim nic robit)
+
+```c#
+Form1 form;
+form = new Form1();
+form.WindowsState = FormWindowState.Maximized;
+form.Show();
+```
+
+Udalosti Form
+
+- Load
+- Closing
+- Closed
+- Resize
+- Click
+- KeyPress
+
+Controls
+
+- Button, CheckBox, RadioButton
+- Label
+- TextBox
+- ListBox
+- GroupBox
+
+#### Docking/Anchoring
+
+Anchoring - zakotvenie na relativnu poziciu v okne - topleft, top, topright, none, ...  
+Docking - prilepenie k danemu okraju okna - topdock, leftdock, rightdock, bottomdock, filldock
+
+#### Viacvlaknove aplikacie
+
+GUI bezi v jednom vlakne - UIthread  
+WinForms nedovolia modifikovat property z inych vlakien - konci vynimkou  
+Riesenie - preposlat udalost do UIthread
+
+Vypocet/metodu po stlaceni tlacidla sputime v novom vlakne
+
+```c#
+private void button_Click(object a)
+{
+    Thread t = new Thread(Pocitanie)
+    t.Start();
+}
+
+private void Pocitanie() {...}  // skonci vynimkou ak sa pokusime modifikovat tu
+// riesenie -InvokeRequired (prida novu udalost na koniec queue)
+```
+
+### WPF
