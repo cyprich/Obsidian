@@ -234,3 +234,51 @@ Maju typ `<T>` namiesto `<TypBloku>`
 - Strom
   - Obalka hierarchie
   - `VseobecnyStrom<T, TypHierarchie>`
+
+## Polia
+
+Fixna velkost po dobu celeho zivotneho cyklu, mozeme len vyberat/prepisovat prvky (nie vkladat/odoberat)  
+Pristup pomocou indexu, moze byt 2-zlozkovy, 3-zlozkovy, K-zlozkovy
+Pri vzniku musime naplnit - definovat hodnotu prvkom (kostruktor pri objektoch)  
+Regularne (plne) vs. neregularne (chybaju prvky, vnorene pole ma menej elementov)
+
+### Regularne
+
+Mapovanie po riadkoch, po stlpcoch
+
+Lexikograficke poradie  
+Kolexikograficke poradie
+
+#### Kompaktne
+
+Zlozitost O(1) pri jednorozmernych  
+Pri viacrozmernych O(K^2) kde K je pocet rozmerov  
+Ked upravime vzorec, tak dostaneme zlozitost O(K), ale ten nechceme implementovat  
+"Vzdy je to rozdiel\*nieco + rozdiel\*nieco + rozdiel\*nieco + rozdiel\*1"  
+**Informacny vektor** - predpocitame si nieco co sa nemeni  
+Informacny vektor je ze (N3xN2, N3, 1) = (15, 3, 1)  
+Potom spravime dot product informacny vektor a (index - baza)
+
+**!!! TOTO SA BUDU PYTAT NA SKUSKE !!!**
+
+#### Nekompaktne
+
+Udajova multistruktura - struktura z viac struktur  
+Pole poli - ako v Jave  
+Vytvorim pole, do neho pole, do neho pole,... vela for loopov v sebe  
+Nevyhoda - ked chceme pristupovat musime robit vela "jumpov" pri viacrozmernych  
+Treba robit **deep copy**
+
+> kompilovane jazyky - variaticka sablona - nieco co nechceme  
+> interpretovane jazyky - dalo by sa celkom lahko?
+
+Pristupovanie k miestu v pamati je ovela rychlejsie ako nasobenie  
+Netreba alokovat suvisle miesto v pamati, ale zabera kusok viac pamate celkovo
+
+Mozeme si ich kombinovat - nekompaktne jednorozmerne pole ktore obsahuje kompaktne trojrozmerne polia
+
+### Neregularne
+
+Zubate polia  
+To iste ako regularne nekompaktne - s jednym issue - dlzka jednotlivych poli, ako to popisat  
+K-rozmerne neregularne pole musime popisat (K-1)-rozmernym polom
