@@ -343,3 +343,30 @@ Modulacia - OFDMA
 Uz sa viacej podoba IP sietam
 
 ### 5G - New Radio
+
+## Bezpecnostne normy
+
+Normy, standardy, usmernenia
+
+Eletrosmog  
+Vlyv na zive organizmy - umele zdroje ziarenia  
+Vela studii aby sa mohol spravit standard
+
+Tepelne a netepelne ucinky  
+Dokazane iba tepelne ucinky, ziadne straty pamate ani nic podobne neoveboli overene
+
+Norma - oficialny dokument schvaleny normalizacnou aturoitou  
+Standard - odporucanie  
+WHO, ICNIRP, Narodne regulacne urady
+
+Akcne hodnoty,
+
+Zakon, vyhlaska, nariadenie, metodika
+
+2 skupiny, pracovnici, obyvatelstvo  
+Objektivizacia expozicie EM polom
+
+---
+
+Vplyv EM pola na cinnost elektronickych zariadeni  
+Kardiostimulatory, nemocnice - prisnejsie normy
