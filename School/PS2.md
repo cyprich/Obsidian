@@ -1118,3 +1118,66 @@ Typ udajov
 
 Cisco Switch Port Analyzer  
 Zrkadlenie celej prevadzky - Port Mirroring
+
+## QoS
+
+Quality of Service - kvalita sluzby  
+Treba zistit, kde je bottleneck v sieti
+
+Organizacia software frontu - prioritizacia urcitych packetov/typu sluzby
+
+- FIFO
+- LLQ - low latency queue - packet ma v hlavicke DSCP pole,
+- CB-WFQ - Class-Based Weighted Fair Queuing
+
+QoS - meratelne parametre - oneskorenie, RTT, strata packetov, jitter (rozdiel intervalov odosielania packetov napr. VoIP)  
+QoE - quality of experience - kvalita vnimania - ako to clovek pocituje
+
+Service Level Agreement - SLA - zadefinovanie maximalneho oneskorenia, straty, ...
+
+Konvergovana siet - viac typov prevadzky v jendej sieti - data, VoIP, ...
+
+Faktory vplyvajuce na kvalitu
+
+- Prenosova kapacita
+- Celkove oneskorenie - pevna a variablilna dlzka
+  - Processing Delay - variabilne
+  - Queuing Delay - fixne
+  - Serialization Delay - variabilne
+  - Propagation Delay - fixne
+- Straty paketov
+  - Tail drop
+  -
+-
+
+### Nastroje pre poskytovanie QoS
+
+- Klasifikacia
+- Znackovanie (Marking)
+- Predchadzanie zahlteniu (Congestion Avoidance)
+- Riesenie zahltenia (Congestion Management)
+- Tvarovanie a obmedzovanie prevadzky (Shaping, Policing)
+- Mechanizmy efektivnosti linky (Link Efficiency Mechanisms)
+
+### Modely poskytovania QoS
+
+- Best effort
+  - Nic nekonfigurujeme, nic neriesime, bez riadenia QoS
+  - Povodny model, na ktorom bol internet zalozeny
+  - Vynikajuca skalovatelnost
+- Integrated Services (IntServ)
+  - Poskytuje garantovane dorucenie a predikovatelne spravanie sa siete voci aplikaciam
+  - RSVP - Resource Reservation Protocol - TCP/UDP port 3455, IP protokol cislo 46
+- Differentiated Services (DiffServ)
+  - Toky triedi to tzv. agregatorov - tried - poskytuje QoS celym triedam
+  - Per-Hop Behavior (PHB)
+
+### Vytvaranie obluznych tried
+
+- Hlasove aplikacie - VoIP
+- Mission-critical aplikacie - Oracle, SAP, SNA
+- Interaktive aplikacie - Telnet, TN3270
+- Velkoobjemove aplikacie - FTP, TFTP
+-
+-
+-
