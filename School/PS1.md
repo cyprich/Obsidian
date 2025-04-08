@@ -33,29 +33,6 @@ line vty 0 15
  transport input ssh
 ```
 
-# Cisla portov
-
-| Port | Sluzba               | TCP alebo UPD? |
-| ---- | -------------------- | -------------- |
-| 20   | FTP (data)           | TCP            |
-| 21   | FTP (control)        | TCP            |
-| 22   | SSH                  | TCP            |
-| 23   | Telnet               | TCP            |
-| 53   | DNS                  | TCP & UDP      |
-| 67   | DHCP (client)        | UDP            |
-| 68   | DHCP (server)        | UDP            |
-| 69   | TFTP                 | TCP            |
-| 80   | HTTP                 | TCP            |
-| 443  | HTTPS                | TCP            |
-| 520  | RIP                  | UDP            |
-| 546  | DHCPv6 (client)      | UDP            |
-| 547  | DHCPv6 (server)      | UDP            |
-| 1812 | RADIUS auth          | UDP            |
-| 1813 | RADIUS accounting    | UDP            |
-| 1985 | HSRPv1               | UDP            |
-| 5246 | CAPWAP (source)      | UDP            |
-| 5247 | CAPWAP (destination) | UDP            |
-
 # Troubleshooting commands
 
 Prikazy ktore len nieco vypisuju
@@ -2147,13 +2124,13 @@ Sposob, aky vysielac obsadzuje rozsah frekvencii v danom kanali
 
 > Step = 5MHz, Range = 22MHz
 
-Kanaly 1, 6 a 11 sa neprekryvaju  
+Kanaly 1, 6 a 11 sa neprekryvaju
 
-|Identifier|Center frequency|Frequency range \[MHz\]|
-|---|---|---|
-|1|2412|2401 - 2423|
-|6|2437|2426 - 2448|
-|11|2462|2451 - 2473|
+| Identifier | Center frequency | Frequency range \[MHz\] |
+| ---------- | ---------------- | ----------------------- |
+| 1          | 2412             | 2401 - 2423             |
+| 6          | 2437             | 2426 - 2448             |
+| 11         | 2462             | 2451 - 2473             |
 
 Pouzitie ktorychkolvek inych kanalov sposobuje interferenciu  
 Na jednom uzemi preto mozu byt pouzite max 3 APs

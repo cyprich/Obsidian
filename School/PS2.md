@@ -2,23 +2,6 @@
 
 Poznamocky k predmetu Pocitacove Siete 2
 
-## Administrative distances
-
-| Protokol                      |  AD |
-| ----------------------------- | --: |
-| Priamo pripojena siet         |   0 |
-| Staticka siet                 |   1 |
-| EIGRP sumarna siet            |   5 |
-| BGP z ineho AS                |  20 |
-| EIGRP interna siet            |  90 |
-| OSPF                          | 110 |
-| IS-IS                         | 115 |
-| RIP                           | 120 |
-| On-Demand Routing (ODR)       | 160 |
-| BGP z toho isteho AS          | 200 |
-| DHCP                          | 254 |
-| Absolutne nedoveryhodny zdroj | 255 |
-
 ## Opakovanie
 
 Smerovaci proces
@@ -1030,7 +1013,12 @@ Da sa realizovat v dvoch rezimoch
 
 ## Manazment, udrzba a monitoring siete
 
-Objavovanie zariadeni - CDP, LLDP
+### Objavovanie zariadeni
+
+CDP - Cisco Discovery Protocol  
+Vieme objavit hocikoho kto vysiela ramce tohto protokolu
+
+LLDP - podobne ako CDP, ale nie len pre Cisco
 
 ### Sprava zadiadeni
 
@@ -1045,9 +1033,10 @@ UDP 123, RFC 1305
 
 Hierarchicky system zdrojov casu
 
-- Stratum 0 - spolahlivy zdroj, refrence clock - nastavuje cas?
+- Stratum 0 - spolahlivy zdroj, refrence clock - urcuje cas
 - Zazdy dalsi pripojeny je Stratum 1 (nie cez sietovu linku), Stratum 2 (ano cez sietovu linku), ...
-- Max. Stratum 15; 16 uz je nesynchronizovany
+- Max. Stratum 15
+- Stratum 16 uz je nesynchronizovany
 
 Presnost 10us pri Stratum 1, 0.5-100 ms pri Stratum 2+
 
@@ -1065,7 +1054,18 @@ Format spravy
 
 - Zavaznost sprav od 0 (najzavaznejsie) do 7 (najmenej zavazne)
 - Facility - identifikacia sluzby
-- Timestamp
+- Timestamp (prikaz `service timestamps log datetime msec`)
+
+| Severity Name | Severity Level | Description                       |
+| ------------- | -------------- | --------------------------------- |
+| Emergency     | 0              | System unusable                   |
+| Alert         | 1              | Immediate action needed           |
+| Critical      | 2              | Critical condition                |
+| Error         | 3              | Error condition                   |
+| Warning       | 4              | Warning condition                 |
+| Notification  | 5              | Normal, but significant condition |
+| Informational | 6              | Informational message             |
+| Debugging     | 7              | Debug message                     |
 
 `syslog`, `rsyslog`, `syslog-ng`
 
@@ -1075,39 +1075,67 @@ IOS Systemove subory
 
 > Commands
 
+Obnova hesla
+
+1. Vstupte do ROMMON rezimu
+2. Zmente konfiguracny register na `0x2142` (by default `0x2102`)
+3. Restartujte zariadenie
+4. Urobte zmeny do povodnej konfiguracie po starte
+5. Ulozte novu konfiguraciu
+
 ### Bezpecnost
 
 L2
 
 - CDP prieskumne utoky
-- Telnet
+- Telnet - idealne nepouzivat, namiesto neho SSH; admin pristup pomocou AAA, overenie portu 802.1X
 - zahltenie MAC tabulky - port security, zakaz DTP, DHCP snooping, AAA, 802.1X
-- VLAN utoky
-- DHCP utoky
+- VLAN utoky - zakazat DTP, vyhradena VLAN pre management, parking/black hole VLAN
+- DHCP utoky - DHCP snooping
+
+Vo vseobecnosti treba pouzivat sifrovane protokoly - SSH, SCP, SSL, SNMPv3, SFTP  
+CDP iba na nevyhnutnych portoch  
+ACL na filtrovanie neziadaneho pristupu
 
 #### SNMP
 
-Single Network Management Protocol
-SNMP manager a agents, MIB (databaza)
+Single Network Management Protocol  
+Umoznuje spravovat a monitorovat zariadenia v sieti
 
-Umoznuje
+SNMP prvky
+
+- SNMP manager
+- SNMP agent(s)
+- MIB (Management Information Base) (databaza)
+
+SNMP operacie
+
+- Get - zisti/posli mi nejake info
+  - `get-request`
+  - `get-next-request`
+  - `get-bulk-request`
+  - `get-response`
+- Set - nieco nastavujem (IP adresa, ...)
+  - `set-request`
+- Trap - ak sa u teba (na agentovi) stane nejaka zavazna udalost, daj mi o tom vediet?
+
+SNPM Umoznuje
 
 - Spravovanie
 - Monitorovanie
 - Hladanie a riesenie problemov
 - Planovanie rozsirovania siete
 
-Operacie
-
-- Trap
-- Get
-- Set
-
 MIB - Management Information Base
 
 - Stromova struktura
 - OID - object identifier
-- Vacsinou `.1.3.6.1`
+- To co potrebujem vacsinou zacina `1.3.6.1` - iso, org, dod, internet
+- Napr. iso(1).org(3).dod(6).internet(1).mgmt(2).mib-2(1).system(1) - cize OID bude `1.3.6.1.2.1.1`
+- Su nastroje na vytiahnutie podstatnych informacii z MIB - volaky MIB browser
+- Public casti (pre vsetky zariadenia rovnake) a Private casti (vendor-specific)
+
+SNMP verzie v1, v2c, v3 (idealne v3 - autentifikacia, sifrovanie, integrita spravy)
 
 Typ udajov
 
@@ -1117,4 +1145,80 @@ Typ udajov
 ### SPAN
 
 Cisco Switch Port Analyzer  
-Zrkadlenie celej prevadzky - Port Mirroring
+Zrkadlenie celej prevadzky - Port Mirroring  
+Monitorovanie v LAN  
+Posiela cele ethernetove ramce a vsetko co je v nich zapuzdrene
+
+> Remote SPAN - RSPAN - riesi sa v dalsich predmetoch - preposielanie tejto prevadzky niekam dalej
+
+SPAN terminologia
+
+- Ingress traffic - co prichadza do switcha
+- Egress traffic - co odchadza zo switcha
+- Source (SPAN) port - prevadzka tohto portu nas zaujima
+- Destination (SPAN) port - na tento port posielame mirrorovanu prevadzku
+- SPAN session
+- Source VLAN - moze byt namiesto source port, ak chceme monitorovat celu VLAN, nie len port
+
+## QoS
+
+Quality of Service - kvalita sluzby  
+Treba zistit, kde je bottleneck v sieti
+
+Organizacia software frontu - prioritizacia urcitych packetov/typu sluzby
+
+- FIFO
+- LLQ - low latency queue - packet ma v hlavicke DSCP pole,
+- CB-WFQ - Class-Based Weighted Fair Queuing
+
+QoS - meratelne parametre - oneskorenie, RTT, strata packetov, jitter (rozdiel intervalov odosielania packetov napr. VoIP)  
+QoE - quality of experience - kvalita vnimania - ako to clovek pocituje
+
+Service Level Agreement - SLA - zadefinovanie maximalneho oneskorenia, straty, ...
+
+Konvergovana siet - viac typov prevadzky v jendej sieti - data, VoIP, ...
+
+Faktory vplyvajuce na kvalitu
+
+- Prenosova kapacita
+- Celkove oneskorenie - pevna a variablilna dlzka
+  - Processing Delay - variabilne
+  - Queuing Delay - fixne
+  - Serialization Delay - variabilne
+  - Propagation Delay - fixne
+- Straty paketov
+  - Tail drop
+  -
+-
+
+### Nastroje pre poskytovanie QoS
+
+- Klasifikacia
+- Znackovanie (Marking)
+- Predchadzanie zahlteniu (Congestion Avoidance)
+- Riesenie zahltenia (Congestion Management)
+- Tvarovanie a obmedzovanie prevadzky (Shaping, Policing)
+- Mechanizmy efektivnosti linky (Link Efficiency Mechanisms)
+
+### Modely poskytovania QoS
+
+- Best effort
+  - Nic nekonfigurujeme, nic neriesime, bez riadenia QoS
+  - Povodny model, na ktorom bol internet zalozeny
+  - Vynikajuca skalovatelnost
+- Integrated Services (IntServ)
+  - Poskytuje garantovane dorucenie a predikovatelne spravanie sa siete voci aplikaciam
+  - RSVP - Resource Reservation Protocol - TCP/UDP port 3455, IP protokol cislo 46
+- Differentiated Services (DiffServ)
+  - Toky triedi to tzv. agregatorov - tried - poskytuje QoS celym triedam
+  - Per-Hop Behavior (PHB)
+
+### Vytvaranie obsluznych tried
+
+- Hlasove aplikacie - VoIP
+- Mission-critical aplikacie - Oracle, SAP, SNA
+- Interaktive aplikacie - Telnet, TN3270
+- Velkoobjemove aplikacie - FTP, TFTP
+-
+-
+-

@@ -513,9 +513,42 @@ do show crypto session
 
 ### GRE over IPsec
 
+```cisco
+!
+```
+
 ## Sprava zadiadeni
 
-### NTP
+CDP
+
+```cisco
+do show cdp neighbors
+do show cdp neighbors detail
+do show cdp interface
+
+cdp run
+int g0/0
+    cdp enable
+    ! no cdp enable
+
+clear cdp counters
+clear cdp table
+```
+
+LLDP
+
+```cisco
+do show lldp
+do show lldp neighbors
+
+lldp run
+
+int g0/0
+    lldp transmit  ! ci chceme posielat spravy
+    lldp receive  ! ci chceme prijimat spravy
+```
+
+NTP
 
 ```cisco
 ntp server IP-ADDRESS
@@ -524,23 +557,27 @@ do show ntp status
 do show clock [detail]
 ```
 
-### Syslog
+Syslog
 
 ```cisco
+logging synchronous  ! nevyhadzuj mi hlasky ked pisem command
+
+service timestamps log datetime msec
+
+do show logging [ | include ... ]
 logging monitor LEVEL
 logging IP-ADD
 logging trap LEVEL
 logging source-interface g0/0
 
-do show logging
 ```
 
 ## Udrzba zariadeni
 
 ```cisco
-! general
+! suborovy system
 show file systems
-dir
+dir  ! akoze ls
 pwd
 cd
 
@@ -555,19 +592,35 @@ copy run usbflash0:/
 
 ! sprava obrazov
 show flash
-copy SOURCE tftp
+copy SOURCE-URL tftp:
 copy tftp: DESTINATION-URL
-boot system FILE-URL
+boot system FILE-URL  ! nacitanie noveho obrazu pri bootovani
 
-! licencie
+```
+
+Licencie
+
+```cisco
 show license udi
 license install LOCATION
 reload
+
 show version
 show license
-license accept end user agreement
-! vela dalsich srandiciek ...
 
+! aktivacia licencie
+license accept end user agreement
+license boot module MODULE-NAME technology-package PACKAGE-NAME
+
+! zaloha licencie
+license save FILESYSTEM://LOCATION
+
+! zakazanie licencie
+license boot module MODULE-NAME technology-package PACKAGE-NAME disable
+
+! odstranenie licencie
+license clear FEATURE-NAME
+no license boot module MODULE-NAME technology-package PACKAGE-NAME disable
 ```
 
 ## Bezpecnost
@@ -576,8 +629,8 @@ license accept end user agreement
 
 ```cisco
 access-list 1 permit 10.1.1.0 0.0.0.255
-snmp-server community cisco RO 0  ! read-only, 0=ACL
-snmp-server community xyz123 RW 1  ! read-write, 1=ACL
+snmp-server community cisco RO 1  ! read-only, 1 = cislo ACL
+snmp-server community xyz123 RW 1  ! read-write, 1 = cislo ACL
 snmp-server location LOCATION-NAME
 snmp-server contact ADMIN-NAME
 snmp-server host 10.1.1.50 xyz123

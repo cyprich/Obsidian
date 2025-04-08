@@ -459,3 +459,92 @@ i2c.start()
 i2c.readfrom_mem(0x68, 0x3B, 14)  # adresa zariadenia, adresa dat, pocet dat
 i2c.stop()
 ```
+
+## Vykonove prisposobenie
+
+ESP max vystup 40mA  
+Pre vacsie prudy potrebujeme prisposobenie - spinac pre digitalne, zosilnovac pre analogove vystupy
+
+Tranzistor ako spinac  
+Pouzite aj pri bzuciaku  
+V 2 stavoch - uplne otvoreny (preteka prud, v saturacii (vsuvka z chemie)) alebo uplne zavrety  
+Maly ubytok napatia - zanedbame
+
+### Jednosmerny motor
+
+Maly motor ma permanentne magnety (vacsie maju elektromagnety)  
+Dost vysoke otazky, hlavne nezatazene  
+Maly vykon - pripaja sa prevodovka - znizi otacky, zvysi silu/moment/vykon?
+
+Len do jednej strany - rele (bez PWM, z hladiska bezpecnosti galvanicky oddelene), tranzistor  
+Ak by sme chceli do oboch stran - H-mostik
+
+#### H-mostik
+
+Basically len viac tranzistorov, ktore sa striedavo spinaju  
+Q1 a Q4, Q2 a Q3  
+Pozor na skrat - nemozem naraz zopnut tranzistory vedla seba  
+Hore su PNP, dole su NPN
+
+1.5A stabilne, kratkodobo 2A
+
+Na nasej doske:  
++6V (z baterie)  
+DRV8833 - 2x H-mostik  
+GPIO 18,19\*,20,22\*
+
+> \*ovladane PWM, druha strana je natvrdo  
+> pre zmenenie polarity zmenit to co je PWM s tym co PWM nie je
+
+```python
+m21=Pin(22, Pin.OUT, value=0)
+m22=Pin(20, Pin.OUT, value=0)
+
+m11=Pin(19, Pin.OUT)
+m12=PWM(Pin(18), frequ=440, duty-512)
+
+m11.value(0)
+time.sleep(1)
+# m12.value(0)  # ?
+```
+
+#### Rele
+
+Elektromechanicka suciastka  
+Len zapnut/vypnut, urcite nie PWM  
+Nizky odpor  
+Pomalsie  
+Odolnejsie na pretazenie  
+Pozor na jednosmerne prudy - kvoli iskreniu pri rozopinani
+
+SSR - solid state relay - cisto elektronicke, aj pre PWM, menej odolne  
+Bistabilne rele - 2 stabilne polohy, staci len kratky impulz aby sa prehodil, nepotrebuju stale napajanie, pouzivane napr. pri termostatoch
+
+#### Servo
+
+Jednosmerny motor + prevodovka + riadiaci obvod
+
+2 typy
+
+- polohove - 0 az 180 stupnov
+- rychlostne - 0 az 360 stupnov, niektore sa mozu tocit
+
+```python
+servo = PWM(Pin(13, freq=50, duty=75))
+```
+
+### BLDC
+
+Brushless DC motor  
+Vyssia ucinnost a zivotnost  
+Vysoke otacky  
+Vyborny pomer vykon/hmotnost  
+Elektronicke prepinanie cievok (Hallove snimace alebo meranie prudu)  
+Vymeneny rotor a stator  
+Komplikovanejsie riadenie - existuju hotove moduly  
+ekolobezky, ebicykle, ...
+
+---
+
+tranzistor, hmostik, solid state relay - PWM  
+iba rele nie pwm
