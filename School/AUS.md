@@ -12,8 +12,8 @@ int* ptr = &x;  // pointer
 int& ref = x;  // referencia
 ```
 
-Pri ASCII stringu: pocet pismenok = pocet bitov  
-Pri Unicode stringu: pocet pismenok sa nemusi = pocet bitov (UTF-16 pismenko = dvojbajt, UTF-32 pimenko = stvorbajt)
+Pri ASCII stringu: pocet pismenok = pocet bajtov  
+Pri Unicode stringu: pocet pismenok sa nemusi byt pocet bajtov (UTF-16 pismenko = dvojbajt, UTF-32 pimenko = stvorbajt)
 
 Najlepsie pouzivat UTF-8
 
@@ -162,9 +162,9 @@ Predok, potomok
 Koren, list
 
 Stupen = pocet synov  
-Uroven = ako daleko od korena som (koren = 0, jeho synovia = 1)  
+Uroven = ako daleko od korena som (koren = 0, jeho synovia = 1, ...)  
 Hlbka = najvacsia uroven  
-Mohutnost = pocet vrcholov
+Mohutnost = pocet vrcholov  
 
 ### Klasifikacia
 
