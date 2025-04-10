@@ -1165,3 +1165,46 @@ where rod_cislo='771224/1234';
 ```
 
 > skusme si spravit update rodneho cisla v soc poistovni
+
+---
+
+To co mozem urobit na urovni datoveho modelu (check, alter), pouzijem radsej to ako trigger (trigger je PLSQL -> pomalsie)  
+Pomocou check sa neda skontrolovat hodnota z inej tabulky  
+Ak sa odkazujem na funkciu ktora nie je deterministicka (sysdate - nevrati vzdy tu istu hodnotu) nemozem pouzit check constraint
+
+---
+
+## Normalizacia datoveho modelu
+
+```sql
+create table TAB (
+    RC
+    M
+    P
+    OC
+    rocnik
+    login
+    ulica
+    psc
+    obec
+    okres
+    sk_rok
+    predmet1
+    predmet2
+    ...
+    predmetN
+    vysledokt1
+    vysledokt2
+    ...
+    vysledoktN
+);
+```
+
+Problemy - duplicita, nevieme kolko predmetov ma student, ak niekto nema predmet zapisany tak neviem ze existuje
+
+Tabulka `os_udaje` - RC, M, P, ...  
+PK je RC - ak poznam RC tak mozem pristupovat k ostatnym udajom  
+Funkcna zavislost (FZ) - **meno je funkcne zavisle od RC** - ak viem RC, viem jednoznacne povedat ake je meno  
+**RC je determinantom mena**  
+V tabulke `os_udaje` mame vzajomnu FZ - PSC a obec su navzajom funkcne zavisle - riesenie by bolo vytvorit novu tabulku  
+Tranzitivna FZ (TFZ) - `RC-psc-obec`, z toho vyplyva ze `RC-obec-psc` - v tomto pripade vytvorim novu tabulku
