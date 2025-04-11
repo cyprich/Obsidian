@@ -785,3 +785,78 @@ private void Pocitanie() {...}  // skonci vynimkou ak sa pokusime modifikovat tu
 ```
 
 ### WPF
+
+## Spracovanie dat
+
+### Subory
+
+Stavove - `DirectoryInfo`, `FileInfo`, `DriveInfo`  
+Staticke - `Directory`, `File`, `Path`
+
+Pre male subory `ReadAllLines` a podobne, pre velke subory nejaky `stream` (`FileStream`, `MemoryStream`, `NetworkStream`, `PipeStream`, ...)  
+Nezabudunt zatvorit stream - `Close()` alebo `Dispose()`  
+`BinaryReader` a `BinaryWriter`  
+`StreamReader` a `StreamWriter`
+
+```c#
+using (var sr = new StreamReader("file.txt"))  // implicitne vola Dispose() na konci
+{
+    string line;
+    while ((line = sr.ReadLine()) != null)
+    {
+        Console.WriteLine(line);
+    }
+}
+```
+
+### Serializacia
+
+Proces konverzie stavu objektu do stavu perzistentneho a transportacneho  
+Zdielanie objektov medzi roznymi aplikaciami, prenos objektov medzi aplikaciami po sieti, ulozenie objektov na disk, pamat alebo stream po sieti
+
+Serializacia - JSON, XML a SOAP, Binarna (neodporuca sa), alternativne kniznica Json.NET, Google Protocol Buffers
+
+#### Atributy
+
+Specialny konstrukt v hranatych zatvorkach (`[]`)  
+Nejake akoze metadata k niecomu inemu
+
+```c#
+[NazovAtributu(parametere)]
+
+[DataContract]  // class DataContractAttribute
+[DataMember] // DataMemberAttribute
+[Serializable] // SerializableAttribute
+
+// pri serializacii do XML budu mat tagy taky nazov aky mu povieme
+[DataContract(Name="Osoba", Namesprace="Uniza.CSharp.Examples")]
+class Person
+{
+    [DataMember(EmitDefaultValue=false, Name="Meno")]  // aj je prazdny/null tak sa neserializuje
+    public string FirstName;
+
+    [DataMember(Name="Priezvisko")]
+    public string LastName;
+
+    [DataMember(Order=0)]  // order = kolkate v poradi bude v xml
+    public int ID;
+
+    [IgnoreDataMember]  // nebude sa serializovat
+    public string niecoTajne;
+}
+```
+
+```c#
+Person person = new();
+
+var jsonString = JsonSerializer.Serialize(person);
+File.WriteAllText("osoba.json", jsonString);
+
+// indentovanie
+var options = new JsonSerializeOptions
+{
+    // tu ma byt nieco ale neviem co
+}
+
+JsonSerialize.Serialize(person, options);
+```
