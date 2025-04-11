@@ -164,7 +164,7 @@ Koren, list
 Stupen = pocet synov  
 Uroven = ako daleko od korena som (koren = 0, jeho synovia = 1, ...)  
 Hlbka = najvacsia uroven  
-Mohutnost = pocet vrcholov  
+Mohutnost = pocet vrcholov
 
 ### Klasifikacia
 
@@ -282,3 +282,67 @@ Mozeme si ich kombinovat - nekompaktne jednorozmerne pole ktore obsahuje kompakt
 Zubate polia  
 To iste ako regularne nekompaktne - s jednym issue - dlzka jednotlivych poli, ako to popisat  
 K-rozmerne neregularne pole musime popisat (K-1)-rozmernym polom
+
+## Prioritne fronty
+
+Priorita
+
+- Implicinta (ked prvok vstupy do fronty)
+  - Zasobnik - vyssia cim neskor vstupi do struktury - papier do tlaciarne - LIFO
+  - Front - naopak - rad v menze na obede - FIFO
+- Explicitna - typicky vyjadrena cislom
+  - Sekvencny prioritny fromt
+    - Prirodzena - prvok ma prirodzene nejaky atribut, podla ktoreho sa to jasne urcuje
+    - Umela
+  - Dvojzoznam
+  - Lavostranna halda
+
+### Zasobnik
+
+Dno zasobnika - tam kde padne prvy prvok ked ho vlozime  
+To co vlozime to aj vyberame, na tom istom konci  
+Idealne implicitna alebo jednostranne zretazena (bez referencie na posledny prvok) sekvencia
+
+### Front
+
+Vkladame na jednom konci, na druhom konci vyberam  
+Idealne jednostranne zretazena sekvencia s referenciou na posledny prvok  
+Dala by sa pouzit aj cyklicka implicintna sekvencia (pamatame si index kam mame vkladat a z kade mame vyberat a velkost, mame obmedzenu velkost)  
+Explicitny vs. Implicitny front
+
+### Prioritny front
+
+Priorita nikdy nie je zaporna, najvyssia priorita je 0  
+Nie je definovana operacia porovnaj  
+Sekvencne - utriedene aj neutriedene ma nepripustne zlozitosti (na jednej strane pomale vkladanie, na druhej pomale vyberanie) - v praxi sa moc nepouziva?
+
+### Multistruktura Dvojzoznam
+
+Vkladanie do neutriedenych + vyberanie z utriedenych  
+Kratka sekvencia, z ktorej sa lahko vybera  
+Dlha sekvencia, do kotrej sa lahko vklada (a nikdy nevybera)
+
+Kratka - obmedzena kapacita (vacsinou odmocnina z predpokladaneho max poctu prvkov), vkladame najmensie cisla (zoradene), ak je plna tak najvacsie cislo vyhodime do dlhej  
+Pri vyberani vyberieme z kratkej posledne cislo
+
+Do kratkej vkladam iba ak:
+
+- kym kratka nie je zaplnena, predtym ako bola zaplnena
+- ak uz bola zaplnena, tak vlozim iba taky prvok ktory tam na 100% patri
+
+Ak je kratka prazdna, tak musime prejst dlhu a znova naplnit prazdnu (pozor na zacyklenie - riesenie `nova dlha`) - **restrukturalizacia**, zlozitost O(m \* n) - mozeme **amortizovat** - spravit priemer - dostaneme **O(m)**
+
+### Lavostranna Halda
+
+_Hald je cela halda_
+
+Uklada svoje prvky do hierarchie  
+Implicitna hierarchia  
+Binarny strom
+
+**Podmienka - Priorita otca je vyssia alebo rovna ako priorita oboch synov**  
+Tym padom najvyssia priorita = koren  
+Vkladat mozeme iba na koniec (implicitna)  
+Vkladanie - Potrebujeme zabezpecit podmienku (priorita otca), cize ak nesedi tak sa vymenim s otcom - zlozitost = pocet urovni = O(log2(pocet prvkov))  
+Mazanie - da sa iba z posledneho miesta (listu), vyberame koren - nahradime ho poslednym, poprehadzujeme synov (s najvyssou prioritou) - zlozitost rovnaka  
+Pristup k vrcholu O(1)
