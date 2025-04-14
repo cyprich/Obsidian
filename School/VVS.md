@@ -548,3 +548,140 @@ ekolobezky, ebicykle, ...
 
 tranzistor, hmostik, solid state relay - PWM  
 iba rele nie pwm
+
+## Komunikacny podsystem - bezdrotova komunikacia
+
+WiFi 802.11, Esp-now, Bluetooth, Bluetooth Low Energy, IEEE 802.15.4 (ZigBee) - vsetko v 2.4GHz
+
+### WiFi
+
+WiFi kanaly - 1, 6, 11 - sirka 22 MHZ
+
+```python
+import network
+
+# klient - pripojenie na existujucu siet
+sta = network.WLAN(network.STA_IF)  # station
+sta.active(True)
+sta.scan()
+sta.connect(ssid, pass)
+sta.ifconfig()
+
+# ap
+ap = network.WLAN(network.AP_IF)
+ap.config(ssid="ahoj", key="heslisko")  # security=0..4
+ap.active(True)
+ap.ifconfig()
+
+# sockety
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind(('', 80))
+s.listen(5)
+
+while True:
+    conn, addr = s.accept()
+    req = str(conn.recv(1024))
+    ...
+    conn.send('HTTP/1.1 200 OK\n')
+    conn.send('Content-Type: text/html\n')
+    conn.send('Connection: close\n\n')
+    conn.sendall(response)
+    conn.close()
+```
+
+### Esp-now
+
+Connection-less (UDP, ale mame moznost prijat potvrdenie o prijati)  
+Priama komunikacia (max. 20 zariaadeni)  
+Moznost sifrovania (max. 6 zariadeni)  
+Spravy do 250B  
+Vhodne pre male IoT siete  
+Nizka latencia  
+Dlhy dosah (stovky metrov)
+
+```python
+import network, espnow
+
+sta = network.WLAN(network.STA_IF)
+sta.acive(True)
+
+e = expnow.ESPNow()
+e.active(True)
+e.config(timeout_ms=100_000)
+
+peer = b'\xAA\xAA\xAA\xAA\xAA\xAA'  # mac addr
+e.add_peer(peer)
+e.send(peer, "Sprava")
+# sync=True  # caka na prijatie odpovede na spravu
+e.any()  # kontrola prijatia spravy
+host, msg = e.recv()  # prijem spravy
+host, msg = e.irecv()  # vracia bytearray, setri pamat
+e.irq(callback)
+```
+
+```python
+# citanie zo stdin - putty?
+list = select.select([sys.stdin], [], [], 0)
+if list[0]:
+    ss = sys.stdin.read(1)
+    e.send(peer, ss)
+```
+
+### Bluetooth classic
+
+MicroPython ho nepodporuj
+
+Arduino
+
+```c
+#include "BluetoothSerial.h"
+BluetoothSerial SerialBT;
+SerialBT.begin("Nazov");  // aktivacia bt
+SerialBT.available();  // kontrola prijatia znakov
+SerialBT.read();  // precitanie znaku
+SerialBT.write(znak);  // vyslanie znaku
+```
+
+### Bluetooth LE
+
+Velmi nizka spotreba (gombikova bateria >1 rok)  
+Male pakety (244B pri BLE5)  
+Velky dosah (1000m pri BLE5)  
+Kratke vysielacie a prijimacie okna - zapinanie radia co najmenej, vypinanie co najskor  
+Rychle pripojenie (~6 ms)  
+Data vo formate key-value
+
+Hlavne pojmy
+
+- Inzerovanie (advertising) - pravidelne vysielanie informacii
+- Skenovanie - hladanie inzerujucich zariadeni
+
+Typy zariadeni
+
+- Periferia - inzeruje a umoznuje pripojeie (zvycajne zdroj dat)
+- Centrum - skenuje a moze sa pripojit (zvycajne spotrebic dat)
+- Observer - skenuje, pocuva, ale nepripaja sa
+- Broadcaster - inzeruje, ale numoznuje pripojenie (majak)
+  - Kazdy moze pocuvat
+  - Nespolahlivy prenos
+
+Struktura dat
+
+- Profile
+  - Service - UUID
+    - Characteristic - UUID
+      - Properties
+      - Value
+      - Descriptor - UUID
+    - Characteristic - UUID
+      - Properties
+      - Value
+      - Descriptor - UUID
+    - Characteristic - UUID
+      - Properties
+      - Value
+      - Descriptor - UUID
+
+### IEEE 802.15.4 (ZigBee)
+
+Priamo MicroPython nepodporuje, ale da sa to nejako spravit
