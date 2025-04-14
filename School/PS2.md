@@ -1222,3 +1222,200 @@ Faktory vplyvajuce na kvalitu
 -
 -
 -
+
+## Juniper
+
+Borievka  
+Priamy konkurent Cisca  
+Jednotny OS - JunOS  
+Akvizicia NetScreen - Firewally SSG
+
+Routre - PTX (pre operatorov), MX (modularne core/enterprise)  
+Switche - EX (enterprise), QFX (datacentrove)  
+Firewally - SRX (modularne Next-Generation, enterprise), SSG (ScreenOS, nahradzane SRX)
+
+### JunOS
+
+Operacny system  
+Postaveny na FreeBSD, sucasne sa presuvaju na Linux  
+Pri boote sa vyzadjuve JunOS login - by default `root`, ziadne heslo  
+Kompletne stromova struktura  
+Iba jeden konfig, ako nahle je **aplikovany**, je hned ulozeny
+
+```junos
+cli
+    configure
+        edit interfaces lo0
+            edit unit 0 family inet
+
+        set system root-authentication plain-text-password
+
+        show
+        show | compare  // iba necommitnute zmeny
+
+        commit  // kontrola logiky, aplikacia zmien
+        commit and-quit  // commit + exit z konfig rezimu
+        commit check  // iba skontroluje logiku
+        commit confirmed  // aplikuje zmeny na urcity cas, ak sa zmeny nepotvrdia tak vrati zmeny naspat
+
+    // ipv4 adresacia
+    show interfaces terse
+    configure
+        set interfaces em0 unit 0 famil inet address 192.168.1.1/24
+        show | compare
+        commit
+    show interfaces terse
+
+    ping 192.168.1.2
+
+    show route
+
+    // ipv6 adresacia
+    configure
+        set interfaces em0 unit 0 famil inet6 address fe80::1/64
+        set interfaces em0 unit 0 famil inet6 address 2001:dead:beef::1/64
+        // ipv6 je automaticky aktivovana, ziadne 'ipv unicast-routing'
+    show route
+
+    // loopbacks - nepodporuje viac ako 1, ale da sa dat viac adries na jedno rozhranie
+        edit interfaces lo0 unit1
+            set family inet address 192.168.1.200
+
+    // static route
+        set routing-options static route 0.0.0.0/0 next-hop 10.0.0.1
+```
+
+## MikroTik
+
+Sustreduje sa na segment malych firiem, lokalnych operatorov, domacnosti, ...
+
+Bezdrotove zariadenia pre ISP, RouterBoard  
+Kombinovane zariadenia pre domacnosti  
+Routre  
+Switche, L3 switche  
+Storage - NAS (20x NVMe), Switch, Router v jednom, bezi na RouterOS
+
+### RouterOS
+
+Nemaju ho vsade, niekde aj SwitchOS  
+Uzavrety, zalozeny na Linuxe, velke mnozstvo architektur  
+Min. 32MB RAM  
+L2 hardware acceleration  
+L3 niektore hw acc, niektore na CPU  
+Licencia sucastou HW, licencne urovne 3 (iba AP client) a 4, 5, 6 ()
+
+Cloud Hosted Router (CHR) - Router OS pre virtualne stroje
+
+Firewall - stavovy, NAT, L7 filtering  
+Routing - static, rip, ospf, bfp, isis  
+DHCP klient aj server  
+QoS, VRRP, NTP, DDNS, ...  
+VPN a tunely  
+Wireless  
+CDP, LLDP, SSH, Telnet, ping  
+Dot1X, RESP API  
+Doplnkove funkcie - Docker, ZeroTier, podpora skriptov, Storage (NFS, SMB, NVMe-oF)
+
+WinBox  
+Webfig - GUI v prehliadaci, alternativa k WinBox  
+MikroTik Pro - Android  
+Proprieterne API, REST API  
+**CLI** - SSH, Telnet, WinBox, vyssie modely aj konzola
+
+Umozni nakonfigurovat vsetko, casto aj zlym sposobom  
+Detailne specifiakacie zariadeni, testy vykonu, interna blokova struktura (diagram)
+
+### Konfiguracia
+
+Prihlasenie by default meno `admin`, bez hesla
+Ak pyta zmenu hesla, `ctrl-c` pre zrusenie  
+Stromova struktura  
+Zadane prikazy su automaticky aplikovane
+
+```routeros
+/
+    interface
+        bonding
+        bridge
+        ehternet
+    ip
+        address
+    ipv6
+    log
+    routing
+    system
+```
+
+`tab` - doplna prikazy - vsetko, aj nazvy  
+`?`  
+`..`  
+`/`
+
+Pozor na farbicky
+
+- cervena - nieco zle
+- modra - cast stromu
+- fialova - klucove slovo
+- zelena - parametre
+- hrubou vytlacene - povinne parametre
+
+```routeros
+/export show-sensitive  # bez pouzivatelskych uctov, tie sa tu neukladaju
+/interface bridge
+    add name=lo0
+/interface etherent
+    set [find default-name=ether2] name=ether1
+    set [find default-name=ether1] name=ether2
+/ip address
+    ...
+
+/user print
+/user set admin password=heslisko
+
+/system identity print
+/system identity set ....
+
+/ip service print
+/ip service disable telnet
+/ip service set ssh port=2222
+
+/interface print
+/interface disable ether1
+/interface disable numbers=0,1
+
+# loopback - virtualny interface bez portov
+/interface bridge add name lo0
+/interface print
+/interface bridge print brief
+
+# samostatny config
+/interface bridge add name=switch1
+/interface bridge port add bridge=switch1 interface=ether1
+/interface bridge port add bridge=switch1 interface=ether2
+/interface print
+
+# vlan
+/interface bridge add name=switch1 vlan-filetring=yes
+/interface bridge port add bridge=switch1 interface=ehter1
+/interface bridge port add bridge=switch1 interface=ehter2 pvid=20
+/interface bridge port add bridge=switch1 tagged=ether1 untagged=ether2 vlan-ids=20
+# prenasane su iba vlans ktore su explicitne povedane ze sa maju prenasat (opacna logika ako cisco)
+/interface bridge vlan print
+
+# routing vlan
+/interface vlan add interface=ether1 vlan-id=10 name=ether1.10
+/interface vlan add interface=switch1 vlan-id=20 name=vlan20
+/interface vlan print
+
+# ehter channel
+/interface bonding add name=bond0 slaves=ether1,ether2 mode=802.3ad  # lacp
+/interface bonding print
+
+# cdp - iba verzia 1
+/ip neighbor print detail
+
+# adresacia
+/ip address add address=192.168.1.1/24 interface=lo1
+/ip address remove numbers=2
+/ip address print
+```
