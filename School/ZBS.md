@@ -370,3 +370,166 @@ Objektivizacia expozicie EM polom
 
 Vplyv EM pola na cinnost elektronickych zariadeni  
 Kardiostimulatory, nemocnice - prisnejsie normy
+
+## Beezdrotove technologie pre IoT
+
+Bunkove siete (GSM, LTE) - licencovane pasma
+
+- EC-GSM-IoT, LTE-M, NB-IoT, 5G IoT
+
+Low-power siete - ISM (industrial, scientific, medical) Pasmo
+
+- BLE, Bluetooth Mesh (WPAN) - najmenej priestorovo rozlahle (geograficky)
+- IEEE 802.15.4, LR-WPAN, ZigBee - stredna velkost
+- LoRa, LoRaWAN - najviac rozhlahle
+- ...
+
+**IoT** - v com sa lisi od "normalneho" internetu
+
+> Veci bezneho pouzitia pripojene do internetu
+
+V normalnom - Asymetricke pripojenie - smerom ku nam je preferovana rychlost (upload)  
+V IoT je preferovany download
+
+IoE - veci, procesy, ludia, zvierata  
+WSN - Wireless Sensor Networks
+
+Pocet "veci" v roku 2030 - 24 miliard
+
+Suvisiace technologie s IoT
+
+- Pokrocile metody analyzy dat
+- Strojove spracovanie dat (AI)
+- Edge computing - odlahcenie cloudoveho spracovania dat - spracovavanie tam, kde data vznikaju
+
+Obmedzenia "veci"
+
+- Velkost
+- Vykon
+- Spotreba
+- Dosah
+- Rychlost
+
+### EC-GSM-IoT
+
+Low Power Wide Area Network - LPWAN  
+2G siete, do 50 kbps  
+Smart merace, zabudovane senzory, asset trackers  
+Dobra zivotnost baterii (roky)  
+Takmer globalna pouzitelnost (zhorsuje sa)  
+Kompatibilita s mnozstvom zariadeni  
+Nizka cena (zariadenia aj data)  
+Prestava sa pouzivat (EU do 2025?)
+
+### LTE
+
+4G siete  
+Teoreticky 50 Mbps upload, 150 Mbps download  
+Softwarovo definovane radio - flexibilita v podpore novych standardov
+
+Standardy pre IoT
+
+- NB IoT - Narrow Band IoT
+- LTE-M
+- Cat-1
+- Cat-4
+
+#### NB IoT
+
+Low-cost, Low-power - 10 rokov na 2 AA baterie  
+200kHz pasmo, moze vuyzivat guard band v LTE - prazdne pasmo aby sa zamedzilo interferencii v LTE  
+Dobre pokrytie v budovach a podzemi  
+Dosah az do 10 km  
+Upload 66 kbps, download 26 kbps, verzia 2 ma vyssie rychlosti  
+Latencia 1.6 az 10 sekund, dlzka spania max 3 hod  
+Len pre stacionarne zariadenia, nie roaming, nie tower handover  
+Meranie spotreby (voda, elektrika, plyn), smart city (osvetlenie, parkovanie), monitorovanie v priemysle, polhonospodarstve
+
+#### LTE-M
+
+LTE-machine - urcene pre stroje  
+Podporuje mobilne zariadenia  
+Pasmo, 1.4 MHz, half-duplex aj full-duplex  
+1 Mbps, zvycajne upload 380 kbps, download 300 kbps  
+Latencia 10-15 ms, max dlzka spania 40 min  
+Podpora pre mobilne zariadenia - asset tracking, fleet management  
+Podpora pre hlasove aplikacie - medical alert devices, home alarm systems  
+Smart meters, industrial monitors, asset tracking, health monitor, alarms, wearables  
+Nie je dostupne globalne
+
+#### Cat-1
+
+Starsie  
+Vyssia spotreba, mensi dosah, drahsie  
+Lepsie globalne pokrytie  
+20MHz pasmo, upload do 5 Mbps, download do 10 Mbps  
+Latencia 50-100 ms, full duplex  
+Podpora pre hlas, mobilne zariadenia  
+Nositelnosti, kiosky, video dohlad, starostlivost o zdravie, bankovamty, zdielana mobilita - prenajom bicyklov a kolobeziek, autonomne drony na dorucovanie
+
+#### Cat-4
+
+20 MHz pasmo  
+50 Mbps upload, 150 Mbps download  
+Najdrahsie  
+Video dohlad, video aplikacie v realnom case, in-car hostspot, ...  
+8
+
+### 5G
+
+Ultra low-latency (vhodne pre priemyselnu automatizaciu)  
+1 Gbps  
+Podpora velkeho mnozstva zariadeni  
+Aplikacie
+
+- Smart cars
+- Smart cities
+- Biznis  
+  Zdravotnictvo
+
+### Bluetooth
+
+802.15 - WPAN
+
+- .1 - Bluetooth
+- .4
+
+Povodny ciel - nahrada drotoveho spojenia na kratku vzdialenost  
+Vyvijane firmou Ericsson  
+V sucastnosti spravovane zdruzenim Special Interest Group (SIG)  
+Komercne dostupne zariadenia od roku 2001 - Ericsson T39 a IBM ThinkPad A30  
+Rozsireny aj vdaka Motorole
+
+Meno podla danskeho krala Heralda Bluetootha
+
+Kratky dosah - do 10 metrov  
+Nizka spotreba, low-cost  
+ISM pasmo - 2.4 az 24835 GHz  
+79 kanalov so sirkou 1 MHz  
+FHSS - Frequecy-Hopping Spread Spectrum - 1600 hopov za sekundu  
+Modulacia - GFSK (Gaussian Frequency-Shift Keying), DQPSK (Differential Quadrature Phase-Shift Keying), DPSK  
+Apple HDR4 a HDR8 - 4MHz kanaly s FEC
+
+Komunikacia zalozena na packetoch  
+Master/Slave architektura, hviezdicova struktura  
+Max. 7 slaves, v novsej verzii az 14 (na 2 logickych kanaloch)  
+Piconet - jedna ako keby BT siet  
+Scatternet - prepojenie viac piconetov  
+Synchronizacia Mastrom - kazdych 312.5 us  
+Slot 625 us  
+Par 1250 us  
+Paket - 1, 3, alebo 5 slotov  
+Master zacina v parnom, Slave v neparnom slote  
+Moznost vymeny uloh Master-Slave  
+V jednom case komunikacia len s jednym - zvycajne round-robin
+
+Vykon dBm, mW
+
+Bluetooth profil
+
+- Definuje, na co je urcene dane zariadenie
+- Nastavenia - parametrizacia a riadenie komunikacie
+- Jednoduche vytvorenie spojenia
+- Napr. A2DP, HID, HFP, HSP, SSP, ATT, GATT, prenos suborov, remote control, tlac, video, LAN, Mesh, proximity
+
+Verzie 1.0 (2000), 2.0 (2005), 3.0 (2009), 4.0 (2010, aj BLE), 5.0 (2016), 5.4 (2023)
