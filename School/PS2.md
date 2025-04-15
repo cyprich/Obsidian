@@ -1163,16 +1163,24 @@ SPAN terminologia
 ## QoS
 
 Quality of Service - kvalita sluzby  
-Treba zistit, kde je bottleneck v sieti
+Treba zistit, kde je bottleneck v sieti  
+Rozne sluzby maju rozne poziadavky (oneskorenie, packet loss)  
+QoS je velmi subjektivny pojem, silne zavisly od povahe sluzby  
+Cez IP siet tecie viacero sluzieb (video, data, voice), ktore nie su rovnocenne
+
+QoS - meratelne parametre - oneskorenie, RTT, strata packetov, jitter (rozdiel intervalov odosielania packetov napr. VoIP)  
+QoE - quality of experience - kvalita vnimania - ako to clovek pocituje
+
+V minulosti prenos hlasu v sietach s prepinanim okruhov  
+Kazdy hovor mal zostrojeny svoj vlasny okruh, kade isla komunikacia, tu sa nepotrebovalo nic riesit  
+Sposob prenosu bol velmi neefektivny, preto mame VoIP siete (paketove siete)  
+Tu je problem ze sa touto sietou prenasaju viacere sluzby (konvergovana siet), cize treba riesit prioritizaciu sluzieb
 
 Organizacia software frontu - prioritizacia urcitych packetov/typu sluzby
 
 - FIFO
 - LLQ - low latency queue - packet ma v hlavicke DSCP pole,
 - CB-WFQ - Class-Based Weighted Fair Queuing
-
-QoS - meratelne parametre - oneskorenie, RTT, strata packetov, jitter (rozdiel intervalov odosielania packetov napr. VoIP)  
-QoE - quality of experience - kvalita vnimania - ako to clovek pocituje
 
 Service Level Agreement - SLA - zadefinovanie maximalneho oneskorenia, straty, ...
 
@@ -1181,22 +1189,23 @@ Konvergovana siet - viac typov prevadzky v jendej sieti - data, VoIP, ...
 Faktory vplyvajuce na kvalitu
 
 - Prenosova kapacita
-- Celkove oneskorenie - pevna a variablilna dlzka
-  - Processing Delay - variabilne
-  - Queuing Delay - fixne
-  - Serialization Delay - variabilne
-  - Propagation Delay - fixne
+- Celkove oneskorenie - pevna a variablilna zlozka
+  - Processing Delay - variabilne - ked pride paket tak chvilu trva kym router zisti kam ho ma poslat
+  - Queuing Delay - variabilne - cas, ktory paket stravi vo vystupnom fronte
+  - Serialization Delay - fixne - cas, za ktory sa paket odvysiela interface-om
+  - Propagation Delay - fixne - cas prechodu signalu na danom fyzickom mediu
+- Kolisanie oneskorenia - jitter
 - Straty paketov
-  - Tail drop
-  -
+  - Tail drop - ked sa naplni buffer pre interface-om (front), tak dalsie pakety ktore pridu sa zahodia
+  - RED, WRED ((Weighted) Random Early Detection) - ked sa uz blizi k naplneniu buffera, tak sa nahodne zahodia pakety
 -
 
 ### Nastroje pre poskytovanie QoS
 
 - Klasifikacia
 - Znackovanie (Marking)
-- Predchadzanie zahlteniu (Congestion Avoidance)
-- Riesenie zahltenia (Congestion Management)
+- Predchadzanie zahlteniu (Congestion Avoidance) - Tail Drop, RED, WRED
+- Riesenie zahltenia (Congestion Management) - planovacie mechanizmy pre obsluhu frontov
 - Tvarovanie a obmedzovanie prevadzky (Shaping, Policing)
 - Mechanizmy efektivnosti linky (Link Efficiency Mechanisms)
 
@@ -1206,11 +1215,17 @@ Faktory vplyvajuce na kvalitu
   - Nic nekonfigurujeme, nic neriesime, bez riadenia QoS
   - Povodny model, na ktorom bol internet zalozeny
   - Vynikajuca skalovatelnost
+  - Neposkytuje garancie sluzby
+  - Nediferencuje medzi sluzbami
+    - Paket pride vtedy, ked pride ✨
 - Integrated Services (IntServ)
+  - Aplikacie oznamuju siete ake parametre potrebuju/pozaduju
   - Poskytuje garantovane dorucenie a predikovatelne spravanie sa siete voci aplikaciam
   - RSVP - Resource Reservation Protocol - TCP/UDP port 3455, IP protokol cislo 46
+  - Riadena zataz, nizke oneskorenie, vysoka priepustnost
 - Differentiated Services (DiffServ)
-  - Toky triedi to tzv. agregatorov - tried - poskytuje QoS celym triedam
+  - Siet rozpoznava triedy prevadzky, ktore potrebuju osobitne QoS parametre
+  - Toky triedi do tzv. agregatorov - tried - poskytuje QoS celym triedam
   - Per-Hop Behavior (PHB)
 
 ### Vytvaranie obsluznych tried

@@ -55,6 +55,7 @@ line vty 0 15
 | 1812 | RADIUS auth          | U              |
 | 1813 | RADIUS accounting    | U              |
 | 1985 | HSRPv1               | U              |
+| 3455 | RSVP                 | T & U          |
 | 5246 | CAPWAP (source)      | U              |
 | 5247 | CAPWAP (destination) | U              |
 
