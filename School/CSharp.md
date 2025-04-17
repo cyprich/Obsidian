@@ -860,3 +860,149 @@ var options = new JsonSerializeOptions
 
 JsonSerialize.Serialize(person, options);
 ```
+
+## LINQ
+
+Language Integrated Query
+
+Uloha - najst vsetky osoby zacinajuce na 'N', a narodili sa do roku 1980, a zotriedit podla priezviska a mena
+
+```c#
+// query syntax / declarative syntax
+var selectedPeople = from person in people
+    where person.LastName.StartsWith("N") && person.Birthdate.Year <= 1980
+    orderby person.LastName, person.Firstname
+    select person;
+
+// api syntax / method syntax / fluent syntax
+var selectedPeople = people.Where(person => person.LastName.StartsWith("N") && person.Birthdate.Year <= 1980)
+    .OrderBy(person => person.Lastname).ThenBy(person => person.FirstName)
+    // OrderByDescending(), ThenByDescending()
+    .Select(person => person);
+)
+```
+
+LINQ to
+
+- Objects - vsetko co je `IEnumerable<T>`, v pripade databaz `IQueryable<T>`
+- Entities
+- SQL
+- XML
+- DataSet
+- vlastne
+
+LINQ to object
+
+```c#
+int[] numbers = {0, 1, 2, 4, 5};
+
+
+var result = from num in numbers
+    where num % 2 == 0
+    select num;
+// pozor! tu som este nedostal vysledky
+
+// vysledky dostanem az tu, ked sa zavola `result`
+foreach (var num in result) { Console.WriteLine(num); }
+
+// ak pouzijeme 20 krat `result`, tak 20 krat sa to bude volat/nacitavat
+// fix - konvertovat rovno na list alebo array, dictionary, ...
+
+List<int> evenNumList = (
+    from num in numbers
+    where num % 2 == 0
+    select num
+).ToList();
+```
+
+### Operatory projekcie
+
+Select
+
+```c#
+var names = people.Select(p => p.Firstname);
+```
+
+SelectMany
+
+```c#
+var initials = people.SelectMany(p => new[] { p.FirstName[0], p.LastName[0] });
+```
+
+Zip  
+Ako zips, mame 2 mnoziny a bereme postupne prvky z obidvoch a nieco s nimi robime  
+Ak ma jedna mnozina mensia, tak sa vykonava len pre mensi pocet prvkov
+
+```c#
+var values = firstNames.Zip(lastname, (first, last) => $"{first} {last}");
+```
+
+Where
+
+```c#
+var adults = people.Where(p => p.Birthdate.Year < 2005);
+```
+
+OfType
+
+```c#
+
+```
+
+All
+
+```c#
+bool allAdults = people.All(p => p.Birthdate.Year < 2005);
+```
+
+Any
+
+```c#
+bool anyAdults = people.Any(p => p.Birthdate.Year < 2005);
+```
+
+Contains
+
+```c#
+bool containsJozef = people.Select(p => FirstName).Constains("Jozef");
+```
+
+Skip  
+Preskoci x prvkov
+
+```c#
+var remainingPeople = people.Skip(3);
+```
+
+SkipWhile
+
+```c#
+var skipped = people.SkipWhile(p => p.Birthdate.Year > 1980);
+```
+
+Take  
+Zoberie prvych x prvkov  
+Pouzivane pri strankovani (pages na Googli)
+
+```c#
+varFirstThree = people.Take(3);
+```
+
+TakeWhile
+
+```c#
+var taken = people.TakeWhile(p => p.Birthdate.Year > 1980);
+```
+
+Chunk  
+Zgrupuje niekolko elementov mnoziny dokopy
+
+```c#
+var groups = people.Chunk(2);
+```
+
+GroupBy
+
+```c#
+var a = people.GroupBy(p => p.Gender);
+```
