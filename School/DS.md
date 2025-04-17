@@ -1208,3 +1208,71 @@ Funkcna zavislost (FZ) - **meno je funkcne zavisle od RC** - ak viem RC, viem je
 **RC je determinantom mena**  
 V tabulke `os_udaje` mame vzajomnu FZ - PSC a obec su navzajom funkcne zavisle - riesenie by bolo vytvorit novu tabulku  
 Tranzitivna FZ (TFZ) - `RC-psc-obec`, z toho vyplyva ze `RC-obec-psc` - v tomto pripade vytvorim novu tabulku
+
+## Normalizacia 2
+
+Ciel - odstranit redundanciu, odstranenie anomalii, implementacnej zavislosti
+
+Vzorovy priklad - nejaka kombinacia tabuliek student a os_udaje
+
+1. Zistit zavislosti medzi polozkami - nakreslit graf funkcnych zavislosti
+   - FZ - ak viem hodnotu jedneho atributu, tak viem jednoznacne povedat aku hodnotu ma iny atribut
+     - Ak viem RC tak viem jednoznacne povedat meno
+     - Meno a priezvisko je funkcne zavisle od RC
+     - Sipka od RC ku menu, k priezvisku, basically so vsetkym okrem `OC`
+     - Double sipka medzi PSC a obcou - Vzajomna FZ
+     - Sipka od `OC` ku `rocnik` a `st_skupina`
+     - Sipka od `st_skupina` ku `rocnik`
+     - Sipka od `OC` k `RC`
+2. Normalizacia na urovej Prvej Normalnej Formy
+   - Aby kazdy atribut bol atomicky, odstranujem duplicitne riadky a to co viem vypocitat z niecoho ineho
+   - Dam prec rocnik, lebo sa da vypocitat zo studijnej skupiny
+3. Dalej mam 2 moznosti ako ist dalej
+   1. Druha a Tretia normalna forma
+      1. Druha normalna forma
+         - Kandidati PK
+           - V grafe sa od neho dostanem dostat ku vsekym ostatnym polozkam
+           - (RC a rocnik) spolu determinuju osobne cislo
+           - Mam jedneho kandidata PK - OC, z RC neviem zistit rocnik, OC, stud_skupinu
+           - Kazdy neklucovy atribut je uplne FZ od PK
+           - Ak nemame Kompzitny PK, tak je vzdy v 2. normalnej forme
+      2. Tretia normalna forma
+         - Odstranenie Tranzitivnych FZ vzhladom na PK
+           - Momentalne ju mame medzi OC a meno, priezvisko, ...
+           - Ku tymto srandickam musim ist od OC cez RC
+           - Riesenie - rozdelim to do 2 tabuliek - rozdelim medzi OC a RC (R1, R2)
+           - Musim este rozdelit FZ medzi PSC a Obec - zase rozdelime do 2 tabuliek (R21, R22)
+           - Teraz uz mame 3. NF
+           - Stratili sme ale vztahy medzi tabulkami - pridame RC do novej tabulky Student (R1)
+   2. BC normalna forma
+      - Kazdy determinant je Kandidat PK
+      - Kandidati: iba OC
+      - Determinanty: RC, ST_SK, OBEC, PSC, OC - vsetko z coho vychadza sipka
+      - Musim oddelit tie det, pre ktore neplati ze su KPK
+        - Oddelim RC, vznike mi tabulka R1: sipky od RC ku meno, priezvisko, ...
+        - Teraz mam KPK: OC, RC
+        - Det: RC, PSC, Obec
+        - Oddelim: PSC
+        - Zase sme stratili vztahy - musime doplnit
+        - Teraz mam vsetkych KPK aj determinantov -> Je v BCNF
+
+## Integrita
+
+**CURED**
+
+- Column - stlpcova integrita - ci je atribut NN, pripadne unique, uroven Kandidatov PK
+- User
+  - prava pouzivatelov
+  - napr. brigadnik moze mat nejaky max. odrobeny pocet hodin
+  - napr. v zimnom semestri si nemozem zapisat predmet ktory je v letnom
+  - napr. nemozem si zapisat predmet ktory uz mam absolvovany, ...
+  - casto sa spaja s triggrami
+- Referencna integrita - FK
+- Entity - PK
+- Domena - datovy typ a check constrainty - RC ma char(11) ale so specialnym formatom
+
+Napr. tab. `os_udaje`
+
+- RC - NN, PK, datovy typ, format
+- M -
+- P -
