@@ -1006,3 +1006,43 @@ GroupBy
 ```c#
 var a = people.GroupBy(p => p.Gender);
 ```
+
+## Asynchronne programovanie
+
+Zvysuje vykonnost a responzivnost aplikacie
+
+Hlavne vyuzitie
+
+- IO operacie - stahovanie dat, citanie suborov, API, praca s DB
+- CPU operacie - dlho trvajuce/narocne ulohy - matematicke vypocty, transformacie
+
+Pojmy
+
+- Paralelne - praca ktoru sme si rozdelili
+- Subezne (concurrent) - zonglovanie
+- Asynchronne - zadam nejaku ulohu a zatial robim nieco ine - pracka, objednanie jedla
+
+###
+
+Asynchronnous Programming Model (APM)  
+Event-based Asynchronous Pattern (EAP)  
+Task-based Asynchronous Pattern (TAP)
+
+```c#
+public int Read(byte[] buffer, int offset, int count) { ... }  // synchnronna
+public Task<int> ReachAsync(byte[] buffer, int offset, int count) { ... }  // asynchronna
+```
+
+**NEPOUZIVAT VOID PRI ASYNC**  
+Ak nema vraciat nic, tak pouzit `Task` ako navratovu hodnotu
+
+```c#
+Thread.Sleep(300);  // synchronna verzia
+await Task.Delay(300);  // asynchnronna
+```
+
+Trieda `HttpClient()` sa pouziva na REST API?
+
+## Zaklady prace s databazou
+
+## Pulikovanie aplikacie
