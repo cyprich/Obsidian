@@ -346,3 +346,62 @@ Vkladat mozeme iba na koniec (implicitna)
 Vkladanie - Potrebujeme zabezpecit podmienku (priorita otca), cize ak nesedi tak sa vymenim s otcom - zlozitost = pocet urovni = O(log2(pocet prvkov))  
 Mazanie - da sa iba z posledneho miesta (listu), vyberame koren - nahradime ho poslednym, poprehadzujeme synov (s najvyssou prioritou) - zlozitost rovnaka  
 Pristup k vrcholu O(1)
+
+## Tabulky
+
+Pristup na zaklade unikatneho kluca  
+Operacie: vloz, najdi, skus najst (najuniverzalnejsia), obsahuje, vyber
+
+AUS sekvencna tabulka  
+AUS utriedena sekvencna tabulka - velmi rychla, ale nie pri vkladani nie
+
+### Triedenia sekvencnych tabuliek
+
+Proces usporiadania prvkov tak, aby na konci boli v nami definovanom poradi  
+Potrebuju efektivne pristupovat k prvkom struktury - O(1)  
+Co sa vacsinou triedi - pole, implicitny zoznam, implicitna neutreidena sekvencna tabulka
+
+Rozdelenie
+
+- Podla umiestnenia struktury
+  - Vnutorny - cela struktura v operacnej pamati
+  - Vonkajsi - mimo operacnej pamate
+- Podla efektivnosti triediaceho algoritmu
+  - Prirodzeny - najrychlejsie utriedi uz utriedenu strukturu
+  - Neprirodzeny - najpomalsie...
+  - Neutralny - ryzhlost nezavisi od otho ci uz je alebo nie je utriedena
+- Stabilita - triedenie podla viac parametrov nezmeni poradie prveho parametra?
+- Triedenie na mieste - nepotrebuje pomocnu sekvenciu?
+
+#### Algoritmy
+
+- Priame metody - zlozitost O(n^2)
+  - Select sort
+    - Hladam najmensi prvok a vymenim ho z prvym
+    - Na mieste, stabilny, neutralny
+  - Insert sort
+    - Swapujem smerom dozadu az kym nie je na spravnom mieste
+    - Na mieste, stabily, prirodzeny
+  - Bubble
+    - Vymienam po dvoch az do konca, stale dookola (vzdy od zaciatku) az kym ine je utriedeny
+    - Ak nebola ziadna vymena tak je utrieene
+    - Staiblne, na mieste, prirodzeny
+- Nepriame - zlozitost lepsia ako O(n^2)
+  - Quick
+    - Bubble sort na steroidoch
+    - Rozdeli sa na 2 polovice
+    - Zvoli sa tzv. pivot - pomocna lokalna premenna, typicky stredny prvok
+    - Vsetko mensie ako pivot by malo byt nalavo, vsetko vacsie napravo
+    - Ak je dvojica prvkov na zlej strane tak ich swapneme
+    - Ked sa stretnem alebo prekrizim tak rozdelim tabulku na 2 a rekurzivne aplikujem Quick sort
+    - ????
+    - Ked dobre triafame pivotov tak zlozitost O(n \* log2(n)), v najhorsom pripade O(n^2)
+      - Zavisi od pivota - ak je pivot najmensi/najvacsi prvok tak je zle, ak je pivot median tak je super
+  - Heap
+    - Pomocou akoze hierarchie pre predstavenie
+    - **Asi** za robi take ze chceme na koren hierarchie dame najvacsie cislo a potom ho hodime na koniec, dalej pokracujeme len s neutriedenou castou
+    - O(2(n \* log(n)))
+    - Na mieste, nestabilne, neutralny
+  - Shell
+  - Radix
+  - Merge
