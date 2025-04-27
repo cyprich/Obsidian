@@ -2002,6 +2002,43 @@ pip freeze > requirements.txt  # save dependencies
 pip install -r requirements.txt  # install dependencies
 ```
 
+# dotenv
+
+Enviromental files
+You should always avoid putting sensitive info (passwords) directyly in your code
+One way to fix this is with `python-dotenv` library
+
+First you need to install the `python-dotenv` library
+
+```bash
+pip install python-dotenv
+```
+
+Now create `.env` file in your project, and put your sensitive info there
+
+```env
+USERNAME=myuser
+PASSWORD=strongpassword
+EMAIL=myuser@myuser.myuser
+```
+
+To access it...
+
+```python
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+print(os.getenv("USERNAME"))
+print(os.getenv("PASSWORD"))
+print(os.getenv("EMAIL"))
+```
+
+**If you are using git, don't forget to add `.env` to `.gitignore` !!!**
+
+---
+
 # Various stuff
 
 ## Modules

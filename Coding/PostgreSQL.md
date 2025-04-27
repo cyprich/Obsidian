@@ -64,3 +64,25 @@ grant usage, create on schcema public to myuser;
 select datname from pg_database;  -- databases
 select table_name from information_schema.tables where table_schema='f';  -- tables from schema
 ```
+
+
+---
+
+# Psycopg2
+
+`Psycopg2` is a Python library to work with PostgreSQL
+
+## Installation
+
+```bash
+python -m venv venv
+source ./venv/bin/activate
+
+pip install psycopg2
+# pip install psycopg2-binary
+```
+
+## Usage
+```python
+import p
+```
