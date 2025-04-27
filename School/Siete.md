@@ -58,6 +58,7 @@ line vty 0 15
 | 3455 | RSVP                 | T & U          |
 | 5246 | CAPWAP (source)      | U              |
 | 5247 | CAPWAP (destination) | U              |
+| 8291 | WinBox               | T              |
 
 ## Administrative distances routing protokolov
 

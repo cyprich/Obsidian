@@ -1242,9 +1242,9 @@ Faktory vplyvajuce na kvalitu
 
 Borievka  
 Priamy konkurent Cisca  
-Jednotny OS - JunOS  
-Akvizicia NetScreen - Firewally SSG
+Jednotny OS - JunOS
 
+Akvizicia (odkupenie?) NetScreen - Firewally SSG
 Routre - PTX (pre operatorov), MX (modularne core/enterprise)  
 Switche - EX (enterprise), QFX (datacentrove)  
 Firewally - SRX (modularne Next-Generation, enterprise), SSG (ScreenOS, nahradzane SRX)
@@ -1259,6 +1259,8 @@ Iba jeden konfig, ako nahle je **aplikovany**, je hned ulozeny
 
 ```junos
 cli
+    ?
+    <tab>
     configure
         edit interfaces lo0
             edit unit 0 family inet
@@ -1270,12 +1272,13 @@ cli
 
         commit  // kontrola logiky, aplikacia zmien
         commit and-quit  // commit + exit z konfig rezimu
-        commit check  // iba skontroluje logiku
-        commit confirmed  // aplikuje zmeny na urcity cas, ak sa zmeny nepotvrdia tak vrati zmeny naspat
+        commit check  // iba skontroluje logiku (neaplikuje)
+        commit confirmed  // aplikuje zmeny na urcity cas, ak sa zmeny nepotvrdia (prikaz commit) tak vrati zmeny naspat
 
     // ipv4 adresacia
     show interfaces terse
     configure
+        // unit = subinterface?
         set interfaces em0 unit 0 famil inet address 192.168.1.1/24
         show | compare
         commit
@@ -1285,16 +1288,17 @@ cli
 
     show route
 
+    // nie je potrebne zapinat ipv6
     // ipv6 adresacia
     configure
-        set interfaces em0 unit 0 famil inet6 address fe80::1/64
+        set interfaces em0 unit 0 famil inet6 address fe80::1/64  // maska moze byt hocijaka
         set interfaces em0 unit 0 famil inet6 address 2001:dead:beef::1/64
         // ipv6 je automaticky aktivovana, ziadne 'ipv unicast-routing'
-    show route
+    show interfaces terse
 
     // loopbacks - nepodporuje viac ako 1, ale da sa dat viac adries na jedno rozhranie
         edit interfaces lo0 unit1
-            set family inet address 192.168.1.200
+            set family inet address 192.168.1.200/32
 
     // static route
         set routing-options static route 0.0.0.0/0 next-hop 10.0.0.1
@@ -1376,6 +1380,7 @@ Pozor na farbicky
 
 ```routeros
 /export show-sensitive  # bez pouzivatelskych uctov, tie sa tu neukladaju
+
 /interface bridge
     add name=lo0
 /interface etherent
@@ -1394,16 +1399,19 @@ Pozor na farbicky
 /ip service disable telnet
 /ip service set ssh port=2222
 
+# by default su interfaces zapnute
 /interface print
 /interface disable ether1
+/interface enable ether1
 /interface disable numbers=0,1
 
-# loopback - virtualny interface bez portov
+# loopback - virtualny interface (bridge) bez priradenia fyzickych portov
 /interface bridge add name lo0
+
 /interface print
 /interface bridge print brief
 
-# samostatny config
+# config switchu
 /interface bridge add name=switch1
 /interface bridge port add bridge=switch1 interface=ether1
 /interface bridge port add bridge=switch1 interface=ether2
@@ -1411,26 +1419,71 @@ Pozor na farbicky
 
 # vlan
 /interface bridge add name=switch1 vlan-filetring=yes
-/interface bridge port add bridge=switch1 interface=ehter1
-/interface bridge port add bridge=switch1 interface=ehter2 pvid=20
+/interface bridge port add bridge=switch1 interface=ehter1  # trunk port
+/interface bridge port add bridge=switch1 interface=ehter2 pvid=20  # access port
 /interface bridge port add bridge=switch1 tagged=ether1 untagged=ether2 vlan-ids=20
 # prenasane su iba vlans ktore su explicitne povedane ze sa maju prenasat (opacna logika ako cisco)
 /interface bridge vlan print
 
-# routing vlan
+# intervlan routing - subrozhrania, SVI
 /interface vlan add interface=ether1 vlan-id=10 name=ether1.10
 /interface vlan add interface=switch1 vlan-id=20 name=vlan20
 /interface vlan print
 
-# ehter channel
+# ehterchannel (LACP)
 /interface bonding add name=bond0 slaves=ether1,ether2 mode=802.3ad  # lacp
 /interface bonding print
 
-# cdp - iba verzia 1
+# cdp (iba verzia 1) + lldp + mndp
 /ip neighbor print detail
 
 # adresacia
 /ip address add address=192.168.1.1/24 interface=lo1
 /ip address remove numbers=2
+/ip address remove [find interface=lo0]
 /ip address print
+/ip route print
+
+# ipv6
+/system package print
+/system package enable ipv6
+/system reboot
+/ipv6 address add address=2001:aaaa::1/64 interface=ehter1
+/ipv6 address print
+/ipv6 route print
+
+# dhcp server
+/ip pool add name=dhcp1 ranges=192.168.1.1-192.168.1.254
+/ip dhcp-server network add address=192.168.0.0/24 gateway=192.168.1.1 dns-server 8.8.8.8
+/ip dhcp-server add name=dhcp-server1 address-pool=dhcp1 interface=ether1 disabled=no
+/ip dhcp-server print
+/ip dhcp-server lease print detail
+
+# dhcp klient
+/ip dhcp-client add interface=ehter1 disabled=no
+/ip dhcp-client print
+
+# nat celkovo je rozdiely oproti cisco
+# nat - staticky - 1:1
+/ip address add address=1.1.1.1/30 interface=ether1  # vonkajsi interface
+/ip firewall nat add chain=srcnat src=address=192.168.1.0 action=src-nat to-addresses=1.1.1.1  # smerom von
+/ip firewall nat add chain=dstnat dst-address=1.1.1.1 action=dst-nat to-addresses=192.168.1.0  # smerom dnu
+
+# pnat overload
+/ip firewall ant add chain=srcnat src-address=192.168.1.0/24 action=masquerade out-interface=ether1
+
+# port forwarding
+/ip firewall nat add chain=dstnat in-interface=ehter1 dst-port=443 protocol=tcp action=dst-nat to-address=192.168.1.1 to-ports=443
+
+# pppoe
+/interface pppoe-client add add-default-route=yes disabled=no allow=pap,chap interface=ehter1 name=WAN user=mojemeno password=mojeheslo
+/ip firewall nat add chain=srcnat src-address=192.168.1.0/24 action=masquerade out-interface=WAN
+
+# static routing
+/ip route add dst-address=192.168.2.0/24 gateway=192.168.0.1
+/ip route print
+/ipv6 route add ...
+/ipv6 route print
+
+# ospf
 ```
