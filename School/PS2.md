@@ -1463,7 +1463,7 @@ Pozor na farbicky
 /ip dhcp-client add interface=ehter1 disabled=no
 /ip dhcp-client print
 
-# nat celkovo je rozdiely oproti cisco
+# nat celkovo je rozdielny oproti cisco
 # nat - staticky - 1:1
 /ip address add address=1.1.1.1/30 interface=ether1  # vonkajsi interface
 /ip firewall nat add chain=srcnat src=address=192.168.1.0 action=src-nat to-addresses=1.1.1.1  # smerom von
@@ -1487,6 +1487,122 @@ Pozor na farbicky
 
 # ospf
 ```
+
+## Automatizacia
+
+Konfiguracia velkeho mnozstva zariadeni
+
+### Smart zariadenia
+
+Zariadenia ktore zbieraju rozne informacie a na ich zaklade vyhodnocuju nejake rozhodnutia
+
+### Datove formaty
+
+Spolocny "jazyk" ktoremu rozumeju zariadenia ktore spolu komunikuju  
+Definuje sposob ako ukladat a zdielat informacie
+
+Najcastejsie formaty
+
+- JSON
+- XML
+- YAML
+
+### Application Programming Interface (API)
+
+Softver, ktory umoznuje ovladanie a pristup k sluzbam a udajom aplikacie
+
+Typy
+
+- Otvorene/verejne
+  - Dostupne verejnosti bez obmedzeni
+  - Casto sa vyzaduje API Key (limitovanie poctu ziadosti, statistiky, ...)
+- Interne/Privatne
+  - Pouzite vo firme na pristup k firemnym udajom
+- Partnerske
+  - Mezdi firmami na zaklade zmluv
+
+Standardy
+
+- SOAP - Simple Object Access Protocol
+  - Format XML
+  - Transport HTTP alebo SMTP
+- REST - Representional State Transfer
+  - HTTP
+  - JSON, YAML, XML
+  - Jednoduche
+  - Najviac pouzivane
+- NETCONF
+  - Nahrada SNMP
+  - SSH
+  - XML
+- RESTCONF
+  - Podobne REST
+  - Config zariadeni
+  - XML, JSON, YANG modely
+- XML-RPC (Remote Procedure Call)
+- JSON-RPC (Remote Procedure Call)
+
+#### RESTful API
+
+API je RESTful ak dodrziava tieto zasady
+
+- Klient-Server
+  - Server generuje udaje (backend)
+  - Klient vizualizuje udaje (frontend)
+  - Oba mozu byt nahradene bez zmeny druheho
+- Stateless
+  - Klientske data nie su ulozene na serveri
+  - Stav relacie si uklada klient
+- Cacheable
+  - Klient si moze predpripravit odpovede dopredu
+
+#### Rozdiely URI, URL, URN
+
+URI - Uniform Resource Identifier - `https://www.example.com/book.html#page100`
+URL - Uniform Resource Locator - `www.example.com/book.html`
+URN - Uniform Resource Name - `https://www.example.com/book.html`
+
+Protokol - `https://`
+Fragment - `#page100`
+
+### Nastroje na spravu konfiguracie
+
+Vacsinou vykonavaju automatizaciu (vykonanie sluzieb na zariadeni) a orchestraciu (usporiadanie automaticky uloh do celkov, ktore formuju proces alebo workflow)
+
+Najcastejsie pouzivane nastroje
+
+- Ansible - bez agenta (nemusime na koncove zariadenie nic instalovat)
+- Puppet
+- Chef
+- SaltStack
+
+### Intent-Based Networking (IBN)
+
+Stavia na principe SDN
+
+Podla Cisca sa sklada z 3 faz
+
+- Translation
+  - Zachyti pouzivatelsku poziadavku na zmeny v sieti
+  - Prelozi ju na politiky, ktore je mozne aplikovat na zariadenia
+- Activation
+  - Vytvorene politiky sa aplikuju na dane zariadenia
+- Assurance
+  - Kontroluje a monitoruje spravnost nastaveni
+
+IBN vnima fyzicku a virtualnu infrastrukturu (Fabric)
+
+- Overlay - logicka viratualna topologia, vyuziva tunely
+- Underlay - fyzicka topologia
+
+Samotna implementacia IBN Fabric - Cisco Digital Network Architecture (DNA)
+
+- Prvky Cisco DNA
+  - SD-Access
+  - SD-WAN
+  - Cisco DNA Assurance
+  - Cisco DNA Security
+- Riadenie cez Cisco DNA Center (kontroler)
 
 ## Virtualizacia
 
