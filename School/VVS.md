@@ -685,3 +685,112 @@ Struktura dat
 ### IEEE 802.15.4 (ZigBee)
 
 Priamo MicroPython nepodporuje, ale da sa to nejako spravit
+
+## Napajci podsystem
+
+Vstavany system
+
+- Riadiaci a vypoctovy podsystem
+- Snimanie a predspracovanie dat
+- Akcne cleny (motory, spinace, zosilnovace)
+- Komunikacny podsystem (displeje, tlacidla, internet)
+- Napajaci podsystem
+
+Jednotlive podsystemy sa navzdajom ovplyvnuju
+
+### Napajci podsystem
+
+Zdroj energie - primarne, sekundarne, obnovitelne  
+Uprava napatia - linearne reuglatory, DC/CD menice  
+Riadenie spotreby - vypinanie podsystemov, uprava vykonu, ULP koprocesor
+
+### Zdroj energie
+
+Cudzie
+
+- Pripojenie na siet
+- Centralny zdroj systemu (bateria, motor s alternatorom, ...)
+
+Vlastne
+
+- Baterie
+- Akumulatory
+- OBnovitelne zdroje/ziskavanie energie z okolia (Energy Harvesting)
+
+Kombinovane
+
+#### Baterie
+
+Primarne clanky  
+Vyuzivaju chemicke reakcie, ktore nie su reverzibilne  
+Po vycerpani energie su nepouzitelne  
+Rozne typy - galvanicke clanky, elektrolyticke, palivove, prietokove  
+Najbeznejsie zlozenie: anoda, katoda, elektrolyt (suchy, mokry)
+
+Parametre
+
+- Kapacita - Ah, mAh, Wh - zvycajne nedokazeme vyuzit vsetko
+- Merna energia - Wh/kg, kJ/kg, Wh/l
+- Merny vykon - W/kg, W/l
+- Menovite napatie
+- Vybijacia krivka
+- Samovybijanie - %/mesiac
+- Format - AA, AAA, D, LR44, CR2032
+
+Typy primarnych baterii
+
+- Zinkove
+- Alkalicke
+- Litiove
+- Metal-Air
+  - Zinok-vzduch
+  - Hlinik-vzduch
+  - Zelezo-vzduch
+- Rezervne
+- Biologicke, vodou aktivovane, ...
+
+#### Akumulatory
+
+Sekundarne clanky  
+Reverzibilne chemicke reakcie
+
+Parametre
+
+- Pocet cyklov nabitie/vybitie
+- Efektivnost cyklu
+- C - suvisi s kapacitou - (teoreticky) prud, ktorym by sme bateriu vybili za 1 hodinu
+- xC maximalny vybijaci prud
+
+Zivotnost akumulatorov
+
+- Zavisi od DOD (Depth of Discharge)
+- Cim menej kapacity budeme vyuzivat, tym viac cyklov vydrzi
+- Napr. budeme vyuzivat 50% - 1600 cyklov, ale ked iba 30% tak 2150 cyklov
+- Matematicky - ak budeme vyuzivat na maximalnu kapacitu (takmer 100%) tak je to efektivnejsie
+
+Typy akumulatorov
+
+- Pb - autobaterie
+- NiCd
+- NiMH
+- Li-Ion
+- Li-Po
+- LiFePo
+
+#### Ziskavanie energie z okolia
+
+Energy Harvesting - zvycajne obnovitelne zdroje  
+Zdroj energie je casto nespolahlivy (slnko, vietor, ...) - kombinacia s akumulatormi alebo superkapacitormi  
+Zlozitejsie nez baterie  
+Dlhsia zivotnost  
+Nizsia zataz prostredia (polemizovatelne)
+
+Zdroje energie
+
+- Slnecne kolektory - fotovolticky jav, najma v exterieri
+- Termoclanok - rozdiel teplot
+- Piezo-clanok - vibracie
+- Magneticka indukcia - oscilacie
+- Elektromagneticke vlnenie - "kradnutie" signalu
+- Vietor, voda - vrtula, turbina + dynamo (aj v mikro prevedeni)
+- Exoticke zdroje - pohyb konarov, prud krvi, bioenergia (stromy), oxidacia krvneho cukru, vlhkost vzduchu, ...
