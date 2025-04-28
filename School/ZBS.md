@@ -533,3 +533,125 @@ Bluetooth profil
 - Napr. A2DP, HID, HFP, HSP, SSP, ATT, GATT, prenos suborov, remote control, tlac, video, LAN, Mesh, proximity
 
 Verzie 1.0 (2000), 2.0 (2005), 3.0 (2009), 4.0 (2010, aj BLE), 5.0 (2016), 5.4 (2023)
+
+### Bluetooth Low Energy
+
+Urceny viac na IoT  
+Pre systemy napajane bateriami - malo prenasanych dat, nie prilis casto  
+Energiu zerie aj vysielanie aj prijimanie
+
+Nekompatibilne s BT Classic  
+40 kanalov - 2 MHz  
+Discovery na 3 kanaloch (32 BT Classic)  
+Spatna kompatibilita
+
+Long-range vs. High-speed
+
+BLE je asymetricke - vacsina prace je na Mastrovi (riadenie spojenia, casovanie, spracovanie dat)
+
+Gombikova bateria >1rok  
+Male pakety - 244B  
+Kratke vysielacie a prijimacie okna
+
+V porovnani s konkurenciou
+
+- Nizsia spotreba
+- Specifikacia zadarmo
+- Lacnejsie moduly a cipsety
+- Pritomnost vo vacsine smartfonov
+
+Podporuje aj prenos audia, many-to-one aj one-to-many (v5.2)
+
+#### Hlavne pojmy
+
+Cinnosti
+
+- Inzerovanie (advertising) - pravidelne vysielanie informacii
+- Skenovanie - hladanie inzerujucich zariadeni
+
+Typy zariadeni
+
+- Periferia - inzeruje a umoznuje pripojenie, zdroj dat
+- Centrum - skenuje a moze sa pripojit, spotrebic dat
+- Observer - skenuje, pocuva, ale nepripaja sa
+- Broadcaster - inzeruje, ale neumoznuje pripojenie (majak)
+  - Kazdy moze pocuvat
+  - Nespolahlivy prenos
+
+#### Stavy BLE zariadenia
+
+Periferia
+
+- Stand-by
+- Inzerovanie
+
+Centrum
+
+- Skenovanie
+- Iniciovanie
+- Pripojenie
+
+### Linkova vrstva
+
+Poskytuje abstrakciu fyzickej vrstvy pre vyssie vrstvy  
+Inzerovanie, skenovanie, vytvaranie a udrzovanie spojeni
+
+### Bluetooth Mesh
+
+Mesh - topologia many-to-many  
+2017, zvlast standard  
+Podpora BLE od 4.0, vyzaduje kompletny BLE stack  
+Samolieciaca schopnost (self-healing) - ak nejake zariadenie vypadne, siet by sa mala sama prisposobit
+
+Architektura BT Mesh
+
+1. Bearer layer
+2. Lower transport layer
+3. Upper transport layer
+4. Access layer
+5. Foundation models layer
+6. Models layer
+7.
+8.
+
+#### Terminologia
+
+Unprovisioned device
+
+Nod
+
+- Nod - zakladny typ
+- Relay nod - dokaze preposielat spravy
+- Proxy nod - komunikacia so zariadeniami bez BLE
+- Low power nod - obmedzene napajanie, musi mat priatela
+- Friend nod - priatel LPN, uchovava pre neho spravy
+
+Elementy
+
+Stavy
+
+Vlastnosti
+
+#### Spravy
+
+GET  
+SET  
+STATUS
+
+#### Model
+
+Server model  
+Client model  
+Control? model
+
+#### Adresy
+
+Unicast  
+Multicast  
+Virtualna - jeden/viac elementov v jeden/viac nodoch
+
+#### Publish-subscribe
+
+#### Provisioning
+
+Pridavanie zariadenia do siete
