@@ -1487,3 +1487,201 @@ Pozor na farbicky
 
 # ospf
 ```
+
+## Virtualizacia
+
+Spustanie logicky oddelenych (OS) na jednom fyziskom zariadeni  
+Fyzicky stroj - host  
+Virtualny stroj - guest (virtual machine - VM)
+
+Kadza VM ma "pocit" ze bezi na vlastnom HW, vlastnu vRAM, vlastny priestor na HDD, vlastnu MAC a IP
+
+### Hypervizor (VMM)
+
+Softwarova medzicast ktora dovoluje virtualke rozpravat sa VM so zelezom  
+Niekedy aj Virtual Machine Monitor  
+Neobmedzena kontrola nad VM  
+Prideluje VM zdroje, dokaze spustat vypinat VM, pridavat/odoberat/menit zdroje
+
+#### 1. Typ
+
+Nazyvany aj nativny, bare metal  
+Priamo na HW  
+Management cez web, ...
+
+Napr. Citrix XenServe (Citrix XenCenter), VMware ESX (Vmware vSphere Client)
+
+#### 2. Typ
+
+Nazyvany aj hosted  
+Bezi nad OS  
+Management priamo cez OS (GUI, CLI)
+
+Napr. Oracle Virtualbox, VMware Workstation/Player, KVM (take nieco medzi 1 a 2)/QEMU, Windows Virtual PC
+
+### Siet vo virtualizacii
+
+- Priame pripojenie VM do siete
+- Preklad adries (NAT)
+- Virtualna siet
+- Lokalna (izolovana) siet
+
+### Kontajnerova virtualizacia
+
+Virtualizovana jedna/viac aplikacii, nie cely OS
+
+- Web server
+- Databazovy server
+
+Kontajner je zvycajne prihcystany so zakladnou konfiguraciou  
+Vsetky kontajnery na systeme zdielaju jadro OS
+
+#### Docker
+
+Kontajnerova virtualizacia pre Linuxove programy, v sucastnosti aj nativne na Windows  
+Architektura x86_64, ARM, s390x, ppc64le  
+Integrovany v mnohych technologiach - AWS, OpenStack, Puppet
+
+#### LXC
+
+Skratka pre Linux Container  
+Vie virtualizovat viac procesov v jednom kontajneri  
+Medzistupen medzi Dockerom a virtualizaciou OS
+
+#### LXD
+
+Hypervizor pre LXC kontajnery  
+Nie az tak stabilny ako LXC
+
+#### Incus
+
+Dalsi evolution tohto
+
+## Cloud computing
+
+Zdielany vypoctovy vykon na niekolkych zariadeniach  
+Zakaznik plati sa sluzbu, nie za software
+
+### Modely
+
+Privatny cloud
+
+- Mam to u seba
+
+Komunitny cloud
+
+- Vyuzivany skupinou s rovnakym spolocnym zaujmom
+  - Prepojenie univerzit v ramci jedneho vyskumu
+
+Verejny cloud
+
+- Ponukany verenosti
+- AWS, Microsoft Azure, Google Cloud Platform
+
+Hybridny cloud
+
+- Kombinacia predoslych
+
+### Sluzby
+
+Software ako sluzba (SaaS)
+
+- Aplikacie dostupne cez web, alebo klientske aplikacie
+- Napr.
+  - Ulozny priestor - Google Drive, Dropbox, MS OneDrive
+  - Kancelarske prostredie - MS Office 365
+  - Informacny system
+
+Platforma ako sluzba (PaaS)
+
+- Spravidla pre developerov
+- Prostredia na beh vlastnych aplikacii
+- Napr.
+  - Java Virtual Machine
+  - .NET prostredia
+  - Databazy
+  - Autentifikacia, Autorizacia (AAA)
+
+Infrastruktura ako sluzba (IaaS)
+
+- Poskytovatel poskytuje len konektivity
+- Celkova administracia prostredia je na zakaznikovi
+- Napr.
+  - Pristor pre vlastne VM
+  - Virtualne siete
+  - Firewall-ing
+  - Rozkladanie zataze
+
+Podmoziny
+
+- FwaaS - Firewall
+
+### Orchestracia
+
+Najsilnejsia zbran cloudu  
+Inymi slovamii automatizacia  
+Automatizovane spracovanie niekolko zariadeni naraz  
+Velmi casto nasadzovane vo virtualnych prostrediach
+
+Potrebne odlisit pouzitie
+
+- Automatizacia konzovych zariadeni
+- Automatizacia deploymentu
+
+## SDN - Software Defined Networks
+
+Softwarovo definovane siete  
+Virtualizacia sietovych funkcii  
+Programovo centralne riadena siet  
+Nejaky controller co vsetko ovlada  
+Cez API  
+Mnozstvo protokolov - STP, OSFP, IGMP, ...  
+Nemaju v laske casty pohyb zariadeni
+
+V datovych centrak 10-ky tisic fyzickych serverov  
+1 fyzicky server != 1 virtualny server
+
+### Organizovnie
+
+Kontroler je centralny riadiaci prvok celej siete  
+Datova robin distribuovana vnikolkych zariadeniach
+
+### Architektura SDN
+
+RFC7426
+
+Control plane (Riadiaca rovina)
+Forwarding plane (Datova rovina)
+Management plane
+
+#### OpenFlow
+
+Prve standardizovane Southbound API
+
+### SDN kontrolery
+
+POX  
+OpenDayLight  
+OpenMUL
+
+### SDN prepinace
+
+Softwarove
+
+- Open vSwitch
+- Indigo Virtual Switch
+- Cisco Virtual Topology Forwarder
+
+Hardware
+
+- Brocade MLX smerovace
+- HP prepinace
+- Cisco smerovace (IOS-XE, IOS-XR, NX-OS), prepinace Nexus
+- Juniper smerovace a prepinace
+- Mikrotik
+
+## SD-WAN
+
+Paradigmy na WAN siete  
+Kontroler + CPE (Customer Premises Equipment) zariadenia  
+Centralny dashboard - prehlad o stave fyzickych a logickych liniek, oneskorenie, stratovost, jitter
