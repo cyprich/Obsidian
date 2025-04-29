@@ -1276,3 +1276,229 @@ Napr. tab. `os_udaje`
 - RC - NN, PK, datovy typ, format
 - M -
 - P -
+
+---
+
+Mam 2 tabulky - `ucitel` a `katedra`  
+ucitel (veduci) sa odkazuje na katedru, katedra sa odkazuje na ucitela (veduceho)  
+Problem - kde vlozim data prve?  
+Riesenie - `DEFERRABLE` constraint - docasne moze porusit FK, az do commitu
+
+```sql
+alter session set constraints = deferred;
+-- by default je immediate
+
+alter table ucitel
+set
+
+alter table katedra
+set
+```
+
+---
+
+Kardinalita = pocet riadkov - `card(R)`  
+Stupen = pocet stlpcov
+
+Vlastnosti relacie
+
+- neobsahuje duplicitne ntice
+- ntice su neusporiadane
+- mtice atributov su neusporiadane
+- hodnoty atributov su atomicke
+
+## Kurzory
+
+Viac definicii...
+Sluzi na spracovanie selectu v nejakom bloku kodu?  
+Objekt jazyka SQL, ktory spristupnuje zaznamy v mnozine ziskanej prikazom select  
+Mechanizmus, ktory umozni spristupnit riadky tabulky
+
+Hostitelska premenna - `:OC`, `:PRIEZVISKO`, niekde aj `$OC`, `$PRIEZVISKO`
+
+`select ... into`
+
+### Sekvencny kurzor
+
+Zacina na zaciatku a postupne sa posuva (len) vpred
+
+Praca s kurzorom
+
+1. declare
+2. open - vsetko mozne skontroluje, alokuje pamat, ...
+3. fetch - spristupnenie jednotlivych riadkov selectu
+4. update/delete
+5. close - v oracle dealokacia
+
+`commit` a `rollback` spravia automaticky `close`
+
+Atributy
+
+- `%ISOPEN`
+- `%%FOUND`
+- `%%NOTFOUND`
+- `%%ROWCOUNT`
+
+```sql
+declare cursor cur is select ...
+begin
+    open cur
+    loop
+        fetch ...
+        exit when cur%notfound
+    end loop
+    close cur
+end;
+/
+
+---
+
+type typ is record (rod_cislo char(11), ...)
+
+---
+
+declare cursor cur is select ...
+begin
+for riadok in cur  -- premenna riadok je record
+    loop
+        ...
+    end loop
+end;
+
+---
+
+declare cursor cur is select ...
+begin
+for riadok in (select ...)
+    loop
+        ...
+    end loop;
+end;
+/
+```
+
+### Posuvny cursor
+
+Oracle ho nema  
+Dokaze sa pohybovat aj dopredu aj dozadu
+
+Operacie
+
+- first
+- last
+- prior
+- next
+- absolute(n)
+- relative(n)
+
+V MSSQL je to `scroll cursor`
+
+### Cursor for update
+
+```sql
+declate
+    cursor cur is select ... for update
+begin
+    for i in cur loop
+        update student ...
+    end loop;
+end;
+/
+```
+
+### Bulk collect
+
+```sql
+select nieco1, nieco2, nieco3, ...
+bulk collect into niecoine1, niecoine2, niecoine3, ...
+...
+```
+
+## Execute immediate
+
+Ked chcem vytvorit konta pre vsetkych studentov
+
+```sql
+-- create user login identified by heslo;
+
+create or replace procedure...
+    ...
+
+    temp:='create user ' || login || ' identified by ' || lower(substr(meno, 1, 1)) || lower(substr(priezvisko, 1, 1)) || os_cislo;
+    execute immediate temp;
+
+end;
+/
+```
+
+## Praca s casom
+
+Teraz sa bavime iba o Oracle
+
+Datove typy
+
+- date - datum a cas
+- timestamp(n) - n = pocet desatinnych miest, rozsah 0..9, by default 6
+- timestamp(n) with time zone
+- timestamp(n) with local time zone
+- interval year(n) to month - trvanie nejakej aktivity
+- interval day(n1) to second(n2)
+
+```sql
+select sysdate from dual;  -- na serveri
+select current_date from dual;   -- na klientovi
+
+select systimestamp from dual;  -- aj time zone
+select localtimestamp from dual;
+select current_timestamp from dual;
+```
+
+Rozdiel datumov vrati pocet dni  
+Automaticka konverzia medzi `date`, `timestamp` a podbne
+
+Nepouzivat `substring()`, ale `to_char()` a `to_date()`  
+Parameter `nls_language` pri `to_char()` - v akom jazyku chcem vysledok
+
+- D - den v tyzdni
+- DD - den v mesiaci
+- DDD - den v roku
+- W - tyzden v mesiaci
+- WW - tyzden v roku
+- YY - `to_date('24, YY')` = 2024 - teda 21. storocie
+- RR - `to_date('24, RR')` = = 1924 - teda 20. storocie
+- HH - 12 hodinovy format
+- HH24 - 24 hodinovy format
+- Q - kvartal
+
+_FM_
+
+`nls_date_format`
+
+`select trunc(sysdate, 'DD') from dual;` oreze na uroven dni
+
+---
+
+```sql
+alter session set nls_date_language='English'
+select to_chat(sysdate, 'DAY') from dual;  -- saturday
+
+alter session set nls_date_language='Slovak'
+select to_chat(sysdate, 'DAY') from dual;  -- sobota
+```
+
+---
+
+`to_char(sysdate, 'D')` - ktory den je prvy? pondelok alebo nedela?  
+`alter session set nls_territory='Slovakia`
+
+---
+
+`select * from nls_session_parameters:` - vsetko `nls`
+
+---
+
+`select extract(... from systdate) from dual;`
+
+---
+
+Interval `<zaciatok, koniec)` alebo `<zaciatok, koniec>`
