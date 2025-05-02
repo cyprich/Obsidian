@@ -361,6 +361,10 @@ Proces usporiadania prvkov tak, aby na konci boli v nami definovanom poradi
 Potrebuju efektivne pristupovat k prvkom struktury - O(1)  
 Co sa vacsinou triedi - pole, implicitny zoznam, implicitna neutreidena sekvencna tabulka
 
+Mozno usporiadavat sekvencne a hierarchicky
+
+Operacia `skus_najst()`
+
 Rozdelenie
 
 - Podla umiestnenia struktury
@@ -405,3 +409,71 @@ Rozdelenie
   - Shell
   - Radix
   - Merge
+
+### AUS Tabulka s rozptylenymi zaznamami
+
+Hashtable v Jave, Unordered map v C++
+
+Hesovacia funkcia - mlyncek - musi byt rychla na vypocet  
+Musi rovnomerne rozmiestnovat (rozptylit (odtialto nazov)) prvky v sekvencii
+
+Kolizia - dva rozne kluce nam daju rovnaky hash = rovnake miesto v pamati  
+Mozne riesenia
+
+- Zretazovanie
+  - Prvok "vie" o dalsom prvku s rovnokym hashom - synonymum
+  - Prvok ma okrem kluca a udajov aj synonymumm
+- Vyuzitie existujucej striktury
+  - V tabulke su namiesto zaznamov pointre na ine tabulky
+  - Pri vkladani/vyberani si pomoocu hashu najdeme tabulku ktoru poprosime o vlozenie/vybratie
+  - Kusok viac pamatovo narocne
+- Preplnovacia oblast
+  - Podobne ako zretazovanie
+  - Mame primarnu a preplnovaciu oblast, su bezprostredne z sebou
+  - Pri kolizii vlozime novy prvok na prve volne miesto v preplnovacej oblasti
+  - V primernej oblasti maju prvky pointer na synonymum
+  - V podstate to iste, ale mame suvislu pamat
+- Opatovne hashovanie
+  - Mame viac hashovacich funkcii, kazda spravuje inu oblast
+  - Ak vznikne kolizia pri jednej hash funkcii, skusime druhu, skusime tretiu, ...
+  - Ak vznikne kolizia aj pri poslednej hash funkcii tak koniec sveta
+  - Problem ze ako zvolit velkost oblasti, plytvanie pamatov vs. nemame kam dat prvky
+- Otvorena adresacia
+  - Ak trafime synonymum, najdeme prve volne miesto kam to vlozit
+  - Toto sa nazyva sondovanie (probing)
+  - Moze byt linearne (posuvam o `x` prvkov), sekvencne (posuvam o `1` prvok), kvadraticke (posuvam o `x^y` prvkov), ...
+  - Clustre - zhlukovanie prvkov - napr. hash funkcia `kluc mod 20`
+  - Problem - potrebovali by sme si ulozit info ze kolko prvkov chcelo byt vlozene na dane miesto
+
+### AUS Binarny vyhladavaci strom
+
+Tabulka, ktora je oragizovana ako (usporiadany?) binarny strom  
+Pri vyhladavani - **bisekcia** - skocim do stredu, zahodim polovicu v ktorej sa hodota urcite nenachadza, skocim do stredu toho co mi ostalo atd...  
+Kuzelne su usporiadane pomocou inorder, lavy syn ma mensi kluc, pravy syn ma vacsi kluc,  
+Ppri vkladani, namiesto posuvania vsetkeho (pri implicintej sekvencii) tu iba vlozime dalsieho syna poslednemu vrcholu  
+Problem ak vkladame vela klucov ktore su uz utriedene - dostaneme zdegenerovanu hierarchiu ktora ma len lavych/pravych synov
+
+Vyvazovanie - aby sme mali co najvyvazenejsiu hierarchiu - aby sa nestalo/zredukovalo to co je napisane v riadku predtym
+Da sa robit roznymi sposobmi
+
+- Pridame do tabulky extre informaciu - Treap
+- Pridame informaciu a topologiu? - Cerveno-cierny strom, AVL strom
+- Automaciky vyvazovanie - Splay strom
+
+Rotacie - ak nie je vyvazene, tak potrebujeme nieco odstat o uroven vyssie/nizsie
+
+- Jednoducha lava rotacia
+- Jednoducha prava rotacia
+- Dalsie rotacie...
+
+Ja (ako vrchol) sa chcem dostat o uroven vyssie  
+Jedini dvaja dotknuti su moj otec a moj "brat"  
+Iba prepointrovavam
+Z otca spravim syna  
+Brat bude syn povodneho otca
+
+#### Trep
+
+Kombinacia Tree a Heap  
+Kazdy prvok je okrej kluca a udajov navyse charakterizovany nahodnou prioritou  
+Platia podmienky lavostrannej haldy - **Priorita otca je vyssia alebo rovna ako priorita oboch synov**
