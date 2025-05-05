@@ -655,3 +655,280 @@ Virtualna - jeden/viac elementov v jeden/viac nodoch
 #### Provisioning
 
 Pridavanie zariadenia do siete
+
+## IEEE 802.15.4
+
+Odzvdy vytvarany na prenos udajov (narozdiel od BT)  
+V minulosti - oproti BT kusok pomalsie, kusok vacsia vzdialenost  
+V sucastnosti - mensia vzdialenost aj rychlost ako BLE
+
+Verzie 802.15.4
+
+- 802.15.4-2003 - Povodna verzie - 2 fyzicke vrstvy
+- 802.15.4-2006 - 2 nove fyzicke vrstvy, uprava MAC
+- 802.15.4-2011 - 2 nove fyzicke vrstvy pre Cinu a Japonsko, Medical Band
+- 802.15.4-2015 - Smart Uility Networks (SUNs), Television White Space (TVWS), ...
+- 802.15.4-2020 - Nova fyzicka vrstva - China medical band - CMB
+
+3MHz kanaly, neprekryvaju sa, je medzi nimi medzera  
+Vzdialenost (rozostup) medzi kanalmi 5MHz
+
+Signal-to-Noise Ratio (SNR) a Bit Error Rate (BER) graf - viacej odolny voci sumu?
+
+### Hlavne ciele
+
+Jednoducha ainstalacia  
+Spolahlivy prenos  
+Extremne nizke naklady  
+Znacna zivotnost baterii  
+Jednoduchy a flexibilny protokol
+
+### Vlastnosti
+
+Topologia hviezda alebo peer-to-peer  
+Max `2^16` zariadeni v sieti (16bit alebo 64b adresa)  
+Moznost alokacie prenosoveho pasma (TDMA - Time Division Multiple Access - Pristup viacerych k jednemu)  
+Pristupova metoda CSMA-CA, ALOHA  
+Spolahlivy prenos  
+Bezpecna komunikacia
+
+### Aplikacie
+
+Automatizacia domacnosti  
+Priemyselna automatizacia  
+Vzdialene meranie  
+Interaktivne hracky  
+Sledovanie polohy  
+Zdravotnictvo  
+Zivotne prostrenie  
+Polnohospodarstvo  
+Remote control
+
+### Typy zariadeni
+
+Fyzicke zariadenia
+
+- FFD - Full-function Device
+- RFD - Reduced-function Device
+
+Logicke zariadenie
+
+- PAN koordinator (FFD)
+- Koordinator (FFD)
+- Zariadenie (device) (RFD, FFD)
+
+### Pristup mediu
+
+CSMA-CA - nahodne dlhe cakanie pred kontrolou media  
+ALOHA - obsadenost kanala sa nekontroluje
+
+#### Hodnotenie volnosti kanala (Clear Channel Assessment)
+
+Energy Detection (ED)  
+Carrier Sense  
+Carrier Sense + ED  
+UWB preamble sense  
+ALOHA
+
+### Architektura 802.15.4
+
+Ako aj vsetky tieto standardy, definuje len prve 2 vrstvy  
+Fyzicka vrstva - RF Transceiver  
+MAC podvrstva - poskytuje pristup k fyzickej vrstve  
+Prepojenie vrstiev pomocou rozhrani - SAP (Service Access Point)
+
+Komunikacia medzi vrstvami - Primitiva
+
+- Request
+- Confirm
+- Indication
+- Response
+
+#### Fyzicka vrstva
+
+Prenos paketov (PPDU) cez fyzicky kanal
+
+Aktivacia/deaktivacia RF  
+Vyber kanala  
+Meranie ED a LQI (Link Quality Indication)  
+Clear Channel Assessment  
+Precision Ranginng (Len UWB PHY)
+
+#### MAC Podvrstva
+
+Prenos MPDU (MAC Protocol Data Unit)
+
+Pristup ku kanalu  
+Manazment beaconov, GTS manazment  
+Validacia a potvrdzovanie ramcov  
+Pripojenie a odpojenie zariadni  
+Zabezpecenie ramcov
+
+### Typy sieti
+
+#### Beacon-enabled PAN
+
+Pravidelne vysielanie beaconov koordinatorom  
+Synchronizacia zariadeni  
+Ciastocne riadena komunikacia  
+Uspavanie zariadeni  
+Podpora low-latency zariadeni
+
+#### Nonbeacon-enabled PAN
+
+Klasicke siete
+
+### Beacony
+
+Definovane dvoma cislami - Superframe duration (SD) a Beacon interval (BI)  
+Beacon order, superframe order  
+`0` <= `SuperframeOrder` <= `BeaconOrder` <= 14  
+Ked je iba BI a nie SD, tak spime = setrime energiu
+
+Velkost CAP  
+GTS  
+Povolenie asociacie  
+PAN koordinator  
+Indikacia cakajucich paketov
+
+### Typy prenosov
+
+### Spolahlivost prenosu
+
+Potvrzdovanie (ACK)  
+Opakovany prenos
+
+Nepotvrdzuje sa beacon, ACK ramec, broadcast
+
+### Zabezpecenie komunikacie
+
+Obmedzenia dane vlastnostami siete  
+Symetricke sifrovanie (AES 128)
+
+Hlavne bezpecnostne sluzby
+
+- Data Confidentality - dovernost - rozumiet tomu maju iba ti dvaja, co spolu komunikuju
+- Data Authenticity - potvrdenie, ze od koho su realne data, aby nemohli byt podvrhnute
+- Replay Protection - ochrana voci opakovaniu dat
+
+## ZigBee
+
+Zalozeny na 802.15.4  
+Aliancia ZigBee od roku 2002 (`802.15.4` od 2003)  
+Transformacia na Connectivity Standards Aliance - CSA  
+Dnes uz vela (takmer vsetky?) spolocnosti - Amazon, Intel, Google, ...  
+Najcastejsie pouzivana technologia na domacu automatizaciu
+
+ZigBee direct - ovladanie ZigBee pomocou BLE
+
+### Vlastnosti
+
+V podstate to iste ako `802.15.4`
+
+- Jednoducha instalacia (self-configuring)
+- Spolahlivost (self-healing)
+- Rozlahle siete
+- Velka vydrz baterii (aspon 2 roky)
+- Podpora zelenych technologii
+- Bezpecnost
+- Nizke naklady
+- Globalne pouzitie
+
+### Vyhody
+
+Interoperabilita  
+Nezavislost na vyrobcovi - multi-vendor zariadenia, komunikacia medzi nimi bude fungovat  
+Nakladova efektivita  
+Uspora casu
+
+### Architektura
+
+ZigBee stack je postaveny nad PHY a MAC Layer  
+Definuje sietovu vrstvu, Application Support Sublayer, ZigBee Device Object
+
+### Typy zariadeni
+
+Fyzicke zariadenia
+
+- FFD - Full-function Device
+- RFD - Reduced-function Device
+
+Logicke zariadenie
+
+- koordinator (FFD, PAN koordinator)
+- Router (FFD, koordinator)
+- Zariadenie (device) (RFD, FFD, device)
+
+Doplnkove logicke zariadenia
+
+- Trust Center
+- Koncentrator
+- Network Channel Manager
+- Binding Cache
+- Discovery Cache
+
+### Topologie
+
+Hviezda, Mesh, Cluster Tree (hierarchicka struktura, mozeme vyuzivat beacons)
+
+### Pridelovanie adries
+
+Nahodne
+
+- Jednoduche
+- Moznost konfliktov
+
+Distribuovane
+
+- Len v stromovej strukture
+- Nemoze dojst ku konfliktu
+- Moznost predcasneho vycerpania adries
+- Da sa vyuzit na smerovanie
+
+### Aplikacny profil
+
+Definuje sposob komunikacie  
+Jedinecne ID (16bit)
+
+#### Profil
+
+- Typ zariadeni (Device Description - zoznam clustrov)
+- Definica clustrov (sprav)
+- Cluster = Zoznam atributov
+
+Zakladny profil - device profil (pre ZDO)
+
+Verejne profily
+
+- Home automation
+- Smart energy
+- Health Case
+- Light Link
+- Building Automation
+- Green Power
+
+ZigBee 3.0 - zjednotenie profilov, ktore spolu suvisia
+
+#### Zariadenie
+
+- Viac profilov
+- Rozne Device Description
+- Pre kazdy endpoint jeden profil
+
+### Sietova vrstva
+
+Route discovery
+
+- Unicast, Multicast, Many-to-One
+- Route discovery table (docasna)
+- Smerovacia tabulka
+- Ohodnocovanie ciest
+- Zaznam cesty
+
+### Popis zariadeni
+
+Node Descriptor  
+Power Descriptor  
+Simple Descriptor  
+Complex Descriptor  
+User Descriptor
