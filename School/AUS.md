@@ -472,8 +472,75 @@ Iba prepointrovavam
 Z otca spravim syna  
 Brat bude syn povodneho otca
 
-#### Trep
+#### Treap
 
 Kombinacia Tree a Heap  
 Kazdy prvok je okrej kluca a udajov navyse charakterizovany nahodnou prioritou  
 Platia podmienky lavostrannej haldy - **Priorita otca je vyssia alebo rovna ako priorita oboch synov**
+
+## Sorting
+
+### Shell sort
+
+Vylepsuje insert sort  
+Ciastocne sa triedi po 'krokoch'  
+Zoradujeme prvky ktore su voci sebe vzdialene o velkost kroku  
+Napr. krok 5 = zotriedime kazdych 5 krokov  
+Krok sa znizuje, az kym nepride po 1
+
+Podla toho aku sekvenciu krokov si zvolime - od $O(n^2)$ po $O(n^{\frac{4}{3}})$
+
+### Radix sort
+
+To co triedime musi byt rozlozitelne - `int` na cifry, `string` na `char`, `osoba` sa neda - Komponent kluca  
+Jednotlive casti musia nadobudat konecny pocet hodnot  
+_este nieco dalsie_  
+Zabera vela pamate  
+Zlozitost _v podstate_ $O(n)$
+
+Spravime _priehradku_ pre kazdy komponent kluca  
+Nad kazdou priehradkou robime FIFO
+
+...v podstate zoradime na urovni jednotiek, potom desiatok, potom stoviek
+
+### Merge sort
+
+Zoberie "jednotice", usporiada do dvojic  
+Zoberie dvojice, usporiada do stvoric  
+Zoberie stvorice, usporiada do osmic...
+
+Mam 2\*FIFO (stvorice) a vyberam mensi prvok, vkladam do osmice
+
+Zlozitost $O(n * log_2(n))$
+
+## Sortovanie sekvencnych suborov
+
+Mame velky subor a nezmesti sa do operacnej pamate  
+Musime triedit citanim a zapisovanim na disk  
+Treba minimalizovat tieto operacie
+
+Vytvaranie monotonii -  
+Monotonia je ulozena na disku  
+Buffer
+
+V principe podobne ako merge sort
+
+## Sortovanie vyuzitim paralelnych prostriedkov
+
+Graficka karta  
+Vypoctov musi byt vela a musia byt rovnake, a idealne co najrychlejsie na vypocet
+
+Komparator - porovnaj  
+Komparacna siet  
+Linky  
+Triediaca siet  
+Rodina  
+Hlbka triediacej siete - zlozitost = O(hlbka)
+
+Bitonic sort  
+Bitonicka sekvencia - prave raz stupa, prave raz klesa  
+Half cleaner  
+Bitonic sorter  
+Modifikovany half cleaner  
+Merger  
+Vysledna zlozitost $log_2(n) * log_2(n) = (log_2)^2(n)$

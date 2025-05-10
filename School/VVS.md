@@ -794,3 +794,171 @@ Zdroje energie
 - Elektromagneticke vlnenie - "kradnutie" signalu
 - Vietor, voda - vrtula, turbina + dynamo (aj v mikro prevedeni)
 - Exoticke zdroje - pohyb konarov, prud krvi, bioenergia (stromy), oxidacia krvneho cukru, vlhkost vzduchu, ...
+
+### Uprava napatia
+
+Linearny napatovy regulator
+
+Spinane zdroje (DC/DC menice)
+
+- Z jednosmerneho napatia robi ine jednosmerne napatie
+- Mozu napatie zvysovat aj generovat zaporne napatie
+
+### Hlaboky spanok
+
+```python
+ipmort machine
+
+rtc = machine.RTC()
+rtc.memory([data])
+```
+
+## Optimalizacia
+
+Python - objektovo orientovany programovaci jazyk  
+Implementacie - CPython, Jython, IronPython, PyPy, MicroPython, ...
+
+Micropython sa kompiluje do bajtkodu (podobne ako CPython)  
+Bajtkod sa ulozi do RAM a odtial sa vykonava na virtualnom stroji
+
+Nevytvarat globalne premenne pocas importu (?)
+
+### Optimalizacia vyuzitia RAM
+
+#### Frozen module
+
+(Nieco?) sa spusta priamo z flash, nie z RAM  
+Ak mame nieco konstatne, dobre definovat ako `bytes` - budu ulozene vo flash namiesto RAM
+
+#### Cross-compiler (mpy-cross)
+
+Nastroj pre skompilovanie `.py` -> `.mpy`  
+Netreba neskor kompilovat, spusta sa priamo, kod sa nahra rychlejsie  
+Nie je potrebna RAM na kompilaciu  
+Zabera menej miesta vo flash  
+`.mpy` je uprednostnovane pred `.py`  
+Dalsia vyhoda - ked predavame soft, tak predavanim tohto neuvidia samotny skript (existuje dekompilator?)
+
+#### Vyuzitie `const()` na definovanie konstant
+
+```python
+ROWS = const(33)  # globalna premenna
+_COLS = const(0x10)  # lokalne
+```
+
+#### Pouzivat vhodne typy
+
+`int` zabera 4 bajty  
+Bajt zabera len jeden bajt :)  
+`[1, 2, 3]` vs `b'\1\2\3`  
+Rozsah `0` az `255`
+
+#### Vopred alokovat buffer
+
+Pomaha vyhnut sa fragmentacii  
+Alokovat buffer je najlepsie ako bytearray
+
+Najlepsie takto
+
+```python
+buf = bytearray(100)  # 100 bytes?
+
+while True:
+    spi.readinto(buf)
+    # spracovanie dat v buf
+```
+
+Horsie takto
+
+```python
+while True:
+    var = spi.read(100)
+    # spracovanie dat
+```
+
+Najhorsie takto (nevhodny typ)
+
+```python
+buf = []
+while True:
+    for i in range(100):
+        buf.append(spi.read(1))
+```
+
+#### Praca s haldou
+
+Fragmentovana  
+Permanentne objekty (buffre) inicializovat co najskor
+
+Manualne vyvolanie Garbage Collectora
+
+```python
+import gc
+gc.collect()
+```
+
+#### Kontext manazer
+
+Takto dobre
+
+```python
+with open("some_file", "w") as file:
+    file.write("ahoj")
+```
+
+Takto nie dobre
+
+```python
+file = open("some_file", "w")
+try:
+    file.write("ahoj")
+finally:
+    file.close()
+```
+
+### Optimalizacia rychlosti
+
+#### Pouzivat efektivne algoritmy
+
+#### Vyhnut sa pouzitiu `float` ak nie je HW podpora
+
+Ak je iba SW podpora, tak je to niekolkonasobne pomalsie
+
+#### `frozen` module a `cross-compiler`
+
+Mozne aj 100x zrychlenie
+
+#### Inline asembler
+
+Priamo assembler prikazy v MicroPython  
+Celkom hardcore, treba to dobre poznat
+
+#### Pouzitie dekoratorov
+
+`@micropython.native`  
+Nativne strojove namiesto bajtkodu  
+Vacsi kod, ale asi 2x rychlejsi
+
+`@micropython.viper`  
+Pridava dalsie optimalizacie  
+Dalsie optimalizacie  
+Hlavne pre celociselnu aritmetiku a manipulaciu s bitmi  
+Pomaha urcit akeho typu su parametre aj vystup
+
+```python
+@micropython.viper
+def func(arg: int) -> int:
+    # do something
+    pass
+```
+
+---
+
+Meranie casu
+
+```python
+t = time.ticks_us()
+moja_funkcia()
+delta = time.ticks_diff(time.tick_us(), t)
+print(f"Time = {(delta/1000):6.3f}ms")
+```
