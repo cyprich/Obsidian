@@ -1,4 +1,9 @@
 {
   "cssTheme": "",
-  "accentColor": "#4356ea"
+  "accentColor": "#755cf5",
+  "nativeMenus": true,
+  "enabledCssSnippets": [
+    "strikethrough-dark",
+    "undeline-dark"
+  ]
 }

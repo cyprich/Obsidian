@@ -441,7 +441,7 @@ Vztahy smerovacov
 Vkladane priamo do packetu  
 Kazdy ma svoju vlastnu hlavicku
 
-Prechody medzi stavmi
+### Prechody medzi stavmi
 
 1. Down - pociatocny stav
 2. Init - pocujem suseda, ale neviem ci on pocuje mna

@@ -1,0 +1,8 @@
+s, del, 
+.markdown-preview-view .cm-strikethrough,
+.markdown-source-view.mod-cm6 .cm-strikethrough, 
+.markdown-reading-view s {
+	color: #777 !important;
+	text-decoration-color: #777 !important;
+	text-decoration: line-through !important;
+}
