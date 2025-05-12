@@ -1186,6 +1186,63 @@ Which type of traffic must receive a higher UDP priority?
 
 ## Module 10: Network Management
 
+### 10.2 Compare CPD and LLDP
+
+Which protocol is used to gather information about Cisco devices which share the same data link? 
+
+- CDP 
+- ~~LLDP~~
+
+Which protocol works with network devices, such as routers, switches, and wireless LAN access points across multiple manufacturers' devices? 
+
+- ~~CDP~~ 
+- LLDP
+
+### 10.4 SNMP Versions 
+
+Which SNMP version authenticates the source of management messages?
+
+- ~~Version 2~~
+- Version 3
+- ~~Both~~
+
+Which SNMP version provides services for security models? 
+
+- ~~Version 2~~
+- ~~Version 3~~
+- Both
+
+Which SNMP version does not provide encrypted management messages? 
+
+- Version 2
+- ~~Version 3~~
+- ~~Both~~
+
+Which SNMP version is supported by Cisco IOS software? 
+
+- ~~Version 2~~
+- ~~Version 3~~
+- Both
+
+Which SNMP version includes expanded error codes with types? 
+
+- Version 2
+- ~~Version 3~~
+- ~~Both~~
+
+Which SNMP version uses community-based forms of security? 
+
+- Version 2
+- ~~Version 3~~
+- ~~Both~~
+
+Which SNMP version is used for interoperability and includes messages integrity reporting? 
+
+- ~~Version 2~~
+- Version 3
+- ~~Both~~
+
+
 ## Module 11: Network Design
 
 ## Module 12: Network Troubleshooting
