@@ -68,6 +68,15 @@ tmux attach  # most recent session
 tmux attach -t name_of_the_session  # specific session
 ```
 
+Rename session - inside session  
+```shell
+<prefix> b : 
+rename-session new_session_name
+```
 
+Rename session - outside session  
+```shell
+tmux rename-session -t old_session_name new_session_name
+```
 
 # Better navigation

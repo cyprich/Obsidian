@@ -302,6 +302,95 @@ sudo grub-install --terget=x86_64-efi --efi-directory=/boot/efi --bootloader-id=
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
+## CRON
+
+Execute scripts/commands periodically, on schedule  
+
+To edit personal `cron` jobs type this command  
+```shell
+crontab -e
+```
+
+To list personal `cron` jobs type this command
+```shell
+crontab -l
+```
+
+Cron jobs have this structure  
+```shell
+0 3 * * * /path/to/script.sh
+```
+
+Meaning of these columns  
+
+| Field name   | Value (in this case) | Meaning (in this case)   |
+| ------------ | -------------------- | ------------------------ |
+| Minute       | `0`                  | At minute 0              |
+| Hour         | `3`                  | At 3 AM                  |
+| Day of month | `*`                  | Every day                |
+| Month        | `*`                  | Every month              |
+| Day of week  | `*`                  | Every day of the week    |
+| Command      | `/path/to/script.sh` | Run script at given path |
+
+More examples of `cron` jobs
+
+```shell
+# every day at 2 AM
+0 2 * * * /path/to/script.sh
+
+# every 15 minutes
+*/15 * * * * /path/to/script.sh
+
+# every monday at 18:30
+30 18 * * 1 /path/to/script.sh
+
+# every 6 hours
+0 */6 * * * /path/to/script.sh
+```
+
+## Custom service 
+
+Runs given script on system boot with systemd    
+
+Open the config file for new service 
+```shell
+nvim /etc/systemd/system/minecraft.service
+```
+
+It should look something like this 
+```shell
+[Unit]
+Description=Minecraft Server 
+After=network.target
+
+[Service]
+Type=forking
+User=cyprich
+WorkingDirectory=/home/cyprich/minecraft
+ExecStart=/usr/bin/tmux new-session -s minecraft -d '/home/cyprich/minecraft/run.sh'
+ExecStop=/usr/bin/tmux send-keys -t minecraft "stop" C-m
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+To actually apply and use this, type these commands 
+
+```shell
+sudo systemctl daemon-reexec
+sudo systemclt enable minecraft
+sudo systemclt start minecraft
+```
+
+Also some helpful commands... 
+
+```shell
+sudo systemctl status minecraft
+sudo systemctl restart minecraft
+sudo systemctl daemon-reload
+```
+
 # Various
 
 Commands that do not deserve full section, but deserves to be there
