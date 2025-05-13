@@ -932,3 +932,147 @@ Power Descriptor
 Simple Descriptor  
 Complex Descriptor  
 User Descriptor
+
+## LoRa
+
+Long Range  
+Siete s vacsim dosahom (>10km)
+Nizke rychlosti (300 bps - 50 kbps)  
+Nizka spotreba energie - baterie, energy harvesting  
+Sub-gigahertzove pasmo - 169, 433, 866, 915 MHz  
+Oblast pouzitia - IoT, smart-city, logistika, polnohospodarstvo, ...
+
+Standard ma 2 casti
+
+### LoRa - fyzicka vrstva
+
+Proprietary  
+CSS (Chirp Spread Spectrum) - symboly kodovane zmenami frekvencie  
+Forward error correcting  
+Rozne prenosove rychlosti  
+Rozne prenosove rychlosti sa navzajom nerusia  
+Moznost balancovat dosah a rychlost
+
+### LoRaWAN - vyssie vrstvy (MAC, sietova)
+
+Architektura siete  
+Frekvencie, rychlosti, napajanie
+
+### Topologia
+
+Star-of-Stars, bunkova siet (ako mobilne siete)
+
+Casti
+
+- Konove zariadenie
+- Brana (gateway)
+- Centralny sietovy server
+- Aplikacny server
+- Join server
+
+Koncove zariadenia komunikuju priamos branou (single-hop)  
+Brana komunikuje s centrom cez standardne zabezpecene IP spojenie
+
+### Komunikacia
+
+Asynchronna - prenost dat, ked su k dispozicii
+
+Podmienky prenosu
+
+- Pseudonahodna zmena kanala pri kazdom prenose
+- Respektovanie duty-cycle urceneho regulatorom
+- Respektovanie meximalneho casu prenosu urceneho regulatorom
+
+---
+
+Europa - 866 MHz pasmo  
+3 povinne kanaly po 125 kHz + 3 pridavne  
+Rychlost 0.3 - 5kbps  
+Max. objem uzitocnych dat - 51 - 222b  
+Duty cycle <1%
+
+Spreading factor $S_F = log_2(\frac{R_c}{R_s})$
+
+$R_c$ = chip rate  
+$R_s$ = symbol rate
+
+### LoRaWAN Triedy
+
+#### Class A
+
+Baseline
+
+Najnizsia spotreba  
+Ziadna kontrola  
+ALOHA
+
+Jednosmerna komunikacia s obcasnym obojdmernym komunikovanim  
+Pomocou ACK sa mozu prenasat data od gateway ku koncovemu zariadeniu
+
+#### Class B
+
+Beacon
+
+Pravidelne otvaranie/zatvaranie vysielacieho okna  
+Pravidelna obojsmerna komunikacia
+
+#### Class C
+
+Continuous
+
+Stale zapnute
+
+## Sigfox
+
+To iste pasmo ako LoRaWAN  
+Tiez typu one-hop  
+Este nizsia rychlost - 100bps  
+Iba 100Hz kanal (oproti 125KHz)  
+Max 14 sprav za den  
+Sprava max. 12B
+
+## Z-Wave
+
+Hlavne v Amerike  
+Hlavne v ramci domacej automatizacie (osvetlenie, ...)  
+Skor konkurent pre BT Mesh/ZigBee  
+100kbps  
+Max. 232 zariadeni  
+Dozah ~100m exterier, 30m interier  
+Max 4 hopy  
+Vysoka bezpecnost
+
+## ANT
+
+Firma Garmin  
+2.4GHz  
+30m  
+8B dat  
+0.5 - 200Hz  
+12.8kbps, 20kbps, 60kbps  
+Koncept podobny BLE  
+Activity trackers
+
+## Thread
+
+Nadstavba 802.15.4  
+6LoWPAN - IPv6 over Low-Power WPAN  
+IP-adresovatelne, pristup do cloudu
+
+## Matter (CHIP - Connected Home over IP)
+
+Amazon, Apple, Google, ZigBee, IKEA, ...  
+Connectivity standard - aplikacna vrstva  
+Zjednodusit vyvoj, zlepsit interoperability, kompatibilitu  
+Znizit fragmentaciu trhu
+
+## MQTT
+
+Odlahceny sietovy protokol  
+Nizka prenosova rychlost  
+Vyuziva TCP/IP (MQTT-SN - verzia pre Sensor Networks (IoT) bez TCP/IP)  
+Publish-subscribe - prepojenie prostrednictvom tem (topic)  
+Message broker - prijima a preposiela spravy  
+Klienti - generuju/prijimaju spravy  
+Sprava 2B - 256MB  
+QoS - at most once, at least once, exactly once
