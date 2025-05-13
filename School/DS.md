@@ -1502,3 +1502,180 @@ select to_chat(sysdate, 'DAY') from dual;  -- sobota
 ---
 
 Interval `<zaciatok, koniec)` alebo `<zaciatok, koniec>`
+
+## Relacne formalne jazyky  
+
+Tabulka - relacia  
+Riadky - zaznamy/entity/n-tice    
+Stlpce - atributy  
+
+Formalny jazyk - umelo vytvoreny, vytvorene pre specificky ucel  
+
+- Budeme sa zaoberat dvoma
+	- Relacna algebra (RA)  
+	- Relacny kalkul (RK)
+- Pouzivaju sa na optimalizaciu dopytov (dotazov (queries))
+
+### Relacna algebra (RA)
+
+Formalny **proceduralny** dopytovy jazyk navrhnuty na pracu s relacnymi databazami  
+RQL jazyky - Relational Query Language  
+
+Proceduralny = nasleduje mnozinu prikazov (operacii)  
+Zalezi na poradi operacii  
+
+#### Operacie RA
+
+##### Mnozinove operacie
+ 
+- Prienik - $A \cap B$ - $A$ a $B$ su relacie (tabulky), prvky su atributy  
+	- $A = \{a, b, c\}$
+	- $B = \{c, d, e\}$ 
+	- $A \cap B = \{c\}$
+- Zjednotenie - $A \cup B$
+	- $A = \{a, b, c\}$
+	- $B = \{c, d, e\}$ 
+	- $A \cap B = \{a, b, c, d, e\}$
+- Kartezsky sucin - $A \times B$
+	- $A = \{a, b, c\}$
+	- $B = \{c, d, e\}$ 
+	- $A \cap B = \{ac, ad, ae, bc, bd, be, cc, cd, ce\}$
+- Rozdiel - $A - B$
+	- $A = \{a, b, c\}$
+	- $B = \{c, d, e\}$ 
+	- $A \cap B = \{a, b\}$
+	
+##### Relacne operacie
+$operacia_{predikat}(relacia)$
+
+> Predikat = specifikacia pre operaciu 
+
+###### Projekcia - $\Pi$ 
+$\Pi_{atributy}(R)$  
+Generuje relaciu, ktore obsahuje len atributy specifikovane v predikate  
+- `select atr1, atr2 from R;`
+- $\Pi_{atr1, atr2}(R)$
+
+Priklad - vyberte meno a priezvisko z relacie `os_udaje`
+- `select meno, priezvisko from os_udaje;`
+- $\Pi_{meno, priezvisko}(R)$
+
+###### Selekcia - $\sigma$
+$\sigma_{podmienka}(R)$  
+Generuje relaciu, ktora obsahuje zaznamy, pre ktore bola podmienka vyhodnotena ako `TRUE`  
+- `select * from R where podmienka;`
+- $\sigma_{podmienka}(R)$
+
+Priklad - vyberte ludi co maju vek > 20 
+- `select * from os_udaje where vek > 20`
+- $\sigma_{vek > 20}(os_udaje)$
+
+Priklad - vyberte meno a priezvisko ludi, ktori maju > 20 rokov 
+- $\Pi_{meno, priezvisko}(\sigma_{vek > 20}(os_udaje))$
+
+###### Spojenie relacii - $\bowtie$
+$R1 \bowtie_{predikat} R2$  
+Predikat - $R1.PK = R2.PK$  
+Generuje relaciu, ktora obsahuje spojene entity z relacii $R1$ a $R2$  
+
+Inner Join, Left/Right Join, Full Join  
+
+```sql
+select *
+from R1
+inner join R2 on R1.PK = R2.FK;
+```
+
+Napr. z `os_udaje` vyberte `meno` a `rocnik`
+- $\Pi_{os\_udaje.meno, stud.rocnik}(os\_udaje \bowtie _{os\_udaje.rod\_cislo = stud.rod\_cislo}(student))$
+
+###### Agregacia - $\alpha$
+Vypocita funkciu na atribute z relacie R
+- $\alpha_{funkcia(atr)}(R)$  
+- `select funckcia(atr) from R;`
+
+$\alpha_{atr0, funkcia(atr)}(R)$  
+
+> $atr0$ je `GROUP BY`
+
+###### Premenovanie - $\rho$ 
+$\rho(novynazov, R)$  
+
+Pohlad  
+
+$\rho(A, \Pi(\dots))$
+
+#### Optimalizacia dopytov v RA 
+
+Zalezi na poradi operacii  
+SQL = aproximacia optimalnych dopytov v RA  
+
+Napr.: Z relacii R1 a R2 vyberte vsetky entity, kde `R1.id = 103`  
+
+$\sigma_{R1.id = 103}(R1 \bowtie _{R1.PK = R2.FK}(R2))$  
+$(\sigma_{R1.id=103}(R1)) \bowtie R2$  
+
+Na toto existuje algoritmycky sposob vypoctu - Stromy vyrazov  
+Graf, ktory sa sklada z mnoziny vrcholov `E` a hran `V`, kde $E \le V^2$    
+Koren sa rozvetvuje, konci sa listami  
+Koren - 1. operacia RA v dotaze  
+Listy - relacie vyuzite v dopyte  
+Vnutorne uzly - ostatne operacie RA v dopyte  
+
+2 operacie na optimalizaciu  
+- PDP - Push down projection - potlacenie projekcie  
+- PDS - Push down selection - potlacenie selekcie  
+
+Projekciu/Selekciu tlacime co najblizsie k relacii, s ktorou je asociovana  
+
+### Relacny kalkul (RK)
+
+Formalny dopytovy jazyk na pracu s relacnymi databazami  
+Oproti RA nie je proceduralny - nezalezi na poradi operacii  
+Iba formalny zapis vyberu z DB  
+
+#### N-ticovy RK
+
+Pracuje s n-ticami hodnot  
+
+$\{N | f(N)\}$  
+
+$N$ za predpokladu $F(N)$  
+
+- $N$ - n-ticova premenna (vystupna) - budeme tu ukladat vystup dopytu  
+- $F(N)$ - funkcia, ktora opisuje hodnoty, ktore moze $N$ nadobudat  
+
+$F(N)$ vystavame z 
+- Abecedy RK = mnozina symbolov, ktore su akceptovane v ramci jazyku
+	- relacie - oznacovane nazvom relacie 
+	- n-tice - lubovolny velky znak - napr. n-tica z `osobne_udaje` oznacime `OU`
+	- atributy - male znaky - `OU.meno`
+	- operatory - `>`, `<`, `=`, ...
+- Atomicke bloky RK 
+	- $R \in Relacia1$ - R prislucha k relacii Relacia1
+	- Operacie - negacia, konjunkcia, disjunkcia
+	- $\exists R (f(R))$ 
+
+Priklad  
+Majme relaciu `student(rc, m, p, rocnik, idOdboru)` a `studOdbor(idOdboru, nazov, katedra)`  
+Najdite meno a priezvisko vsetkych druhakov 
+
+```sql
+select m, p
+from student
+where rocnik = 2;
+```
+
+Zapis v RA = $\Pi_{m, p}(\sigma_{roc=2}(student))$  
+
+$\{N | f(N)\}$  
+$\{N | \exists S \in student(f(S))\}$  
+$\{N | \exists S \in student(S.rocnik = 2 \land \Pi)\}$  
+$\{N | \exists S \in student(S.rocnik = 2 \land S.m = N.m \land S.p = N.p)\}$  
+$\{N | \exists S \in student(S.rocnik = 2 \land S.m = N.m \land S.p = N.p)\}$  
+
+
+
+#### Domenovy RK
+
+Pracuje s domenami hodnot  
