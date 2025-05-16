@@ -544,3 +544,32 @@ Bitonic sorter
 Modifikovany half cleaner  
 Merger  
 Vysledna zlozitost $log_2(n) * log_2(n) = (log_2)^2(n)$
+
+## Siete
+
+Sietove abstraktne pamatove typy
+sAPT  
+Bloky pamate sa oznacuju vrcholy  
+Kazdy vrchol moze mat vztah s hocikym inym  
+Ziadny vrchol nema vynimocne postavenie
+
+Brana - sekvencia vrcholov, z ktorych sa da dostt ku ostatnym  
+Staticka siet - neefektivne modifikatory, rychly pristup, brana je implicitna sekvencia  
+Dynamicka siet - efektivne modifikatory, ponaly pristup, brana je explicitna sekvencia
+
+Stupen vrcholu - pocet vztahov s inymi vrcholmi - kolko sipociek z neho ide  
+Velkost - pocet vrcholov v sieti
+
+Vo vztahu nemusime mat len referenciu na vrchol, ale aj dodatocne udaje (vzdialenost, ...)
+
+Deep copy
+
+Pozor na porovnanie, pozor na priradenie
+
+### Graf
+
+Implementacia siete
+
+#### Hviezdy
+
+Drojurovnovy pristup
