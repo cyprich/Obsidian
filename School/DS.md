@@ -1503,82 +1503,91 @@ select to_chat(sysdate, 'DAY') from dual;  -- sobota
 
 Interval `<zaciatok, koniec)` alebo `<zaciatok, koniec>`
 
-## Relacne formalne jazyky  
+## Relacne formalne jazyky
 
 Tabulka - relacia  
-Riadky - zaznamy/entity/n-tice    
-Stlpce - atributy  
+Riadky - zaznamy/entity/n-tice  
+Stlpce - atributy
 
-Formalny jazyk - umelo vytvoreny, vytvorene pre specificky ucel  
+Formalny jazyk - umelo vytvoreny, vytvorene pre specificky ucel
 
 - Budeme sa zaoberat dvoma
-	- Relacna algebra (RA)  
-	- Relacny kalkul (RK)
+  - Relacna algebra (RA)
+  - Relacny kalkul (RK)
 - Pouzivaju sa na optimalizaciu dopytov (dotazov (queries))
 
 ### Relacna algebra (RA)
 
 Formalny **proceduralny** dopytovy jazyk navrhnuty na pracu s relacnymi databazami  
-RQL jazyky - Relational Query Language  
+RQL jazyky - Relational Query Language
 
 Proceduralny = nasleduje mnozinu prikazov (operacii)  
-Zalezi na poradi operacii  
+Zalezi na poradi operacii
 
 #### Operacie RA
 
 ##### Mnozinove operacie
- 
-- Prienik - $A \cap B$ - $A$ a $B$ su relacie (tabulky), prvky su atributy  
-	- $A = \{a, b, c\}$
-	- $B = \{c, d, e\}$ 
-	- $A \cap B = \{c\}$
+
+- Prienik - $A \cap B$ - $A$ a $B$ su relacie (tabulky), prvky su atributy
+  - $A = \{a, b, c\}$
+  - $B = \{c, d, e\}$
+  - $A \cap B = \{c\}$
 - Zjednotenie - $A \cup B$
-	- $A = \{a, b, c\}$
-	- $B = \{c, d, e\}$ 
-	- $A \cap B = \{a, b, c, d, e\}$
+  - $A = \{a, b, c\}$
+  - $B = \{c, d, e\}$
+  - $A \cap B = \{a, b, c, d, e\}$
 - Kartezsky sucin - $A \times B$
-	- $A = \{a, b, c\}$
-	- $B = \{c, d, e\}$ 
-	- $A \cap B = \{ac, ad, ae, bc, bd, be, cc, cd, ce\}$
+  - $A = \{a, b, c\}$
+  - $B = \{c, d, e\}$
+  - $A \cap B = \{ac, ad, ae, bc, bd, be, cc, cd, ce\}$
 - Rozdiel - $A - B$
-	- $A = \{a, b, c\}$
-	- $B = \{c, d, e\}$ 
-	- $A \cap B = \{a, b\}$
-	
+  - $A = \{a, b, c\}$
+  - $B = \{c, d, e\}$
+  - $A \cap B = \{a, b\}$
+
 ##### Relacne operacie
+
 $operacia_{predikat}(relacia)$
 
-> Predikat = specifikacia pre operaciu 
+> Predikat = specifikacia pre operaciu
 
-###### Projekcia - $\Pi$ 
+###### Projekcia - $\Pi$
+
 $\Pi_{atributy}(R)$  
-Generuje relaciu, ktore obsahuje len atributy specifikovane v predikate  
+Generuje relaciu, ktore obsahuje len atributy specifikovane v predikate
+
 - `select atr1, atr2 from R;`
 - $\Pi_{atr1, atr2}(R)$
 
 Priklad - vyberte meno a priezvisko z relacie `os_udaje`
+
 - `select meno, priezvisko from os_udaje;`
 - $\Pi_{meno, priezvisko}(R)$
 
 ###### Selekcia - $\sigma$
+
 $\sigma_{podmienka}(R)$  
-Generuje relaciu, ktora obsahuje zaznamy, pre ktore bola podmienka vyhodnotena ako `TRUE`  
+Generuje relaciu, ktora obsahuje zaznamy, pre ktore bola podmienka vyhodnotena ako `TRUE`
+
 - `select * from R where podmienka;`
 - $\sigma_{podmienka}(R)$
 
-Priklad - vyberte ludi co maju vek > 20 
+Priklad - vyberte ludi co maju vek > 20
+
 - `select * from os_udaje where vek > 20`
 - $\sigma_{vek > 20}(os_udaje)$
 
-Priklad - vyberte meno a priezvisko ludi, ktori maju > 20 rokov 
+Priklad - vyberte meno a priezvisko ludi, ktori maju > 20 rokov
+
 - $\Pi_{meno, priezvisko}(\sigma_{vek > 20}(os_udaje))$
 
 ###### Spojenie relacii - $\bowtie$
+
 $R1 \bowtie_{predikat} R2$  
 Predikat - $R1.PK = R2.PK$  
-Generuje relaciu, ktora obsahuje spojene entity z relacii $R1$ a $R2$  
+Generuje relaciu, ktora obsahuje spojene entity z relacii $R1$ a $R2$
 
-Inner Join, Left/Right Join, Full Join  
+Inner Join, Left/Right Join, Full Join
 
 ```sql
 select *
@@ -1587,78 +1596,84 @@ inner join R2 on R1.PK = R2.FK;
 ```
 
 Napr. z `os_udaje` vyberte `meno` a `rocnik`
+
 - $\Pi_{os\_udaje.meno, stud.rocnik}(os\_udaje \bowtie _{os\_udaje.rod\_cislo = stud.rod\_cislo}(student))$
 
 ###### Agregacia - $\alpha$
+
 Vypocita funkciu na atribute z relacie R
-- $\alpha_{funkcia(atr)}(R)$  
+
+- $\alpha_{funkcia(atr)}(R)$
 - `select funckcia(atr) from R;`
 
-$\alpha_{atr0, funkcia(atr)}(R)$  
+$\alpha_{atr0, funkcia(atr)}(R)$
 
 > $atr0$ je `GROUP BY`
 
-###### Premenovanie - $\rho$ 
-$\rho(novynazov, R)$  
+###### Premenovanie - $\rho$
 
-Pohlad  
+$\rho(novynazov, R)$
+
+Pohlad
 
 $\rho(A, \Pi(\dots))$
 
-#### Optimalizacia dopytov v RA 
+#### Optimalizacia dopytov v RA
 
 Zalezi na poradi operacii  
-SQL = aproximacia optimalnych dopytov v RA  
+SQL = aproximacia optimalnych dopytov v RA
 
-Napr.: Z relacii R1 a R2 vyberte vsetky entity, kde `R1.id = 103`  
+Napr.: Z relacii R1 a R2 vyberte vsetky entity, kde `R1.id = 103`
 
 $\sigma_{R1.id = 103}(R1 \bowtie _{R1.PK = R2.FK}(R2))$  
-$(\sigma_{R1.id=103}(R1)) \bowtie R2$  
+$(\sigma_{R1.id=103}(R1)) \bowtie R2$
 
 Na toto existuje algoritmycky sposob vypoctu - Stromy vyrazov  
-Graf, ktory sa sklada z mnoziny vrcholov `E` a hran `V`, kde $E \le V^2$    
+Graf, ktory sa sklada z mnoziny vrcholov `E` a hran `V`, kde $E \le V^2$  
 Koren sa rozvetvuje, konci sa listami  
 Koren - 1. operacia RA v dotaze  
 Listy - relacie vyuzite v dopyte  
-Vnutorne uzly - ostatne operacie RA v dopyte  
+Vnutorne uzly - ostatne operacie RA v dopyte
 
-2 operacie na optimalizaciu  
-- PDP - Push down projection - potlacenie projekcie  
-- PDS - Push down selection - potlacenie selekcie  
+2 operacie na optimalizaciu
 
-Projekciu/Selekciu tlacime co najblizsie k relacii, s ktorou je asociovana  
+- PDP - Push down projection - potlacenie projekcie
+- PDS - Push down selection - potlacenie selekcie
+
+Projekciu/Selekciu tlacime co najblizsie k relacii, s ktorou je asociovana
 
 ### Relacny kalkul (RK)
 
 Formalny dopytovy jazyk na pracu s relacnymi databazami  
 Oproti RA nie je proceduralny - nezalezi na poradi operacii  
-Iba formalny zapis vyberu z DB  
+Iba formalny zapis vyberu z DB
 
 #### N-ticovy RK
 
-Pracuje s n-ticami hodnot  
+Pracuje s n-ticami hodnot
 
-$\{N | f(N)\}$  
+$\{N | f(N)\}$
 
-$N$ za predpokladu $F(N)$  
+$N$ za predpokladu $F(N)$
 
-- $N$ - n-ticova premenna (vystupna) - budeme tu ukladat vystup dopytu  
-- $F(N)$ - funkcia, ktora opisuje hodnoty, ktore moze $N$ nadobudat  
+- $N$ - n-ticova premenna (vystupna) - budeme tu ukladat vystup dopytu
+- $F(N)$ - funkcia, ktora opisuje hodnoty, ktore moze $N$ nadobudat
 
-$F(N)$ vystavame z 
+$F(N)$ vystavame z
+
 - Abecedy RK = mnozina symbolov, ktore su akceptovane v ramci jazyku
-	- relacie - oznacovane nazvom relacie 
-	- n-tice - lubovolny velky znak - napr. n-tica z `osobne_udaje` oznacime `OU`
-	- atributy - male znaky - `OU.meno`
-	- operatory - `>`, `<`, `=`, ...
-- Atomicke bloky RK 
-	- $R \in Relacia1$ - R prislucha k relacii Relacia1
-	- Operacie - negacia, konjunkcia, disjunkcia
-	- $\exists R (f(R))$ 
+  - relacie - oznacovane nazvom relacie
+  - n-tice - lubovolny velky znak - napr. n-tica z `osobne_udaje` oznacime `OU`
+  - atributy - male znaky - `OU.meno`
+  - operatory - `>`, `<`, `=`, ...
+- Atomicke bloky RK
+  - $R \in Relacia1$ - R prislucha k relacii Relacia1
+  - Operacie - negacia, konjunkcia, disjunkcia
+  - $\exists R (f(R))$
 
 Priklad  
 Majme relaciu `student(rc, m, p, rocnik, idOdboru)` a `studOdbor(idOdboru, nazov, katedra)`  
-Najdite meno a priezvisko vsetkych druhakov 
+Najdite meno a priezvisko vsetkych druhakov
 
 ```sql
 select m, p
@@ -1666,16 +1681,255 @@ from student
 where rocnik = 2;
 ```
 
-Zapis v RA = $\Pi_{m, p}(\sigma_{roc=2}(student))$  
+Zapis v RA = $\Pi_{m, p}(\sigma_{roc=2}(student))$
 
 $\{N | f(N)\}$  
 $\{N | \exists S \in student(f(S))\}$  
 $\{N | \exists S \in student(S.rocnik = 2 \land \Pi)\}$  
 $\{N | \exists S \in student(S.rocnik = 2 \land S.m = N.m \land S.p = N.p)\}$  
-$\{N | \exists S \in student(S.rocnik = 2 \land S.m = N.m \land S.p = N.p)\}$  
-
-
+$\{N | \exists S \in student(S.rocnik = 2 \land S.m = N.m \land S.p = N.p)\}$
 
 #### Domenovy RK
 
-Pracuje s domenami hodnot  
+Pracuje s domenami hodnot
+
+---
+
+Binarne operacie
+
+- join
+- delenie
+- kartezsky sucin (cross join)
+
+Binarne operacie (vyzaduju union kompatibilitu - rovnaku strukturu)
+
+- zjednotenie
+- rozdiel
+- priemik
+
+```sql
+select meno, priezvisko, rod_cislo
+from us_udaje
+UNION [all]
+select meno, priezvisko, null
+from ucitel
+
+select meno, priezvisko
+from us_udaje
+MINUS
+select meno, priezvisko
+from ucitel
+
+select meno, priezvisko
+from us_udaje
+INTERSECT
+select meno, priezvisko
+from ucitel
+
+```
+
+Unarne operacie
+
+- selekcia (prikaz where)
+- projekcia (prikaz select)
+
+---
+
+Keby nemam `JOIN`
+
+```sql
+select *
+from os_udaje
+cross join student  -- kartezsky sucin
+where os_udaje.rod_cislo = student.rod_cislo  -- selekcia
+;
+```
+
+---
+
+## Merge
+
+Mam 2 tabulky - `os_udaje` a `nove_osoby`  
+Maju rovnake struktury  
+Chcem vlozit udaje z `nove_osoby` do `os_udaje`  
+Ak uz tam taka osoba je tak nahrad udaje  
+Ak tam osoba este nie je tak vytvor
+
+```sql
+update os_udaje
+set ulica = (
+    select ulica
+    from nove_osoby
+    where os_udaje.rod_cislo = nove_osoby.rod_cislo
+),
+set psc = ( ... )
+set obec = ( ... )
+where ...
+;
+
+insert into os_udaje
+select *
+form nove_osoby
+where rod_cislo not in (
+    select rod_cislo
+    from os_udaje
+);
+```
+
+Toto je ale vela pisania...  
+Riesenie - **DML prikaz `MERGE`**
+
+```sql
+merge into os_udaje
+using nove_osoby
+on (os_udaje.rod_cislo = nove_osoby.rod_cislo)
+when matched then
+    update
+    set ulica=nove_osoby.ulica
+    set ...
+when not matched then
+    insert (rod_cislo, meno, priezvisko, ...)
+    values (nove_osoby.rod_cislo, nove_osoby.meno, nove_osoby.priezvisko, ...)
+;
+```
+
+## Rekurzivne vztahy
+
+Tabulka `fri_tab` - obsahuje atribut `nadriadeny`, co je referencia na PK tej istej tabulky
+
+Priklad vypiste podriadenych nejakej osoby
+
+```sql
+create table fri_tab (
+    os_cislo integer primary key,
+    meno varchar(20),
+    priezvisko varchar(20),
+    nadriadeny integer,
+    foreign key (nadriadeny) references fri_tab(os_cislo)
+);
+
+select veduci.meno, veduci.priezvisko, zam.meno, zam.priezvisko
+from fri_tab veduci
+join fri_tab zam on (veduci.os_cislo = zam.nadriadeny)
+where veduci.priezvisko = 'Krsak'
+;
+```
+
+Nad ramec predmetu - podriadeny aj podriadenych - rekurzivny select  
+Vlastne robime hierarchiu, startujeme pri `os_cislo=2`
+
+```sql
+select rpad(' ', 2*level) meno, priezvisko  -- uroven v hierarchii
+from fri_tab
+start with os_cislo=2
+connect by prior os_cislo=nadriadeny;
+```
+
+## SQL injection?
+
+```sql
+crete table zamestnanci (
+    id_zamestnanca integer,
+    oddelenie integer,
+    plat integer
+);
+
+insert into zamestnanci values (1, 1, 1000);
+insert into zamestnanci values (2, 1, 500);
+insert into zamestnanci values (3, 1, 800);
+insert into zamestnanci values (4, 2, 2000);
+
+create or replace function get_sum_plat (p_ood varchar)
+return integer
+is
+    celkom integer;
+    prikaz varchar(2000);
+    begin
+        prikaz:='select sum(plat) from zamestnanci where oodelenie=' || p_odd);
+        exwcute immediate prikaz into celkom;
+        return celkom;
+    end;
+/
+
+
+select get_sum_plat(1) from dual;
+
+select get_sum_plat('1 or 1=1') from dual;
+
+-- bind - varchar
+```
+
+Mozeme dat ako string, cize oddelenie musi byt `'1 or 1=1'`
+
+Problem s DATE
+
+```sql
+select *
+from zap_predmety
+where datum_sk='13.5.25';
+
+alter session set nls_date_format='"or 1=1"';
+```
+
+---
+
+Student si nemoze zapisat predmet 2x
+
+```sql
+create of replace trigger trig_check_zap
+before inset on zap_predmety
+for each row
+declare
+    pocet integer;
+begin
+    select count(*)
+    from zap_predmety
+    where os_cislo=:new.os_cislo
+    and cis_predm=:new.cis_predm;
+
+    if pocet > 1 then
+        raise_application_error(...);
+    end if;
+end;
+/
+```
+
+Mutating table problem  
+V row triggeri robim select nad tou istou tabulkou do ktorej vkladam
+Riesenie - pomocna logovacia tabulka do ktore budem vkladat, a statement trigger after
+
+```sql
+create global temporary table log (
+    os_cislo integer,
+    cis_predm char(4),
+    skrok integer
+) on commit delete rows;
+
+create or replace trigger trig_zp_before
+before insert on zap_predmety
+ror each row
+begin
+    insert into log values (:new.os_cislo, :new.cis_predm, :new.sk_rok);
+end;
+/
+
+create or replace trigger trig_zp_after
+after insert on zap_predmety
+declare
+    pocet integer;
+begin
+    for riadok in (select os_cislo, cis_predm, skrok from log)
+    loop
+        select count(*)
+        into pocet
+        from zap_predmety
+        where os_cislo = riadok.os_cislo;
+        and cis_predm = riadok.cis_predm;
+
+        if pocet > 1 then raise_application_error( ... ) end if;
+    end loop;
+
+end;
+/
+```
+
