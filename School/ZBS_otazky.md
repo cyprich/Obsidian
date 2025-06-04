@@ -553,22 +553,185 @@ ICCID - Integrated Circuit Card Identifier
 
 ## Oblast 3 
 
+12 bodov
+
 ### Obmedzenia internetu veci, princip setrenia energie  
+
+Obmedzenia
+- Spotreba energie - mnoho zariadeni je napajanych z baterie, a musi vydrzat dlhu dobu (mesiace az roky)
+- Vypoctovy vykon a pamat - zariadenia su casto male, nizkonakladove, energeticky usporne, a teda maju obmedzene CPU, RAM a ulozisko, co moze predstavovat problem pri zlozitejsich aplikaciach
+- Bezpecnost - velky pocet zariadeni ma slabe zabezpecenie (nizkonakladove zariadenia), pouziva predvolene hesla, starsie a/alebo menej zabezpecene protokoly, chybajuce aktualizacie
+- Skalovatelnost - sprava obrovskeho mnozstva zariadeni moze byt problem
+- Interoperabilita a standardizacia - existuje velke mozstvo komunikacnych protokolov a standardov pre IoT zariadenia, nie je vela univerzalnych/standardizovanych rieseni, cim vznika fragmentacia a stazenie manipulacie so zariadeniami
+- Konektivita a spolahlivost siete - niektore zariadenia mozu byt umiestnene na odlahlych miestach, alebo pod zemou a pod., co moze predstavovat problem pre dostupnost siete
+- Zalozitost spravy a udrzby
+- Cena - chceme, aby boli zariadenia co najlacnejsie, pretoze sa zvycajne pouziva ich velke mnozstvo
+
+Princip setrenia energie
+- Rezimy spanku (sleep mode), resp. nizkoenergeticke stavy
+	- Zariadenie nic nevysiela ani neprijima, cim minimalizuje spotrebu energie a predlzuje zivotnost baterie
+	- Snahou je byt v takomto rezime co najviac, a prebudit sa len na kratky okamih na vykonanie urcenej akcie (zmeranie teploty a odoslanie dat a pod.)
+- Optimalizacia komunikacnych protokolov
+	- Urcite protokoly su navrhnute prave pre IoT zariadenia, a su optimalizovane tak, aby spotrebovali co najmenej energie (kratke pakety, menej rezie a pod)
+	- Protokoly ako napr. Bluetooth Low Energy oproti Bluetooth "Classic", LoRa, ZigBee
+- Efektivny hardware, software a firmware
+	- Specialne navrhnute a optimalizovane na IoT zariadenia tak aby minimalizovali spotrebu energie
+- Kompresia dat posielanych v paketoch
+- Energy harvesting
+	- Zber energie z okolitych zdrojov - slnecna energia, tepelna energia, kineticka energia a pod. 
 
 ### Hlavne stavy BLE zariadenia a prechod medzi nimi  
 
+Stavy
+- Stand-by 
+	- Zakladny stav
+	- Spotreba najmenej energie, "nerozprava", "nepocuva"
+	- Tu zariadenie travi co najviac casu
+- Advertising
+	- Zariadenie pravidelne vysiela, inzeruje male pakety, ktorymi oznamuje ze zariadenie je pripravene na pripojenie a informuje o jeho sluzbach
+	- Zariadenie "rozprava"
+	- Umoznuje ostatnym zariadeniam (tym co skenuju) vediet o jeho existencii
+- Scanning
+	- Zariadenie aktivne "pocuva" propagacne pakety od inych zariadeni
+	- Objavovanie inych zariadeni v BLE okoli
+- Initialing
+	- Zariadenie sa chce pripojit/sparovat s inym zariadenim
+	- Jednoducho povedane "ked skenujuce zariadenie zapocuje ine zariadenie a rozhodne sa ze sa chce nan pripojit" (neviem ako to napisat slusne)
+	- Zariadenie posle Connection Request
+	- Po uspesnom sparovani je toto zariadenie Master, a inzerujuce zariadenie je Slave
+- Connected
+	- Zariadenia su aktivne obojsmerne pripojene (ako Master a Slave)
+	- Data sa mozu vymienat - pomocou profilov a sluzieb GATT
+
+Prechody stavov
+- Zo Standby moze zariadenie prejst bud do Advertising alebo Scanning  
+- Z Advertising moze prejst do Standby, alebo Connected ak sa druhe zariadenie pripoji
+- Zo Scanning moze prejst do Standby, alebo Initiating ak najde zariadenie s ktorym sa ide spojit
+- Z Initiating moze prejst do Connected (ak je uspesne) alebo do Standby (ak je neuspesne)
+- Z Connected moze prejst do Standby po odpojeni, resp. ukonceni spojenia
+
 ### Connection event v BLE (co to je, kedy vznika, ako prebieha)
+
+Connection event je udalost, ktora umoznuje dvom BLE zariadeniam vymienat si data pocas aktivneho pripojenia, pricom maximalizuje usporu energie  
+Je to casovy usek, pocas ktoreho si zariadenia aktivne vymienaju data  
+Mimo tejto udalosti su zariadenia v rezime spanku, cim setria energiu  
+Vznika po nadviazani spojenia (stav Connected)  
+Prebieha pravidelne podla dohodnuteho intervalu - Connection Interval 
+
+Prebieha nasledovne
+- Obe zariadenia sa zobudia z rezimu spanku v rovnaky moment
+- Vzdy ako prvy posiela paket Mater
+- Vzdy mu Slave odpovie (aj ked "nema co povedat" - posle prazdny paket)
+- Pocas jedneho event-u sa moze vymenit aj viac paketov medzi zariadeniami
+- Po vymene dat sa zariadenia prepnu do rezimu spanku a zobudia sa pri dalsiom evente
 
 ### Terminologia v BT mesh (nod, element, stav, sprava, ...)
 
+Bluetooth Mesh - topologia one-to-many
+
+Nod
+- Uzol
+- Akekolvek zariadenie, ktore je sucastov BT Mesh
+- Moze mat rozne funkcie
+- Kazdy Nod ma unikatnu adresu
+
+Element
+- Logicky adresovatelna entita v ramci Nod-u, Nod moze mat viac elementov
+- Jednotlive elementy predstavuju rozne prvky - napr. ziarovka s troma kanalmi (pre R, G, B)
+- Je to prirovnatelne sietovemu portu bezneho sietoveho zariadenia
+
+Stav
+- Specificka hodnota alebo nastavenie elementu
+- Napr. pri RGB ziarovke moze byt hodnota `R` nastavena na `255`, `G` na `128` a `B` na `0`
+- Stavy mozu byt citane (GET), nastavene (SET), alebo hlasene (STATUS)
+
+Vlastnosti
+- Vysvetlenie kontextu pre stavy
+- Nie len data, ale este k tomu aj vysvetluju co dany stav znamena
+- Typy
+	- Manufacturer property - iba citanie, udava ju vyrobca, pouzivatel ju nemoze menit (seriove cislo, vyrobna kalibracia)
+	- Admin property - citanie aj zapis, nastavuje ju admin, napr. maximalna hodnota ktoru senzor reportuje
+
+Message 
+- Sprava, datovy paket, v ktorom sa prenasaju udaje po BT Mesh sieti
+- Spravy sa posielaju medzi jednotlivymi modelmi na roznych elementoch
+- Su rozne typy messages - Control, Status, Get, Set
+
+Model
+- Definuje spravanie zariadenia, co dokaze, ako s nim komunikovat
+- Moze by standardizovane alebo vendor-specific
+- Priklady/typy
+	- Server model
+		- Stavy, zmeny stavov, prepojenia stavov, spravy ktore moze element prijat alebo vysielat
+		- Ziarovka - Generic OnOff Server Model, Light Lightness Server Model
+	- Client model 
+		- Nedefinuje stavy ale len spravy GET, SET, STATUS posielane server modelu
+		- Vypinac - Generic OnOff Client Model, Light Lightness Client Model
+	- Control model
+		- Obsahuje server aj client model
+		- Umoznuje komunikaciu s dalsimi server a client modelmi
+
+Publish-Subscribe
+- Klucovy komunikacny model v BT Mesh
+- Publish node odosle spravu na specificku adresu skupiny (Group Address) alebo unicast adresu
+- Subscribe node si predplati tuto adresu skupiny, a nasledne prijima a odosiela spravy na tuto adresu
+
+Group address
+- Logicka adresa reprezentujuca skupinu Elementov, ktore maju spravidla rovnaku funkcionalitu (napr. svetla v obyvacke)
+- Spravy poslane na takuto adresu su dorucene vsetkym, ktore su prihlasene do tejto danej skupiny
+
 ### Friendship, LPN, friend (vysvetlenie principu, na co to sluzi, kedy sa pouziva)
+
+Funkcionalita, ktora umoznuje zariadeniam s obmedzenou spotrebou energie fungovat v sieti, aj ked nemozu byt stale pripojene   
+
+Friendship
+- Je vztah medzi dvoma zariadeniami
+	1. Low Power Nod (LPN)
+		- Uzol je vacsinu casu v spankovom rezime na usporu energie, pretoze nema dostatok energie na stale/nepretrzite fungovanie
+		- Vzdy musi mat priatela (Friend)
+		- Vacsinou su to zariadenie napajane z baterii
+	2. Friend Nod
+		- Uzol, ktory je napajany zo siete (nie z baterie)
+		- Je nepretrzite aktivy
+		- Uchovava spravy pre LPN, ked sa LPN zobudi z rezimu spanku tak mu prijate spravy posle
+
+Vyuziva sa pri zariadeniach s obmedzenym zdrojom energie  
 
 ### Publish-subscribe (princip prenosu sprav v BT mesh)
 
+Sposob komunikacie, ktory umoznuje prenos dat medzi viacerymi zariadeniami vdaka tzv. Group Addresses (adresy skupin)  
+Publisher neposiela spravu priamo druhemu zariadeniu, ale ju *publikuje*  
+Subscribers si tuto spravu prevezmu  
+
+Toto je realizovane pomocou skupin - Group addresses
+Publisher publikuje spravy do skupiny  
+Subscriber sa prihlasi na odber sprav v danej skupine, a vsetky spravy ktore budu poslane v skupine mu prijdu  
+
+Napr. keby chceme logicky zdruzit vsetky svetla v obyvacke, tak ich zaradime do spolocnej skupiny  
+Na zapnutie/vypnutie vsetkych svetiel mozeme publikovat vypinacom spravu do tejto skupiny  
+
+Toto umoznuje okrem unicastu (`jeden-jeden`) a multicastu (`jeden-viac`) aj komunikaciu `viac-jeden` a `viac-viac`
+
 ### Princip komunikacie pomocou Beaconov (`802.15.4`)  
+
+Beacony sluzia na koordinaciu komunikacie v sieti podla standardu 802.15.4 (napr. ZigBee)  
+Beacon je informacia pravidelne vysielana koordinatorom, prostrednictvom ktorej su vsetky zariadenia zosynchronizovane  
+Informuje o strukture siete, casovych slotoch, synchronizacii, ...  
+Vdaka tomuto zariadenia nemusia byt neustale aktivne a tak mozu setrit energiu  
+Superframe - casovy interval medzi dvoma beacon ramcami, kedy prebieha aktivna komunikacia. Ostatny cas su zariadenia uspate a setria energiu
+
+Standard 802.15.4 umoznuje pouzit 2 typy sieti 
+- Beacon-enabled
+- Non-Beacon enabled - bezne siete, kde prevadzka nie je nijako riadena, pouziva sa tu napr. CSMA/CD
 
 ### Distributivne pridelovanie adries v ZigBee (sposob pridelovania, vlastnosti, vyuzitie pri smerovani)  
 
+
+
 ### Porovnanie BT Mesh a ZigBee (rozloha, rychlost, sposob prenosu sprav, ...)  
 
+
+
 ### Hlavne vlastnosti technologie LoRa  
+
+
