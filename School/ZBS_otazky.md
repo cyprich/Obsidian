@@ -405,11 +405,149 @@ V sucasnosti za pouzivaju technologie zalozene na `802.11i`
 
 ### Generacie mobilnych sieti  
 
+- 1G - NMT - Nordic Mobile Telephone
+	- 80. roky
+	- Analogovy system prenosu, FM modulacia
+	- Zla kvalita hlasu, zla zivotnost baterii, velke mobily, ziadne zabezpecenie
+	- Rychlost do 2kbps
+	- Pouzivane len na hlasovu komunikaciu
+- 2G - GSM - Global System for Mobile
+	- 90. roky
+	- Digitalny prenos
+	- Datove prenosy (nie len hlas)
+	- Podpora/zavedenie SMS
+	- Rychlost do 270kbps, ale casto menej a zla kvalita
+	- Zlepsena bezpecnost oproti 1G
+- 3G - UMTS - Universal Mobile Telecommunication System
+	- Zaciatok rokov 2000
+	- Zameriava sa na mobilne data, podporuje aj prenos videa
+	- Zaciatky mobilneho webu, socialnych sieti
+	- Rychlost do 3Mbps
+- 4G - LTE - Long Term Evolution
+	- Zaciatok rokov 2010
+	- Pouziva IP protokol 
+	- Vysoke rychlosti dostacujuce pre streamovanie videa, online hry
+	- Rychlost stovky Mbps, teoreticky az 1Gbps za urcitych okolnosti
+	- Technologia VoLTE (Voice over LTE) - hlas prenasany cez IP siet
+- 5G - NR - New Radio
+	- Zaciatok rokov 2020
+	- Momentalne najnovsie a najvyspelejsie technologie
+	- Velmi vysoke rychlosti (teoreticky az to 10Gbps), velmi nizka latencia, ...
+
+Dnes sa pouzivaju len tieto 3
+- 2G - ako zaloha ked nie je 4G/5G, alebo pre starsie zariadenia
+- 4G - najviac rozsirena siet 
+- 5G - zacina sa rozsirovat vo vacsich mestach
+
 ### Princip bunkovej komunikacie v mobilnych sietach + pojmy pouzivane v GSM komunikacii (napr. PLMN, LAC, LAI, CID, BSIC, TMSI, RSSI, ASU, TA, ARFCN)
+
+Mobilne siete (celularne siete) su navrhnute tak, aby efektivne pokryvali velke geograficke oblasti a podporovali mobilitu pouzivatelov  
+Klucovym konceptom je rozdelenie velkej oblasti na mensie celky nazyvane bunky  
+Kazda bunka je obsluhovana zakladnovou stanicou (Base Station), ktora obsahuje vysielace a prijimace  
+Susedne bunky pouzivaju rozne frekvencie aby sa neinterferovali, vzdialenejsie bunky pouzivaju rovnake frekvencie, cim sa zefektivni vyuzitie frekvencneho pasma  
+Ked sa koncove zariadenie pohybuje medzi jednotlivymi bunkami, tak sa spojenie automaticky prenesie do druhej bunky. Toto sa nazyva Handoff alebo Handover a pouzivatel to nevnima  
+
+Pojmy v GSM  
+- PLMN - Public Land Mobile Network
+	- Verejna mobilna siet
+	- Jednoznacne identifikuje mobilneho operatora (Orange, Telekom, ...)
+- LAC - Location Area Code
+	- Kod oblasti umiestnenia
+	- Identifikuje skupinu buniek v ramci PLMN
+	- Ked sa mobilna stanica presunie do inej LAC, musi aktualizovat svoju polohu (Location Area Update)
+- LAI - Location Area Identity
+	- Kompletna identifikacia oblasti umiestnenia
+	- Sklada sa z Mobile Country Code + Mobile Network Code + Location Area Code
+- CID - Cell Identifier
+	- Jenoznacny identifikator bunky
+	- Identifikuje konkretnu bunku (resp. zakladnovu stanicu) v ramci danej LAC
+- BSIC - Base Station Identity Code
+	- Jednoznacny identifikator zakladovej stanice
+	- Pouzivaju ho mobilne stanice na identifikaciu susednych zakladnovych stanic, ktore vysielaju na rovnakej frekvencii
+	- Pomaha pri spravnom vybere bunky
+- TMSI - Temporary Mobile Subscriber Identity
+	- Docasna mobilna identita ucastnika
+	- Je pridelovany docasne na ochranu sukromia pouzivatela
+	- Pouziva sa namiesto IMSI - premanentnej identity - aby sa zabranilo sledovaniu pouzivatela
+- RSSI - Received Signal Strength Indicator
+	- Indikator sily prijmaneho signalu
+	- Meria silu signalu prijimaneho mobilnou stanicou z danej zakladnovej stanice
+	- Vyjadruje sa v `dBm`  
+	- Pouziva sa na rozhodovanie o handoffe a vybere najlepsej bunky
+- ASU - Arbitrary Strength Unit
+	- Jednotka sily signalu
+	- Zvycajne celociselna hodnota
+	- Predstavuje linearnu stupnicu RSSI
+	- Cim vyssie ASU, tym silnejsi signal
+	- Pouziva sa najma na Android zariadeniach pre indikaciu sily signalu
+- TA - Timing Advance
+	- Casovy predstih
+	- Hodnota, ktoru zakladnova stanica posle mobilnej stanici, aby korigovala cas odoslania datoveho ramca
+	- Je potrebne, pretoze vzdialene mobilne stanice potrebuju vysielat skor, aby signal dorazil v spravnom case, aby boli synchronizovane s ostatnymi zariadeniami
+- ARFCN - Absolute Radio Frequency Channel Number
+	- Identifikuje konkretny radiovy signal (par frekvencii - uplink+downlink)
+	- Kazdy signal je priradeny konkretnej frekvencii
 
 ### Mobilna stanica, SIM karta, vysvetlit pojmy (IMSI, MSISDN, IMEI, ICCID)  
 
+Mobilna stanica
+-  Tiez oznacovane ako mobilne zariadenie 
+- Je bezdrotove komunikacne zariadenie, ktore umoznuje pripojenie k mobilnej sieti  
+- Napr. mobilny telefon, table, notebook, IoT zariadenie
+- Sklada sa z hardware a software  
+- Funkcnost je zabezpecena vdaka prepojeniu hardware a software so SIM kartou (Subscriber Identity Module)
+
+SIM karta
+- Cipova karta, ktora sa vklada do mobilnej stanice
+- Neoddelitelnou sucastou mobilnej komunikacie
+- Identifikuje ucastnika
+- Uklada kontakty, SMS spravy, preferencie, kryptograficke kluce
+- Poskytuje zabezpecenie ucastnikovi
+- Umoznuje mobilitu - pouzivatel moze zmenit mobilne zariadenie a jednoducho prelozit SIM kartu
+
+Pojmy strucne: 
+- IMSI - identifikuje pouzivatela (predplatitela)
+- MSISDN - telefonne cislo
+- IMEI - identifikuje mobilne zariadenie
+- ICCID - identifikuje SIM kartu
+
+IMSI - International Mobile Subscriber Identity
+- Sluzi na medzinarodnu itentifikaciu identity ucastnika
+- Je ulozene v SIM karte a databaze mobilneho operatora
+- Sklada sa z Mobile Country Code, Mobile Network Code, Mobile Subscriber Identification Number
+- Z bezpecnostnych dovodov sa pri urcitych situaciach pouziva docasny TMSI
+
+MSISDN - Mobile Station International Subscriber Directory Number
+- Medzinarodne telefonne cislo mobilnej stanice
+- Bezne telefonne cislo
+- Je priradene k IMSI 
+- Obsahuje cislo krajiny a narodne cislo destinacie (napr. `+421 9xx xxx xxx` pre Slovensko)
+- Jedno IMSI moze mat viac MSISDN ak ma pouzivatel viac telefonnych cisel, ale je to menej bezne
+
+IMEI - International Mobile Equipment Identity
+- Medzinarodna identifikacia mobilneho zariadenia
+- Globalne jednoznacne identifikuje samotne mobilne zariadenie (hardware)
+- Je vyrazene na zariadeni (casto pod bateriou), ulozene vo firmware zariadenia a v databazach mobilnych operatorov
+- Je to 15-miestne cislo, sklada sa z viac casti
+- Pouziva sa na sledovanie odcudzenych telefonov (operator moze zablokovat zariadenie na zaklade IMEI) alebo na technicku identifikaciu zariadenia
+- Nemeni sa zmenou SIM karty
+
+ICCID - Integrated Circuit Card Identifier
+- Identifikator karty s integrovanym obvodom
+- Jednoznacne identifikuje samotnu SIM kartu
+- Vytlacene na SIM karte, zvycajne 19- alebo 20-miestne cislo ulozene vo vnutri cipu
+- Sklada sa z viac casti (priemyselny kod, kod vydavatela, kod krajiny, cislo vydavatela, individualne identifikacne cislo karty)
+- Vyuziva sa najma pre administrativne ucely operatora pri vyrobne a distribucii SIM kariet
+
 ### Popiste typy modulacii pouzivanych v jednotlivych generaciach mobilnych sieti  
+
+| Generacia | Modulacia                                   | Popis                                                        |
+| --------- | ------------------------------------------- | ------------------------------------------------------------ |
+| 1G        | FM                                          |                                                              |
+| 2G        | GMSK                                        | Prenos digitalneho signalu cez analogove medium              |
+| 3G        | QPSK, 16-QAM, CDMA                          | Prenos hlasu a dat v digitalnej forme pomocou kodovania CDMA |
+| 4G        | QPSK, 16-QAM, 64-QAM, OFDMA                 | Prenos dat vo viacerych podkanaloch naraz                    |
+| 5G        | QPSK, 16-QAM, 64-QAM, 256-QAM, OFDMA + DSSS | Prenos dat s vacsou kapacitou a vyssou rychlostou            |
 
 --- 
 
