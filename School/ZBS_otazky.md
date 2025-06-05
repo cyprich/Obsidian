@@ -726,12 +726,47 @@ Standard 802.15.4 umoznuje pouzit 2 typy sieti
 
 ### Distributivne pridelovanie adries v ZigBee (sposob pridelovania, vlastnosti, vyuzitie pri smerovani)  
 
+ZigBee (resp. standard IEEE 802.15.4) je navrhnuty pre zariadenia ktore spotrebuvaju nizke mnozstvo energie  
+Vytvaraju sa Mesh siete v stromovej topologii  
+Kazdy koordinator (iba jeden v sieti) alebo router (ten, ktory moze preposielat spravy) moze pridelovat adresy svojim detom (v stromovej strukture)  
+Kazde taketo zariadenie ma prideleny urcity rozsah adries, a tento rozsah moze rozdelit medzi svoje deti  
+Ak dieta je takehoto isteho typu, tak pouzije rovnaky postup  
 
+Zavisi tu na pocte routerov a koncovych zariadeni (pri rozdelovani adries)
+
+Na zaklade adresy kazdy router vie, ci je dany uzol jeho potomkom alebo nie  
+Ak cielovy uzoj je jednym z potomkov, tak sprava prechadza v stromovej strukture az k nemu  
+Ak cielovy uzol nie je potomkom, tak router posle spravu svojmu rodicovi  
+Tento algoritmus sa vykonava na kazdom routeri   
+
+Vyhodou tohto je, ze nemoze vzniknut konflikt, resp. duplicita adries medzi zariadeniami  
+Nevyhodou je, ze nevieme presne urcit, kolko zariadeni bude v sieti (a tym padom nevieme kolko adries budeme potrebovat), cize sa plytva adresami a mozu sa skorej minut  
+Dalsou nevyhodou je, ze pri vypadku jedneho routera su odpojene aj vsetci jeho potomkovia  
 
 ### Porovnanie BT Mesh a ZigBee (rozloha, rychlost, sposob prenosu sprav, ...)  
 
 
+|                      | Bluetooth Mesh                                                                                                                                | ZigBee                                                                          |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Frekvencne pasmo     | 2.4GHz                                                                                                                                        | 2.4GHz, ale aj Sub-GHz pasma (915MHz, 868MHz)                                   |
+| Dosah                | Desiatky metrov medzi jednotlivymi uzlami                                                                                                     | Desiatky metrov medzi jednotlivymi uzlami                                       |
+| Rychlost             | Relativne nizka, radovo jednotky az stovky kbps, optimalizovane pre male pakety                                                               | Relativne nizka, radovo desiatky az stovky kbps, optimalizovane pre male pakety |
+| Sposob prenosu sprav | Najma publish-subscribe model - koncove zariadenia sa "prihlasia" do skupin, zdrojove zariadenia posielaju spravu pre tieto skupiny, flooding | Najma unicast routing - dve zariadenia si priamo posielaju spravy               |
+| Latencia             | Vysoka - radovo desiatky az stovky ms                                                                                                         | Nizka - radovo jednotky ms                                                      |
+| Spotreba energie     | Nizka (je pre to navrhnuty), ale stale vyssia ako ZigBee                                                                                      | Nizka                                                                           |
+| Skalovatelnost       | Tisice uzlov                                                                                                                                  | Do stovky uzlov                                                                 |
+| Zabezpecenie         | Silne - AES-128                                                                                                                               | Silne - AES-128                                                                 |
+| Celkovo              | Robustnejsi, zlozitejsi, viacej skalovatelny, vyssie naroky                                                                                   | Jednoduchsi, mensia spotreba, mensie naroky                                     |
 
 ### Hlavne vlastnosti technologie LoRa  
 
-
+Nazov LoRa = Long Range  
+Urcene pre siete s velky dosahom, >10km  
+Nizka rychlost, do 50kbps, vhodna len na prenos malych suborov    
+Velmi nizka spotreba, urceny pre zariadenia s nizkou spotrebou energie (pouzivajuce baterie), mozu vydrzat az 10 rokov  
+Vyuziva Sub-Ghz pasmo - frekvencie nizsie ako 1GHz - 169, 433, 866, 915 MHz - nelicencovane ISM pasma  
+Signal sa rozprestiera cez siroke frekvencne pasmo - Chirp Spread Spectrum  
+Velmi odolne voci ruseniu  
+Vacsinou half-duplex  
+Pouziva topologiu "star-of-stars" - hviezdicova topologia - zariadenia komunikuju s branou  
+Typicke nasadenie - inteligentne mesta, polnohospodarstvo, sledovanie majetku, 
