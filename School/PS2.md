@@ -165,6 +165,8 @@ Ak RD >= FD, tak je mozne ze sused routuje cezomna = slucka
 
 Ak neplati FC -> moze/nemusi obsahovat slucku -> nemozeme priamo vlozit do tabulky
 
+*"Ak je nas sused k cielu blizsie, ako sme my kedykolvek boli, tak nemoze lezat na smerovacej slucke ktora sa uzatvara cez nas."*
+
 #### Successor a Feasible successor
 
 Successor - next-hop router na ceste do najlepsej, najkratsej ceste do cielovej siete bez sluciek  
@@ -179,6 +181,8 @@ Pri zmene v sieti
   - Ak nemame Feasible successora - musime znova spustit difuzny vypocet (potom sa tam zmeni aj FD (historicke minimum))
 
 #### Diffusing computations
+
+DUAL
 
 Generujem query na suseda reku "pocuvaj, ja som stratil cestu do cielovej siete (cezomna je to za nekonecno), vies o nej nieco?" a sused posle reply (bud jedno alebo druhe)
 
@@ -207,7 +211,6 @@ Troubleshooting pokracuje tu!
 
 #### Passive state & Active state
 
-Paradoxne by som povedal ze to je naopak ale nevadi  
 Passive - dobra route do cielovej siete, ktoru pouzivam  
 Active - route ktora sa prepocitava a nesmie sa pouzivat (bezi difuzny vypocet)
 
@@ -231,7 +234,7 @@ Zklada sa z 6 parametrov (najcastejsie sa vyuzivaju prve dva)
 | MTU         | Susedia musia mat rovnake                                                                                   | Staticky                      | _Nevstupuje do vypoctov_    |
 | Hop count   | Iba hard limit na max dlzku                                                                                 | _-_                           | _-_                         |
 
-Pri dynamickych je problem ze ako casto treba posielat updates, preto je by default off
+Pri dynamickych je problem ze ako casto treba posielat updates, preto su by default off
 
 #### Vypocet metriky
 
@@ -271,24 +274,24 @@ Druhe policko v hlavicke (opcode - operational code) urcuje typ paketu
 Ak multicast, tak `224.0.0.10`, resp `FF02::10`
 
 - Hello (Type 5)
-  - Zistujem ci sused zije alebo nie
-  - Nepotrvrdzovane
-  - Multicast
-  - Casto posielane (5, resp. 60 sekun)
+	- Zistujem ci sused zije alebo nie
+	- Nepotrvrdzovane
+	- Multicast
+	- Casto posielane (5, resp. 60 sekund)
 - Update (Type 1)
-  - Prenasaju smerovaciu informaciu - siet, maska, metrika
-  - Multicast, pri spomenalych cez unicast
-  - Su dolezite - musi byt potvrdzovany
-- Query (Type 1)
-  - Pytam sa na specificku cestu (ak som ja stratil informaciu o ceste)
-  - Obvykle multicast
-  - Potvrdzovane
+	- Prenasaju smerovaciu informaciu - siet, maska, metrika
+	- Multicast, pri spomalenych cez unicast
+	- Su dolezite - musi byt potvrdzovany
+- Query (Type 3)
+	- Pytam sa na specificku cestu (ak som ja stratil informaciu o ceste)
+	- Obvykle multicast
+	- Potvrdzovane
 - Reply (Type 4)
-  - Odpoved na Query
-  - Posiela sa unicast na adresu toho, kto sa pytal
-  - Potvrdzovane
+	- Odpoved na Query
+	- Posiela sa unicast na adresu toho, kto sa pytal
+	- Potvrdzovane
 - Ack (Type 2)
-  - Cez toto sa robi potvrdzovanie
+	- Cez toto sa robi potvrdzovanie
 
 ### Default route
 
@@ -301,6 +304,8 @@ ip route 0.0.0.0 0.0.0.0 serial0/1
 redistribute static  # bud toto
 network 0.0.0.0  # alebo toto
 ```
+
+**Pozor** `ip route` musi byt specifikovana **s vystupnym rozhranim**, nie IP adresou  
 
 ## OSPF
 
@@ -451,6 +456,8 @@ Kazdy ma svoju vlastnu hlavicku
 6. Loading - prenos/vymienanie informacii v db
 7. Full - susedia maju rovnaky obsah databaz
 
+![](ps2-ospf.png)
+
 - Kroky 1-3
   - Lokalizovanie susedov
   - Vytvorenie komunikacnych vztahov
@@ -497,6 +504,22 @@ Virtual links
 
 - Specialna OSPF siet, ktora prepaja vzdialene OSPF oblasti s chrbticovou sietou (backbone area)
 - Ak sa nejaka siet neda priamo pripojit na backbone, tak sa vytvori virtualny link (nejaky tunel) cez existujucu areu k backbone
+
+---
+
+Priorita pri volbe DR/BDR
+- Najvyssia = DR
+- Druha najvyssia = BDR
+- 0 = nezucastnuje sa volieb
+
+Ak nie je mozne rozhodnut na zaklade priority, pouzije sa Router ID (RID)  
+By default nepreemtivne  
+
+Stav vztahu dvoch smerovacov 
+- FULL/DR
+- FULL/BDR
+- FULL/DROTHER
+- 2-WAY/DROTHER
 
 ## WAN technologie
 
@@ -1165,7 +1188,7 @@ SPAN terminologia
 Quality of Service - kvalita sluzby  
 Treba zistit, kde je bottleneck v sieti  
 Rozne sluzby maju rozne poziadavky (oneskorenie, packet loss)  
-QoS je velmi subjektivny pojem, silne zavisly od povahe sluzby  
+QoS je velmi subjektivny pojem, silne zavisly od povahy sluzby  
 Cez IP siet tecie viacero sluzieb (video, data, voice), ktore nie su rovnocenne
 
 QoS - meratelne parametre - oneskorenie, RTT, strata packetov, jitter (rozdiel intervalov odosielania packetov napr. VoIP)  
@@ -1188,55 +1211,118 @@ Konvergovana siet - viac typov prevadzky v jendej sieti - data, VoIP, ...
 
 Faktory vplyvajuce na kvalitu
 
-- Prenosova kapacita
+- Prenosova kapacita, Disponibilna (pouzitelna) prenosova kapacita 
+	- Ako zvysit?
+		- Zrychlit linku - najlepsie ale najdrahsie
+		- Vyuzit QoS - priorita dolezitym paketom na ukor inych tokov
+		- Komprimovat obsah alebo hlavicky - to ale trva cas
 - Celkove oneskorenie - pevna a variablilna zlozka
-  - Processing Delay - variabilne - ked pride paket tak chvilu trva kym router zisti kam ho ma poslat
-  - Queuing Delay - variabilne - cas, ktory paket stravi vo vystupnom fronte
-  - Serialization Delay - fixne - cas, za ktory sa paket odvysiela interface-om
-  - Propagation Delay - fixne - cas prechodu signalu na danom fyzickom mediu
-- Kolisanie oneskorenia - jitter
+	- Typy
+		- Processing Delay - variabilne, nahodne - ked pride paket tak chvilu trva kym router zisti kam ho ma poslat
+		- Queuing Delay - variabilne, nahodne- cas, ktory paket stravi vo vystupnom fronte
+		- Serialization Delay - fixne, pevne - cas, za ktory sa paket odvysiela interface-om
+		- Propagation Delay - fixne, pevne - cas prechodu signalu na danom fyzickom mediu
+	- Celkove oneskorenie = sucet vsetkych oneskoreni po ceste
+	- Ako znizit? 
+		- Zrychlit linku - najlepsie ale najdrahsie
+		- Priorita dolezitym paketom
+		- Umoznit upravu priority dolezitych paketov - **reprioritizacia**  
+		- Komprimovat obsah ramcov alebo hlaviciek, to ale trva cas
+	- Kolisanie oneskorenia - **jitter**
 - Straty paketov
-  - Tail drop - ked sa naplni buffer pre interface-om (front), tak dalsie pakety ktore pridu sa zahodia
-  - RED, WRED ((Weighted) Random Early Detection) - ked sa uz blizi k naplneniu buffera, tak sa nahodne zahodia pakety
--
+	- Tail drop - ked sa naplni (zahlti) buffer pred interface-om (front), tak dalsie pakety ktore pridu sa zahodia
+	- RED, WRED ((Weighted) Random Early Detection) - ked sa uz blizi k naplneniu buffera, tak sa nahodne zahodia pakety
+	- Predchadzanie stratam
+		- Zrychlit linku - najlepsie ale najdrahsie
+		- Garantovat dostatocne pasmo pre citlive pakety
+		- Predchadzat zahlteniu zahadzovanim nahodnych menej dolezitych paketov este pred zahltenim
 
 ### Nastroje pre poskytovanie QoS
 
-- Klasifikacia
-- Znackovanie (Marking)
-- Predchadzanie zahlteniu (Congestion Avoidance) - Tail Drop, RED, WRED
-- Riesenie zahltenia (Congestion Management) - planovacie mechanizmy pre obsluhu frontov
-- Tvarovanie a obmedzovanie prevadzky (Shaping, Policing)
-- Mechanizmy efektivnosti linky (Link Efficiency Mechanisms)
+- Klasifikacia - identifikacia toku alebo triedy prevadzky
+- Znackovanie (**Marking**) - vyznacenie klasifikovaneho toku
+- Predchadzanie zahlteniu (**Congestion Avoidance**) - Tail Drop, Random Early Detection, Weighted RED
+- Riesenie zahltenia (**Congestion Management**) - planovacie mechanizmy pre obsluhu frontov
+- Tvarovanie a obmedzovanie prevadzky (**Shaping, Policing**)
+- Mechanizmy efektivnosti linky (**Link Efficiency Mechanisms**)
+	- Link fragmentation and Interleaving
+	- On-the-fly komplresia hlaviciek alebo tiel paketov
 
 ### Modely poskytovania QoS
 
 - Best effort
-  - Nic nekonfigurujeme, nic neriesime, bez riadenia QoS
-  - Povodny model, na ktorom bol internet zalozeny
-  - Vynikajuca skalovatelnost
-  - Neposkytuje garancie sluzby
-  - Nediferencuje medzi sluzbami
-    - Paket pride vtedy, ked pride ✨
+	- Nic nekonfigurujeme, nic neriesime, bez riadenia QoS
+	- Povodny model, na ktorom bol internet zalozeny
+	- Vynikajuca skalovatelnost
+	- Neposkytuje garancie sluzby
+	- Nediferencuje medzi sluzbami
+	- ✨ Paket pride vtedy, ked pride ✨
 - Integrated Services (IntServ)
-  - Aplikacie oznamuju siete ake parametre potrebuju/pozaduju
-  - Poskytuje garantovane dorucenie a predikovatelne spravanie sa siete voci aplikaciam
-  - RSVP - Resource Reservation Protocol - TCP/UDP port 3455, IP protokol cislo 46
-  - Riadena zataz, nizke oneskorenie, vysoka priepustnost
+	- Aplikacie oznamuju siete ake parametre potrebuju/pozaduju
+	- Poskytuje garantovane dorucenie a predikovatelne spravanie sa siete voci aplikaciam
+	- **RSVP** - Resource Reservation Protocol - TCP/UDP port 3455, IP protokol cislo 46
+		- Signalizacny protokol
+	- Ak siet nie je schopna dodat pozadovane vlastnosti, informuje o tom aplikaciu
+	- Riadena zataz, nizke oneskorenie, vysoka priepustnost
+	- Signalizovane, tvrde poziadavky
+	- "Toto nutne potrebujem inak koniec sveta"
 - Differentiated Services (DiffServ)
-  - Siet rozpoznava triedy prevadzky, ktore potrebuju osobitne QoS parametre
-  - Toky triedi do tzv. agregatorov - tried - poskytuje QoS celym triedam
-  - Per-Hop Behavior (PHB)
+	- Siet rozpoznava triedy prevadzky, ktore potrebuju osobitne QoS parametre
+	- Toky triedi do tzv. agregatorov - tried - poskytuje QoS celym triedam
+	- Per-Hop Behavior (PHB)
+	- Komplexne veci (klasifikacia, znackovanie, upravy prevadzky) sa riesia na okraji siete, vo vnutri sa riadi uz pridelenymi znackami
+	- Cielom je skalovatelnost, spolupraca s uzlami ktore nepodporuju DiffServ, moznost postupneho nasazdovania
+	- "Potreboval by som toto ak sa da, ked nie tak aspon nieco"
 
-### Vytvaranie obsluznych tried
+### Obsluzne triedy
 
+Typy prevadzky, ktore budu vybavovane rovnakym sposobom - rovnaka QoS obsluha  
+
+Nie je vhodne ich vytvarat vela, obvykle max 4-5  
 - Hlasove aplikacie - VoIP
 - Mission-critical aplikacie - Oracle, SAP, SNA
 - Interaktive aplikacie - Telnet, TN3270
 - Velkoobjemove aplikacie - FTP, TFTP
--
--
--
+- Best-effort aplikacie - E-main, Web
+- Ostatne "smeti" - Kazaa, Yahoo, RapidShare
+
+Do mission-critical a transakcnych nezaradovat viac ako 3 aplikacie  
+Uprednostnit proaktivne pravidla pred reaktivnymi (WRED pred policing)  
+
+Kolko tried treba? 
+
+![](ps2-qos.png)
+
+
+### Frontove (queuing) algoritmy
+
+#### First In First Out (FIFO)
+
+Pakety su spracovavane v takom poradi, ako pridu  
+Nevyuziva ziadne priority ani triedy  
+Vsetky pakety su povazovane za rovnake  
+
+#### Weighted Fair Queuing (WFQ)
+
+Automaticka metoda, ktora poskytuje ferovy bandwidth pre vsetky prevadzky  
+Aplikuje priority (vahy) pre identifikovanu pravadzku a klasifikuje ich do tokov  
+Identifikuje, kolko prostriedkov potrebuju jednotlive toky v porovnani s ostatnymi  
+Pri zriadovani tokov berie do uvahy source/destination IP/MAC, porty, protokoly, a hodnoty ToS (Type of Service)  
+
+#### Class-Based Weighted Fair Queuing (CBWFQ)  
+
+Rozsiruje bezne WFQ o podporu pouzivatelsky definovanych tried  
+Triedy mozu byt definovane pomocou protokolov, ACL a/alebo interfaces  
+S kazdou triedou definujeme jej bandwidth, weight, max packet limit  
+Kazda trieda dostane FIFO front a jednotlive pakety prisluchajuce triedam sa triedia do tychto frontov
+
+#### Low Latency Queuing (LLQ)
+
+Dodava "strict priority queuing" (PQ) ku CBWFQ  
+Znizuje jitter v hlasovych konverzaciach  
+Umoznuje datam citlivym na oneskorenie (hlas) byt poslane pred paketmi v ostatnych frontoch  
+Basically rozsiruje CBWFQ? Tak aby mohol byt hlas posielany este skor  
+
 
 ## Juniper
 

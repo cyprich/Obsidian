@@ -1,6 +1,6 @@
 # Siete
 
-Take vseobecne srandicky o sietach co som nevedel kam zaradit
+Take vseobecne srandicky o sietach co som nevedel kam zaradit, alebo som zvazil ze by bolo fajn ich mat pokope  
 
 ## Basic config
 
@@ -60,6 +60,14 @@ line vty 0 15
 | 5247 | CAPWAP (destination) | U              |
 | 8291 | WinBox               | T              |
 
+## Multicast adresy
+
+| Adresa IPv4  | Adresa IPv6 | Urcena pre                               |
+| ------------ | ----------- | ---------------------------------------- |
+| `224.0.0.10` | `FF02::10`  | EIGRP                                    |
+| `224.0.0.5`  | `FF02::5`   | OSPF - vsetky smerovace v danom segmente |
+| `224.0.0.6`  | `FF02::6`   | OSPF - DR/BDR smerovace v danom segmente |
+
 ## Administrative distances routing protokolov
 
 | Protokol                      |  AD |
@@ -79,10 +87,11 @@ line vty 0 15
 
 ## RFC
 
-| Cislo RFC   | Popis   |
-| ----------- | ------- |
-| 1157        | SNMPv1  |
-| 1305        | NTP     |
-| 1901 - 1908 | SNMPv2c |
-| 2273 - 2275 | SNMPv3  |
-| 3164        | Syslog  |
+| Cislo RFC     | Popis   |
+| ------------- | ------- |
+| 1157          | SNMPv1  |
+| 1305          | NTP     |
+| 1901 - 1908   | SNMPv2c |
+| 2328 a dalsie | OSPF    |
+| 2273 - 2275   | SNMPv3  |
+| 3164          | Syslog  |
