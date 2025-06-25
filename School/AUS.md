@@ -121,6 +121,18 @@ Uplne vs. Skratene vyhodnocovanie
 	- Ak pri `&&` je lava strana `false`, tak vysledok bude vzdy `false`
 	- Ak pri `||` je lava strana `true`, tak vysledok bude vzdy `true`
 
+#### Typ `wchar_t`  
+
+Viacbajtovy udajovy typ  
+Jeho pamatovu reprezentaciu ovplyvnuje endianita architektury (little endian vs. big endian)  
+Posledna polozka pola je znak s kodom `0` - null character  
+
+Typy implementacie
+- Na Windows - 2B typ, pouziva format UTF-16  
+- Na Linux - 4B typ, pouziva format UTF-32
+
+Vo vseobecnosti neprenositelny (nekonzistentna implementacia), cize sa neoporuca pouzivat v aplikaciach, ktore maju byt spustitelne na roznych architekturach  
+
 ### Odvodene typy
 
 Vlastne udajove typy tvorene z primitivnych typov  
@@ -285,6 +297,60 @@ $I(blok) = \dfrac{A_{\text{baza}} - A_{\text{baza}}}{d}$
 - konstantna - $m + 10$
 - linearna - $m * 2$
 - geometricka - $m ^2$
+
+## APT, APS, AUT, AUS, SP
+
+### APT - Abstraktny Pamatovy Typ
+
+Urcuje
+- Ako udajova struktura organizuje bloky v pamati
+- Operacie typicke pre dane pamatove usporiadanie
+- Poziadavky na bloky pamate
+
+Implementacne je typicky rozhranie (interface)  
+Bloky pamate je mozne specifikovat s vyuzitim generik, sablon, konceptov, ...  
+Ten isty APT je mozne realizovat viacerymi sposobmi s odlisnou organizaciou blokov pamate - vyber najvhodnejsej realizacie pre konkretnu situaciu  
+
+Spravuje bloky pamate, pricom kazdy ma vztahovu a udajovu cast  
+Je realizovany APS, pri implicitnych je vztahova cast `= 0B`, pri explicitnych `> 0B`  
+
+Pozname tieto: 
+- **Sekvencia** - blok pamate ma max. `1` predchodcu a max. `1` nasledovnika - **vztah 1:1**  
+- **Hierarchia** - blok pamate ma max. `1` predchodcu (otec) a `N` nasledovnikov (synovia) - **vztah 1:N**  
+- **Siet** - blok pamate ma vztah k minimalne `N-1` prvkom, potencialne teda kazdy s kazd;ym - **vztah N:N**  
+
+Viacej v [Abstraktny pamatovy typ (APT)](#Abstraktny%20pamatovy%20typ%20(APT))  
+
+### SP - Spravca Pamate  
+
+Vsetky pamatove struktury, ktore ukladaju bloky pamate do rovnakeho typu pamate, budu pozadovat pri pridelovani pamate specificke spravanie - definujeme spravcu pamate  
+
+SP urcuje sposob pridelovania a uvolnovania pamate  
+Implementacne je typicky rozhranie (interface)  
+Nerozlisuje bloky pamate  
+Rovnakeho SP je mozne vyuzivat pre realizaciu roznych APT  
+
+Pozname tychto:
+- **Spravca operacnej pamate** - operacna pamat je alokovana pomocou zvolenej strategie (first fit, best fit, worst fit), uvolnit je mozne akykolvek blok, dochadza k fragmentacii  
+- **Spravca suvislej operacnej pamate** - operacna pamat je postupne alogovana, uvolnit je mozne naposledy alokovany blok, nedochadza k fragmentacii  
+- **Spravca suvislej externej pamate** - to iste co predtym len s externou pamatou  
+
+Viacej v [Spravca pamate](#Spravca%20pamate)  
+
+### APS - Abstraktna Pamatova Struktura  
+
+Je realizacia APT aj SP  
+APT definuje ake su vztahy medzi udajmi  
+SP definuje v akej pamati su ulozene  
+
+Ani APT ani SP nespecifikuju ani neobmedzuju bloky pamate  
+Znalost o konkretnych blokoch pamate, ktore spracuva ma APS  
+
+Viacej v [Abstraktna pamatova struktura (APS)](#Abstraktna%20pamatova%20struktura%20(APS))  
+
+### AUT  
+
+### AUS  
 
 ## Abstraktne pamatove struktury (APS)
 
