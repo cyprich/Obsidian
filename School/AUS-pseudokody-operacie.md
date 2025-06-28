@@ -300,6 +300,51 @@ void BinarnaHierarchia<TypBloku>.spracujVsetkyVrcholuVoVnutornomPoradi(lambda(*T
 	spracujVoVnutornomPoradi(spristupniKoren(), operacia)
 }
 ```
+
+### APT Siet
+
+Selektory
+
+| Nazov selektora             | Parametre          | Navratova hodnota | Vyznam                                                         |
+| --------------------------- | ------------------ | ----------------- | -------------------------------------------------------------- |
+| Spristupni vrchol z brany   | `int`              | `*TypBloku`       | Spristupni vrchol z brany podla jeho poradia                   |
+| Spristupni vrchol z vrcholu | `*TypBloku`, `int` | `*TypBloku`       | Spristupni vrchol z ineho vrcholu podla jeho poradia vo vztahu |
+
+Dotazy
+
+| Nazov dotazu   | Parametre                | Navratova hodnota | Vyznam                                             |
+| -------------- | ------------------------ | ----------------- | -------------------------------------------------- |
+| Stupen         | `*TypBloku`              | `int`             | Stupen vrcholu (pocet vztahov) vrcholu v parametri |
+| Existuje vztah | `*TypBloku`, `*TypBloku` | `bool`            | `true`, ak vrcholy maju medzi sebou vztah          |
+| Pocet vztahov  |                          | `int`             | Pocet vztahov v celej sieti                        |
+
+Modifikatory
+
+| Nazov modifikatora | Parametre                | Navratova hodnota | Vyznam                                     |
+| ------------------ | ------------------------ | ----------------- | ------------------------------------------ |
+| Vloz               |                          | `*TypBloku`       | Vlozi novy vrchol do siete                 |
+| Zrus               | `*TypBloku`              |                   | Zrusi/odstrani vrchol zo siete             |
+| Spoj               | `*TypBloku`, `*TypBloku` |                   | Spoji - vytvori vztah medzi dvoma vrcholmi |
+| Odpoj              | `*TypBloku`, `*TypBloku` |                   | Odpoji - zrusi vztah medzi dvoma vrchomi   |
+
+Zlozitosti 
+
+| Operacia/Selektor/Dotaz/Modifikator | Zlozitost                                                                                                       | Parametre                                                                                      |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Prirad                              | $O(v) + O(w) * O(n)$                                                                                            | $v$ = pocet povodnych vztahov  <br>$w$ = pocet novych vztahov  <br>$n$ = pocet novych vrcholov |
+| Vymaz                               | $O(v)$                                                                                                          | $v$ = pocet vztahov                                                                            |
+| Spristupni vrchol z brany           | $O(1)$ ak je brana IS  <br>$O(n)$ ak je brana JZS  <br>$O \left( \dfrac{n}{2} \right)$ ak je brana OZS          | $n$ = pocet prvkov brany                                                                       |
+| Spristupni vrchol z vrcholu         | $O(1)$ ak su vztahy v IS  <br>$O(s)$ ak su vztahy v JZS  <br>$O \left( \dfrac{s}{2} \right)$ ak su vztahy v OZS | $s$ = stupen vrcholu                                                                           |
+| Porovnaj                            | $O(v^2)$                                                                                                        | $v$ = pocet vztahov                                                                            |
+| Velkost                             | $O(1)$                                                                                                          |                                                                                                |
+| Stupen                              | $O(1)$                                                                                                          |                                                                                                |
+| Existuje vztah                      | $O(s)$                                                                                                          | $s$ = stupen vrcholu                                                                           |
+| Pocet vztahov                       | $O(n)$                                                                                                          | $n$ = pocet prvkov                                                                             |
+| Vloz                                | $O(1)$                                                                                                          |                                                                                                |
+| Zrus                                | $O(n) \times O(s^2)$                                                                                            | $n$ = pocet prvkov  <br>$s$ = stupen vrcholu                                                   |
+| Spoj                                | $O(1)$                                                                                                          |                                                                                                |
+| Odpoj                               | $2 \times O(s)$                                                                                                 | $s$ = stupen vrcholu                                                                           |
+
 ## APS - Abstraktna Pamatova Struktura
 
 Vsetky iteratory APS
@@ -502,19 +547,130 @@ Modifikatory
 | Zmen syna  | $O(1)$ ak su synovia ulozeni v IS  <br>$O(s) ak su synovia ulozeni v ES         | $s$ = stupen vrcholu                                                                         |
 | Zrus syna  | $O(m)$ ak su synovia ulozeni v IS  <br>$O(s) + O(m)$ ak su synovia ulozeni v ES | $s$ = stupen vrcholu  <br>$m$ = mohutnost podhierarchie mazaneho syna                        |
 
+## AUT
+
+### AUT Strom
+
+Selektory
+
+| Nazov selektora  | Parametre        | Navratova hodnota |
+| ---------------- | ---------------- | ----------------- |
+| Spristupni koren |                  | `*Vrchol`         |
+| Spristupni otca  | `*Vrchol`        | `*Vrchol`         |
+| Spristupni syna  | `*Vrchol`, `int` | `*Vrchol`         |
+
+Dotazy
+
+| Nazov dotazu   | Parametre        | Navratova hodnota |
+| -------------- | ---------------- | ----------------- |
+| Uroven         | `*Vrchol`        | `int`             |
+| Stupen         | `*Vrchol`        | `int`             |
+| Mohutnost      | `*Vrchol`        | `int`             |
+| Je koren       | `*Vrchol`        | `bool`            |
+| Je N-ty syn    | `*Vrchol`, `int` | `bool`            |
+| Je list        | `*Vrchol`        | `bool`            |
+| Ma N-teho syna | `*Vrchol`, `int` | `bool`            |
+
+Modifikatory
+
+| Nazov modifkatora | Parametre  | Navratova hodnota |
+| ----------------- | ---------- | ----------------- |
+| Vloz prvy         | `T`        |                   |
+| Vloz posledny     | `T`        |                   |
+| Vloz              | `int`, `T` |                   |
+| Nastav            | `int`, `T` |                   |
+| Zrus prvy         |            |                   |
+| Zrus posledny     |            |                   |
+| Zrus              | `int`      |                   |
 
 
-| Nazov operacie | Parametre | Navratova hodnota | Vyznam |
-| -------------- | ---------- | ----------------- | ------ |
-|                |            |                   |        |
+## AUS
 
-| Nazov operacie | Parametre | Navratova hodnota | Vyznam |
-| -------------- | ---------- | ----------------- | ------ |
-|                |            |                   |        |
+### AUS Vseobecny Zoznam
 
-| Nazov operacie | Parametre | Navratova hodnota | Vyznam |
-| -------------- | ---------- | ----------------- | ------ |
-|                |            |                   |        |
+Zlozitosti vychadzaju zo zlozitosti pouzitej sekvencie (implicitna, explicitna jednostranne zretazena, explicitna obojstranne zretazena)  
+
+### AUS Vseobecny Strom
+
+Zlozitosti vychadzaju zo zlozitosti pouzitej hierarchie  
+
+![](aus-vseobecny-strom-zlozitosti.png)
+
+
+### AUS Viacrozmerne pole
+
+#### AUS Viacrozmerne regularne pole
+
+Selektory
+
+| Nazov Selektora | Parametre                | Navratova hodnota | Vyznam                           |
+| --------------- | ------------------------ | ----------------- | -------------------------------- |
+| Spristupni      | `int`, `int`, ..., `int` | `T`               | Spristupni prvok s danym indexom |
+
+Modifikatory
+
+| Nazov operacie | Parametre                     | Navratova hodnota | Vyznam                                        |
+| -------------- | ----------------------------- | ----------------- | --------------------------------------------- |
+| Nastav         | `T`, `int`, `int`, ..., `int` |                   | Nastavi prvok s danym indexom na novu hodnotu |
+
+Dotazy
+
+| Nazov operacie   | Parametre | Navratova hodnota | Vyznam                       |
+| ---------------- | --------- | ----------------- | ---------------------------- |
+| Pocet dimenzii   |           | `int`             | Vrati pocet dimenzii         |
+| Baza dimenzie    | `int`     | `int`             | Vrati bazu danej dimenzie    |
+| Velkost dimenzie | `int`     | `int`             | Vrati velkost danej dimenzie |
+
+### AUS Binarny vyhladavaci strom
+
+#### Pseudokody - rotacie
+
+```c++
+void VseobecnyBVS.rotujDolava(TypVrcholuBVS* vrchol) {
+	TypVrcholuBVS* lavySyn = vrchol->lavy;
+	TypVrcholuBVS* otec = vrchol->otec;
+	TypVrcholuBVS* praotec = otec->otec;
+
+	pamatovaStruktura->zmenPravehoSyna(otec*, nullptr);
+	pamatovaStruktura->zmenLavehoSyna(vrchol*, nullptr);
+
+	if (praotec != nullptr) {
+		if (praotec->lavy == otec) {
+			pamatovaStruktura.zmenLavehoSyna(praotec*, vrchol);
+		} else {
+			pamatovaStruktura.zmenPravehoSyna(praotec*, vrchol);
+		}
+	} else {
+		pamatovaStruktura->zmenKoren(vrchol);
+	}
+
+	pamatovaStruktura->zmenPravehoSyna(otec*, lavySyn);
+	pamatovaStruktura->zmenLavehoSyna(vrchol*, otec);
+}
+
+void VseobecnyBVS.rotujDolava(TypVrcholuBVS* vrchol) {
+	TypVrcholuBVS* pravySyn = vrchol->pravy;
+	TypVrcholuBVS* otec = vrchol->otec;
+	TypVrcholuBVS* praotec = otec->otec;
+
+	pamatovaStruktura->zmenLavehoSyna(otec*, nullptr);
+	pamatovaStruktura->zmenPravehoSyna(vrchol*, nullptr);
+
+	if (praotec != nullptr) {
+		if (praotec->lavy == otec) {
+			pamatovaStruktura.zmenLavehoSyna(praotec*, vrchol);
+		} else {
+			pamatovaStruktura.zmenPravehoSyna(praotec*, vrchol);
+		}
+	} else {
+		pamatovaStruktura->zmenKoren(vrchol);
+	}
+
+	pamatovaStruktura->zmenLavehoSyna(otec*, pravySyn);
+	pamatovaStruktura->zmenPravehoSyna(vrchol*, otec);
+}
+```
+
 
 | Nazov operacie | Parametre | Navratova hodnota | Vyznam |
 | -------------- | ---------- | ----------------- | ------ |

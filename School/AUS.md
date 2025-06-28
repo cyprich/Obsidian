@@ -350,7 +350,36 @@ Viacej v [Abstraktna pamatova struktura (APS)](#Abstraktna%20pamatova%20struktur
 
 ### AUT  
 
+AUT Zoznam  
+AUT Pole  
+
+AUT Strom
+
+AUT Zasobnik  
+AUT Front  
+
+AUT Prioritny front  
+
+AUT Tabulka  
 ### AUS  
+
+AUS Vseobecny Zoznam  
+AUS Jednorozmerne Pole, Viacrozmerne Pole  
+
+AUS Vseobecny Strom  
+
+AUS Implicitny zasobnik, Explicitny zasobnik (LIFO)  
+AUS Explicitny front, Implicitny front *s obmedzenou kapacitou* (FIFO)  
+
+AUS Utriedeny/neutriedeny sekvencny prioritny front  
+**AUMS** Dvojzoznam (kratka utriedena + dlha neutriedena sekvencia)  
+AUS Lavostranna halda
+
+AUS Utriedena implicitna sekvencna tabulka  
+AUS Neutriedena implicitna/explicitna sekvencna tabulka  
+**AUMS** Tabulka s rozptylenymi zaznamami (Hashtable)  
+AUS Binarny Vyhladavaci Strom  
+AUS Treap, Cerveno-cierny strom, AVL strom, Splay strom  
 
 ## Abstraktne pamatove struktury (APS)
 
@@ -726,11 +755,15 @@ AUS (implementacia interface) uz konkretne vyberie nejaku sekvenciu (IS, SLS), a
 
 ### Polia
 
-AUT Pole, AUS Pole, AUS Jednorozmerne pole, AUS Dvojrozmerne pole
+AUT Pole  
+AUS Jednorozmerne pole, AUS Dvojrozmerne pole, AUS Viacrozmerne pole  
 
 Fixna velkost po dobu celeho zivotneho cyklu, mozeme len vyberat/prepisovat prvky (nie vkladat/odoberat)  
 Pristup pomocou indexu, moze byt 2-zlozkovy, 3-zlozkovy, K-zlozkovy
 Pri vzniku musime naplnit - definovat hodnotu prvkom (kostruktor pri objektoch)  
+
+Implementovane pomocou APT Implicitna Sekvencia
+
 Regularne (plne) vs. neregularne (chybaju prvky, vnorene pole ma menej elementov)
 
 ![](aus-pole-1.png)
@@ -1062,7 +1095,7 @@ Hesovacia funkcia
 - Mlyncek 
 - Pocita index, mapuje kluc do intervalu $<0; N>$, pricom $N$ = kapacita
 - Musi byt rychla na vypocet
-- Musi rovnomerne rozmiestnovat prvky v sekvencii (musi ich rozptylit, preto sa nazyva tak ako sa nazyva)  
+- Musi rovnomerne rozmiestnovat prvky v sekvencii (musi ich rozptylit, preto sa tabulka nazyva tak ako sa nazyva)  
 - Musi minimalizovat kolizie 
 
 Kolizia
@@ -1089,21 +1122,21 @@ Riesenie kolizii
 	- Pri kolizii vlozime novy prvok na prve volne miesto v preplnovacej oblasti
 	- Prvkom okrem `klud` a `udaje` pridame aj `synonymum`, co bude
 		- `-1` ak neexistuje synonymum
-		- `cislo` - idex v preplnovacej oblasti ak existuje synonymum
+		- `cislo` - index v preplnovacej oblasti ak existuje synonymum
 	- V podstate to iste, ale mame suvislu pamat
-	- Je potrebne spravne zvolit velkost preplnovacej oblasti (malo moznyn synonym vs. plytvanie pamatou)
+	- Je potrebne spravne zvolit velkost preplnovacej oblasti (malo moznych synonym vs. plytvanie pamatou)
 	- Je potrebne predchadzat vzniku "dier" pri mazani synonym
 - Opatovne hashovanie
 	- Mame `M` hashovacich funkcii
 	- Mame `M` oblasti - disjunktne mnoziny - implicitne sekvencie
 	- Ak vznikne kolizia pri jednej hash funkcii, skusime druhu, skusime tretiu, ...
 	- Ak vznikne kolizia aj pri poslednej hash funkcii tak koniec sveta
-	- Problem ze ako zvolit velkost oblasti, plytvanie pamatov vs. nemame kam dat prvky
+	- Problem ze ako zvolit velkost oblasti, plytvanie pamatou vs. nemame kam dat prvky
 	- Rastie casova aj pamatova narocnost
 - Otvorena adresacia
 	- Ak trafime synonymum, najdeme prve volne miesto kam to vlozit
 	- Toto sa nazyva sondovanie (probing)
-	- Moze byt sekvencne (posuvam o `n` prvok), linearne (posuvam o `n*m` prvkov),  kvadraticke (posuvam o `n^m` prvkov), ...
+	- Moze byt sekvencne (posuvam o `n` prvkov), linearne (posuvam o `n*m` prvkov),  kvadraticke (posuvam o `n^m` prvkov), ...
 	- Clustre - zhlukovanie prvkov - napr. hash funkcia `kluc mod 20`
 	- Problem - potrebovali by sme si ulozit info ze kolko prvkov chcelo byt vlozene na dane miesto
 
@@ -1136,7 +1169,6 @@ Nasledne mozu nastat 3 situacie pre takyto vrchol
 	- Tieto podstromy musia existovat, kedze ma mazany vrchol stupen aspon 2
 	- Mazanie takymto stylom zachova poradie
 
-
 | Stupen vymazavaneho vrcholu | Znazornenie mazania                      |
 | --------------------------- | ---------------------------------------- |
 | 0                           | ![](aus-bvs-2.png) |
@@ -1156,7 +1188,6 @@ Ak nie je vyvazene, tak potrebujeme nieco odstat o uroven vyssie/nizsie
 - Jednoducha lava rotacia vrcholu okolo svojho otca
 - Jednoducha prava rotacia vrcholu okolo svojho otca
 - Dalsie rotacie...
-
 
 Ja (ako vrchol) sa chcem dostat o uroven vyssie   
 Jedini dvaja dotknuti su moj otec a moj "brat"   
@@ -1264,63 +1295,303 @@ Mam 2\*FIFO (stvorice) a vyberam mensi prvok, vkladam do osmice
 
 Zlozitost $O(n * log_2(n))$
 
-### Sortovanie sekvencnych suborov
+## Triedenie sekvencnych suborov
 
 Mame velky subor a nezmesti sa do operacnej pamate  
 Musime triedit citanim a zapisovanim na disk  
 Treba minimalizovat tieto operacie
 
-Vytvaranie monotonii -  
-Monotonia je ulozena na disku  
-Buffer
+Triedenie prebieha pomocou **monotonii** a **buffera**  
 
-V principe podobne ako merge sort
+Vytvorime buffer (pomocna sekvencia v operacnej pamati), a naplnime ho udajmi z disku (povodneho sekvencneho suboru)  
+Vytvorime prvu prazdnu monotoniu - pomocny sekvencny subor ktoreho prvy neklesaju (rastu alebo su rovnake)  
+Na zaciatku je monotonia prazdna, vkladame do nej vhodny udaj z buffera tak, aby boli v monotonii prvky usporiadane    
+Porovnavanie nastava v bufferi - v operacnej pamati namiesto disku - rychlejsie  
+Pri kazdom vybrati z buffera do neho vlozime novy prvok z povodneho sekvencneho suboru   
 
-### Sortovanie vyuzitim paralelnych prostriedkov
+Ak sa uz v bufferi nenachadza vhodny prvok (a stale mame co triedit), tak uzavrieme prvu monotoniu  
+Vytvori sa 2. monotonia a cyklus sa opakuje  
+
+Ked uz vyprazdnime cely buffer a nemame ho cim naplnit tak koncime cyklus  
+Udaje mame v ulozene monotoniach  
+Nastava mergovanie monotonii  
+Podobne ako pri merge sort - zo zaciatku dostupnych monotonii vyberieme najmensi prvok a zapiseme do sekvencneho suboru  
+Ked vyprazdnime vsetky monotonie tak mame hotovo a utriedeny sekvencny subor   
+ 
+## Paralelne prostriedky
 
 Graficka karta  
+Viacej vypoctov prebieha naraz (paralelne)  
 Vypoctov musi byt vela a musia byt rovnake, a idealne co najrychlejsie na vypocet
 
-Komparator - porovnaj  
-Komparacna siet  
-Linky  
-Triediaca siet  
-Rodina  
-Hlbka triediacej siete - zlozitost = O(hlbka)
+**Komparacna siet** - skupina komparatorov a liniek  
+**Komparator** - miesto, ktore rozhodne o poradi vstupov a zoradi ich v spravnom poradi na vystup... V podstate berie 2 hodnoty, a ak su v nespravnom poradi tak ich vymeni  
+**Linky** - spajaju komparatory, vstupy a vystupy. Sluzia na prenos dat  
 
-Bitonic sort  
-Bitonicka sekvencia - prave raz stupa, prave raz klesa  
-Half cleaner  
-Bitonic sorter  
-Modifikovany half cleaner  
-Merger  
-Vysledna zlozitost $log_2(n) * log_2(n) = (log_2)^2(n)$
+![](aus-komparacna-siet.png)
+
+**Triediaca siet** - specialny typ komparacnej siete, ktora akykolvek vstup usporiada na vystupe  
+*Nie kazda komparacna siet je aj triediaca siet*  
+*Komparatory nesmu tvorit cyklicky graf*  
+
+**Rodina** - skupina triediacich sieti, ktore pracuju na rovnakom principe, ale maju rozny pocet vstupov - napr. *Merger* moze mat 2 vstupy, 3 vstupy, ... Vo vseobecnosti oznacujeme ako *Merger\[n]*, pricom *n* je pocet liniek    
+
+### Vykon triediacej siete
+
+Komparatory pracuju v case $O(1)$  
+
+**Hlbka triediacej siete** - v podstate kolko je najviac komparatorov za sebou, alebo za kolko sa vykona posledny komparator  
+Vstupna linka ma hlbku $0$  
+Vystupna linka komparatora ma hlbku $max(\text{predchadzajucaLinka}_1, \text{predchadzajucaLinka}_2) + 1$  
+Cize v podstate za kazdym vystupom komparatora sa zvysi hlbka linky o 1  
+
+![](aus-triediaca-siet.drawio.png)  
+
+> Tie druhe komparatory dole su ohnute len preto aby bolo jasne vidiet ze ktore su spolu, ale stale pracuju sucasne  
+
+Vykon triediacej siete bude teda $O(h)$  
+
+Komparatory pracuju paralelne, cize vsetko co nie je presne za sebou pracuje naraz  
+Predchadzajuci obrazok by teda mohol vyzerat aj nejak takto
+
+Pri normalnom triedeni (neparalelnom, v operacnej pamati) sa snazime dosiahnut rychlosti $< O(n^2)$, idealne az $O(n)$  
+Pri paralelnom triedeni sa snazime dosiahnut rychlosti $< O(n)$  
+
+### Techniky tvorby triediacej siete  
+
+Je matematicky dokazane, ze ak chceme zistit ci je siet triediaca, tak nemusime testovat vseky kombinacie, ale len vsetky kombinacie nul a jednotiek - **Princip 0-1**  
+Odteraz uz budeme predpokladat len tuto metodu  
+
+#### Insert sort (neefektivne)
+
+![](aus-paralelny-insert.png)
+
+#### Select sort (neefektivne)
+
+V podstate je to to iste, len dole hlavou   
+Spravi to to iste, tak isto rychlo (pomaly)  
+Je to rovnako nepripustne neefektivne $O(n)$   
+
+![](aus-paralelny-select.png)
+
+#### Bitonic sort (efektivne)
+
+**Bitonicka sekvencia** - sekvencia, ktorej prvky prave raz stupaju, a prave raz klesaju  
+Bi-tonic - 2 tony - raz hore, raz dole  
+Napr. *(1, 4, 6, 8 - 3, 2)*  
+Takuto sekvenciu je mozne cyklicky posunut tak, aby sedela - z *(6, 9 - 4, 2 - 3, 5)* spravime *(2, 3, 5, 6, 9 - 4, 2)*  
+Kedze mame *Princip 0-1*, tak by to mohlo vyzerat nejak takto *(0, 0, 1, 1, 1, 0, 0, 0)*  
+Akakolvek dvojica je bitonicka sekvencia  
+Akakolvek monotonna postupnost je bitonicka sekvencia  
+
+**Bitonicky cista sekvencia** - ma rovnake prvky - iba nuly alebo iba jednotky - *(0, 0, 0, 0)*  
+Kedze ma same rovnake prvky, tak mozeme povedat ze je utriedena  
+
+Bitonic sort sa sklada z viac elementov - komparacnych sieti, ktore su popisane nizsie
+
+##### Half-cleaner
+
+Komparacna siet s hlbkou 1  
+**Vstup** - bitonicka sekvencia  
+**Vystup** - bitonicka sekvencia + bitonicky cista sekvencia  
+Rychlost (hlbka) $O(1)$  
+
+Half-cleaner - vycisti polovicu - z bitonickej sekvencie spravi polovicu *cistej* bitonickej sekvencie  
+
+![](aus-bitonic1.png)  
+
+![](aus-bitonic2.png)  
+
+Ak chceme utriedit *celu* bitonicku sekvenciu, tak mozeme pridat dalsie Half-cleaners  
+Tomuto sa hovori *Bitonic sorter*  
+
+##### Bitonic sorter  
+
+Nie bitonic sort  
+Rekurzivny element (triediaca siet) skladajuci sa z Half-cleanerov  
+**Vstup** - bitonicka sekvencia  
+**Vystup** - utriedena sekvencia  
+Rychlost (hlbka) $O(log_2 n)$  
+
+V podstate len za sebou iduce Half-cleaners, vzdy o polovicu mensie  
+
+![](aus-bitonic3.png)  
+
+Teraz mame dalsi problem - ako dostat bitonicku sekvenciu  
+
+##### Modifikovany Half-cleaner  
+
+**Vstup** - dve utriedene sekvencie  
+**Vystup** - dve bitonicke sekvencie  
+
+Na vstupe mame jednu rastucu a druhu rastucu, na vystupe rasie-klesa, rastie-klesa   
+
+![](aus-bitonic4.png)  
+
+Mozeme zacat od uplne malych utriedenych sekvencii (velkost 1)  
+Teraz ich potrebujeme spojit do jednej vacsej utriedenej sekvencie  
+ 
+##### Merger 
+
+Spoji 2 utriedene sekvencie do jednej  
+**Vstup** - dve utriedene sekvencie  
+**Vystup** - jedna velka utriedena sekvencia  
+
+Vystupne bitonicke sekvencie Modifikovaneho Half-cleanera mozeme utriedit Bitonic sorterom  
+
+![](aus-bitonic5.png)
+
+##### Bitonic sort 
+
+Nie Bitonic sorter  
+**Vstup** - hocico  
+**Vystup** - utriedena sekvencia  
+
+Vyuziva mergery  
+Ak zacneme uplne od najmensich utriedenych sekvencii (velkost 1) a pouzijeme *Merger\[2]*, tak dostaneme utriedenu sekvenciu velkosti 2  
+Dve velkosti 2 mozeme zobrat a spojit do velkosti 4  
+Dve velkosti 4 mozeme zobrat a spojit do velkosti 8  
+Atd atd...
+
+![](aus-bitonic6.png)  
+
+Zlozitost (hlbka) - kazdy Merger je $O(log_2 n)$   
+Kazdy jeden merger spusti 2 dalsie = $O(log_2 n) \times O(log_2 n) = O(log_{2}^{2} n)$   
+Toto je rychlejsie ako $O(n)$, co v paralelnom svete potrebujeme  
+
+V konecnom dosledku je to dookola stale vacsie a vacsie Modified HC - 2 Bitonic sortery
 
 ## Siete
 
-Sietove abstraktne pamatove typy
-sAPT  
+### APT Siet
+
 Bloky pamate sa oznacuju vrcholy  
-Kazdy vrchol moze mat vztah s hocikym inym  
-Ziadny vrchol nema vynimocne postavenie
+Kazdy vrchol moze mat vztah s hocikym inym - vztahy `M:N`    
+Ziadny vrchol nema vynimocne postavenie - vsetky su rovnocenne   
 
-Brana - sekvencia vrcholov, z ktorych sa da dostt ku ostatnym  
-Staticka siet - neefektivne modifikatory, rychly pristup, brana je implicitna sekvencia  
-Dynamicka siet - efektivne modifikatory, ponaly pristup, brana je explicitna sekvencia
+**Brana** - sekvencia vsetkych vrcholov, ktore sa nachadzaju v sieti  
+Pomocou brany sa da dostat ku kazdemu vrcholu (prehliadky)  
 
-Stupen vrcholu - pocet vztahov s inymi vrcholmi - kolko sipociek z neho ide  
-Velkost - pocet vrcholov v sieti
+**Stupen** vrcholu - pocet vztahov s inymi vrcholmi - kolko sipociek z neho ide  
+**Velkost** siete - pocet vrcholov v sieti  
 
-Vo vztahu nemusime mat len referenciu na vrchol, ale aj dodatocne udaje (vzdialenost, ...)
+**Staticka siet** - brana je IS - neefektivne modifikatory, rychly pristup  
+**Dynamicka siet** - brana je ES - efektivne modifikatory, pomaly pristup  
 
-Deep copy
+Zoznam vrcholov moze byt ulozeny v implicitnej alebo explicitnej sekvencii  
 
-Pozor na porovnanie, pozor na priradenie
+Samotne vrcholy (siet sama o sebe) nie je mozne implementovat efektivne v implicitnej sekvencii (nevieme pocet vztahov)  
+Pri hierarchiach museli byt K-cestne, tu nic take nemame  
 
-### Graf
+Celkovo mozeme mat teda 4 kombinacie  
 
-Implementacia siete
+![](aus-siete-1.png)
 
-#### Hviezdy
+Vo vztahu nemusime mat len referenciu na vrchol, ale aj dodatocne udaje o vztahu - na "ciare medzi vrcholmi"   
+Napr. cesta medzi dvoma mestami - vzdialenost, trieda, rychlost, ...   
+Mame teda 2 udajove casti - jedna sa viaze k vrcholom, druha sa viaze ku vztahom medzi vrcholmi  
 
-Drojurovnovy pristup
+**Operacia *Prirad**** - obsah jednej siete (cielovej) nahradim obsahom druhej siete (zdrojovej)  
+Treba zabezpecit deep copy  
+Robi sa dvojkrokovo a nie velmi jednoducho - najprv shallow copy brany, potom prejdeme celu branu a "poopravujeme" referencie na spravne vrcholy (aby sa spravila deep copy zo shallow)  
+
+**Dotaz *Existuje vztah**** - medzi dvoma vrcholmi - pozriet sa do vrcholu s mensim stupnom a pozriet ci ma vztah s tym druhym  
+
+**Dotaz *Porovnaj***  
+*"Ak ste si mysleli ze priradenie je neprijemne, tak porovnanie je neprijemne na druhu"*  
+Porovnavame len udajove casti (?)  
+Nie je mozne vykonat efektivne, je treba porovnavat prvky "kazdy s kazdym" a porovnavat ich vztahy, pricom nic nemusi byt v rovnakom poradi    
+Je to velmi neefektivne, velmi velka zlozitost   
+Treba robit "preconditions" - porovnat ci je rovnaky typ brany, uchovavajuci rovnake udaje, rovnake typy brany, rovnake typy vztahov, rovnake velkosti, rovnaky stupen, ...
+
+Iteratory - cez branu, resp. iteratory sekvencie ktore reprezentuju branu    
+
+### AUT Graf
+
+Orientovany graf - jeho hrany su orientovane - nie je jedno ako smeruje sipka, resp. je vyslovene povedane z kade kam ide  
+Ak by neboli sipocky ale iba ciarocky, alebo by boli obojstranne sipocky, tak graf je neorientovany  
+
+Implementacia APT Siet  
+Selektory - `spristupniVrcholZBrany`, `spristupniVrcholZVrcholu`, `spristupniNasledovnikov`, `spristupniPredchodcov`, `spristupniHranu`  
+Dotazy - `stupen`, `existujeHrana`, `pocetHran`  
+Modifikatory - `vlozVrchol`, `zrusVrchol`, `vlozHranu`, `zrusHranu`
+
+### Implementacie AUT Graf
+
+Vsetky dalsie grafy ako priklady budu vychadzat z tohto grafu   
+
+![](aus-siete-3.png)
+
+#### AUS Tabulka Hran 
+
+Ukladame si len hrany v tabulke   
+**Operacie na vrcholoch nie su definovane**  
+
+V tabulke sa hrany mozu ukladat roznymi sposobmi
+- Lexikograficky **ne**utriedena sekvencna implicitna tabulka hran
+- Lexikograficky utriedena sekvencna implicitna tabulka hran
+- Lexikograficky neutriedena sekvencna **explicitna** tabulka hran
+
+![](aus-siete-4.png)
+
+Kluc je hrana - napr. hrana `AB` smeruje z vrcholu `A` do `B` - cize len *"zoberieme nazov jedneho vrcholu a prilepime k nemu nazov druheho vrhcolu"*   
+Ak su kluce lexikograficky utriedene, tak su bacially zoradene abecedne  
+
+Pri lexikograficky utriedenej implementacii navyse mozeme vyhladavat bisekciou    
+
+**Neexistuju operacie `spristupniVrcholZBrany` ani `spristupniVrcholZVrcholu`**, pretoze nemame info o vrcholoch, resp. nemame vrcholy  
+Tiez nemame operacie `vlozVrchol` a `zrusVrchol`  
+
+Vhodne iba pre male grafy  
+
+#### Dvojurovnovy pristup (hviezda)
+
+Dopredna hviezda - poznam vsetky vrcholy do ktorych smerujem - o tejto sa budeme bavit dalej    
+> Spatna hviezda - poznam vsetky vrcholy ktore smeruju do mna  
+
+Efektivny pristup   
+
+**Prvotna struktura** - evidencia vrcholov  
+**Druhotna struktura** - evidencia nasledovnikov vo vrchole  
+
+Aj prvotnu aj druhotnu strukturu mozeme uchovavat v lubovolnej AUS  
+
+##### Dvojurovnovy pristup - AUS Vseobecny Graf
+
+**Vrcholovo staticka implementacia** = nie su definovane operacie `vlozVrchol` a `zrusVrchol`    
+**Hranovo staticka implementacia** = nie su definovane operacie `vlozHranu` a `zrusHranu`  
+Opakom su vrcholovo/hranovo dynamicke implementacie  
+
+V priklade sa preberala matica - 2D pole  
+
+**Jedine pole**  
+V prvotnej strukture mame vsetky uzitocne prvky matice - tam kde je $-1$ alebo $\infty$ vynechame  
+V druhotnej strukture si pamatame dlzky jednotlivych riadkov (kedze nie vsetky su rovnako dlhe, kedze vynechavame prazdne hodnoty)  
+
+![](aus-siete-5.png)
+
+Vieme sa dostat iba dopredu, nie dozadu   
+
+#### Krizove reprezentacie
+
+Tiez nazyvane ako *Presite pole*  
+Dopredny aj spatny pristup  
+Dve prvotne struktury a jednu (ciastocne zdielanu) druhotnu strukturu  
+
+![](aus-siete-6.png)
+
+Trieda `Hrana` - vie, ze odkade ide, aj kam (aj dopredu, aj naspat) (od koho ide, ku komu ide) *(?)*  
+
+Na prvy pohlad... 
+- Horizontalne po riadkoch (zelene) - prva prvotna struktura - `od 0`, `od 1`, `od 2`, `od 3`  
+- Vertikalne po stlpcoch (cervene) - druha prvotna struktur - `do 0`, `do 1`, `do 2`, `do 3`  
+
+Prva prvotna struktura uchovava doprednu hviezdu  
+Druha prvotna struktura uchovava spatnu hviezdu  
+
+> Neviem ci je spravne pomenovanie *prva* a *druha* prvotna struktura
+
+Zelena - prvotna struktura doprednej hviezdy  
+Ceverna - prvotna struktura spatnej hviezdy  
+
+![](aus-siete-7.png)
