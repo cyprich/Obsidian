@@ -6,4 +6,5 @@
 ✍️ [Neovim](./Neovim.md)  
 📃 [Tmux](./Tmux.md)  
 ⛏️ [Minecraft Server](./MinecraftServer.md)  
-🅰️ [Arch Linux Installation](./Arch.md)
+🅰️ [Arch Linux Installation](./Arch.md)  
+📁 [Samba](./Samba.md)  

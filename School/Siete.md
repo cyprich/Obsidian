@@ -2,6 +2,8 @@
 
 Take vseobecne srandicky o sietach co som nevedel kam zaradit, alebo som zvazil ze by bolo fajn ich mat pokope  
 
+Poznamocky v suboroch [PS1](./PS1.md) a [PS2](./PS2.md)
+
 ## Basic config
 
 Defaultna Cisco konfiguracia ktora by mala byt vykonana vzdy pri novom zariadeni

@@ -1,7 +1,6 @@
-# Siete - Commands
+# PS1 - Commands
 
 Prikazy na konfiguraciu v Cisco IOS  
-Podrobnejsie poznamky v subore [Siete.md](./Siete.md)
 
 # Basic config
 

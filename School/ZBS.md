@@ -1,6 +1,7 @@
 # ZBS
 
-Poznamocky z predmetu Zaklady Bezdrotovych Sieti
+Poznamocky z predmetu Zaklady Bezdrotovych Sieti  
+Otazky na skusku v subore [ZBS_otazky](./ZBS_otazky.md)
 
 ## Historia
 
@@ -312,7 +313,7 @@ IMSI (International Mobile subscriber Identity) - jedinecny identifikator, sklad
 - MNC (Mobile Network Code) - podla operatora: T-Mobile (2, 4), Orange (1, 5, 15), ...
 - MSIN (Mobile Subscriber Identification Number)
 
-[esims.io](esims.io)
+[esims.io](https://esims.io)
 
 Conventional vs. Distributed BTS site  
 BTS components: Duplexer, Diplesers (splitter/combiner), MHA (Mast Head Amplifier)

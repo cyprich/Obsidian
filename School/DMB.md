@@ -2,6 +2,8 @@
 Digitalne meny a Blockchain  
 \2. rocnik, zimny semester  
 
+Otazky na skusku v subore [DMB_skuska](./DMB_skuska.md)
+
 # W1
 ## Bitcoin
 Je mena  

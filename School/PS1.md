@@ -1,6 +1,8 @@
 # PS1
 
-Poznamocky k predmetu Pocitacove Siete 1
+Poznamocky k predmetu Pocitacove Siete 1  
+Prikazy su vypisane samostatne v subore [PS1_commands](./PS1_commands.md)  
+Otazky z Netacadu na CCNA2 v subore [CCNA2](./CCNA2.md)  
 
 # Basic config
 

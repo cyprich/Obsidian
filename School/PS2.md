@@ -1,6 +1,8 @@
 # PS2
 
 Poznamocky k predmetu Pocitacove Siete 2
+Prikazy su vypisane samostatne v subore [PS2_commands](./PS2_commands.md)  
+Otazky z Netacadu na CCNA3 v subore [CCNA3](./CCNA3.md)  
 
 ## Opakovanie
 
@@ -765,7 +767,7 @@ Z vonka posobi jeden AS ako jedna nerozdelena entita
 IPX - Internet Packet Exchange - sposob, ako sa prepajaju ISP's  
 Bod, v ktorom sa IPS's prepajaju sa nazyva IXP - Internet Exchange Point  
 IPS's sa prepajaju navzajom za ucelom vzajomnej vymeny dat  
-Na slovensku su 3 IPX - [six.sk](six.sk), [nix.sk](nix.sk), [peering.cz](peering.cz)
+Na slovensku su 3 IPX - [six.sk](https://six.sk), [nix.sk](https://nix.sk), [peering.cz](https://www.peering.cz)
 
 3 tiery providerov - Tier 1 posiela na Tier 2, Tier 2 na Tier 3, Tier 3 do sveta?
 
