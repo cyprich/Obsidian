@@ -5,4 +5,5 @@
 ♨ [Java](./Java.md)  
 🔵 [Lua](./Lua.md)  
 🛢 [SQL](./SQL.md) and [PostgreSQL](./PostgreSQL.md)   
-🌐 [Web Development](./WebDev/README.md)
+🌐 [Web Development](./WebDev/README.md)  
+🦀 [Rust](./Rust.md)  
