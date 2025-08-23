@@ -2,7 +2,7 @@
 
 I'm trying to learn Rust :)  
 
-Following [this tutorial](https://www.youtube.com/watch?v=rQ_J9WH6CGk)  
+Following [this tutorial](https://www.youtube.com/watch?v=rQ_J9WH6CGk), later added stuff from multiple sources   
 
 ## Set up  
 
@@ -729,6 +729,44 @@ struct AlwaysEqual;
 let subject = AlwaysEqual;
 ```
 
+### Structs from rustlings
+
+Rust have 3 types of structs 
+- Regular Struct
+- Tuple Struct
+- Unit Struct
+
+Defining
+
+```rust
+struct ColorRegularStruct {
+	red: u8,
+	green: u8,
+	blue: u8
+}
+
+struct ColorTupleStruct (u8, u8, u8);
+
+struct UnitStruct;  // i still dont know the use of this
+```
+
+Instantiating and accessing values
+
+```rust
+let c = ColorRegularStruct {
+	red: 0,
+	green: 255, 
+	blue: 0
+}
+println!("{c.red} {c.green} {c.blue}");
+
+let c = ColorTupleStruct { 0, 255, 0 }
+println!("{c.0} {c.1} {c.2}");
+
+let c = UnitStruct;
+println!("{c}");
+```
+
 ## `enum`
 
 Data structure, which represents something, that can be only one of several possible variants  
@@ -798,6 +836,69 @@ enum IpAddr {
 
 let home = IpAddr::V4(127, 0, 0, 1);
 let loopback = IpAddr::V6(0, 0, 0, 0, 0, 0, 0, 1);
+```
+
+You can also have it like this  
+
+```rust
+struct Point{ ... }
+
+enum Message {  
+    Resize{height: i32, width: i32},  // tuple here
+    Move(Point),  // struct here
+    Echo(String),   // type here
+    ChangeColor(u8, u8, u8),  // array? here
+    Quit   // nothing here
+}
+```
+
+Another example  
+
+```rust
+struct State {  
+    width: u64,  
+    height: u64,  
+    position: Point,  
+    message: String,  
+    // RGB color composed of red, green and blue.  
+    color: (u8, u8, u8),  
+    quit: bool,  
+}  
+  
+impl State {  
+    fn resize(&mut self, width: u64, height: u64) {  
+        self.width = width;  
+        self.height = height;  
+    }  
+  
+    fn move_position(&mut self, point: Point) {  
+        self.position = point;  
+    }  
+  
+    fn echo(&mut self, s: String) {  
+        self.message = s;  
+    }  
+  
+    fn change_color(&mut self, red: u8, green: u8, blue: u8) {  
+        self.color = (red, green, blue);  
+    }  
+  
+    fn quit(&mut self) {  
+        self.quit = true;  
+    }  
+  
+    fn process(&mut self, message: Message) {  
+        // TODO: Create a match expression to process the different message  
+        // variants using the methods defined above.  
+        match message {  
+            Message::Resize { width, height } => self.resize(width, height),  
+            Message::Move(point) => self.move_position(point),  
+            Message::Echo(s) => self.echo(s),  
+            Message::ChangeColor(r, g, b) => self.change_color(r, g, b),  
+            Message::Quit => self.quit()  
+        }  
+    }  
+}
 ```
 
 ## Error handling
@@ -889,7 +990,7 @@ Creating vector with values
 Rust has macro for this  
 
 ```rust
-let v: Vec<i32> = !vec[1, 2, 3, 4];
+let v: Vec<i32> = vec![1, 2, 3, 4];
 ```
 
 Printing from vector  
@@ -900,6 +1001,51 @@ println!("{:?}", v);  // all elements
 
 let first: &i32 = &v[0];  // reference - not taking ownership 
 let first: Option<&i32> = v.get(0);  // using the 'get' method - returns 'Option<&i32>'  
+```
+
+#### Mapping
+
+```rust
+// parameter is array of 'i32' variables
+fn vec_map(input: &[i32]) -> Vec[i32] {
+	// adding 1 to each element
+	input.iter().map(|element| element + 1).collect()  
+}
+
+fn vec_map2(input: &[i32]) -> Vec[i32] {
+	input
+		.iter()
+		.map(|element| {
+			element * 2
+		})
+		.collect()
+}
+```
+
+#### Clone
+
+Had this thing on rustlings  
+
+Problem in the code bellow is that the ownership of the `vec1` variable was transferred, thus it's no longer available in the print statement  
+
+```rust
+fill_vec(vec: Vec<i32>) -> Vec<i32> { /* add value to vec */ }  
+
+fn main() {
+	let vec1 = vec![1, 2, 3];
+	let vec2 = fill_vec(vec1);
+
+	println("{:?}", vec1);  // error - vec1 is not accessible
+	println("{:?}", vec2);
+}
+```
+
+Solution - using `clone()` function
+
+```rust
+// ...
+let vec2 = fill_vec(vec1.clone());
+// ...
 ```
 
 ### UTF-8 Strings
@@ -939,6 +1085,25 @@ let a = "ahoj".to_string();
 let b = "serus".to_string();  
 let c = format!("{a} {b}");  
 println!("{c}");
+```
+
+Some methods on strings  
+
+```rust
+fn trim_me(input: &str) -> &str {  
+    // Remove whitespace from both ends of a string.  
+    input.trim()  
+}  
+  
+fn compose_me(input: &str) -> String {  
+    let mut s: String = input.to_string();  
+    s + " world!"  
+}  
+  
+fn replace_me(input: &str) -> String {  
+    // Replace "cars" in the string with "balloons".  
+    input.replace("cars", "balloons")  
+}  
 ```
 
 ### Hash Maps - `HashMap<K, V>`
