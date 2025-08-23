@@ -32,7 +32,7 @@ What character is used to enable the filtering of commands?
 - ~~Colon `:`~~
 - ~~Semicolon `;`~~
 
-Which filtering expression will show all output lines starting from the line matching the filtering expression?
+Which filtering expression will show all output lines starting from the line mathing the filtering expression?
 - ~~Section~~
 - Begin
 - ~~Include~~
@@ -63,7 +63,7 @@ What advantage does SSH offer over Telnet?
 - ~~Connection-oriented services~~
 - ~~Username and password authentication~~
 
-A network administrator has configured VLAN 99 as the management VLAN and has configured it with an IP address and subnet mask. The administrator issues the `show interface vlan 99` command and notices that the line protocol is down. Which actin can change the state of the line protocol to up? 
+A network administrator has configured VLAN 99 as the management VLAN and has configured it with an IP address and subnet mask. The administrator issues the `show interface vlan 99` command and notices that the line protocol is down. Which actin can change the state of the lne protocol to up? 
 - Connect a host to an interface associated with VLAN 99
 - ~~Configure a default gateway~~
 - ~~Remove all access ports from VLAN 99~~
