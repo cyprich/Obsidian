@@ -428,6 +428,33 @@ Make sure you have installed `fprintd` package (`yay -S fprintd`)
 To scan finger, use the command `fprintd-enroll`  
 Follow instructions on screen and you should be ready to go
 
+## Read data from `.img` 
+
+Inspect partitions 
+
+```bash
+fdisk -l /path/to/image/file.img
+```
+
+Attach as loop device with `losetup`, should make a new device like `/dev/loop0`
+
+```bash
+sudo losetup -Pf --show /path/to/image/file.img
+```
+
+Mount partition of created loop device
+
+```bash
+sudo mount -o ro /dev/loop0p1 /mnt
+```
+
+Clean up when done  
+
+```bash
+sudo umount /mnt
+sudo losetup -d /dev/loop0
+```
+
 # Cool programs
 
 Mostly useless programs, just for fun
