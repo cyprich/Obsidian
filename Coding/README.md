@@ -1,7 +1,7 @@
 # Coding
 
-🇨 [C++](./CPP.md) and [raylib](./raylib.md)  
-🐍 [Python](./Python.md) and [uv](./uv.md) 
+🇨 [C++](./CPP.md)   
+🐍 [Python](./Python.md)  
 ♨ [Java](./Java.md)  
 🔵 [Lua](./Lua.md)  
 🛢 [SQL](./SQL.md) and [PostgreSQL](./PostgreSQL.md)   
