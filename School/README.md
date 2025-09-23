@@ -34,4 +34,5 @@ Letny semester
 Zimny semester
 
 🖥️ [PVS](./PVS.md)  
-🌐 [VaCT](./VaCT.md)
+🌐 [VaCT](./VaCT.md)  
+🦀 [JR](./JR.md)
