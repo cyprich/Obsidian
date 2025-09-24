@@ -8,3 +8,4 @@
 ⛏️ [Minecraft Server](./MinecraftServer.md)  
 🅰️ [Arch Linux Installation](./Arch.md)  
 📁 [Samba](./Samba.md)  
+❄️ [NixOS](./NixOS.md)
