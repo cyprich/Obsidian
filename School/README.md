@@ -35,4 +35,5 @@ Zimny semester
 
 🖥️ [PVS](./PVS.md)  
 🌐 [VaCT](./VaCT.md)  
-🦀 [JR](./JR.md)
+🦀 [JR](./JR.md)  
+🖥️ [SI](./SI.md)
