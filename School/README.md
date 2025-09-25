@@ -36,5 +36,6 @@ Zimny semester
 🖥️ [PVS](./PVS.md)  
 🌐 [VaCT](./VaCT.md)  
 🦀 [JR](./JR.md)  
-🖥️ [SI](./SI.md)
-🌐 [PS3](./PS3.md)
+🖥️ [SI](./SI.md)  
+🌐 [PS3](./PS3.md)  
+💰 [PP](./PP.md)
