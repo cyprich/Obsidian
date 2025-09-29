@@ -167,7 +167,7 @@ Examples
 
 - Amazon Virtual Private Cloud (VPC)
 - Elastic Load Balancing
-- Amazon CloudFront - Content Delivery Network (CDN) - delivers data, videos, apps, APIs
+  -Amazon CloudFront - Content Delivery Network (CDN) - delivers data, videos, apps, APIs
 - AWS Tranzit Gateway
 - Amazon Route 53 - DNS
 - AWS Direct Connect -
@@ -211,3 +211,82 @@ Examples
 - AWS Trusted Advisor - helps you optimize performance and security
 - AWS Well-Architected Tool - help in reviewing and improving workloads
 - AWS CloudTrail - tracks user activity and API usage
+
+## Cloud Economics and Billing
+
+> AWS M2
+
+Three fundamental drivers of const
+
+- Compute - CPU, GPU, ... per hour/minute/second, can be different in different regions
+- Storage - typically per GB per time
+- Data transfer - typically only paying for outbound, typically per GB
+
+Pay for what you use - no upfront expenses
+
+Pay less when you reserve
+
+- EC2 instances
+- On Demand
+- Pay more upfront to pay less overall
+- NURI - No Upfront Reserved Instance - smaller discount
+- PURI - Partial Upfront Reserved Instance - lower discount
+- AURI - All Upfront Reserved Instance - largest discount
+
+Pay less when you use more (per unit)
+
+Pay less when AWS grows - the price of AWS never grew
+
+AWS Free Tier - multiple services free for 1 year, be careful
+
+Services with no charge
+
+- Amazon VPC - network
+- Elastic Beanstalk\* - web server
+- Auto Scaling\*
+- AWS CloudFormation\* - creating new instances?
+- AWS Identity and Access Management (IAM) - v podstate AAA
+
+\* There might be charges associated with other AWS services that are used with these services
+
+**Total Cost of Ownership** (TCO)
+
+- Server Costs - server, rack, PDU, switches, OS, virtualization licenses
+- Storage Costs - disks, RAID, administration
+- Network Costs - LAN switches, load balancers, administration
+- IT Labor Costs - administration
+- +space, power, cooling
+
+[AWS Pricing Calculator](https://calculator.aws/#/)
+
+### AWS Organizations
+
+For large organizations  
+Free account management service
+
+Root -> Organizational Unit (OU) -> AWS Account (actual user, program with API, ... with access rights = policies)
+
+### AWS Billing and Cost management
+
+Free
+
+### AWS Technical support
+
+Support plans
+
+- Basic support - free, basically no support
+- Developer plan - only low (24h) and normal priority (12h)
+- Business plan - +high (4h) and urgent (1h)
+- Enterprise - +critical (15min)
+
+AWS Trusted Advisor - gives hints what to do for the service to be better/cheaper/more redundant/...
+
+## AWS Cloud Security
+
+> AWS M4
+
+AWS Shared Responsibility Model
+
+- Who is responsible for what
+- Amazon - security _of_ cloud - responsible for SW and HW
+- You - security _in_ cloud - responsible for client-side data encryption, firewall config, access management, ...
