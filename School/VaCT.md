@@ -112,6 +112,14 @@ Data centers usually consists of 50-80 thousand physical servers
 Another step is/are **Points of presence**  
 Points of presence include **Edge locations**, **Regional Edge caches**
 
+Amazon Route 53 - DNS
+
+AWS Infrastructure features
+
+- Elasticity and flexibility - resources dynamically adjust to meet requirements
+- Fault-tolerance - redundancy
+- High availability
+
 ### AWS Services
 
 #### AWS Storage services
@@ -152,10 +160,54 @@ Examples
 
 #### AWS Networking services
 
+Networking and Content Delivery
 Purple color
 
 Examples
 
--
+- Amazon Virtual Private Cloud (VPC)
+- Elastic Load Balancing
+- Amazon CloudFront - Content Delivery Network (CDN) - delivers data, videos, apps, APIs
+- AWS Tranzit Gateway
+- Amazon Route 53 - DNS
+- AWS Direct Connect -
+- AWS VPN
 
-####
+#### Security services
+
+Security, Identity and Compliance category
+Pink color
+
+Examples
+
+- AWS Identity and Access Management (IAM) - manage access to AWS securely, can create users and groups, permissions
+- AWS Organizations - restrict what services and actions are allowed in your accounts
+- Amazon Cognito - controls to sing-up, sign-in, access and control web and apps
+- AWS Artifact - on-demand access to AWS Security and more
+- AWS Key Management Service (KMS) - create and manage keys, control encryption
+- AWS Shield - DDoS protection
+
+#### Cost Management service category
+
+Green color
+
+Examples
+
+- AWS Cost and Usage Report
+- AWS Budgets - create custom budgets, notify when exceeded
+- AWS Cost Explorer - visualize expenses
+
+#### Management and Governance services
+
+Pink color
+
+Examples
+
+- AWS Management Console - WebUI access
+- AWS Config - track resources and changes
+- Amazon CloudWatch - monitor resources and applications
+- AWS Auto Scaling - scale mutliple resources
+- AWS CLI
+- AWS Trusted Advisor - helps you optimize performance and security
+- AWS Well-Architected Tool - help in reviewing and improving workloads
+- AWS CloudTrail - tracks user activity and API usage
