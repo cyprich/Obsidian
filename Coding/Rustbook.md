@@ -1089,3 +1089,120 @@ fn main() {
   let subject = AlwaysEqual;
 }
 ```
+
+### Derived traits
+
+If you wanted to "print" a struct, you will get an error
+
+```rs
+struct Rect = {
+  width: i32,
+  height: i32
+}
+
+fn main() {
+  let r = Rect {
+    width: 10,
+    height: 20
+  }
+
+  println!("We have rectangle {r}");  // error
+}
+```
+
+Error says that it does not implement `std::fmt::Display` trait  
+Compiler suggests to use `{:?}` or `{:#?}`
+
+- `{:?)` is debug format
+- `{:#?)` is pretty-print
+
+If we used `{:?}`, we have error that it does not implement `Debug`  
+It also suggests to add `#[derive(Debug)]`, or manually do `impl Debug for Rectangle`
+
+So if we did something like this...
+
+```rs
+#[derive(Debug)]
+struct Rect = { ... }
+
+fn main() {
+  ...
+  println!({r:?})
+}
+```
+
+...we actually get output like _"r is Rectangle { width: 10, height: 20 }"_  
+If we did `{:#?}` instead, it will be just spread across multiple lines
+
+#### `dbg!` macro
+
+Allows you to actually like print to debug, includes command and line numbers
+With code like this...
+
+```rs
+fn main() {
+    dbg!(2 * 3);
+}
+```
+
+...you will get output like this: `[src/main.rs:2:5] 2 * 3 = 6`
+
+You can also debug structs (`dbg!(&r);`)
+
+### Methods
+
+We can add function to calculate the area of rectangle
+
+```rs
+#[derive(Debug)]
+struct Rect = { ... }
+
+impl Rect {
+  fn area(&self) -> i32 {
+    self.width * self.height
+  }
+}
+
+fn main() {
+  let r = Rect {
+    width: 10,
+    height: 20
+  }
+
+  println!("Area of r is {}", r.area());
+}
+```
+
+Rust has automatic (de)referencing, so you don't have to think of `.` vs. `->` in calling methods as in C/C++
+
+You can also have methods with parameters
+
+```rs
+...
+impl Rectangle {
+  fn area(&self) -> i32 { ... }
+
+  fn can_hold(&self, other: &Rect) {
+    self.width > other.width && self.height > other.height
+  }
+}
+```
+
+You don't have to have just one `impl` block, you can actually have each method in different `impl` block
+
+If you didn't have method with `&self` parameter, you basically have **static method**, something like `String::from()`
+
+```rs
+impl Rect {
+  fn square(size: i32) -> Self {
+    Self {
+      width: size,
+      height: size,
+    }
+  }
+}
+
+fn main() {
+  let sq = Rect::square(10);
+}
+```
