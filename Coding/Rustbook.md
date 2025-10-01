@@ -1206,3 +1206,266 @@ fn main() {
   let sq = Rect::square(10);
 }
 ```
+
+## Enums
+
+A way to define only a set of possible values
+
+```rs
+
+enum IpVersion {
+  V4,
+  V6
+}
+
+enum Shapes {
+  Rectangle,
+  Circle,
+  Triangle
+}
+
+fn main() {
+  let four = IpVersion::V4;
+  let shape = Shapes::Circle;
+}
+```
+
+You can use it in functions and structs
+
+```rs
+fn route(ip_version: IpVersion) { ... }
+
+struct IpAddress {
+  version: IpVersion,
+  address: String,
+}
+
+fn main() {
+  route(IpVersion::V4);
+
+  let home = IpAddress {
+    version: IpVersion::V4,
+    address: "127.0.0.1",
+  }
+}
+```
+
+There is a better, shorter way for this  
+Instead of defining separate `struct` for this, you can put the value directly into the `enum` instead  
+You can put anything there, numbers, strings, structs, ...
+
+```rs
+enum IpAddress {
+  V4(String),
+  V6(String),
+}
+
+let home = IpAddress::V4(String::from("127.0.0.1"));
+let loopback = IpAddress::V6(String::from("::1"));
+```
+
+Each type in `enum` can have different value types
+
+```rs
+enum IpAddress {
+  V4(u8, u8, u8, u8),
+  V6(String),
+}
+
+let home = IpAddress::V4(127, 0, 0, 1);
+let loopback = IpAddress::V6(String::from("::1"));
+```
+
+Another example
+
+```rs
+enum Message {
+  Quit,  // no data
+  Move {x: i32, y: i32},  // struct
+  Write(String),  // single value
+  ChangeColor(u8, u8, u8),  // 3x u8
+}
+```
+
+We can add methods to `enum`, just like on `struct`
+
+```rs
+impl Message {
+  fn call(&self) { ... }
+}
+
+let m = Message::Write(String::from("hello"));
+m.call();
+```
+
+### The `Option` Enum
+
+Gives us advantages over `null` values  
+It has two possible values - `None`, and `Some`  
+It has generic type parameter `T`  
+I think it's in Rust by default
+
+```rs
+enum Option<T> {
+  None,
+  Some(T),
+}
+```
+
+You can use it something like this
+
+```rs
+let some_number = Option::Some(5);
+let some_number = Some(5);  // you don't have to specify the `Option::`
+
+let empty_number: Option<i32> = None;
+```
+
+If you wanted to use these numbers, you can't use it directly, because it's not `i32` (or different type), but it's `Option<i32>` type, so you need the `T`
+
+```rs
+let x = 8;
+let y = Some(5);
+let result = x + y;  // error
+
+// right way to do this
+match y {
+  Some(val) => println!("Result is {}", x + val),
+  None => println!("Result could not be determined"),
+};
+
+// or save it as variable
+let result = match y {
+  Some(val) => x + val,
+  None => x,  // or however you want to handle it...
+};
+
+println!("{result}");
+```
+
+Another example
+
+```rs
+fn plus_one(x: Option<i32>) -> Option<i32> {
+  match x {
+    Some(val) => Some(val + 1),
+    None => None
+  }
+}
+
+let five = Some(5);
+let six = plus_one(five);
+let x = plus_one(None);
+```
+
+## Match
+
+```rs
+enum Coin {
+  Penny,
+  Nickel,
+  Dime,
+  Quarter,
+}
+
+fn value_in_coins(coin: Coin) -> u8 {
+  match Coin {
+    Coin::Penny => 1,
+    Coin::Nickel => 5,
+    Coin::Dime => 10,
+    Coin::Quarter => 25,
+  }
+}
+```
+
+> As said before, you have to cover all possible values that this `enum` has
+
+You can put curly bracket there if you want to do something more complicated, or like more lines of code
+
+```rs
+fn value_in_coins(coin: Coin) -> u8 {
+  match Coin {
+    Coin::Penny => {
+      println!("Lucky penny");
+      1
+    },
+    Coin::Nickel => 5,
+    Coin::Dime => 10,
+    Coin::Quarter => 25,
+  }
+}
+```
+
+Another feature - you can do something like this, idk how to describe, see example bellow  
+Different states could have different quarters
+
+```rs
+enum Coin {
+    Penny,
+    Quarter(State),
+}
+
+#[derive(Debug)]
+enum State {
+    Alabama,
+    Alaska,
+}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => {
+            println!("Lucky penny!");
+            1
+        }
+        Coin::Quarter(state) => {
+            println!("Quarter from {state:?}");
+            4
+        }
+    }
+}
+
+fn main() {
+    let x = value_in_cents(Coin::Penny);
+    let y = value_in_cents(Coin::Quarter(State::Alabama));
+}
+```
+
+### You have to match all possible values
+
+If you are doing `match` over some `enum`, you have to cover all `enum`'s possibilities  
+For example with `Option<T>`, if you covered just `Some` and not `None`, you will get an error
+
+```rs
+fn do_something(x: Option<i32>) {
+  match x {
+    Some(val) => println!("{val}")
+    // error - you did not cover all possibilities (arms)
+  }
+}
+```
+
+Same with `Coin` example before, if you covered just `Coin::Penny` (for example), you will get an error
+
+You can have something like **default** action, if you don't need to do something specific  
+For example...
+
+```rs
+let dice_roll = 3;
+
+match dice_roll {
+  1 => println!("So unlucky!"),
+  6 => println!("You can go"),
+  _ => println!("You have to wait"),
+}
+```
+
+...or just do nothing...
+
+```rs
+let dice_roll = 3;
+
+match dice_roll {
+  6 => println!("You can go"),
+  _ => (),
+}
+```
