@@ -65,3 +65,32 @@ Specifkacia poziadaviek
 - Vysledok = \_
 
 Validacia poziadaviek
+
+### Interview
+
+Zber faktov, nazorov, spekulacii  
+Sledovat rec tela a emocie
+
+Odporucania
+
+- Byt pripraveny
+- Neutralnost
+- Robenie poznamok
+- Hladat ine pohlady
+- Po stretnuti spravit zapis
+
+Otazky nepokladat stylom, aby bolo navadzane k spravnej odpovedi
+
+## Biznis modelovanie
+
+Spracovanie
+
+- Pre dalsich clenov timu
+- Pre zakaznika
+- Defincia spolocnych pojmov
+- Strukturovanie a filtrovanie
+- Zrozumitelnost
+- Nove otazky
+- Identifikacia nekonzistentosti
+- Identifikacia problemov
+- Zaklad na dalsiu pracu
