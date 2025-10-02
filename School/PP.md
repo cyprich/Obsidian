@@ -132,3 +132,78 @@ Obsahova stranka startup podnikania
 
 - Kreovanie a rozpracovanie podnikatelskeho napadu
 - Zalozenie a vznik podnikatelskeho subjektu
+
+## Kreovanie podnikatelskych napadov
+
+### Sposoby identifikovania podnikatelskych napadov
+
+Konvergentne myslenie - vyber jedneho riesenia
+Divergentne myslenie - hladanie viacerych rieseni
+
+Proces vyvoja napadu
+
+1. Hladanie prilezitosti
+2. Generovanie napadov
+3. Honodtenie a vyber napadov
+4. Planovanie implementacie
+
+Analyza trhu
+
+- Odhalenie diery na trhu
+- Sledovanie trendov
+- 90% startupov zlyha, 42% z toho kvoli tomuto
+
+Cielene hladanie napadov
+
+Kupa
+
+Pozicanie
+
+- Zo zahranicia
+- Nedostatok na domacom trhu, slaba konkurencia
+
+### Techniky kreovania napadov
+
+Brainstorming
+
+- Ked nevieme ako riesit problem
+- Otvorena mysel, aj blaznive napady
+- Zameranie na kvantitu viac ako na kvalitu
+
+Lotus Brainstorming
+
+- 'V strede' je napad a rozpracovavame ho dookola
+- Rozpracovanie do vacsich detailov
+- Z jedneho napadu vznikne dalsich 8
+
+What if
+
+- Zalozene na brainstormingu
+- Tim sa snazi najst odpovede na neocakavane udalosti (co ak sa stane...)
+
+Storyboarding
+
+- Pomocou obrazkov, videi sa vytvori storyboard
+
+SCAMPER
+
+- Substiture, Combine, Adapt, Modify, Put to another use, Eliminate, Reverse
+
+6-Thinking hats
+
+- White - facts
+- Black - caution
+- Blue - process
+- Red - feelings
+- Green - creativity
+- Yellow - benefits
+
+Idea napkin
+
+Checklist dobreho naparu
+
+- Riesi konkretny prbolem/potrebu?
+- Je unikatny a odlisitelny od konkurencie?
+- Ma potencial na skalovanie?
+- Je realizovatelny vzhladom na zdroje a regulacie?
+- Prinasa zisk (dlhodobo udrzatelny)?
