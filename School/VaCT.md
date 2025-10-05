@@ -216,15 +216,15 @@ Examples
 
 > AWS M2
 
-Three fundamental drivers of const
+Three fundamental drivers of cost
 
 - Compute - CPU, GPU, ... per hour/minute/second, can be different in different regions
 - Storage - typically per GB per time
 - Data transfer - typically only paying for outbound, typically per GB
 
-Pay for what you use - no upfront expenses
+**Pay for what you use** - no upfront expenses
 
-Pay less when you reserve
+**Pay less when you reserve**
 
 - EC2 instances
 - On Demand
@@ -233,9 +233,11 @@ Pay less when you reserve
 - PURI - Partial Upfront Reserved Instance - lower discount
 - AURI - All Upfront Reserved Instance - largest discount
 
-Pay less when you use more (per unit)
+**Pay less when you use more** - the more GB you use, the less the price is per GB
 
-Pay less when AWS grows - the price of AWS never grew
+**Pay less when AWS grows** - the price of AWS never grew, it lowered 75 times between 2006 and 2019
+
+Custom pricing - if none of provided plans are good for you
 
 AWS Free Tier - multiple services free for 1 year, be careful
 
@@ -246,10 +248,15 @@ Services with no charge
 - Auto Scaling\*
 - AWS CloudFormation\* - creating new instances?
 - AWS Identity and Access Management (IAM) - v podstate AAA
+- ...and more...
 
-\* There might be charges associated with other AWS services that are used with these services
+\* There might be charges associated with other AWS services that are used with these services - for example Auto Scaling is free, but you will pay for new instances
 
-**Total Cost of Ownership** (TCO)
+### Total Cost of Ownership (TCO)
+
+The financial estimate to help identify direct and indirect costs of a system
+
+It consists of:
 
 - Server Costs - server, rack, PDU, switches, OS, virtualization licenses
 - Storage Costs - disks, RAID, administration
@@ -261,21 +268,40 @@ Services with no charge
 
 ### AWS Organizations
 
-For large organizations  
-Free account management service
+Free account management service  
+Consolidates multiple regular AWS accounts into an organization  
+For large organizations
 
-Root -> Organizational Unit (OU) -> AWS Account (actual user, program with API, ... with access rights = policies)
+Benefits
+
+- Centrally managed access policies across multiple AWS accounts
+- Controlled access to AWS services
+- Automated AWS account creation and management
+- Consolidated billing across multiple AWS accounts
+
+Hierarchic design  
+Root -> Organizational Unit (OU) -> AWS Account (actual user, program with API, ... with access rights = policies)  
+OU can have either AWS accounts as childs, or also another OUs  
+Everything can have at least one parent
+If you apply a policy to one OU, it applies to all child OUs/AWS accounts
+
+Accessing via Console, AWS CLI, SDKs or HTTPS Query API
 
 ### AWS Billing and Cost management
 
-Free
+Free tools
+
+AWS Cost and Usage Report  
+AWS Billing Dashboard  
+AWS Budgets  
+AWS Cost Explorer
 
 ### AWS Technical support
 
 Support plans
 
 - Basic support - free, basically no support
-- Developer plan - only low (24h) and normal priority (12h)
+- Developer plan - only low severity (24h) and normal severity (12h)
 - Business plan - +high (4h) and urgent (1h)
 - Enterprise - +critical (15min)
 
