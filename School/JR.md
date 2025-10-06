@@ -242,3 +242,110 @@ Pravidla
 - Ked vlastnik odide z bloku, hodnota sa zahodi
 
 `Copy` trait - operacia Move namiesto kopirovania
+
+## Zivotnost premennych a casove anotacie
+
+Pristup k hodnote po jej uvolneni, ked nezije dostatocne dlho  
+Borrow checker porovnava rozsahy platnosti premennych
+
+Explicitne casove anotacie
+
+```rs
+&i32   // referencia
+&'a i32  // referencia s explicitnou casovou anotaciou
+
+```
+
+Napr...
+
+```rs
+fn vrat_dlhsi_retazec<'a>(x: &'a str, y: &'a str) => &'a str {
+  if ...
+}
+```
+
+Platnost premennej zostava taka ista, iba popisuju vztah zivostnoti viacerych referencii
+
+## Moduly
+
+Oranizacia kodu do bednicky (crate)  
+Riadenie viditelnosti - by default pristupne len vramci modulu
+
+`mod` - zaciatok modulu  
+`use` - vytvorenie skratky k ceste modulu - basically nieco ako import  
+`pub` - public modifier
+
+```rs
+pub mod vonkajsi_modul {
+  fn moja_funkcia() { ... }
+
+  mod vnutorny_modul {
+    pub fn moja_druha_funkcia() { ... }
+  }
+}
+
+use crate::vonkajsi_modul::moja_funkcia;
+use crate::vonkajsi_modul::vnutorny_modul::moja_druha_funkcia;
+
+fn main() { ... }
+
+// nebudeme moct pristupit ani k jednemu, lebo aj pri jednom aj pri druhom je nieco private
+```
+
+## Kolekcie
+
+### Vektor `Vec`
+
+```rs
+let v: Vec<i32> = Vec::new();
+let mut v = vec![1, 2, 3];
+v.push(5);
+let x: &i32 = &v[0];  // ak netrafime, tak spanikari
+let x: Option<&i32> = v.get(3);
+```
+
+### Hesovacia Tabulka `HashMap`
+
+HashMap (algoritmus SipHash1-3, odolny ovci HashDoS, nadhodne seedovany zo systemu), ...
+
+```rs
+let mut h = HashMap::new();
+let mut h =
+
+#[derive(PartialEq, Eq, Hash)]
+struct VlastnyKluc {
+  a: i32,
+  b: String
+}
+```
+
+### Dalsie
+
+VecDeque, LinkedList, BTreeMap, HashSet (HashMap, kde typ je `()`), BinaryHeap
+
+## Retazce
+
+Najcastejsie sa pouzivaju 2
+
+- `&str`
+  - Vlastne `&[u8]`
+  - Nevlastni retazec, ale len nan ukazuje
+- `String`
+  - Na halde
+  - Implemetovany ako `vec<u8>`, ale garantuje, ze je vzdy platna UTF-8 sekvencia
+
+Na UTF-8 sa da pozriet troma sposobmi
+
+- .
+- .
+- .
+
+## Modul `env`
+
+Environment variables
+
+```rs
+for i in std::env::args() { ... }
+
+for (key, value) in std::env::vars() { ... }
+```
