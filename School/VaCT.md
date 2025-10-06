@@ -311,8 +311,15 @@ AWS Trusted Advisor - gives hints what to do for the service to be better/cheape
 
 > AWS M4
 
-AWS Shared Responsibility Model
+### AWS Shared Responsibility Model
 
-- Who is responsible for what
+Who is responsible for what
+
 - Amazon - security _of_ cloud - responsible for SW and HW
 - You - security _in_ cloud - responsible for client-side data encryption, firewall config, access management, ...
+
+### AWS Identity Access Management (IAM)
+
+Allows you to control access to compute, storage, database and application services in the AWS cloud
+
+Essential components
