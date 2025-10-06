@@ -323,3 +323,143 @@ Who is responsible for what
 Allows you to control access to compute, storage, database and application services in the AWS cloud
 
 Essential components
+
+## Networking and Content Delivery
+
+> AWS M5
+
+### Amazon Virtual Private Cloud (VPC)
+
+Siet  
+Ekvivalent jednej LAN  
+Logically isolated section of the AWS Cloud  
+Inside one Region, isolated from Availability Zones  
+IPv4 and IPv6 support  
+Security Groups, ACLs  
+Dedicated to AWS Account  
+Consists of subnets, subnet belongs to a Availability Zone  
+Classified as public or private, not the same as public/private in normal networks - private does not have _direct_ access to outside network  
+Each VPC must have assigned IPv4 CIDR block from private range, masks `/16` to `/28`  
+Subnets cannot overlap  
+_There is no possibility to change the address range after it's created_  
+IPv6 is also supported, but not so used yet
+
+There are some reserved addresses - for example in `10.0.0.0/24` range
+
+- `10.0.0.0` - Network address
+- `10.0.0.1` - Internal communication - basically gateway
+- `10.0.0.2` - DNS
+- `10.0.0.3` - Future use
+- `10.0.0.255` - Broadcast
+
+Public IPv4 address can be assigned manually  
+Always through NAT - usually `1:1` = Elastic \_  
+Bonded with AWS Account  
+Additional cost
+
+Elastic Network Interface  
+Like external NIC  
+You are always connected through this, not directly
+
+Each subnet has its own routing table  
+You have exactly one routing table  
+It contains at least one route - local - cannot be deleted
+
+### Networking
+
+Internet Gateway
+
+- Router that has NAT
+- To make a subnet public, attach VPC to GW
+- Add a default route to access non-local networks
+
+NAT Gateway
+
+- NAT, that I can manage
+- Is different from Internet Gateway
+- Like another point between GW and VPC
+
+VPC Sharing
+
+- Sharing one or more subnets with other AWS Account in the same Organization (not between different Organizations)
+
+VPC Peering
+
+- Connects two VPCs under the same Account
+- Can connect two networks in different region
+- Only two VPCs
+
+Site-to-Site VPN Connection
+
+- Virtual GW instead of Internet GW
+- Permanent VPN between Routers - Virtual GW and your home/company router
+
+Direct Connect (DX)
+
+- Dedicated private network connection
+- Physically connect AWS with you
+- Glass fiber
+- Uses `dot1q` VLAN
+- There are like 10 of these in Central Europe
+
+VPC Endpoints
+
+- Connect something else (S3 bucket) from Amazon to your VPC
+- S3 can be in different region
+- Connect S3 to your Elastic Network Interface via Endpoint
+
+Transit Gateway
+
+- Something like Peering, but for multiple VPCs, like a star
+
+### VPC Security
+
+Security Groups
+
+- Virtual Firewall
+- Works on Instance, not on whole Subnet
+- Like give your EC2 a security group
+- Can go up to L4 - IP addresses and Ports
+- Inbound, Outbound - from the view of Instance
+- Default - deny all inbound (except initiated from inside), allow all outbound
+- Stateful
+- You can only permit, you cannot deny - everything is denied by default
+- You can have multiple of these on one instance
+
+Network ACLs
+
+- Standard ACL (as on Cisco)
+- At subnet level
+- Inbound/Outbound
+- Stateless
+- Default - permit any
+- Evaluated in order
+- Return traffic has to be explicitly allowed
+- One subnet can has only one ACL
+
+### Amazon Route 53
+
+DNS
+
+Traffic Flow Manipulation
+
+- Simple Routing
+- Weighted Round Robin Routing - assign weights to specify the frequency
+- Latency Routing - give me closest (in terms of latency)
+- Geolocation routing - route traffic based on location of your users
+- Geoproximity routing - route traffic based on location of your resources (server, service, ...)
+- Failover Routing - use backup if main fails
+  - You have to configure backup
+  - Based on - request interval, treshold, ...
+- Multivalue Answer Routing - give multiple answers, client chooses
+
+### Amazon CloudFront
+
+CDN - Content Delivery Network  
+Videos, Photos, ... - Netflix for example  
+Globally distributed system of caching servers  
+Buffer = Point of Presence  
+As close to customer as possible  
+Edge locations - connect between Amazon and the world  
+Pay only for outbound  
+Charged for the number of HTTP(S) requests + transfer
