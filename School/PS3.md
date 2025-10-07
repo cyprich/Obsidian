@@ -165,7 +165,7 @@ Budeme sa venovat tzv. POSIX-compatible regular expressions
 | `{n,}` (iba v ERE)  | Predchadzajuci znak sa nachadza aspon `n` krat             | `a{3,}` = `aaa`, `aaaa`, `aaaaa`, ...                                                                             |                            |
 | `{n,m}` (iba v ERE) | Predchadzajuci znak sa nachadza medzi `n` a `m` krat       | `a{4,5}` = `aaaa`, `aaaaa`, ...                                                                                   |                            |
 
-Znameny
+Zameny
 
 - Nieco ako _find and replace_
 - Pouziva sa delimiter - casto `!` a vyzera takto: `!hladanyvyraz!nahrada!`
