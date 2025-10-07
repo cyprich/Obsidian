@@ -196,7 +196,7 @@ Cislo v E.164 je mozne vyhladat v DNS
 1. Zoberieme cislo - `+421 41 513 4301`
 2. Odstranime neciselne znaky - `421415134301`
 3. Medzi kazdu cislicu vlozime bodku - `4.2.1.4.1.5.1.3.4.3.0.1`
-4. Medzi kazdu cislicu vlozime bodku - `1.0.3.4.3.1.5.1.4.1.2.4`
+4. Otocime poradie cislic - `1.0.3.4.3.1.5.1.4.1.2.4`
 5. Pridame retazec `e164.arpa` na koniec - `1.0.3.4.3.1.5.1.4.1.2.4.e164.arpa`
 
 Ak ma IP telefonia nahradit normalnu, musi byt aspon taka kvalitna  
