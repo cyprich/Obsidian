@@ -12,3 +12,48 @@ Definicie
 - Priemyselna definicia - Vzajomne prepojena siet snimacov, aktuatorov a riadiacich systemov, ktore maju za ciel dosianut vyssiu efektivitu, bezpecnost alebo komfort v porovnani so stavom pred ich nasadenim
 
 Rozdiel medzi zariadenim a vecou je taky, ze vec sa vie autonomne rozhodovat
+
+## Hardware v IoT
+
+Embedded system je pocitacovy system so specializovanou funkciou a je sucastou vacsieho zariadenia
+
+Hlavnym rozdiel medzi embedded a vseobecnym systemom je v parametroch, napr.:
+
+- Spotreba energie
+- Rozmery
+- Rozsah operacii, ktore sa daju vykonavat v systeme
+- Naklady na vypoctovu jednotku (Hz/EUR, MB/EUR, ...)
+
+### Snimace - senzory
+
+Sluzia na meranie parametrov a vlastnosti fyzickeho sveta  
+Napr. osvetlenie, vlkhost, teplota, CO2  
+Menia neelektricky velicinu na elektricku velicinu (napatie, prud, elektricky odpor)  
+Podla vystupu - analogove, cislicove
+
+Dolezite parametre
+
+- Pracovne podmienky - teplota - kazdy snimac ma specifikovany teplotny rozsah a presnost
+- Linearita - idealny snimac by mal mat linearnu odozvu - graf merania a vystupneho napatia by mala byt priamka, nie krivka, no v skutocnosti ziaden snimac nie je dokonale linearny
+- Citlivost - aku minimalnu zmenu hodnoty dokaze snimac zaznamenat. Citlivost prichadza na ukor linearity
+- Doba odozvy - cas, za ktory je je snimac schopny zaznamenat zmenu. Na toto moze vplyvat vela faktorov
+- Presnost - vplyv moze mat vyber hardwaru, kabelaz, relativna blizkost inych zariadeni, tienenie, uzemnenie, ... Zariadenia sa musia kalibrovat (pravidelne - rocne)
+- Zivotnost - niektore snimace vydrzia dlhsie, niektore menej, ci uz z dovodu kontrukcie alebo pouzitych materialov
+- Cena
+
+Priklady snimacov - pohybovy senzor, ultrazvukovy senzor, svetelny senzor
+
+### Ovladace - kontrolery
+
+Arduino UNO, NANO, MEGA - mikrokontrolery
+Raspberry PI - jednodoskovy pocitac
+
+### Akcne cleny - aktuatory
+
+## Komunikacny model
+
+## Komponenty IoT zariadenia
+
+## Snimace a akcne cleny
+
+## Riadiace systemy
