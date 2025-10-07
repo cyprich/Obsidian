@@ -1469,3 +1469,67 @@ match dice_roll {
   _ => (),
 }
 ```
+
+## Packages, Crates, Modules
+
+Helps you organize big code
+
+When compiler compiles a crate, the compiler first looks in the crate **root file** - usually `src/main.rs`, or `src/lib.rs` for libraries
+
+In the crate root, you can create modules with `mod` keyword. Let's say you want to declare `garden` module, the compiler will look in these 3 places
+
+1. Inline, for example `mod garden { ... };`
+2. In the file `src/garden.rs`
+3. In the file `src/garden/mod.rs`
+
+If you want to declare submodules, for example `vegetables`, the compiler will look these 3 places
+
+1. Inline within `garden` module, something like `mod garden { ...; mod vegetables { ... }; };`
+2. In the file `src/garden/vegetables.rs`
+3. In the file `src/garden/vegetables/mod.rs`
+
+You can create functions inside modules like `mod garden { fn print_contents() { ... }; }`
+
+You can access modules' parts with double semicolon (`::`) like this - `crate::garden::vegetables::Carrot`
+
+Modules are `private` by default, to make it `public`, you have to declare it as `pub mod`, to be able to use from outside the module
+
+If you don't want to use the full name (`crate::garden::vegetables::Carrot`)  
+You can create shortcut with `use` keyword, like `use crate::garden::vegetables::Carrot;` at the beginning of the file, so you can access it just like `Carrot`  
+If you want to import more modules, you can (should) do it like this `use crate::garden::vegetables::{Carrot, Potato};` or `use std::{cmp::Ordering, io};`  
+If you want `std::io` and `std::io::Write`, you can do `use std::io{self, Write};`  
+If you want to use everything inside one module, you can use the `*` globing character - `use std::collections::*;`
+
+You can create aliases, if you don't like the original name of the module with `as` keyword  
+Something like `use crate::garden::vegetables::Carrot as GardenCarrot`  
+This is especially useful if you have multiple modules with the same name
+
+```rs
+use std::fmt::Result;
+use std::io::Result as IoResult;
+```
+
+You can use relative paths, like `self` for current crate, or `super` for parent crate
+
+If you want to access some module/function, all of its predecessors have to be public
+
+```rs
+pub mod garden {
+  pub mod vegetables {
+    pub struct Carrot {
+      weight: i32;  // this is private
+    }
+
+    impl Carrot {
+      pub new(&self, weight: i32) {
+        self.weight = weight;
+      }
+    }
+  }
+}
+
+fn main() {
+  let c = garden::vegetables::Carrot::new(20);
+  // println!("{c.weight}");  // error - it's private
+}
+```
