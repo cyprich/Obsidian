@@ -135,8 +135,6 @@ Obsahova stranka startup podnikania
 
 ## Kreovanie podnikatelskych napadov
 
-### Sposoby identifikovania podnikatelskych napadov
-
 Konvergentne myslenie - vyber jedneho riesenia
 Divergentne myslenie - hladanie viacerych rieseni
 
@@ -147,6 +145,8 @@ Proces vyvoja napadu
 3. Honodtenie a vyber napadov
 4. Planovanie implementacie
 
+### Sposoby identifikovania podnikatelskych napadov
+
 Analyza trhu
 
 - Odhalenie diery na trhu
@@ -155,12 +155,36 @@ Analyza trhu
 
 Cielene hladanie napadov
 
+- Vyuzivanie internetu na hladanie napadov
+- Velmi malo pouzivane
+
+Hobby, praca
+
+- Zamyslame sa nad tym co nas bavi, co radi robime
+- Identifkacia svojich zrucnosti, schopnosti
+- Vyuzitie nadobudnutych skusenosti z prace
+
 Kupa
+
+- Odkupim napad od niekoho
 
 Pozicanie
 
 - Zo zahranicia
-- Nedostatok na domacom trhu, slaba konkurencia
+  - Napady ktore nie su na nasom trhu
+  - To, coho je nedostatok - slaba konkurencia
+
+Potreby, problemy
+
+- Riesenie problemov s ktorymi sme sa stretli
+
+#### Podnikatelske napady
+
+Zapisovat si  
+Premyslat nad nimi  
+Vzdy ked sa objavia nove napady/trendy tak treba prehodnotit napady, prepajat, vylepsovat  
+Pytat sa ci existuju zakaznici  
+Nie kazdy napad musi byt zrealizovany
 
 ### Techniky kreovania napadov
 
@@ -169,6 +193,10 @@ Brainstorming
 - Ked nevieme ako riesit problem
 - Otvorena mysel, aj blaznive napady
 - Zameranie na kvantitu viac ako na kvalitu
+
+Brainwriting
+
+- Jednotlivec pise napady na papier
 
 Lotus Brainstorming
 
@@ -179,7 +207,7 @@ Lotus Brainstorming
 What if
 
 - Zalozene na brainstormingu
-- Tim sa snazi najst odpovede na neocakavane udalosti (co ak sa stane...)
+- Tim sa snazi najst odpovede na neocakavane udalosti (co ak sa stane...) a vyuzit pohlad inych ludi
 
 Storyboarding
 
@@ -199,6 +227,16 @@ SCAMPER
 - Yellow - benefits
 
 Idea napkin
+
+Customer Journey Mapping
+
+Round Robin
+
+- Vyuziva prvky brainstormingu
+- Zalozena na cirkularnom procese
+  - Vyberie sa myslienka/napad, ktory chceme rozpracovat
+  - Jeden clen ho rozpracuje a posunie dalsiemu clenovi
+  - Opakovanie dookola
 
 Checklist dobreho naparu
 
