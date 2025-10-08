@@ -94,3 +94,9 @@ Spracovanie
 - Identifikacia nekonzistentosti
 - Identifikacia problemov
 - Zaklad na dalsiu pracu
+
+### Identifikacia dolezitych procesov
+
+### Domenovy model
+
+## Specifikacia poziadaviek
