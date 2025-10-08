@@ -1533,3 +1533,195 @@ fn main() {
   // println!("{c.weight}");  // error - it's private
 }
 ```
+
+## Common Collections
+
+### Vectors - `Vec<T>`
+
+Vectors allows you to store more than one value in a single data structure  
+Implicit Sequence  
+Only values of the same type
+
+```rs
+let v: Vec<i32> = Vec::new();
+let v = vec![1, 2, 3];
+
+let mut v: Vec<i32> = Vec::new();
+
+// adding values
+v.push(5);
+v.push(6);
+v.push(7);
+
+// reading values
+let x = &v[0];  // unsafe - will panic if value is not present
+let x = v.get(0);  // safe - will return Option
+
+// iterating
+for i in &v {
+  println!("{i}");
+}
+
+// mutable iterating
+for i in &mut v {
+  *i += 10;
+}
+
+// enums in vectors
+enum SpreadsheetCell {
+  Int(i32),
+  Float(f64),
+  Text(String)
+}
+let v = vec![
+  SpreadsheetCell::Int(9),
+  SpreadsheetCell::Text(String::from("hello")),
+  SpreadsheetCell::Fload(9.9);
+];
+```
+
+### Strings
+
+Strings are bit complicated in Rust
+
+String is implemented as a collection of bytes  
+It has some methods to represent bytes as text
+
+Rust has only one string type in the _core language_, and that is **string slice** - `str`, usually seen in borrowed form - `&str`  
+Rust has `String` type in its _standard library_ - growable, mutable, owned, UTF-8 encoded string type
+
+Most methods that are available on `Vec<T>` are also available on `String`, because `String` is just wrapper around `Vec<T>` with some extra functionality
+
+```rs
+let mut s = String::new();
+```
+
+We can use `to_sting()` method on everything that implements the `Display` trait, to turn it into a `String`
+
+```rs
+s = "hello there".to_string();
+
+s.push(',');  // add char
+s.push_str(" how are you");  // add string slice
+```
+
+Concatenation with `+` operator
+
+```rs
+let s1 = String::from("hello");
+let s2 = String::from(" world");
+
+let s3 = s1 + &s2;  // s1 is moved here
+```
+
+The `+` operator uses Strings `add` method
+
+```rs
+fn add(self, s: &str) -> String { ... }
+```
+
+Concatenation with `format!` macro  
+Might be better because it does not take any ownership  
+Works just like `println!`, but it does not print on the screen, but it returns `String` value
+
+```rs
+let s1 = "tic";
+let s2 = "tac";
+let s3 = "toe";
+
+// let s = s1 + "-" + &s2 + "-" + &s3  // messy, takes ownership of the first
+let s = format!({s1}-{s2}-{s3});  // cleaner, just borrowing
+```
+
+#### Indexing
+
+In many languages, you can access `String`s element with index, like this
+
+```py
+# python code
+s = "Hello World"
+print(s[0]);
+```
+
+In Rust, this is not possible, because of how is `String` implemented  
+It's just a wrapper around `Vec<u8>`  
+_"Normal"_ characters which _"fit into UTF-8"_ are OK, but problem is with for example Russian letters, which are UTF-16
+
+```rs
+let s = String::from("Hello");  // 4 letters, vector length = 4
+let s = String::from("Здравствуйте");  // 12 letters, vector length = 24
+```
+
+If you wanted a slice of string like this, it is possible, but it might also panic if you accidentally wanted just half a letter
+
+```rs
+let s = String::from("Здравствуйте");
+let x = &s[0..4]  // Зд
+let x = &s[0..2]  // З
+let x = &s[0..1]  // will panic
+```
+
+#### Iterating
+
+The example code bellow will print the word letter by letter, as expected
+
+```rs
+for i in "Здравствуйте".chars() {
+  println!("{i}");
+}
+```
+
+You can also print the byte representation with `bytes()` method
+
+```rs
+for i in "Здравствуйте".bytes() {
+  println!("{i}");
+}
+```
+
+### Hash Maps - `HashMap<K, V>`
+
+```rs
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+
+let x = scores.get("Blue").copied().unwrap_or(0);
+
+for (key, value) in scores { ... }
+```
+
+Inserting takes ownership
+
+Overwriting
+
+```rs
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Blue"), 99);
+
+println!("{scores:?}");  // 99
+```
+
+Adding value only if it's not present
+
+```rs
+scores.entry(String::from("Red")).or_insert(15);
+```
+
+Counting words in sentence
+
+```rs
+let mut map = HashMap::new();
+
+let s = String::from("hello world beautiful world");
+
+for word in s.split_whitespace() {
+  let count = map.entry(word).or_insert(0);
+  *count += 1;
+}
+
+println!("{map:?}");
+```
