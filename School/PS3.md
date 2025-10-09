@@ -196,9 +196,60 @@ Cislo v E.164 je mozne vyhladat v DNS
 1. Zoberieme cislo - `+421 41 513 4301`
 2. Odstranime neciselne znaky - `421415134301`
 3. Medzi kazdu cislicu vlozime bodku - `4.2.1.4.1.5.1.3.4.3.0.1`
-4. Otocime poradie cislic - `1.0.3.4.3.1.5.1.4.1.2.4`
+4. Medzi kazdu cislicu vlozime bodku - `1.0.3.4.3.1.5.1.4.1.2.4`
 5. Pridame retazec `e164.arpa` na koniec - `1.0.3.4.3.1.5.1.4.1.2.4.e164.arpa`
 
 Ak ma IP telefonia nahradit normalnu, musi byt aspon taka kvalitna  
 Okrem dalsich zalezitosti treba mat mechanizmus na preklad `E.164` cisla na `SIP`/`H.323`/...  
 Toto sa nazyva _E.164 Numbering Mapping_ = **ENUM**
+
+## Session Initiation Protocol (SIP) a suvisiace protokoly
+
+RFC 2543  
+RFC 3261  
+Velmi vela rozsirujucich RFC
+
+IP telefonia, telekomunikacia, multimedialna komunikacia  
+Klucovy protokol pre
+
+SIP je stabilna a odskusana technologia s mnohymi produktmi a rieseniami  
+Funguje na mnohych otvorenych komercnych produktoch (Cisco, ...) ale aj open-source
+
+Vyhody - nizsie ceny, kvalitnejsie sluzby, kvalitnejsi zvuk/obraz, ...  
+Nevyhody - podvody s fake ID, robocalling, telemarketing nevyziadane volania, ...
+
+Textore a binarne protokoly
+
+|         | Vyhody                                                                                     | Nevyhody                                                                                     |
+| ------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| Textove | Lahka citatelnost, zrozumitelnost, jednoduche ladenie, univerzalonst klientov              | Nizka efektivnost vzhladom na objem dat, nemoznost prenasat binarne data v nativnost formate |
+| Binarne | Vyssia efektivita prenosu dat, kompaktny format, prirodzene vhodne na vymenu binarnych dat | Bez specialnych analyzatorov prakticky necitatelny, pri ladeni potrebni dedikovani klienti   |
+
+### IP telefonia
+
+Pre internet to bola "nova" sluzba koncom milenia  
+Prenos hlasu (a ineho typu multimedialnych dat) cez siet v realnom case medzi 2+ ucastnikmi s pouzitim IP protokolu s pouzitim IP protokolu
+
+### SIP signalizacia
+
+Zostavenie spojenia pred hovorom - zvonenie
+
+Casti?
+
+- Lokalizacia uzivatela a mobilita
+- Riesenie dostupnosti uzivatela
+- Dojednavanie sposobilosti uzivatela
+- Zlozenie spojenia
+- Manazment nad spojenim
+
+### Princip cinnosti
+
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+9.
