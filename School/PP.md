@@ -245,3 +245,134 @@ Checklist dobreho naparu
 - Ma potencial na skalovanie?
 - Je realizovatelny vzhladom na zdroje a regulacie?
 - Prinasa zisk (dlhodobo udrzatelny)?
+
+## Analyza trhu a konkurencie
+
+### Analyza trhu
+
+Analyza trhu pomaha pochopit
+
+- Zakaznika - kto, jeho potreby, spravanie, motivacie
+- Velkost trhu - pocet potencialnych zakaznikov
+- Konkurenciu
+- Trendy a prostredie
+
+Analyza trhu
+
+- Proces!
+- Dokladne preskumanie trhu v ramci konrketneho odvetia/oblasti
+- Pomaha identifikovat sposob aky lepsie pozicionovat podnikanie za ucelom zvysenia konkurensiechopnosti a lepsieho uspokojovania potrieb zakaznikov
+
+Trh
+
+- TAM - Total Addressable Market - celkovy trh - vsetci, ktori by teoreticky mohli produkt pouzit
+- SAM - Serviceable Available Market - dostupny trh - skupina, ktoru mozes oslovit
+- SOM - Serviceable Obtainable Market - dosiahnutelny trh - cast, ktoru realne vies ziskat
+
+Metody zberu dat
+
+- Primarny vyskum - ja zbieram data
+  - Dotazniky, rozhovory, pozorovanie, testovanie, ...
+  - Vyhody - data presne na mieru, poznanie nazorov cielovej skupiny, moznost overenia hypotez
+  - Nevyhody - Financne a casovo narocne, znalosti v oblasti analyzy trhu
+- Sekundarny vyskum - pouzivam data ktore zozbieral niekto iny
+
+Benefity analyzy trhu
+
+- Zacielenie produktov a sluzieb
+- Redukcia rizik
+- Sledovanie trendov
+- Benchmarking
+
+### Konkurencia
+
+Podnikatelske subjekty, ktore ponukaju rovnaku alebo podobnu sluzbu, ...
+
+Priama konkurencia - rovnaky problem, zakaznik, riesenie  
+Nepriama konkurencia - rovnaky problem a skupina zakaznikov, odlisne riesenie
+
+Odlisenie od konkurencie
+
+- Vlastnosti produktu
+- Servis
+- Marketing
+- Dizajn
+- Procesy
+- Cena
+- Pridana hodnota (darcek)
+- Nieco nove
+
+### Analyza konkurencie
+
+Zamerriava sa na identifikovanie ucastnikov trhu, ktor9 ponukaju rovnake alebo...
+
+1. Stanovenie produktov a sluzieb, ktore chceme zhodnotit
+2.
+3.
+4.
+5.
+6.
+7.
+8. Sledujte vysledky
+
+Faktory
+
+- Trhovy podiel
+- Marketing
+- Vlastnosti produktu
+- Unikatnost
+- Cena
+- Silne stranky
+- Slabe stranky
+- Lokalita
+- Kultura
+- Hodnotenia zakaznikov
+
+### Metody analyzy trhu a konkurencie
+
+#### Pestel/Steep analyza
+
+Zhodnocuje podnikatelske prostredie, v ktorom podnik realizuje svoju podnikatelsku cinnost
+
+- Politicke
+- Ekonomicke
+- Socialne
+- Technologicke
+- Environmentalne
+- Legalne
+
+#### SWOT analyza
+
+Strengths, Waknesses, Opportunities, Threats  
+Metoda strategickeho planovania pouzivana na hodnotenie podniku/produktu/projektu za ucelom naplnenia stanoveneho ciela
+
+Vieme ovplyvnit
+
+- Silne stranky
+- Slabe stranky
+
+Nevieme ovplyvnit
+
+- Prilezitosti
+- Hrozby
+
+Strategie
+
+- Ofenzivna
+- Defenzivna
+- Strategia spojenectva
+- Strategia uniku
+
+#### Porterov model 5 sil
+
+- Threat of new entrants
+- Threat of substitutes
+- Bargaining power of suppliers
+- Bargaining power of customers
+- Competitive rivalry
+
+#### BCG matica
+
+Boston Consulting Group
+
+#### Buyers Journey Mapping
