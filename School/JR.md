@@ -349,3 +349,197 @@ for i in std::env::args() { ... }
 
 for (key, value) in std::env::vars() { ... }
 ```
+
+## Chyby a spracovanie vynimiek
+
+Chyby mozu byt
+
+- Obnovitelne - nechceme aby ukoncili program - bezne mozu nastat - vstup od pouzivatela (neplatny vstup, chybna cesta k suboru) - enum `Result<T, E>`
+- Neobnovitelne - makro `panic!()` - neplatny index v poli, ...
+
+Pri pouziti `panic!` sa deje toto
+
+1. Vypise sa chybova hlaska
+2. Spusti sa proces odvijania zasobnika
+3. Vycisti sa zasobnik
+4. Ukonci sa program
+
+Spravanie sa da upravit v `env` alebo v `Cargo.toml`
+
+```toml
+[profile.release]
+panic = 'abort'
+```
+
+## Funkcionalne programovanie
+
+Umoznuje uchovavat anonymne funkcie v premennych  
+Closures - funkcne uzavery
+
+```rs
+fn fun1(a: i32, b: i32) -> i32 { a + b }
+
+let fun2 = | a: i32, b: i32 | -> i32 { a + b };
+let fun3 = | a, b | { a + b };
+let fun4 = | a, b | a + b;
+```
+
+```rs
+let funkcia = |x| x;
+let string = funkcia(String::from("hello"));
+let cislo = 10;  // error here - zmenime typ - implicitne je string podla riadku nad tymto
+```
+
+## Iteratory
+
+Umoznuju vykonat ulohu nad sekvenciou hodnot
+
+```rs
+pub trait Iterator {
+  type Item;
+  fn next(&mut self) -> Option<Self::Item>;
+}
+```
+
+Ma aj dalsie funkcie, rozdelene su do 2 kategorii
+
+- Konzumne adaptery - spotrebuvavaju iterator, interne volaju next, po volani uz nemozeme dalej pouzivat iterator - napr. `sum`
+- Iteratorove adaptery - nespotrebuvavaju iterator, ale vytvara novy iterator na zaklade povodneho - napr. `map` vykona modifikaciu nad kazdym prvkom
+
+```rs
+let v = vec![1, 2, 3];
+let i = v.iter();
+
+let v2 = i.map(|x| x+1);  // lazy vykonavanie - vrati `Map { iter: Iter([2, 3, 4]) }`
+let v3 = i.map(|x| x+1).collect();  // vrati vektor
+
+let i = 2;
+let vacsie_ako_i = v.iter().filter(|s| s>i).collect();
+```
+
+Rust vyuziva _"zero-cost abstractions"_ - kod je rovnako rychly s aj bez pouzitia iteratorov
+
+## Genericke programovanie
+
+```rs
+fn funkcia<T>(parameter: &T) -> &T {
+  parameter
+}
+
+struct Pair<T> {
+  x: T,
+  y: T
+}
+
+let p1 = Pair { x: 10, y: 12 };
+let p1 = Pair { x: 10.5, y: 12.5 };
+let p1 = Pair { x: 10, y: 12.5 };  // error here
+
+impl<T> Pair<T> {
+  fn daj_x(&self) -> i32 { self.x }
+}
+
+// alebo definujem funkciu iba pre typ i32
+impl Pair<i32> {
+  fn daj_x(&self) -> i32 { self.x }
+}
+```
+
+Mozem mat aj viac parametrov  
+Mozem ich mixovat
+
+Neovplyvnuje rychlost - _"monomorfizacia kodu"_ - vyhodnotene uz pocas kompilacie, generuje funkcie pre kazdy pouzity typ
+
+## Trait
+
+Umoznuju definovat podobne spravanie pre viacero typov  
+Podobne ako `interface`, ale nie rovnake -
+Moze byt aj pre primitivne typy _(?)_
+
+```rs
+trait VypisSa {
+  fn vypis(&self) -> String;
+}
+
+trait VypisSa {
+  fn vypis(&self) -> String {
+    String::from("default hodnota")
+  }
+}
+
+struct S { ... }
+
+impl VypisSa for S {
+  fn vypis(&self) -> String { ... }
+}
+
+```
+
+Pouzivanie premennych ktore implementuju dany trait
+
+```rs
+fn funk(param: &impl VypisSa) {
+  println!("{}", param.VypisSa())
+}
+
+// to iste sa da zapisat takto
+fn funk<T: VypisSa>(param: T) {
+  println!("{}", param.VypisSa())
+}
+```
+
+Implementuje viac traitov
+
+```rs
+fn funk(param: &(impl VypisSa + Display)) {
+  println!("{}", param.VypisSa())
+}
+
+fun funkcia<T, K>(param: &T, param2: &K)
+where
+  T: VypisSa + Display,
+  K: Display + Clone
+{ ... }
+```
+
+Mozem pouzit ako navratovu hodnotu
+
+```rs
+fn funk() -> impl VypiSa { ... }
+```
+
+Plosne zavedenie traitu  
+Mozeme volat napr. `10.to_string()`
+
+```rs
+trait <T: Display> ToString for T { ... }
+```
+
+Poskytnutie standardnej implementacie pomocou `derive`  
+By default je mozne odvodit `Eq`, `PartialEq`, `Ord`, `PartialOrd`, `clone`, `Copy`, `Hash`, `Default`, `Debug`
+
+```rs
+#[derive(Debug)]
+struct S { ... }
+```
+
+Da sa aj odvodit vlastne pomocou makra
+
+## Staticky a dynamicky dispatch
+
+Mechanizmus, ktory umoznuje volat funkcie - rozhoduje ktora funkcia sa vola pri volani funkcie
+
+Staticky dispatch - vyhodnotene pri kompilacii - monomorfizacia  
+Dynamicky dispatch - tabulka virtualnych metod - pocas behu = pomalsie - potrebne zadat klucove slovo `dyn`
+
+## Kniznice
+
+## Clap
+
+Command Line Argument Parser
+
+[Dokumentacia](https://docs.rs/clap/latest/clap)
+
+## Serde
+
+Serializacia, Deserializacia
