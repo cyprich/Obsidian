@@ -142,7 +142,7 @@ Problem so synchronizaciou pri nulach - vyriesime tak ze tam dame `1` (na druhej
 
 ![](pvs-ami-kod.png)
 
-**NRZ** - bez navratu k `0`  
+**NRZ** - bez navratu k `0`
 
 **Unipolarny NRZ**  
 Napatie = `1`  
@@ -198,6 +198,101 @@ $K = 50\%$
 
 **Modifikovana Fazova Modulacia** - MFM  
 Ak po `1` ide `0`, potlacime zmenu, inak rovnako ako FM  
-Vyriesime problem s "malymi odsekmi", cim dosiahnemem kapacitu $K = 100\%$  
+Vyriesime problem s "malymi odsekmi", cim dosiahnemem kapacitu $K = 100\%$
 
 ![](pvs-modifikovana-fm.png)
+
+## Generovanie Logickych Signalov
+
+> Vystup z obvodov
+
+**Push-pull**  
+2 spinace (tranzistory)  
+Bud je zopnuty jeden, a mame na jednom vystupe napajacie napatie; alebo je zopnuty druhy a mame na druhom vystupe 0V  
+Vzdy je zopnuty iba jeden  
+Spojenie vystupov sposobi skrat
+
+**Pull-up**, alebo open collector, open drain  
+_Wired AND_  
+Viac systemov  
+Kazdy moze nastavit iba na log. 0  
+Log. 1 je iba vtedy ked nikto nenastavi 0  
+Zbernica
+
+**Pull-down**  
+Opacny princip  
+Ked nikto nic = log. 0  
+Ked aspon 1 nieco robi = log. 1  
+_Wired OR_
+
+### Signalizacia
+
+Sposob prenosu signalu medzi 2 ucastnikmi
+
+**Single ended**  
+Jeden vodic - referencny  
+Druhy vodic - signalovy  
+Vyhody - malo vodicov ($N+1$ pre $N$ vodicov)  
+Nevyhody - crosstalk, citlivost na rusenie, moznost nerovnakeho potencialu zeme
+
+**Diferencialna signalizacia**  
+Kazdy signal = 2 vodice (krutena dvojlinka)
+
+**Galvanicka izolacia**  
+Izolacny transformator  
+2 cievky  
+Vyhody - jednoduche, pomerne male, aj pre vyssie napatie  
+Nevyhody - len pre striedave napatie (premenlive signaly)
+
+**Optoclen**  
+Pomocou svetla (LEDka)  
+Vyhody - aj pre jednosmerne signaly, velmi male rozmery, vysoka ucinnost  
+Nevyhody - potreba zdroja napatia
+
+### Rozdelenie komunikacie
+
+Podla tvaru dat
+
+- Paralelna
+- Seriova
+
+Podla
+
+- Bod-bod
+- Hviezda
+- Zbernica
+- Strom
+- Mesh
+
+Podla
+
+- Synchronne (s hodinovym signalom)
+- Asynchronne (bez)
+
+## RS-232
+
+TIA/EIA 232
+
+Komunikacia medzi
+
+- DTE (Data Terminal Equipment) - terminal, dalekopis
+- DCE (Data Circuit-terminating Equipment) - modem
+
+Pouzitie
+
+- Systemova konzola
+- Pripojenie modulov - GPS, FR, Bluetooth, ...
+- Komunikacia medzi systemami
+- Komunikacia s PC
+- Debugovanie
+
+Vlastnosti
+
+- Point-to-point
+- Single-ended - spolocny vodic (zem) + dalsie signaly - kratsia vzdialenost
+- Zakladny NRZ kod
+- Vzdialenost do 15 m (nizkokapacitny kabel do 300 m)
+- Simplex alebo duplex
+- Rychlosti \[b/s] - najpouzivanejsie 4800, 9600, 115200, ale aj ine
+- Log. 0 = `+3V` az `+15V`
+- Log. 1 = `-3V` az `-15V`
