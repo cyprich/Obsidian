@@ -348,7 +348,7 @@ More examples of `cron` jobs
 0 */6 * * * /path/to/script.sh
 ```
 
-## Custom service 
+# Custom service 
 
 Runs given script on system boot with systemd    
 
@@ -453,6 +453,54 @@ Clean up when done
 ```bash
 sudo umount /mnt
 sudo losetup -d /dev/loop0
+```
+
+## Do nothing on closing the lid 
+
+You need to edit file `/etc/systemd/logind.conf`  
+You need to add line (probably uncoment and change)  
+
+```
+HandleLidSwitch=ignore
+```
+
+Then you need to restart the services  
+
+```bash
+sudo systemctl restart systemd-logind
+```
+
+## Automount drive on boot with `fstab`
+
+Edit the file `/etc/fstab`  
+Add line like this, but with appropriate values  
+
+```
+/dev/disk/by-label/drive  /media/drive    ext4    defaults,noatime        0       2
+```
+
+Make sure the mountpoint exists  
+
+```bash
+sudo mkdir /media/drive
+```
+
+Consider changing the ownership to yourself  
+
+```bash
+sudo chown -R $USER:$USER /media/drive
+```
+
+Reload dameons or something?  
+
+```bash
+sudo systemctl daemon-reload
+```
+
+Mount everything defined in `/etc/fstab`
+
+```bash 
+sudo mount -a
 ```
 
 # Cool programs
