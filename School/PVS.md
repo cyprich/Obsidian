@@ -126,9 +126,13 @@ NRZ - No Return to Zero
 Problem so synchronizaciou je rieseny automaticky (samosynchnonizujuci) - obsahuje hodiny - na zaciatku kazdeho bitu sa zmeni z `0` na `1`  
 Platime za to nizsim vyuzitim kapacity $K = 33\%$
 
+![](pvs-unipolarny-rz-kod.png)
+
 **Bipolarny RZ kod** - kladne aj zaporne  
 Na zaciatku je tiez zmena - ak do kladneho tak je `1`, ak do zaporneho tak je `0`  
 $K = 50\%$
+
+![](pvs-bipolarny-rz-kod.png)
 
 **AMI kod** - Alternate Mark Inversion  
 `0` je vzdy na nule (0V)  
@@ -136,11 +140,16 @@ $K = 50\%$
 $K = 100\%$  
 Problem so synchronizaciou pri nulach - vyriesime tak ze tam dame `1` (na druhej strane ju musim potom odstranit) - napr. sa dohodneme ze "max. 5 nul"
 
+![](pvs-ami-kod.png)
+
 **NRZ** - bez navratu k `0`  
+
 **Unipolarny NRZ**  
 Napatie = `1`  
 Bez napatia = `0`  
 $K = 100\%$
+
+![](pvs-unipolarny-nrz-kod.png)
 
 **Bipolarny NRZ**  
 Napatie = `1`  
@@ -149,12 +158,16 @@ $K = 100\%$
 
 Obidve ma problem so synchronizaciou aj pri `0`, aj pri `1`
 
+![](pvs-bipolarny-nrz-kod.png)
+
 **NRZ space**  
 `0` = zmena na zaciatku bitu  
 `1` = bez zmeny na zaciatku bitu  
 Pouziva sa napr. v USB  
 Sync. - dlhy sled `1`  
 $K = 100\%$
+
+![](pvs-nrz-space.png)
 
 **Kod Manchester**  
 `1` = zmena 0 -> 1  
@@ -164,6 +177,8 @@ Pouzite v RFID, NFC, IEEE 802.3 - 10BASE-T)
 $K = 50\%$  
 Zmeny v strede bitu
 
+![](pvs-manchester.png)
+
 **Diferencny Kod Manchester**  
 `0` = bez zmeny  
 `1` = zmena  
@@ -172,11 +187,17 @@ Teraz zmeny na zaciatku bitu
 Pouzite v Token Ring LAN, ukladanie dat  
 $K = 50\%$
 
+![](pvs-diferencny-manchester.png)
+
 **Fazova modulacia** - FM  
 `0` = zmena na zaciatku bitu  
 `1` = zmena v strede bitu  
 $K = 50\%$
 
+![](pvs-fm.png)
+
 **Modifikovana Fazova Modulacia** - MFM  
 Ak po `1` ide `0`, potlacime zmenu, inak rovnako ako FM  
-Vyriesime problem s "malymi odsekmi", cim dosiahnemem kapacitu $K = 100\%$
+Vyriesime problem s "malymi odsekmi", cim dosiahnemem kapacitu $K = 100\%$  
+
+![](pvs-modifikovana-fm.png)
