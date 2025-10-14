@@ -50,10 +50,45 @@ Raspberry PI - jednodoskovy pocitac
 
 ### Akcne cleny - aktuatory
 
-## Komunikacny model
+### Komunikacny model
 
-## Komponenty IoT zariadenia
+### Komponenty IoT zariadenia
 
-## Snimace a akcne cleny
+### Snimace a akcne cleny
 
-## Riadiace systemy
+### Riadiace systemy
+
+## Arduino
+
+> 8-bit, 5V
+
+Zakladne modely
+
+- Arduino UNO
+- Arduino LEONARDO
+  - Derivat UNO
+  - Micro USB port
+  - nativne USB (bez prevodnika)
+- Arduino 101
+- Arduino ESPLORA
+
+Pokrocile modely
+
+- Arduino MEGA
+- Arduino ZERO
+- Arduino DUE
+- Arduino MEGA ADK
+- Arduino M0
+- Arduino M0 PRO
+
+Platformy vylucne pre IoT
+
+- Arduino YUN
+- Arduino ETHERNET
+- Arduino TIAN
+- Arduino INDUSTRIAL 101
+- Arduino LEONARDO ETH
+- Arduino MKR FOX 1200
+- Arduino MKR GSM 1400
+
+## ESP32
