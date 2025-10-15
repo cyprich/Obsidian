@@ -100,3 +100,61 @@ Spracovanie
 ### Domenovy model
 
 ## Specifikacia poziadaviek
+
+DSP - Dokument Specifikacie Poziadaviek
+
+Sposob specifikacie poziadaviek
+
+- Specifikacia rozhrani
+  - API
+  -
+- Diagramy UML
+- Pseudokody
+  - Jazyk s abstraktnymi kontrukciami
+  - Lepsie vyjadrenie vnorenych podmienok a cyklov
+- Pripady pouzitia
+- Formulare
+  - kto, co, preco, poznamky, priorita, nejasnosti
+  - vypis vstupov
+  - vypis vystupov
+  -
+- Prirodzeny jazyk
+  - Zrozumitelny pre vyvojara aj uzivatela
+  - Nevyhody - nejednoznacnost, zlozite koncepsie (algoritmy) su tazko popisatelne, modularizacia, automatizacia...
+  - Nutnost sa vyhybat dlhym svetiam, terminom s niekolkymi prijatelnymi vyznamami, nekonzistencii terminov, ...
+
+### Pripady Pouzitia
+
+Vyznam
+
+- Vykonnostne poziadavky
+- Pouzivatelske rozhranie
+- Firemne pravidla
+- Datove formaty
+- Vstupno/vystupne formaty
+- Roly pouzivatelov
+
+Model pripadov pouzitia (Use Case Model)
+
+- Pouzivaju sa na popis kontextu systemu a ...
+- Zakladne prvky
+  - Aktor (Actor) - prvok okolia modelovaneho systemu - clovek, HW, iny SW
+  - Pripad pouzitia (Use Case)
+    - zakladna funkcia systemu z vonkajsieho pohladu - z pohladu klineta
+    - Zoznam cinnosti zvycajne definujucich interakciu medzi aktorom a systemom za ucelom dosiahnutia ciela
+
+Identifikacia podsystemov
+
+Pripady pouzitia
+
+- Popisuje urcity sposob pouzitia systemu z pohladu ...
+  - Vyjadruje spravanie systemu
+  - Popisuje postupnost sprav medzi aktorom a systemom
+  - Poskytuje aktorovi urcity vysledok (hodnotu)
+- Je prostriedok na
+  - Vyjadrenie poziadaviek na system
+  - Ulahcenie komunikacie s klientom
+  - Komunikaciu medzi vyvojarmi
+  - Testovanie systemu
+  - Urcovanie ceny
+  - Strukturovanie systemu
