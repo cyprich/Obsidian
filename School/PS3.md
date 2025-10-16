@@ -253,3 +253,61 @@ Casti?
 7.
 8.
 9.
+
+### SIP Entity
+
+- User Agent (UA)
+  - Bud UA Client alebo UA Server
+  - Stavovy
+- SIP Server
+  - Registrar
+  - Proxy server
+  - Redirect
+
+Klient - entita, ktora vysiela dotazy a prijima odppovede - UAC, Proxy Server  
+Server - entita, tkora prijima dotazy, spracuje ich a vysiela spat odpovede - UAS, Registrar, Redirect, Proxy Server
+
+SIP Gateway
+
+- Specialny typ UA
+- Rozhranie medzi SIP sietou a sietou s inym signalizacnym protokolom (H.323, ISDN)
+- Gateway != SIP Proxy
+
+Back 2 Back User Agent - B2BUA
+
+- Specialny typ UA, ktory moze modifikovat SIP spravy
+- Rozbija komunikaciu na 2 polovice - Call Legs
+- Volajucemu sa predstavi ako volany, volanemu ako volajuci
+- Zvycajne sluzi ako ALG gateway,
+- Byva sucast Session Border Controller-a
+
+Mobilita pouzivatela
+
+- Problem pri kontakte pomocou IP (DHCP)
+- Registracia pouzivatelov
+
+**SIP Proxy = SIP router**
+
+Outbound Proxy - vsetky klientske spravy su najprv poslane sem
+
+SIP Transakcia
+
+- Ziadost a jej odpovede az po
+
+Typy SIP Proxy serverov
+
+- Stateless
+- Statefull
+
+## SDP
+
+Session Description Protocol
+
+Informacie poskytovane v SDP
+
+- Popis a poziadavky spojenia (session description) - popis relacie a ucel, doplnkove info
+- Caseove informacie (timing informations) - cas zaciatku a konca, cas opakovania
+- Info o tom, ci je relacia privatna alebo verejna
+- **Popis medii a transportne informacie**
+- Dalsie info o spojeni
+- Jazyk
