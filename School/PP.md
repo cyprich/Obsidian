@@ -376,3 +376,75 @@ Strategie
 Boston Consulting Group
 
 #### Buyers Journey Mapping
+
+## Segmentacia zakaznikov, Persona
+
+### Strategie vyberu trhu
+
+Trhovy potencial - najvyssi trhovy dopyt za urcitu dobu  
+Trhova kapacita - celkovy odbyt za urcitu dobu  
+Trhovy podiel - pomer medzi odbytom podniku a trhouvou kapacitou za urcitu dobu
+
+Trhovo nediferencovany marketing
+
+- Oslovenie vsetkych zakaznikov
+- Nerobi rozdiel medzi zakaznikmi
+
+Cieleny marketing
+
+- Oslovenie urcitej casti
+- Koncentrovany alebo diferencovany marketing
+- Proces
+  1. Vymedzenie segmentacnych a premennych segmentacia trhu
+  2. Rozvoj profilu vyslednych segmentov
+  3. Zhdnotenie atraktivity segmentu
+  4. Vyber cieloveho segmentu
+  5. Vymedzenie pristupov umiestnenia
+  6. Vyber, rozvoj a uplatnenie koncepcie umiestnenia
+
+### Segmentacia
+
+Benefity
+
+- Efektivnejsia marketingova strategia
+- Optimalizacia zakaznickej cesty
+- Moznost predikovania spravania sa zakanznikov
+- Personalizacia zakaznickej skusenosti
+- Zlepsenie zakaznickej lojality a opatovny nakup
+- Zlepsenie vykonnosti
+- Podpora vyvoja produktu
+
+Proces segmentacie
+
+Typy
+
+- Ziadna segmentacia
+- Uplna segmentacia
+- Segmentacia na zaklade jedneho kriteria
+- Segmentacia na zaklade viacerych kriterii
+
+Demograficka segmentacia  
+Sit  
+Geograficka segmentacia  
+Psychograficka segmentacia
+
+### Persona
+
+Predstavuje komplexny popis jedneho zakaznickeho segmentu  
+Ako keby jedna osoba predstavuje celu skupinu
+
+### Trhove zacielenie a umiestnenie
+
+#### Trhove zacielenie
+
+Rozhodnutie o tom, na ktory segment sa chce podnik zameriavat
+
+Sustredenie na
+
+- Jeden segment
+- Trhova specializacia
+- Vyrobkova specializacia
+- Vyberova specializacia - kazdy iny produkt na iny trh
+- Uplne pokrytie trhu
+
+#### Trhove umiestnenie
