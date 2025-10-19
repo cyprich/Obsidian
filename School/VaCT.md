@@ -337,8 +337,11 @@ Inside one Region, isolated from Availability Zones
 IPv4 and IPv6 support  
 Security Groups, ACLs  
 Dedicated to AWS Account  
-Consists of subnets, subnet belongs to a Availability Zone  
-Classified as public or private, not the same as public/private in normal networks - private does not have _direct_ access to outside network  
+
+VPC is in one Region only, can span over multiple Availability Zones
+Consists of subnets - subnet belongs to a Availability Zone  
+Subnets are classified as public or private, not the same as public/private in normal networks - private does not have _direct_ access to outside network  
+
 Each VPC must have assigned IPv4 CIDR block from private range, masks `/16` to `/28`  
 Subnets cannot overlap  
 _There is no possibility to change the address range after it's created_  
@@ -357,13 +360,16 @@ Always through NAT - usually `1:1` = Elastic \_
 Bonded with AWS Account  
 Additional cost
 
-Elastic Network Interface  
+**Elastic Network Interface**  
 Like external NIC  
-You are always connected through this, not directly
+You are always connected through this, not directly  
+You can attach/detach/reattach it to/from an instance to redirect network traffic  
 
 Each subnet has its own routing table  
-You have exactly one routing table  
+You have exactly one routing table in a subnet  
 It contains at least one route - local - cannot be deleted
+
+Elastic IP - Static Public IP 
 
 ### Networking
 
@@ -386,8 +392,10 @@ VPC Sharing
 VPC Peering
 
 - Connects two VPCs under the same Account
-- Can connect two networks in different region
+- Can connect two networks in different regions
+- As if they were in the same network  
 - Only two VPCs
+- IPs cannot overlap
 
 Site-to-Site VPN Connection
 
@@ -407,17 +415,20 @@ VPC Endpoints
 - Connect something else (S3 bucket) from Amazon to your VPC
 - S3 can be in different region
 - Connect S3 to your Elastic Network Interface via Endpoint
+- Two types 
+    - Gateway 
+    - Interface 
 
 Transit Gateway
 
-- Something like Peering, but for multiple VPCs, like a star
+- Something like Peering, but for multiple VPCs - like a star topology 
 
 ### VPC Security
 
 Security Groups
 
 - Virtual Firewall
-- Works on Instance, not on whole Subnet
+- Works on *Instance level*, not on whole Subnet
 - Like give your EC2 a security group
 - Can go up to L4 - IP addresses and Ports
 - Inbound, Outbound - from the view of Instance
@@ -429,7 +440,7 @@ Security Groups
 Network ACLs
 
 - Standard ACL (as on Cisco)
-- At subnet level
+- Workds at *Subnet level*
 - Inbound/Outbound
 - Stateless
 - Default - permit any
