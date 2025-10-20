@@ -289,10 +289,74 @@ Pouzitie
 Vlastnosti
 
 - Point-to-point
-- Single-ended - spolocny vodic (zem) + dalsie signaly - kratsia vzdialenost
-- Zakladny NRZ kod
+- Single-ended - spolocny vodic (zem) + dalsie signaly -> kratsia vzdialenost
+- Zakladny NRZ kod (logicka uroven = napatova uroven)
 - Vzdialenost do 15 m (nizkokapacitny kabel do 300 m)
 - Simplex alebo duplex
 - Rychlosti \[b/s] - najpouzivanejsie 4800, 9600, 115200, ale aj ine
 - Log. 0 = `+3V` az `+15V`
 - Log. 1 = `-3V` az `-15V`
+
+Najcastejsie nieco 8 bitov
+
+_Bps_ - bits per second  
+_Bd_ - Baud - pocet zmien za sekundu
+
+Najcastejsi ramec - **8E1**
+
+- 8 bitov, ktore sa prenasaju
+- E - parna parita - doplna pocet jednotiek na parny - dokaze detekovat 1-bitovu zmenu, dnes sa moc nepouziva
+- 1 stop bit -
+
+Pri asynchronnej komunikacii musi byt vzdy start bit  
+Prijimac riadi tok - ci je mozne komunikovat
+
+RTS - ready to send  
+CTS - clear to send
+
+## RS-422
+
+TIA/EIA 422
+
+Diferencialna signalizacia  
+Tx+, Tx-, Rx+, Rx-  
+Point-to-point, alebo multidrop (max 10 prijimacov)  
+Duplex
+
+Rychlost alebo vzdialenost  
+10Mbps do 12m, 100kbps do cca 1200m  
+Sucin rychlosti a vzdialenosti by mala byt cca konstantna
+
+## RS-485
+
+TIA/EIA 485  
+Dvojvodicova alebo stvorvodicova verzia  
+Half-duplex (2v) alebo full duplex (4v)  
+Point-to-point, multidrop, **zbernica** (single master)  
+Max pocet zariadeni na zbernici 32 (s opakovacmi 247)
+
+## CAN
+
+Controller Area Network  
+Zbernica pre automobilovy priemysel
+
+Zbernica  
+Multi master  
+Async  
+NRZ  
+MSB first - most significant bit  
+Half-duplex  
+1Mbps do 40m, 125kbps do 500m  
+Potvrdzovana komunikacia  
+Kontrola integrity ramca - CRC  
+Message-based  
+Viac zariadeni = potreba adresacie (je to podobne ako adresa, ale nie je to adresa - identifikacia spravy - ID)  
+ID 11 alebo 29 bitov  
+Nizsie ID = vyssia priorita
+
+Max 8B dat
+
+Konflikty pri prenose - bezstratova arbitracia  
+Jeden zacne rozpravat az ked je ticho  
+Ked zacnu dvaja rozpravat, nedojde k poskodeniu dat - ID - vyssia priorita vyhrava  
+Synchronizacia - bit stuffing - resynchronizacia pri kazdej zmene 1-0
