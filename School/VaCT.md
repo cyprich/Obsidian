@@ -336,11 +336,11 @@ Logically isolated section of the AWS Cloud
 Inside one Region, isolated from Availability Zones  
 IPv4 and IPv6 support  
 Security Groups, ACLs  
-Dedicated to AWS Account  
+Dedicated to AWS Account
 
 VPC is in one Region only, can span over multiple Availability Zones
 Consists of subnets - subnet belongs to a Availability Zone  
-Subnets are classified as public or private, not the same as public/private in normal networks - private does not have _direct_ access to outside network  
+Subnets are classified as public or private, not the same as public/private in normal networks - private does not have _direct_ access to outside network
 
 Each VPC must have assigned IPv4 CIDR block from private range, masks `/16` to `/28`  
 Subnets cannot overlap  
@@ -363,13 +363,13 @@ Additional cost
 **Elastic Network Interface**  
 Like external NIC  
 You are always connected through this, not directly  
-You can attach/detach/reattach it to/from an instance to redirect network traffic  
+You can attach/detach/reattach it to/from an instance to redirect network traffic
 
 Each subnet has its own routing table  
 You have exactly one routing table in a subnet  
 It contains at least one route - local - cannot be deleted
 
-Elastic IP - Static Public IP 
+Elastic IP - Static Public IP
 
 ### Networking
 
@@ -393,7 +393,7 @@ VPC Peering
 
 - Connects two VPCs under the same Account
 - Can connect two networks in different regions
-- As if they were in the same network  
+- As if they were in the same network
 - Only two VPCs
 - IPs cannot overlap
 
@@ -415,20 +415,20 @@ VPC Endpoints
 - Connect something else (S3 bucket) from Amazon to your VPC
 - S3 can be in different region
 - Connect S3 to your Elastic Network Interface via Endpoint
-- Two types 
-    - Gateway 
-    - Interface 
+- Two types
+  - Gateway
+  - Interface
 
 Transit Gateway
 
-- Something like Peering, but for multiple VPCs - like a star topology 
+- Something like Peering, but for multiple VPCs - like a star topology
 
 ### VPC Security
 
 Security Groups
 
 - Virtual Firewall
-- Works on *Instance level*, not on whole Subnet
+- Works on _Instance level_, not on whole Subnet
 - Like give your EC2 a security group
 - Can go up to L4 - IP addresses and Ports
 - Inbound, Outbound - from the view of Instance
@@ -440,7 +440,7 @@ Security Groups
 Network ACLs
 
 - Standard ACL (as on Cisco)
-- Workds at *Subnet level*
+- Workds at _Subnet level_
 - Inbound/Outbound
 - Stateless
 - Default - permit any
@@ -474,3 +474,127 @@ As close to customer as possible
 Edge locations - connect between Amazon and the world  
 Pay only for outbound  
 Charged for the number of HTTP(S) requests + transfer
+
+## Storage
+
+> AWS M7
+
+Zelena farba
+
+### Amazon EBS
+
+Elastic Block Store  
+Persistent block storage volumes for use with EC2 instances  
+Just like a drive on PC/laptop, or as USB drive  
+Logically as directly connected  
+Persistent - data remains after power off  
+Automatically replicated within Availability Zone  
+High availability and durability
+
+Create individual storage volumes, attach to one instance
+
+Use as
+
+- Boot volume
+- Data storage
+- Database
+-
+
+Types
+
+- SSD
+  - General Purpose (`gp2`)
+  - Provisioned IOPS (IO per second)
+- HDD
+  - Throughput-Optimized
+  - Cold
+
+Max `16TiB`
+
+Features
+
+- Snapshots
+- Encryption
+- Elasticity
+
+Pricing
+
+- Independent from instance
+- Per month
+- Inbound is free, Outbound across Regions is paid
+
+Block vs Object storage
+
+- Block - classic drive, file system, you can change one block
+- Object - when you want to change something, you change the whole - similarly to `zip` file
+
+### Amazon S3
+
+Simple Storage Service  
+Zeleny kyblik  
+Object-level storage  
+Data is stored as objects in buckets  
+Single object max `5TB`  
+Durability - 11 9s = 99.999999999% of time  
+Availability - 4 9s = 99.99% = ~52 minutes per year = ~8 seconds per day
+
+Types
+
+- S3 Standard
+- S3 Standard Infrequent Access - 3 9s availability
+- S3 Intelligent-Tiering - changes type (\[in]frequent) based on number of request
+- S3 One Zone-Infrequent Access
+- S3 Glacier - archives, takes long time to access
+- S3 Glacier Deep Archive - takes even longer
+
+URLs - two types
+
+Use cases
+
+- Backup and storage
+- Application hosting
+- Media hosting
+
+Pay for
+
+- GB per month
+- Transfer out
+- HTTP requests - PUT, COPY, POST, LIST, GET
+
+Lifecycle policies example
+
+- S3 Standard
+- S3 Standard IA - after 30 days
+- S3 Glacier - after 60 days
+- Delete after 365 days
+
+### Amazon EFS
+
+Elastic File System  
+Network mapped drive - like Samba (but specifically NFS)  
+Access from multiple machines
+
+### Amazon S3 Glacier
+
+Zamrznuty S3 kyblik  
+Long-term data archives  
+Extremely long cost  
+Durability 11 9s
+
+Retrieval options
+
+- Standard = 3-5 hours
+- Bulk = 5-12 hours
+- Expedited = 1-5 minutes
+
+Use cases
+
+- Archiving of like everything
+
+Using
+
+- RESTful APIs
+- Java or .NET SDKs
+-
+
+Control access with IAM, Encryption with AES-265, Glacier manages your keys
