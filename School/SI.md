@@ -158,3 +158,136 @@ Pripady pouzitia
   - Testovanie systemu
   - Urcovanie ceny
   - Strukturovanie systemu
+
+Vztahy
+
+- asociacia - ciarka - predavac a objednanie auta
+- generalizacia - trojuholnikova sipka - dvaja actori medzi sebou, dva kruzky medzi sebou
+- zavislost (include, extend) - jednoducha sipka ciarkovana
+
+Scenare
+
+- Postupnost cinnosti v komunikacii aktora so systemom
+- Forma scenara
+  - Najcastejsie strukturovany text
+  - Moze byt aj UML diagram - sekvencny diagram, diagram spoluprace, diagram aktivit, stavovy diagram
+- Nalezitosti
+  - ID a nazov
+  - Strucny popis
+  - Aktor ktory inicializuje use case
+  - A priori podmienky pre use case
+  - Kroky v scenari - cinnosti aktora a systemu
+  - A posteriori podmineky use case
+  - Aktor ktory dostane vysledok use case
+
+> Zevraj nemame robit scenu pre prihlasovanie a registraciu ci co lebo nam to neuznaju
+
+Vytovrenie popisu pre kazdy pripad pouzita
+
+Podmineky
+
+- A pirori podmienky - vstupne podmienky, ktore musia byt splnene pred zaciatkom vykonavania use case
+- A posteriori podminky - vystupne podmienky, ktore musia byt splnene po skonceni vykonavania use case
+
+Kroky scenara - tok udalosti
+
+- Dobry priklad
+  - 1. Use case zacina, ked zakaznik zvoli "vyplnit objednavku"
+  - 2. System zobrazi formular objednavky
+  - 3. Zakaznik vyplni meno a priezvisko
+- Zly priklad
+  - 1. Su zadavane udaje o zakaznikovi
+    - Nie je jasne kto zadava tie informacie
+    - Kde su zadavane
+    - Ake udaje
+
+Vetvenie krokov scenara - niektore kroky mozu mat podmienku
+
+- 1. Use case zacina, ked zakaznik oznaci tovar v nakupnom kosiku
+- 2. Ak zakaznik ...
+
+Niekedy je lepsie napisat 2 scenare - jeden pre hlavny tok a jeden pre vedlajsi tok (alternativny scenar, kde ratam so specialnymi situaciami)
+
+Podmienky
+
+- A priori - identifikacia hraca - hrac je prihlaseny alebo zadal nick
+- A posteriori -
+
+## Validacia poziadaviek
+
+- Vstup - dokument specifikacie poziadaviek
+- Platnost zmenenych poziadaviek
+- Konzistencia
+- Uplnost poziadaviek
+- Kontrola realizovatelnosti
+- Overitelnost
+- Sledovatelnost povodu poziadavky
+
+Detekcia a riesenie konfliktov
+
+- Konflikt by nemali riesit vyvojari
+- Rozhodnutie o konflikte by malo byt sledovatelne az ku konkretnej osobe (zastupca zadavatela) (vid sprava poziadaviek)
+
+Metody validacie
+
+- Preskumanie (reviews)
+  - Manualna timova kontrola poziadaviek (od zakaznika po kontraktora)
+  - Formy preskumania
+    - Formalne preskumanie DSP - vyvojovy tim vysvetluje zakaznikovi dosledky kazdej poziadavky
+    - Neformalne - diskusia o poziadavkach so zastupcami zakaznika
+- Generovanie testovacich pripadov
+  - Tvorba testov poziadaviek - caste odhalovanie problemov
+  - Ak je tazke vytvorit test - tazka implementacia poziadavky
+- Prototypovanie
+  - Predvedenie spustitelneho modelu zakaznikovi - zistenie ci zodpoveda jeho poziadavkam
+  - Pomocou prototypu zakaznik najlepsie pochopi spravanie sa uzivatelskeho rozhrania
+- Automaticka analyza konzistencie
+  - Ak su poziadavky vo forme modelu (formalna alebo strukturovana notacia) - mozna automaticka kontrola konzistencie
+- Zivotny cyklus dolezity objektov
+
+|           | Fidelity       | Cost | Use | General traits |
+| --------- | -------------- | ---- | --- | -------------- |
+| Wireframe | Low            |      |     |                |
+| Prototype | Middle to high |      |     |                |
+| Mockup    | Middle to high |      |     |                |
+
+Sprava poziadaviek
+
+- Proces riadenia zmien systemovych poziadaviek
+- Poziadavky z hladiska vyvoja
+  - Trvale
+  - Nestale
+- Planovanie spravy poziadaviek stanovuje
+  - Sposob identifikacie poziadaviek
+  - Proces zmeny poziadaviek
+  - Sledovatelnost
+  - Nastroje na uchovavanie informacii o poziadavkach
+
+Nastoje na spravu poziadaviek
+
+- Jira, GitLab, GitHub, ...
+
+Sledovatelnost poziadaviek (traceability)
+
+- Definuje schopnost sledovat poziadavky
+- Nastroj - matica zavislosti poziadaviek
+
+Proces zmeny poziadaviek
+
+- Analyza problemu a specifkacia zmeny
+  - Identifikacia problemu alebo navrh na zmenu poziadavky
+  - Zistovanie platnosti problemu alebo zmeny
+  - Vysledok - podrobnejsi navrh zmeny
+- Analyza zmeny a urcenie jej ceny
+  - Urcenie, aku zmenu DSP alebo dizajnu je potrebne realizovat
+  - Odhad ceny zmeny alebo noveho terminu dokoncenia
+  - Rozhodnutie o pokracovani v procese zmeny
+- Implementacia zmeny
+
+Ciel
+
+- Co ma navrhovany softverovy system robit (nie ako)
+- Urcit funkcie systemu
+- ...
+- ...
+- ...
