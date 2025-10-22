@@ -389,6 +389,7 @@ Trhovo nediferencovany marketing
 
 - Oslovenie vsetkych zakaznikov
 - Nerobi rozdiel medzi zakaznikmi
+- Masovy alebo vyrobkovo nediferencovany
 
 Cieleny marketing
 
@@ -404,7 +405,7 @@ Cieleny marketing
 
 ### Segmentacia
 
-Benefity
+Benefity segmentacie zakaznikov
 
 - Efektivnejsia marketingova strategia
 - Optimalizacia zakaznickej cesty
@@ -414,37 +415,71 @@ Benefity
 - Zlepsenie vykonnosti
 - Podpora vyvoja produktu
 
+Nedostatky segmentacie zakaznikov
+
+- Zvysene naklady
+- Technologicke vyzvy
+- Velky pocet moznosti = narocnost rozhodovania
+- Problem s implementaciou a meranim
+
 Proces segmentacie
 
-Typy
+- Definovanie trhu
+- Analyza sucasnych/potencialnych zakaznikov
+- Vytvorenie person
+- Definovanie segmentov a ich pomenovanie
+
+Typy segmentacia trhu
 
 - Ziadna segmentacia
 - Uplna segmentacia
 - Segmentacia na zaklade jedneho kriteria
 - Segmentacia na zaklade viacerych kriterii
 
-Demograficka segmentacia  
-Sit  
-Geograficka segmentacia  
-Psychograficka segmentacia
+Segmentacia zakaznikov
+
+- Demograficka segmentacia - Kto? - vek, pohlavie, prijem, zamestnanecky status, vzdelanie, ...
+- Geograficka segmentacia - Kde? - krajina, stat, region, mesto, hostota, jazyk, klima, populacia
+- Psychograficka segmentacia - Preco? - zivotny styl, nazory, zaujmy, obavy, hodnoty, personalita, postoje
+- Behavioralna segmentacia - Co? - ocakavany prospech, miera pouzivania/nakupu, lojalita, kroky vykonavane pri nakupe
+
+Ine sposoby segmentacie
+
+- Hodnotova segmentacia
+- Firmograficka segmentacia
+- Generacna segmentacia
+- Segmentacia podla zivotnej fazy
+- Sezonna segmentacia
 
 ### Persona
 
 Predstavuje komplexny popis jedneho zakaznickeho segmentu  
 Ako keby jedna osoba predstavuje celu skupinu
 
+Negativna persona - reprezentuje ludi, ktorych nechceme ako zakaznikov
+
 ### Trhove zacielenie a umiestnenie
 
 #### Trhove zacielenie
 
-Rozhodnutie o tom, na ktory segment sa chce podnik zameriavat
+Rozhodnutie o tom, na ktory segment sa chce podnik zameriavat  
+Moze byt 1+ segmentov
 
 Sustredenie na
 
 - Jeden segment
-- Trhova specializacia
-- Vyrobkova specializacia
 - Vyberova specializacia - kazdy iny produkt na iny trh
-- Uplne pokrytie trhu
+- Trhova specializacia - jeden trh, viac produktov
+- Vyrobkova specializacia - jeden vyrobok, viac trhov
+- Uplne pokrytie trhu - viac vyrobkov, viac trhov
 
 #### Trhove umiestnenie
+
+Po rozhodnuti, na ktore segmenty sa podnik zameria je potrebne definovat prostriedky pre ziskanie zakaznika
+
+Faktory, ktore vytvaraju celkovy dojem o produkte
+
+- Vlastnosti vyrobku
+- Cena
+- Distribucna siet
+- Reklama
