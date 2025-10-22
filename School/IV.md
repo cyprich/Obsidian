@@ -92,3 +92,5 @@ Platformy vylucne pre IoT
 - Arduino MKR GSM 1400
 
 ## ESP32
+
+## Raspberry Pi
