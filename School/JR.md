@@ -543,3 +543,139 @@ Command Line Argument Parser
 ## Serde
 
 Serializacia, Deserializacia
+
+## Crate
+
+Bednicky  
+Kompilacna jednotka v jazyku Rust  
+Moze obsahovat moduly  
+Vysledkom binarka alebo kniznica  
+Kniznica = `--crate-type=lib` alebo v `Cargo.toml`
+
+## Cargo
+
+Pokrocilejsia konfiguracia projektu
+
+Standardne profily `dev` a `release` (`cargo build --release`)
+
+Dokumentacia `cargo doc --open`
+
+Dokumentacne komentare
+
+- `///`
+- Znacky zacinajuce `#` - Examples, Panic, ...
+- `//!` na popis modulu (nie jeho jednotlivych prvkov)
+
+Kniznica by mala byt jednoducho pouzitelna  
+`pub use` - zoberie viditelnu vec z jedneho miesta a spravi ju viditelnou na inom mieste, ako keby bola definovana tam
+
+Upload do _crates.io_ pomocou `cargo publish`, ale treba tam toho viac
+
+Organizacia projektov pomocou `workspace`  
+Viacero crates, ktore zdielaju jeden `Cargo.lock` subor  
+Namiesto `[package]` spravime `[workspace]`
+
+```toml
+[workspace]
+resolver = "3"
+```
+
+Funkcie jednej crate v druhej crate
+
+```toml
+[package]
+...
+
+[dependencies]
+moja_kniznica = { path = "../moja_kniznica" }
+```
+
+Testy jednej bednicky - `cargo test -p nazov_bednicky`
+
+`cargo instal wthrr`
+
+## Smart pointre
+
+V Ruste sa casto stretavame so smernikom - referencie - `&`  
+Smart pointre - okrem samotneho pointra aj dodatocne informacie
+
+V Ruste najcastejsie 3 smart pointre
+
+- `Box<T>`
+- `Rc<T>`
+- `RefCell<T>`
+
+Mozeme si spravit vlastne smart pointre pomocou traitov `Deref` a `Drop`
+
+### `Box<T>`
+
+Alokovanie na halde namiesto na stacku  
+Neovplyvnuje rychlost, nedodava dodatocnu funkcionalitu  
+V C++ unique
+
+Pouziva sa ked
+
+- Pracujeme s
+-
+-
+
+```rs
+let b = Box::new(10);
+println!("{b}");
+```
+
+Priklad
+
+```rs
+struct Osoba {
+  meno: String,
+  // otec: Option<Osoba>  // error - infinite recursion
+  otec: Box<Option<Osoba>>
+}
+
+let main() {
+  let o = Osoba { ... }
+  let otec = *o.otec;  // actually nemusim pouzivat `*`, pretoze Rust ma auto dereferencie
+}
+```
+
+Trait `Deref` - implicitna korekcia dereferencii  
+Podobne `DerefMut` - menitelna referencia
+
+Trait `Drop` - implicitne sa vola funkcia `fn drop (&mut self)` ked pointer odide z kontextu  
+Explicitne sa `drop` neda zavolat  
+Mozeme ale pomocou `std::mem::drop(premenna)`
+
+### `Rc<T>`
+
+Reference Couter  
+V C++ shared  
+Sleduje pocet referencii  
+Ked pocet referencii padne na 0, tak sa uvolni  
+`Rc::new()`, `Rc::clone()`, `Rc::strong_count()`  
+Iba nemenitelne udaje!
+
+### `RefCell<T>`
+
+Vnutorne menitelny pattern nam umoznuje menit udaje aj ked mame na ne nemenitelnu referenciu  
+Pattern je implementovany v `unsafe` bloku, je za nejakym safe rozhranim
+
+Zabezpecuje jedineho vlastnika (ako `Box`), ale pravidla poziciavania su kontrolovane pocas behu (namiesto casu kompilacie)
+
+Vyhody kontroly poziciavania pocas behu
+
+- Dovoluje riesit nejake specificke situacie, kedy sa nieco neda overit pocas kompilacie
+-
+
+Mozeme pouzivat ked my sme si isti, ale kompilator nie
+
+`RefCell::new`, `RefCell::borrow`, `RefCell::borrow_mut`,
+
+Ked skombinujeme `Rc` a `RefCell`, mozeme mat viac vlastnikov menitelnych dat
+
+### Silne a slabe referencie
+
+Pomocou `Rc` a `RefCell` by sme mohli spravit cyklicke referencie medzi objektami  
+Keby obidva objekty odidu z kontextu, pocitadlo referencii by nebolo `0`  
+Tu by sme mali pouzit `Weak<T>` namiesto `Rc<T>`, ktory nevlastni udaje  
+Switch medzi nimi pomocou funkcii `downgrade`, resp. `upgrade`
