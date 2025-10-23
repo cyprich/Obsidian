@@ -311,3 +311,204 @@ Informacie poskytovane v SDP
 - **Popis medii a transportne informacie**
 - Dalsie info o spojeni
 - Jazyk
+
+## Transportne protokoly vo VoIP aplikaciach
+
+Transportna vrstva - TCP, UDP
+
+- Segmentacia rekombinacia dat
+- Dorucovanie medzi aplikaciami
+- Spolahlivost
+- Spojovanost
+- Virtualne okruhy
+- Riadenie toku
+
+### Transportne protokoly pre media
+
+Real-time data
+
+- Generovane v realnom case
+- Vysoke naroky na oneskorenie a jitter
+- Segmenty vyzaduju dorucenie do isteho momentu, potom su nepouzitelne
+- Relativne necitlive na straty
+
+Nehodi sa ani TCP ani UDP
+
+- TCP - velka rezia,
+- UDP - nespojovane,
+
+#### UDP-Lite
+
+RFC 3828
+
+UDP ma checksum ktory chrani cely segment - ak je `0x0000` tak sa nema overovat  
+Zahadzuje nespravne pakety alebo akceptuje vsetky
+
+UDP-Lite  
+Pole `length` je nahradene `checksum coverage`  
+Pocet bajtov ktore su chranene checksumom
+
+Treba pamatat ze L2 technologie verifikuju cely ramec, ak je poskodeny tak sa zahodi cely
+
+#### Datagram Congestion Control Protocol (DCCP)
+
+RFC 4340
+
+Vychadza z dobrych vlastnosti TCP a UDP a pridava vlastne
+
+- Riesenie zahltenia (neriesi flow control)
+- Spojovanost - Request, Response, Ack; CloseReq, Close, Reset
+- Nespolahlivost
+- +Informuje o oneskori a stratach paketov
+
+Sekvencne ocislovane
+
+Data sa prenasaju v segmentoch typu `Data`
+
+Hlavicka
+
+- 12 bajtov pre 24-bit sekvencne cisla
+- 16 bajtov pre 48-bit sekvencne cisla
+
+Vyssi overhead oproti UDP
+
+#### Real-time Transport Protocol (RTP)
+
+RFC 3550
+
+Pouziva existujuce transportne protokoly (tuto konkretne UDP)  
+Riesi veci na aplikacnej vrstve  
+Vzdy implementovany ako _userspace_ kniznica
+
+Realne sa v praxi pouziva
+
+Vhodny pre unicast aj multicast
+
+Cislovanie paketov  
+Casova synchronizacia  
+Identifikacia typu obsahu  
+Neposkytuje riadenie toku
+
+Mixer pri CSRC (Sending & Contributing Source)
+
+Pouziva sa pri
+
+- IP telefonii
+- Videokonferencie
+- Streming dat (Sanet TV)
+
+Je nezavisly od signalizacie - SIP, H.323, SCCP, H.248
+
+##### RTCP - RTP Control Protocol
+
+Podporny protokol pre RTP
+
+#### Prehlad hlasovych kodekov
+
+Kodek = koder-dekoder  
+Prevod hlasu medzi analogovou a digitalnou formou
+
+Zavisi od neho
+
+- Kvalita preneseneho hlasu
+- Tolerancia na straty
+- Vnesene oneskorenie
+- Naroky na prenosove pasmo
+
+Kvalita kodekov sa uvadza v tzv. **MOS** mierke - Mean Opinion Score
+
+Najbeznejsia digitalizacia hlasu prebieha v 3 krokoch
+
+- Vzorkovanie - rozseknutie na useky
+- Kvantovanie - ohodnotit vysku useku
+- Kodovanie - ked vieme v akom case aka vyska, tak zakodujeme
+
+Kvrantovanie sa bezne robi v logaritmickej mierke  
+Dve mierky
+
+- $\mu$ zakon - USA, Kanada, Japonsko
+- A zakon - vsetko ostatne
+
+Kodeky v odporucaniach ITU-T
+
+- G.711 - zakladne PCM - najcastejsie pouzivany
+- G.726 - adaptivne diferencialne PCM
+- G.729 - prediktivny, oblubeny, patentovo chraneny
+- ...
+
+Mimo ITU-T
+
+- AMR
+- iLBC
+- CELT
+- FLAC
+- SILK
+- ...
+
+Doplnkove vlastnosti kodekov
+
+- Voice Activity Detection (VAD)
+  - Aby sa neprenasalo ticho ked pouzivatel nerozprava
+  - Ak nereaguje dostatocne rychlo - clipping
+- Comfort Noise Generation (CNG)
+  - Generovanie sumu ked pocujeme ticho, aby ucastnik nemal pocit ze sa nieco pokazilo
+- Packet Loss Concealment (PLC)
+  - Subor roznych technik
+  - Znazi sa zakryt stratu paketu
+
+Tabulka MOS Score
+
+| Hodnota MOS | Kvalita   |
+| ----------- | --------- |
+| 5           | Excellent |
+| 4           | Good      |
+| 3           | Fair      |
+| 2           | Poor      |
+| 1           | Bad       |
+
+> Ludia mali hodnotit
+
+Az take velke rozdiely tam nie su
+
+### Transportne protokoly pre signalizaciu
+
+#### Stream Control Transmission Protocol (SCTP)
+
+RC 4960
+
+Signalizacia - potrebujeme dat vediet druhej strane ze potrebujem spravit hovor  
+Problem v paketovych sietach - je best-effort - moze sa hocico stratit
+
+SCTP sa pokusa toto riesit
+
+- Spojovany
+- Spravovo orientovany (nie stream)
+- Spolahlivy a potvrdzovany
+- Riadenie toku dat
+- Multistreaming
+- Multihoming
+
+Pojmy
+
+- Asociacia - vyraz pre vytvorene spojenie
+- Stream - postupnost sprav
+- Chunk - nedelitelna atomicka cast jedneho SCTP segmentu, nikdy nefragmentovana
+
+Multistreaming
+
+- V ramci jednej asociacie (spojenia) mozeme prenasat viacero nezavislych streamov/veci/aplikacii
+- Ak sa nieco strati, tak to neovplyvni ostatne streamy
+- Mensi overhead oproti TCP? (vytvorenie spojenia a pod.)
+
+Multihoming
+
+- Dostupnost SCTP terminalu pod viacerymi IP adresami
+- Zabezpecenie redundancie a failoveru
+- V TCP/UDP sa neda spravit nieco podobne
+- Podpora pre IPv4 a IPv6, aj sucasne
+
+Pouzitie
+
+- Prenos signalizacie - MTP2, MTP3, SIP
+- Reliable Server Pooling
+- DIAMETER - AAA
