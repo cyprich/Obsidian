@@ -475,6 +475,196 @@ Edge locations - connect between Amazon and the world
 Pay only for outbound  
 Charged for the number of HTTP(S) requests + transfer
 
+## Compute
+
+> AWS M6
+
+Oranzova farba
+
+### Amazon Elastic Compute Cloud (EC2)
+
+EC2 instance = complete virtual server  
+Includes virtual HW - vCPU, vRAM, vHDD, vNIC, vGPU  
+Includes software - OS, libraries, application software
+
+Same as on-premises server, but has several advantages - you don't need:
+
+- Electric power
+- Cooling
+- Housing/space for server
+- Server
+
+When launching EC2 instance, you need to answer 9 questions:
+
+1. Select AMI
+   1. Amazon Machine Image - template for VM
+   1. There are 4 types - Quick start (by Amazon), My AMIs (by you), AWS Marketplace (by third-parties), Community AMIs (by other users)
+   1. You can create AMI from EC2 instance
+2. Select an instance type
+   1. RAM, CPU, Storage, Network
+   1. Categories - general purpose, compute optimized, memory optimized, storage optimized, accelerated computing
+   1. Family, Generation, Size - for example `t3.large` - `t` is the family, `3` is the generation, `large` is the size
+   1. Categories - `a`, `m`, `t` is general purpose, `c` is compute optimized, `r`, `x` is memory optimized, `f`, `g`, `p` is accelerated computing, `d`, `h`, `i` is storage optimized
+3. Specify network settings
+   1. Where should the instance be deployed - choose region **before** configuring and launching an instance
+   1. Identify the VPC and optionally the subnet
+   1. Public IP? (never directly, but via floating IP)
+4. Attach IAM role
+   1. Identity and Access Management
+5. User data script (optional)
+   1. Script that runs at instance launch
+   1. Runs only the first time the instance starts
+6. Specify storage
+   1. Root volume
+   1. Additional storage (optional)
+   1. Specify size of the disk `GB`, volume type (SSD/HDD), encryption (recommended), whenever the volume will be deleted when the instance is terminated
+7. Add tags
+   1. Labels, that you can assign to and AWS resource, key-value pairs
+   1. You can attach metadata to you EC2 instance
+   1. You can filter, automate, allocate cost, access control based on tags
+8. Security group settings
+   1. Firewall
+   1. Create rules for port, L4 protocol, IP, ...
+9. Identify or create key pair
+   1. Public key that AWS Stores and Private key that you store
+   1. Used to securely connect to the instance
+
+AWS instance can also be created with AWS CLI
+
+```bash
+aws ec2 run-instances \
+--image-id ami-1a2b3c4d \
+--count 1 \
+--instance-type c3.large \
+--key-name MyKeyPair \
+--security-groups MySecurityGroup \
+--region us-east-1
+```
+
+Instance metadata is available via link-local address `169.254.169.254`, either via browser or via HTTP API
+
+```bash
+curl http://169.254.168.254/latest/meta-data/
+curl http://169.254.168.254/latest/user-data/
+```
+
+#### Amazon CloudWatch
+
+Monitoring EC2 instances  
+Near-real-time metrics, charts  
+Maintains 15 months of historical data
+
+Basic monitoring
+
+- Default, no additional cost
+- Data sent every 5 minutes
+
+Detailed monitoring
+
+- Fixed monthly rate for seven pre-selected metrics
+- Data sent every 1 minute
+
+#### EC2 pricing models
+
+On-demand Instances - pay by hour, no long-term commitments, eligible for AWS Free tier  
+Reserved Instances - full or partial or no upfront payment, discount, 1-year or 3-year term  
+Scheduled Reserved Instances - purchase capacity that if always available, 1-year term  
+Spot Instances -  
+Dedicated Hosts - physical server with EC2 instance capacity fully dedicated to your use  
+Dedicated Instances - instances that run in a VPC on hardware that is dedicated to a single customer
+
+Four pillars of cost optimization
+
+1. Right size - right balance of instance types, you can size down or turn off servers
+2. Increase elasticity - automatic scaling, design deployments
+3. Optimal pricing model - optimize and combine purchase types
+4. Optimize storage choices - reduce unused storage, choose cheaper if they still meet your requirements
+
+### AWS Lambda
+
+Event-driven serverless compute service  
+Enables you to run code without provisioning or managing servers  
+The code you run is a Lambda function  
+Supports multiple languages - Java, Go, PowerShell, Node.js, C#, Python, Ruby
+
+You can orchestrate them with workflows
+
+You pay only for the requests and compute time  
+Billing is metered in increments of 100 milliseconds
+
+Event sources
+
+- Amazon S3
+- Amazon DynamoDB
+- Amazon Simple Notification Service (SNS)
+- Amazon Simple Queue Service (SQS)
+- Amazon API Gateway
+- Amazon Load Balancer
+- Amazon CloudWatch
+
+Quotas
+
+- Soft limits per region (can be increased by supporting a ticket and a good reason)
+  - 1000 concurrent executions
+  - 75GB storage
+- Hard limits for individual functions
+  - 3008MB memory allocation
+  - 15 minutes function timeout
+  - 250MB unzipped deployment package size (including layers)
+  - 10GB Container image code package size
+
+### AWS Elastic Beanstalk
+
+Web applications  
+PaaS
+
+Automatically handles
+
+- Infrastructure provisioning and configuration
+- Deployment
+- Load balancing
+- Auto scaling
+- Health monitoring
+- Analysis and debugging
+- Logging
+
+Supports web apps in Java, .NET, PHP, Node.js, Python, Ruby, Go and Docker
+
+You upload code, Elastic Beanstalk automatically handles deployment on servers such as Apache, NGINX, Passenger, Puma and Microsoft Internet Information Services (IIS)
+
+No additional charge - pay only for the underlying resources that are used (EC2, S3)
+
+### Container Services
+
+Containers are method of OS virtualization
+
+Benefits
+
+- Repeatable
+- Self-contained environments
+- Software runs the same in different environments
+- Faster to launch and stop or terminate than virtual machines
+
+#### Amazon Elastic Container Service (ECS)
+
+Highly scalable, fast, container management service  
+Orchestration of running **Docker containers**  
+Maintains and scales the fleet of nodes that run your containers  
+Integrates with Elastic Load Balancing, EC2 security groups, EBS volumes, IAM roles
+
+#### Amazon Elastic Kubernetes Service (EKS)
+
+Enables you to run Kubernetes on AWS  
+Kubernetes orchestrates multiple Docker hosts (nodes)  
+Certified Kubernetes conformant  
+Compatible with Kubernetes community tools, support add-ons  
+Used to manage clusters of EC2 instances, and run containers that are orchestrated by Kubernetes on those instances
+
+#### AWS Elastic Container Registry (ECR)
+
+Docker container registry  
+Makes it easier to store, manage and deploy Docker images
+
 ## Storage
 
 > AWS M7
