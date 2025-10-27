@@ -679,3 +679,125 @@ Pomocou `Rc` a `RefCell` by sme mohli spravit cyklicke referencie medzi objektam
 Keby obidva objekty odidu z kontextu, pocitadlo referencii by nebolo `0`  
 Tu by sme mali pouzit `Weak<T>` namiesto `Rc<T>`, ktory nevlastni udaje  
 Switch medzi nimi pomocou funkcii `downgrade`, resp. `upgrade`
+
+## Testovanie
+
+Je mozne vyuzit specialne funkcie ktore obsahuju atribut `#[test]`  
+`cargo test` - vytvori a spusti specialne binarky funkcii ktore su oznacene ako `#[test]`
+
+```rs
+pub fn add(...) { ... }
+
+#[cfg(test)]
+mod test {
+  use super::*;
+  #[test]
+  fn it_works(...) { ... }
+}
+```
+
+Konkretne tu sa pouziva makro `assert_eq!`, ktore porovnava ci 2 veci sa rovnaju  
+Dalsie makro je `assert!` - ci logicky vyraz nadobuda `true`, iba jeden argument  
+Dalsie makro je `assert_ne!` - 2 hodnoty sa nemaju rovnat  
+Tieto makra maju dalsi parameter - sprava ktora sa vypise v pripade zlyhania  
+Ak niektore z tychto vrati false, tak sa vyvola `panic!`
+
+Mozeme dat este atribut `#[should_panic]` ak kod ma vyvolat paniku
+
+Ak sa nam nepaci panic, mozeme pracovat s `Result<K, T>`  
+Tu ale nevolat should panic ani asserty
+
+Pokrocilejsie nastavenie testovania - `cargo test --help`  
+Nastavenia formatovania, poctu threadov, zobrazit vypisy, spustit aj s ignorovanymi, sputit iba ignorovane,
+
+2 typy testov
+
+- Jednotkove testy - vlastny modul s oznacenim `#[cfg(test)]` (tak ako ked vytvorime lib)
+- Integracne testy - adresar `tests`, netreba `cfg`, kazdy subor je povazovany za crate, mozeme testovat len libraries (nie binarky)
+
+## Asynchronne programovanie
+
+Vykonavanie kodu, zatial co sa vykonava iny kod
+
+V sucasnosti 2 techniky
+
+- Paralelizmus - ulohy sa vykonavaju naraz v jednom momente
+- Subeznost - ulohy sa vykonavaju na striedacku, ale iba jedna v jednom momente
+
+Funkcie su 2 typov
+
+- Blokujuce - zastavi program kym sa funkcia nedokonci - najcastejsie praca so subormi, so sietou, ...
+- Neblokujuce - mozeme pocas diania robit dalsie veci
+
+V Ruste sa pouziva `Future` - hodnota este nemusi byt k dispozicii, ale niekedy v buducnosti bude  
+`Future` je trait  
+Oznacenie funkcie `async`, v nej mozeme volat `await`  
+Konktrola, ci je hodnota uz dostupna - polling
+
+```rs
+async fn asynch_funkcia() {
+  let result = asynch_volanie().await;
+}
+```
+
+Future je lazy - nic sa nevykona az do await
+
+Async moze preberat vlastnictvo pomocou `move`
+
+```rs
+
+```
+
+Problem pri poziciavani -
+
+Problem pri spustani - nemozeme volat async funkciu v normalnej funkcii, main nemoze byt async  
+Riesenie - asynchronny runtime - napr. `Tokio` - najviac pouzivany  
+`cargo add tokio --features rt`
+
+```rs
+fn main() {
+  let runtime = tokio::runtime::Bulder::new_current_thread().build().unwrap();
+  runtime.block_on(async {
+    asynchronna_funkcia().await
+  })
+}
+```
+
+Ak chceme mat main async  
+`cargo add tokio --features "rt,macros,rt-multi-thread"`
+
+```rs
+#[tokio::main]
+async fn main() { ... }
+```
+
+Ak chceme paralelne mozeme pouzit tasky
+
+```rs
+tokio::spawn(async {
+  prva_funkcia().await
+});
+tokio::spawn(async {
+  druha_funkcia().await
+});
+
+// alebo jednoduchsie
+
+tokio::spawn(prva_funkcia());
+tokio::spawn(druha_funkcia());
+```
+
+Ak chceme pockat na dokoncenie nejakych uloh pomocou makra `join!`
+
+```rs
+tokio::join!(
+  tokio::spawn(fn1()),
+  tokio::spawn(fn2())
+);
+
+println!("Skoncil som");
+```
+
+Pripad - nemame pristupne vsetky udaje, ale uz chcem s nimi pracovat - sledovanie videa online  
+V Ruste `stream` - velmi podobne ako iteratory, ale asynchronne  
+Kniznica `futures`
