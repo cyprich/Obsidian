@@ -788,3 +788,70 @@ Using
 -
 
 Control access with IAM, Encryption with AES-265, Glacier manages your keys
+
+## Databazy
+
+> AWS M8
+
+Modra farba
+
+2 types
+
+- Unmanaged - scaling, fault tolerance, availability is managed by you - EC2
+- Managed
+
+Which one to choose
+
+- Amazon RDS - enterprise-class relational DB
+- Amazon DynamoDB - fast and flexible NoSQL DB for any scale
+- DBs on Amazon EC2 - OS access or application features that are not supported by AWS DB services
+- AWS purpose-build DB services - Specific case-drive requirements (ML, data warehouse, graphs)
+
+### Amazon Relation Database Service (RDS)
+
+Managed, relational database  
+Available DB engines - MySQL, Amazon Aurora, Microsoft SQL Server, PostgreSQL, MariaDB, Oracle
+
+Clock-hour billing, engine, size, memory class, requests, deployment type (single/multiple availability zones), data transfer (only outbound), inside region is free  
+One backup is free
+
+### Amazon DynamoDB
+
+Non-relational  
+Data saved in key-value, document, graph, horizontal scalability
+
+Partitioning - something with keys? query by key for more efficiency  
+Can be single key or compound key
+
+### Amazon Redshift
+
+Fast and fully managed data warehouse  
+Used for very big data  
+Parallel processing  
+Leader node + dense compute nodes  
+Also works with DynamoDB, Amazon S3  
+Used for big data analysis
+
+Pricing - pay for what you use  
+3-year partial upfront = ~1000$ per TB  
+3-year on-demand = ~6000$ per TB
+
+Compatibility
+
+- Standard SQL
+- JDBC - Java Database Connectivity Connector
+- ODBC - Open Database Connectivity Connector
+
+Use cases
+
+- Enterprise Data Warehouse
+- Big data
+- SaaS
+
+### Amazon Aurora
+
+Enterprise-scale relational database  
+Compatible with MySQL or PostgreSQL  
+High availability - across multiple Availability Zones  
+Backups on S3  
+15 read replicas - slave DB for read-only, instant crash recovery when master dies
