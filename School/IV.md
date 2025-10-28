@@ -94,3 +94,47 @@ Platformy vylucne pre IoT
 ## ESP32
 
 ## Raspberry Pi
+
+## Senzoricky/Senzorovy subsystem
+
+Zakladne delenie - digitalne a analogove  
+Delenie podla toho co meraju - ci meraju elektricku hodnotu a premienaju ju na neelektricku alebo naopak, alebo elektricka-elektricka a pod.
+
+### Analog
+
+Analogove rozhranie - hodnota snimaneho signalu je umerna velkosti vstupneho napatia alebo dobe trvania inpulzu (sirku impulzu)  
+Napr. teplota (termistor), vzdialenost (echolokacia), naklon, zrychlenie  
+Na vystupe generuju elektricky analogovy signal, ktory je spojity v case a hodnote
+
+Termistor - elektricky odpor zavisi od jeho teploty  
+PTC vs. NTC (Positive Temperature Coefficient vs. Negative Temperature Coefficient)
+
+Fotorezistor - podobne ako termistor-teplo je fotorezistor-osvetlenie
+
+Meranie vzdialenosti - ultrazvukovy senzor
+
+### Digital
+
+Digitalne rozhranie - hodnota snimaneho signalu je reprezentovana ciselne - signal diskretny v case a hodnote  
+Digitalny vystup 0/1, Seriove rozhranie (RS232, I2C, SPI, 1 wire)
+
+Senzor naklonu
+
+PIR Senzor - Passive Infrared
+
+RS232
+
+I2C - 2 linky na vytvorenie zbernice, az desiatky senzorov a zariadeni, half duplex, 100kbps  
+SCL (Serial Clock Line) - hodiny  
+SDA (Serial Data Line) - data
+
+1 wire - iba jedna komunikacna linka
+
+###
+
+A/D prevod - z analogoveho na digitalny
+
+1. Odstranenie zloziek signalu s vyssimi frekvenciami
+2. Vzorkovanie
+3. Kvantovanie - linearne alebo nelinearne (logaritmicky?)
+4. Kodovanie
