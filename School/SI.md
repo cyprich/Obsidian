@@ -291,3 +291,44 @@ Ciel
 - ...
 - ...
 - ...
+
+## Analyza a navrh architektury
+
+Analyza
+
+- Proces rozdelenia komplexeho problemu na mensie casti, za ucelom ich lepsieho pochopenia
+- Zachytenie podstatnych poziadaviek a charakteristickych rysov systemu
+- Ciel - vytvorit analyticky model - konceptualny model
+
+Rozdelenie systemu na vrstvy
+
+- Prezentacna vrstva
+- **Logicka vrstva**
+- Datova vrstva
+
+Navrh
+
+- Presna specifikacia sposobov ako to implementovat
+- Zalozeny na analytickom modeli
+- Zlucenie tehnickych rieseni
+  - Perzistencia objektov
+  - Ich distribucia
+  - Architektura
+  - GUI
+
+Pravidla tvorby diagramov
+
+- Tvoreny v domenovom jazyku
+- Rozpravajte pribeh
+- Perspektiva
+- Rozlisujte problematiku domeny a riesenia
+- Minimalizacia vztahov
+- Len prirodzena dedicnost
+- Tvorit model pre maximalny pocet pouzivatelov
+- Co najjednoduchsi
+
+Cinnosti
+
+Architektonicka analyza
+
+Rozdelenie systemu do podsystemov
