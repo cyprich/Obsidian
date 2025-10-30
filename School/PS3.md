@@ -512,3 +512,145 @@ Pouzitie
 - Prenos signalizacie - MTP2, MTP3, SIP
 - Reliable Server Pooling
 - DIAMETER - AAA
+
+## Prechod SIP cez NAT a firewall
+
+NAT
+
+- Tradicke NAT
+  - Basic NAT
+    - Jednosmerne (outbound) - private to public
+    - Jedna private IP na jednu verejnu
+  - NAPT (Network )
+    - Viacere privatne na jednu verejnu
+    - Pouziva sa aj cislo portu
+- Bi-directinal NAT (Two-way NAT)
+  - Obojsmerne
+  - Staticky
+  - V `bind9` su to tzv. _views_
+- Twice NAT
+  - Ked napr. potrebujeme spojit 2 rovnake siete (`192.168.1.0/24`), napr. pri VPN
+  - Preklada sa aj zdrojova aj cielova IP
+  - Vymyslia sa nove siete, pre obidve siete napr. `10.0.10.0/24`, `10.0.20.0/24`
+- Multihomed NAT
+
+STUN - **S**imple **T**raversal of **U**ser Datagram Protocol Through **N**etowrk Address Translators  
+Simple Traversal of UDP through NATs
+
+Rozlisuju sa 4 zakladne implementacie NAT (RFC 3489)
+
+- Full cone NAT
+- Address restricted cone NAT
+- Port restricted cone NAT
+- Symmetric NAT
+
+Vyuzivanie NAT mapovani
+
+- Mappng Behavior
+  - Endpoint-independent Mapping
+  - Address-Dependent Mapping
+  - Port-Dependent Mapping
+- Filtering Behavior
+  - Endpoint-Independent Filtering
+  - Address-Dependent Filtering
+  - Address and Port-Dependent Filtering
+
+### SIP cez NAT
+
+SIP svojim dizajnom porusuje odporucania aplikacnych protokolov - _v hlavicke nepouzivat IP adresy_ - prave kvoli NAT, ktory IPcku zmeni
+
+Prolem SIP cez NAT/Firewall
+
+- Prvy problem - spojenia z privatnej siete von
+  - Cielova _privatna_ IP je v hlavicke L7, co sa neprelozi NATkom, a privatne adresy sa neprenasaju verejnym priestorom
+  - Ciastkove riesenie - lichobeznikovy SIP Proxy
+    - Ak Proxy zisti roziel medzi `via` v hlavicke a IP adresou, tak nastavi parameter `Received`
+    -
+- Druhy problem - spojenia na hosta v privatnej sieti
+  - NAT binding sa udrzuje len nejaku dobu, ak je dlho ticho tak sa zrusi
+  - Riesenie - nejaky keep alive packet
+
+### STUN - Session Traversal Utilities for NAT
+
+Klient-server
+
+Klinet
+
+- Posiela
+- Binding Request? BReq
+
+Server
+
+- Posiela
+- Binding Response? BResp
+
+STUN testy
+
+1. NAT Discovery
+2. NAT Discovery - Full Cone
+3. NAT Discovery - Symmetric NAT
+4. NAT Discovery - Restricted Cone NAT
+
+### TURN - Traversal Using Relay around NAT
+
+RFC 5766
+
+Relay sluzba - nieco ako Proxy v HTTP
+
+Priklad cinnosti
+
+1.
+2.
+3.
+4.
+5.
+
+Malo by to byt 100% riesenie na SIP NAT traversal
+
+Kde sa da pouzit STUN, treba pouzit STUN  
+Ak STUN nefunguje, pozit TURN
+
+### ICE - Interactive Connectivity Establishment
+
+RFC 8839
+
+Spaja STUN a TURN do jedneho riesenia  
+Pracuje so vsetkymi typmi NAT
+
+Host Candidate  
+Server Reflexive Candidates  
+Relayed Candidates
+
+ICE call flow
+
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+
+### Riesenie na strane siete/poskytovatela
+
+RTP media relay
+
+- V podstate RTP Proxy
+- Postrednik pre RTP/RTCP a UDP prudy dat
+
+Back 2 Back User Agent (B2BUA)
+
+- V podstate man-in-the-middle
+
+ALG
+
+- Application Level Gateway
+- Firewall s inspekciou az do L7
+- Byva sucastou FW rieseni - Cisco, Fortinet, ...
+
+UPnP
+
+- [www.upnp.org](www.upnp.org)
+- Zariadenie si vie otvorit dieru vo FW na jednoduchu konfiguraciu
+- Zahrnute v DLNA (Digital L N Alliance)
