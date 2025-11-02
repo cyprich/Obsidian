@@ -797,8 +797,8 @@ Modra farba
 
 2 types
 
-- Unmanaged - scaling, fault tolerance, availability is managed by you - EC2
-- Managed
+- Unmanaged - you manage scaling, fault tolerance, availability - you have full control - install it on EC2
+- Managed - the stuff is usually built into the service - Amazon RDS?
 
 Which one to choose
 
@@ -812,23 +812,53 @@ Which one to choose
 Managed, relational database  
 Available DB engines - MySQL, Amazon Aurora, Microsoft SQL Server, PostgreSQL, MariaDB, Oracle
 
+You manage application optimization  
+Amazon manages OS installation and packages, DB software installation and packages, DB backups, high availability scaling, power and racking and stacking servers, server maintenance
+
+High availability with Multiple-Availability Zone deployment
+
+- Amazon automatically creates _RDS Standby Instance_ in different AZ within the same VPC
+- All stuff is replicated here
+- If the main fails, the Standby Instance takes place
+
+Use if you app requires
+
+- Complex transactions or complex queries
+- Up to 30k IOPS (queries)
+- No more than a single worker node or shard
+- High durability
+
+Do no use if your app requires
+
+- Massive read/write rates
+- Sharding due to high data size or throughput demands
+- Stuff that NoSQL can handle (simple GET, PUT)
+- RDBMS customization
+
 Clock-hour billing, engine, size, memory class, requests, deployment type (single/multiple availability zones), data transfer (only outbound), inside region is free  
 One backup is free
 
 ### Amazon DynamoDB
 
-Non-relational  
-Data saved in key-value, document, graph, horizontal scalability
+Non-relational - NoSQL  
+Data saved in key-value, document, JSON, graph, horizontal scalability
 
-Partitioning - something with keys? query by key for more efficiency  
-Can be single key or compound key
+Virtually unlimited storage  
+Items can have different attributes  
+Low-latency queries
+
+Partitioning - query by key for more efficiency  
+Partition Key = Primary key  
+Can be single key or compound key (partition key + sort key)
 
 ### Amazon Redshift
 
 Fast and fully managed data warehouse  
 Used for very big data  
+Allows the use of complex SQL queries  
 Parallel processing  
-Leader node + dense compute nodes  
+Leader node (manages communication, compiling code) + dense compute nodes (compute)  
+Automation and scaling  
 Also works with DynamoDB, Amazon S3  
 Used for big data analysis
 
@@ -853,5 +883,6 @@ Use cases
 Enterprise-scale relational database  
 Compatible with MySQL or PostgreSQL  
 High availability - across multiple Availability Zones  
-Backups on S3  
-15 read replicas - slave DB for read-only, instant crash recovery when master dies
+Backups on S3, across multiple AZs  
+15 read replicas - slave DB for read-only, instant crash recovery when master dies  
+Pay-as-you-go
