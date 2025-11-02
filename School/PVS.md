@@ -360,3 +360,175 @@ Konflikty pri prenose - bezstratova arbitracia
 Jeden zacne rozpravat az ked je ticho  
 Ked zacnu dvaja rozpravat, nedojde k poskodeniu dat - ID - vyssia priorita vyhrava  
 Synchronizacia - bit stuffing - resynchronizacia pri kazdej zmene 1-0
+
+## SPI
+
+Serial Peripheral Interface
+
+Vlastnosti
+
+- Synchronne
+- Single-ended
+- Master-slave
+- Full duplex
+- Vysoka rychlost
+- Rozna sirka slova
+
+Vyhody
+
+- Vysoka priepustnost
+- Rozna sirka slova
+- Full duplex
+- Jenoduchy HW
+- Jednosmerne signaly
+- Jednoducha SW implementacia
+
+Nevyhody
+
+- Vacsi pocet vodicov
+- Chyba riadenie toku
+- Nepotrvrdzovana komunikacia
+- Len 1 master
+- Kratka vzdialenost
+- Bez kontroly chyb
+- Chyba pevny standard
+
+Vyvynute firmou motorola
+
+Pouzitie
+
+- Snimace
+- Prevodniky, kodeky
+- Pamate
+- ...
+
+MISO - Master In Slave Out  
+MOSI - Master Out Slave In  
+CLK - Clock  
+CS - Chip Select
+
+Mody prenosu
+
+| Mod | Polarita | Faza |
+| --- | -------- | ---- |
+| 0   | 0        | 0    |
+| 1   | 0        | 1    |
+| 2   | 1        | 0    |
+| 3   | 1        | 1    |
+
+Polarita - uroven hodin v pokoji  
+Faza - okamih zmeny nacitania dat - `0` = prva hrana citanie, druha hrana zmena dat; `1` opacne
+
+## I2C
+
+Inter-Integrated Circuit
+
+Komunikacia medzi integrovanymi obvodmi  
+Dosah max. niekolko metrov
+
+Oznacenie $I2C$, $IIC$, $I^2C$
+
+Pouzitie
+
+- Nizko-rychlostne prevodniky
+- Snimace - magnetometer, akcelerometer, gyroskop
+- V PC - monitorovanie teploty, rychlosti otacok, komunikacia s monitorom, citanie konfiguracie RAM modulov
+
+Vlastnosti
+
+- Synchronne
+- Single-ended
+- Multi-master
+- Zbernica
+- Half-duplex
+- MSB First
+- Rychlosti - low 10kbps, standard 100kbps, fast 400kbps
+
+Vyhody
+
+- Potvrdzovana komunikacia
+- Moznost riadenia toku dat
+
+Nevyhody
+
+- Pomerne malo adries (7bit)
+- Nizsia rychlost
+- Moznost znefunkcnenia zbernice lubovolnym zariadenim
+
+Prepojenie zariadeni
+
+- SDA - Serial Data
+- SCL - Serial Clock
+- Zapojenie typu otvoreny kolektor (wired AND)
+
+Struktura ramca
+
+- Start bit
+- Adresa 7bit
+- RW bit
+- ACK bit
+- Data
+- Stop bit
+
+Kazdy bajt je potvrdzovany prijemcom  
+V jednom ramci mozne preniest viac bajtov  
+Kazdy bit je potvrdeny impulzom na SCL  
+Arbitracia - suboj o zbernicu  
+Clock stretching - riadenie toku dat
+
+Odvodene standardy
+
+- SMBUS - System Mangement Bus
+- PMBUS - Power Mangement Bus
+- VESA Display Control Channel
+
+Neuplna implementacia - Two Wire Interface
+
+## 1 Wire bus
+
+Firma Dallas Semiconductor
+
+Principialne podobne I2C - nizsia rychlost, vyssi dosah  
+Prenos dat aj napajania po jednom signali
+
+Pouzitie
+
+- Seriove cisla, pamate, snimace/loggery teploty, RTC
+- Identifikacia osob, monitorovanie produktov
+
+Vlastnosti
+
+- Synchronne
+- Single-ended
+- Single master
+- Point-to-point alebo multidrop
+- Half-duplex
+- LSB First
+- Rychlost - standard 16.3kbps, override 10x
+- Do 300m - krutena dvojlinka
+- Celosvetovo jedinecna 64-bit adresa - typ zariadenia 8bit, ID 48bit, CRC 8bit
+
+Kondenzator - napajanie zariadenia ked je spinac zopnuty  
+Reset zbernice - zariadenia indikuju svoju pritomnost na zbernici
+
+Komunikacia
+
+- Reset
+- Prikaz 8bit - search (enumeracia), selection (vyber), broadcast
+- Data _N_ \* 8bit
+
+Hladanie zariadeni
+
+1. Prenos bitu adresy (S)
+2. Jeho negacie (S)
+3. Vyhodnotenie (M)
+4. Zapis vysledku (M)
+
+Rychlost hladania - 75 zariadeni za sekundu
+
+| Bit | Negacia bitu | Vyznam                                                           |
+| --- | ------------ | ---------------------------------------------------------------- |
+| 0   | 0            | Na zbernici su rozne zariadenia s roznou hodnotou adresneho bitu |
+| 0   | 1            | Vsetky zariadenia maju na danom mieste `0`                       |
+| 1   | 0            | Vsetky zariadenia maju na danom mieste `1`                       |
+| 1   | 1            | Ziadne zariadenie nie je pritomne                                |
