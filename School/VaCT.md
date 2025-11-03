@@ -886,3 +886,155 @@ High availability - across multiple Availability Zones
 Backups on S3, across multiple AZs  
 15 read replicas - slave DB for read-only, instant crash recovery when master dies  
 Pay-as-you-go
+
+## Cloud Architecture
+
+> AWS M9
+
+### Well-Architected Framework
+
+6 pillars
+
+- Operational Excellence
+- Security
+- Reliability
+- Performance Efficiency
+- Cost Optimization
+- Sustainability
+
+#### Operational Excellence
+
+Focus
+
+- Run and monitor systems to deliver business value
+- Support
+
+Key topics
+
+- Automating changes
+- Responding to events
+- Defining standards
+
+Design principles
+
+- Perform/define operations as code
+- Make frequent, small, reversible changes
+- Anticipate failure
+
+#### Security
+
+Focus
+
+- Protect information, systems and assets
+
+Key topics
+
+- Protecting confidentiality and integrity of **data**
+- Identifying and managing who can do what
+- Protecting systems
+- Establishing controls to detect security events
+- Enable traceability
+- Automate security best practices
+- Protect data in transit, and at rest
+- Keep people away from data
+- Prepare for security events
+
+#### Reliability
+
+Focus
+
+- Ensure a workload performs its intended function correctly and consistently when its expected to
+
+Key topics
+
+- Designing distributed systems
+- Recovery planning
+- Handling change
+- Auto recover from failure
+
+#### Performance Efficiency
+
+Focus
+
+- Use IT and computing resources efficiently
+
+Key topics
+
+- Selecting the right resource types and sizes
+-
+- Use serverless architectures
+-
+
+#### Cost Optimization
+
+Focus - avoid unnecessary costs
+
+Key topics
+
+- Understanding and controlling where money is being spent
+- Analyzing spent
+
+#### Sustainability
+
+### Reliability and Availability
+
+#### Reliability
+
+A measure of you systems ability to provide functionality when desired by the user  
+MTBF - Mean Time Between Failures = MTTF + MTTR (Mean Time To Failure + Mean Time To Repair)
+
+#### Availability and High Availability (HA)
+
+Availability - a percentage of uptime over time
+E.g. 5 9s = 99.999%
+
+Factors that influence availability
+
+- Fault tolerance
+- Scalability
+- Recoverability
+
+### AWS Trusted Advisor
+
+## Automatic Scaling and Monitoring
+
+### Load Balancing
+
+> AWS M10
+
+Load Balance over
+
+- a
+
+Types
+
+- Application Load Balancer - HTTP and HTTPS traffic - L7
+- Network Load Balancer - L4
+- Classic Load Balancer (Previous Generation)
+
+### Amazon CloudWatch
+
+Monitoring of resources and apps that run on AWS  
+Collects and tracks standard and custom metrics  
+Sends notification to Amazon Simple Notification Service (SNS)
+
+CloudWatch alarms
+
+### Amazon EC2 Auto Scaling
+
+Auto Scaling Groups
+
+- Minimum size
+- Desired capacity
+- Maximum size
+
+Scaling out (adding more) and Scaling in (removing unused)
+
+Implement dynamic scaling with CloudWatch and Elastic Load Balancing
+
+Scaling
+
+- Amazon EC2 instances and Spot Fleets (low price, not 100% reliable - can be assigned to someone else or something)
+- Amazon Elastic Container Service Tasks
+- Amazon DynamoDB tables and indexes
+- Amazon Aurora Replicas
