@@ -801,3 +801,63 @@ println!("Skoncil som");
 Pripad - nemame pristupne vsetky udaje, ale uz chcem s nimi pracovat - sledovanie videa online  
 V Ruste `stream` - velmi podobne ako iteratory, ale asynchronne  
 Kniznica `futures`
+
+### Kanaly
+
+Ked chcem vo viacerych vlaknach pouzivat rovnake zdroje  
+Normalne by tam bol problem s lifetimes ci co
+
+`tokio` implementuje viac modelov pri praci s kanalmi
+
+- `mpsc` - multi-producer single-consumer kanar
+- `oneshot` - single-producer single-consumer
+- `broadcast`- multi-producer multi-consumer
+- `watch`- multi-producer mutli-consumer
+
+```rs
+use ...
+
+enum Command { ... } // enum pre Get a Set
+
+#[tokio::main]
+async fn main() {
+  let (tx, mut rx) = mpsc::channel(32);
+
+  let tx2 = tx.clone();
+
+  tokio::spawn(async move {
+    tx.send(...)
+  });
+
+  tokio::spawn(async move {
+    tx2.send(...)
+  });
+}
+```
+
+### Trait `Future` a typ `Poll`
+
+### `std::pin::Pin` a `Unpin`
+
+Problem pri self-reference structs, lebo adresa referencie sa moze menit  
+Riesenie - `std::pin::pin!` - premenna sa zarucene nemoze v pamati presunut
+
+`Unpin` netreba implementovat
+
+### Trait `Stream`
+
+Typy, s ktorymi chceme pracovat ako s "async iteratormi" implementuju train `Stream`
+
+## Asociovane typy
+
+```rs
+pub trait Stream {
+  type Item ...  // toto je asociovany typ
+}
+```
+
+## Fantomove typove parametre
+
+Nepouzivaju sa pocas behu programu, ale kontroluju sa staticky pocas kompilacie  
+Pouzivaju sa len ako znacky alebo kvoli kontrole typovosti  
+Neuchovavaju ziadnu hodnotu a nemaju vplyv na beh programu
