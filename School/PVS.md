@@ -465,7 +465,7 @@ Struktura ramca
 
 - Start bit
 - Adresa 7bit
-- RW bit
+- RW bit - R = 1, W = 0
 - ACK bit
 - Data
 - Stop bit
@@ -473,16 +473,17 @@ Struktura ramca
 Kazdy bajt je potvrdzovany prijemcom  
 V jednom ramci mozne preniest viac bajtov  
 Kazdy bit je potvrdeny impulzom na SCL  
+Master moze dat namiesto stop bitu aj start bit - tzv. restart bit, moze kecat dlho  
 Arbitracia - suboj o zbernicu  
 Clock stretching - riadenie toku dat
 
-Odvodene standardy
+Odvodene standardy - aby sa zabranilo nekonecnemu kecaniu
 
-- SMBUS - System Mangement Bus
-- PMBUS - Power Mangement Bus
-- VESA Display Control Channel
+- SMBUS - System Mangement Bus - v PC - teplomer, otacky ventilatora, ...
+- PMBUS - Power Mangement Bus - napajanie - komunikacia so zdrojom
+- VESA Display Control Channel - VGA kabel
 
-Neuplna implementacia - Two Wire Interface
+Neuplna implementacia - TWI - Two Wire Interface - v podstate ako I2C, ale bez closk stretching, ale 99% kompatibilne
 
 ## 1 Wire bus
 
@@ -496,35 +497,57 @@ Pouzitie
 - Seriove cisla, pamate, snimace/loggery teploty, RTC
 - Identifikacia osob, monitorovanie produktov
 
+Take tie pipaky na otvaranie vchodu
+
 Vlastnosti
 
 - Synchronne
 - Single-ended
 - Single master
-- Point-to-point alebo multidrop
+- Point-to-point alebo multidrop (viaceri mozu pocuvat)
 - Half-duplex
 - LSB First
-- Rychlost - standard 16.3kbps, override 10x
+- Rychlost - standard 16.3kbps, overdrive 10x
 - Do 300m - krutena dvojlinka
 - Celosvetovo jedinecna 64-bit adresa - typ zariadenia 8bit, ID 48bit, CRC 8bit
 
-Kondenzator - napajanie zariadenia ked je spinac zopnuty  
-Reset zbernice - zariadenia indikuju svoju pritomnost na zbernici
+Kondenzator - napajanie zariadenia ked je spinac zopnuty (ked niekto posle `0`)
+
+Reset zbernice
+
+- Master posle dlhy `0` impulz - vybije kondenzatory slave-ov
+- Zariadenia sa daju do default stavu
+- Slaves indikuju svoju pritomnost na zbernici
+
+Prenos dat
+
+- Prenos od mastera
+  - Kratky impulz - 15 $\micro$s = `1`
+  - Dlhy impulz - 60 $\micro$s = `0`
+- Prenos od slave-a
+  - Master riadi komunikaciu - hovori kedy zacinaju jednotlive bity
+  - Ak slave chce preniest `1`, neurobi nic
+  - Ak slvae chce preniest `0`, posle nulu
+- Navonok to bude vyzerat tak isto, cize nevieme urcit ze kto komunikuje, iba na zaklade predchadzajucej komunikacie
 
 Komunikacia
 
 - Reset
-- Prikaz 8bit - search (enumeracia), selection (vyber), broadcast
+- Prikaz 8bit - search (enumeracia) slave-ov, selection (vyber) slave-a, broadcast, ...
 - Data _N_ \* 8bit
 
-Hladanie zariadeni
+### Search
+
+LSB First
+
+Hladanie zariadeni - S = slave, M = master
 
 1. Prenos bitu adresy (S)
-2. Jeho negacie (S)
-3. Vyhodnotenie (M)
-4. Zapis vysledku (M)
+1. Negacia bitu adresy (S)
+1. Vyhodnotenie (M)
+1. Zapis vysledku (M)
 
-Rychlost hladania - 75 zariadeni za sekundu
+> Wired AND
 
 | Bit | Negacia bitu | Vyznam                                                           |
 | --- | ------------ | ---------------------------------------------------------------- |
@@ -532,3 +555,110 @@ Rychlost hladania - 75 zariadeni za sekundu
 | 0   | 1            | Vsetky zariadenia maju na danom mieste `0`                       |
 | 1   | 0            | Vsetky zariadenia maju na danom mieste `1`                       |
 | 1   | 1            | Ziadne zariadenie nie je pritomne                                |
+
+V podstate B-tree
+
+Rychlost hladania - 75 zariadeni za sekundu
+
+## Ethernet
+
+IEEE 802.3
+
+Zbernica, zdielane medium (koaxial) - historicky
+
+- 10BASE5 - Thick Ethernet
+- 10BASE2 - Thin Ethernet
+
+Hviezda, strom (krutena dvojlinka, optika)
+
+- 10BASE-T
+- 100BASE-TX - Fast Ethernet
+- 1000BASE-T - Gigabit Ethernet
+- 10GBASE, 25, 50, 100, 200, ...
+- 400GBASE-T, S, L, H, ...
+
+T - twisted, X - nieco o kodovani,
+
+Vlastnosti
+
+- Komunikacia zalozena na prenose paketov
+- Zdroj aj ciel - jedinecna 48bit MAC adresa
+- Vsetky verzie - rovnaka struktura ramca
+- Typ ramca - EtherType - samoidentifikujuce sa - koexistencia viac typov protokolov, aj v jednej sieti
+
+Zdielane medium - CSMA/CD - predtym ako zacnem vysielat, pocuvam ci je ticho  
+Moznost vzniku kolizii - dlzka media, pocet stanic, velkost a pocetnost paketov  
+Pri kolizii sa oba pakety znicia
+
+Hviezda, strom
+
+- Repeater - iba opakuje
+- Bridge - kontroluje hlavicku
+- Switch - kontroluje cely paket
+
+Pokrocile siete
+
+- Redundancia - slucky - STP
+- Vyvazenie zatazenia siete - SPB (shortest path bridging)
+- VLAN
+- Multilayer Switch
+- Link Aggregation
+
+Struktura paketu
+
+- Preamble 7B - striedanie `1` a `0` - bitova synchronizacia
+- Start of frame delimiter - `10101011` - bajtova synchronizacia
+- Ethernetovy ramec
+- Interpacket gap - 12B
+
+Normalny paket - do 1500B  
+Jumbo packet - zalezi od rychlosti - nad 1GBps >9000B
+
+Eth ramec
+
+- Source MAC 6B
+- Destination MAC 6B
+- Optional 802.1Q tag 4B - VLAN
+- Dlzka alebo EtherType - <1500 je to dlzka, >1536 EtherType
+- Data 46/42B az 1500B
+- Frame check sequence - FCS 4B - 32bit CRC
+
+Fyzicka vrstva
+
+- Obvod PHY
+- Synchronny prenos
+- 10BASE-T - Manchester kod - hodiny XOR data
+- 100BASE-TX - `4B5B` kod - kazda stvorica bitov sa zakoduje pomocou 5 bitov aby sa zarucila zmena
+- 1000BASE-SX (opticky kabel) - `8b/10b` kod, symbol rate 1.25GBd
+- 1000BASE-T (krutena dvojlinka) - 4 linky s 5-urovnovou modulaciou, symbol rate 125MBd
+
+## USB
+
+Universal Serial Bus  
+Nahrada roznych seriovych rozhrani - RS232, LPT, Game Console
+
+Vo vstavanych systemoch
+
+- Komunikacia s PC - konfig, firmware, prenos dat, gateway, ...
+- Pripojenie externych zariadeni - kamera, disk, klavesnica, ...
+
+Vlastnosti
+
+- Asynchronne
+- NRZ Space kodovanie (bit stuffing) - musime zabezpecit zmeny
+- Diferencialna signalizacia (nie single ended)
+- Single Master
+- Hviezda
+- Half-duplex
+- Napajanie 5V, 500mA
+
+Verzie
+
+- USB1.0
+- USB1.1
+- USB2.0
+- USB3.2 Gen 1
+- USB3.2 Gen 2
+- USB3.2 Gen 2x2
+- USB4
+- USB4 2.0
