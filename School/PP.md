@@ -483,3 +483,79 @@ Faktory, ktore vytvaraju celkovy dojem o produkte
 - Cena
 - Distribucna siet
 - Reklama
+
+## Validacia napadu
+
+Proces ziskavania informacii zamerany na **zistanie zaujmu** zvoleneho zakaznickeho segmentu o produkt alebo sluzbu
+
+- Vystavenie podnikatelskeho napadu realnemu svetu predtym nez predstavite finalny produkt alebo sluzbu
+- Serie rozhovorov s ludmi z cieloveho segmentu
+- Spravidla sa vykonava predtym ako do produktu/sluzby investujete (financie, cas)
+
+Preco validovat napad
+
+- Zameranie sa na ponukanie takeho produktu, o ktory ma zakaznik zaujem
+- Realizacia kvalitnejsich rozhodnuti, zameranie sa na podstatne oblasti
+- Odhalenie rizik a ich eliminacia
+- Minimalizacia nakladov - upravnie podnikatelskeho napadu pred investovanim
+
+Kedy validovat
+
+- Este uplne na ziaciatku pred vsetkym treba spravit analyzu trhu (tu sa este nevaliduje)
+- Validovat mozeme
+  - Pri napade
+  - Pri prototype
+  - Pri predaji
+
+Proces validacie
+
+1. Stanovanie ciela - co chceme validovat (problem, produkt, vlastnosti, cena), co chceme zisti (maju ludia zaujem, riesi produkt/sluzba dany ciel, ...)
+2. Definovanie hypotez (vyrokov, mozu obsahovat predikciu ktoru je mozne si overit), je potrebne zacat od klucovej hypotezy; zaroven treba stanovit kriteria na zhodnotenie hypotezy
+3. Zber dat - prieskumy, rozhovory, email, vytvorenie MVP (Minimum Viable Product (najjednoduchsia verzia produktu)), fyzicky prototyp, Crowdfundingova platforma, AB testovanie, pozorovanie
+4. Validacia - rozhodnutie - potvrdenie alebo vyvratratenie hypotezy - ak sa potvrdila tak vylepsovat napad, ak sa nepotvrdila hlavna tak vymysliet nieco ine, ak sa nepotvrdila nejaka vedlajsia (cena, vlastnosti) tak rozmyslat ci sa to neda nejak upravit
+
+### Rozhovory
+
+#### Ako sa pytat
+
+Je potrebne si stanovit
+
+- Ciel rozhovoru - idealne tak isto ako ciel validacie
+- Respondentov
+- Otazky
+
+Ako oslovit respondentov - fyzicky, email, sprava (socialne siete), propagacia (vyssie naklady)
+
+Ako sa pytat - hovorte o ich zivote, nie o svojom napade
+
+- Aka je vasa skusenost s ...
+- Ake bolo ked ste sa ...
+- Ake boli pociatocne vyzvy, ktore ste museli zvladnut
+- Ake riesenia ste vyskusali
+- Ake boli vase frustracie...
+- Co vas odraza od...
+- Co ste robili za ucelom...
+- Ktore veci fungovali a ktore nie
+- Co vsetko ste vyskusali...
+
+Je lepsie zameriavat sa na minulost, ako na to "co by boli ochotni spravit"
+
+Vyhybajte sa zlym datam - su 3 druhy dat, ktore mozu znehodnotit validaciu
+
+- Komplimenty - respondenti chcu s vami sympatizovat, chcu vas podporit/pomoct
+- Taraniny - vseobecne frazy, ktore vam nepomozu, "mal by som urcite zaujem" - treba sa opytat na konkretne veci
+- Napady - drzte sa ciela rozhovoru, nove napady mozu vyviest z kontextu
+
+Budte pripraveni pytat sa spravne - aj "tazke" otazky
+
+#### Ako sa nepytat
+
+Otazky tykajuce sa nazorov  
+Otazky, z ktorych sa snazime identifikovat "priemerne" spravanie (treba sa pytat na poslednu skusenost)  
+Otazky ktore su velmi vseobecne  
+Ano/nie otazky  
+Kvantitativne otazky
+
+### Nastroje na validaciu
+
+Lean Startup Machine Valdation Board PowerPoint Template
