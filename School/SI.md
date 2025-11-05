@@ -332,3 +332,5 @@ Cinnosti
 Architektonicka analyza
 
 Rozdelenie systemu do podsystemov
+
+### Konceptualny model
