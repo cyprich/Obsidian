@@ -688,7 +688,7 @@ Use as
 - Boot volume
 - Data storage
 - Database
--
+- .
 
 Types
 
@@ -785,7 +785,7 @@ Using
 
 - RESTful APIs
 - Java or .NET SDKs
--
+- .
 
 Control access with IAM, Encryption with AES-265, Glacier manages your keys
 
@@ -893,6 +893,9 @@ Pay-as-you-go
 
 ### Well-Architected Framework
 
+A guide, that helps you design secure, high-performing, resilient and efficient infrastructures  
+A set of foundational questions and best practices
+
 6 pillars
 
 - Operational Excellence
@@ -911,15 +914,20 @@ Focus
 
 Key topics
 
-- Automating changes
+- Managing and automating changes
 - Responding to events
 - Defining standards
 
 Design principles
 
-- Perform/define operations as code
+- Perform/define operations as code (limit human error)
+- Annotate documentation
 - Make frequent, small, reversible changes
+- Refine operations procedures frequently
 - Anticipate failure
+- Learn from all operational events and failures
+
+Prepare, Operate, Evolve
 
 #### Security
 
@@ -933,17 +941,31 @@ Key topics
 - Identifying and managing who can do what
 - Protecting systems
 - Establishing controls to detect security events
+
+Design principles
+
+- Implement a strong identity foundation
 - Enable traceability
+- Apply security at all layers
 - Automate security best practices
 - Protect data in transit, and at rest
 - Keep people away from data
 - Prepare for security events
+
+Questions topics
+
+- Identity and access management
+- Detective controls
+- Infrastructure protection
+- Data protection
+- Incident response
 
 #### Reliability
 
 Focus
 
 - Ensure a workload performs its intended function correctly and consistently when its expected to
+- Prevent and quickly recover from failures to meet business and customer demand
 
 Key topics
 
@@ -951,6 +973,22 @@ Key topics
 - Recovery planning
 - Handling change
 - Auto recover from failure
+- Setting up
+- Cross-project requirements
+
+Design principles
+
+- Test recovery procedures
+- Automatically recover from failure
+- Scale horizontally to increase aggregate system availability
+- Stop guessing capacity
+- Manage change in automation
+
+Question topics
+
+- Foundations
+- Change management
+- Failure management
 
 #### Performance Efficiency
 
@@ -961,9 +999,24 @@ Focus
 Key topics
 
 - Selecting the right resource types and sizes
--
+- Monitoring performance
 - Use serverless architectures
--
+- Making informed decisions to maintain efficiency as business needs evolve
+
+Design principles
+
+- Democratize advanced technologies
+- Go global in minutes
+- Use serverless architectures
+- Experiment more often
+- Have mechanical sympathy
+
+Question topics
+
+- Selection
+- Review
+- Monitoring
+- Tradeoffs
 
 #### Cost Optimization
 
@@ -972,7 +1025,24 @@ Focus - avoid unnecessary costs
 Key topics
 
 - Understanding and controlling where money is being spent
+- Selecting the most appropriate and right number of resource types
 - Analyzing spent
+- Scaling to meet business needs without overspending
+
+Design principles
+
+- Adopt a consumption model
+- Measure overall efficiency
+- Stop spending money on data center operations
+- Analyze and attribute expenditure
+- Use managed and application-level services to reduce cost of ownership
+
+Questions topics
+
+- Expenditure awareness
+- Cost-effective resources
+- Matching supply and demand
+- Optimizing over time
 
 #### Sustainability
 
@@ -988,47 +1058,80 @@ MTBF - Mean Time Between Failures = MTTF + MTTR (Mean Time To Failure + Mean Tim
 Availability - a percentage of uptime over time
 E.g. 5 9s = 99.999%
 
+High availability
+
+- System can withstand some measure of degradation while still remaining available
+- Downtime is minimized
+- Minimal human intervention is required
+
 Factors that influence availability
 
-- Fault tolerance
-- Scalability
-- Recoverability
+- Fault tolerance - built-in redundancy, ability to remain operational
+- Scalability - accommodate increases in capacity needs
+- Recoverability - restoring service
 
 ### AWS Trusted Advisor
 
-## Automatic Scaling and Monitoring
+Online tool, that provides real-time guidance  
+Looks at your entire AWS environment
 
-### Load Balancing
+5 categories
+
+- Cost optimization
+- Performance
+- Security
+- Fault tolerance
+- Service limits
+
+## Automatic Scaling and Monitoring
 
 > AWS M10
 
-Load Balance over
+### Load Balancing
 
-- a
+Distributes incoming application or network traffic across multiple targets in a single Availability Zone or across multiple Availability Zones
 
 Types
 
 - Application Load Balancer - HTTP and HTTPS traffic - L7
-- Network Load Balancer - L4
-- Classic Load Balancer (Previous Generation)
+- Network Load Balancer - TCP, UDP, TLS - L4
+- Classic Load Balancer (Previous Generation) - both L4 and L7, across multiple EC2 instances
+
+With Application and Network Load Balancers, you register targets in target group, and route traffic to the target groups  
+With Classic Load Balancers, you register instances with the load balancer
+
+Use Cases
+
+- Highly available and fault-tolerant applications
+- Containerized applications
+- Elasticity and scalability
+- VPC
+- Hybrid environments
+- Invoke Lambda functions over HTTP(S)
 
 ### Amazon CloudWatch
 
 Monitoring of resources and apps that run on AWS  
 Collects and tracks standard and custom metrics  
+Alarms and Events  
 Sends notification to Amazon Simple Notification Service (SNS)
 
-CloudWatch alarms
+CloudWatch alarms - alarm me when some special conditions are met
 
 ### Amazon EC2 Auto Scaling
 
-Auto Scaling Groups
+Auto Scaling group
 
-- Minimum size
-- Desired capacity
-- Maximum size
+- Collection of EC2 instances that are treated as a logical grouping for the purposes of automatic scaling and management
+- You can specify minimum+maximum size and desired capacity
 
 Scaling out (adding more) and Scaling in (removing unused)
+
+When auto scaling, you specify
+
+- _What_ - AMI, instance type, Security groups, ...
+- _Where_ - VPC, subnets, ...
+- _When_ - health checks, min/max/desired capacity, scheduled actions, scaling policies, ...
 
 Implement dynamic scaling with CloudWatch and Elastic Load Balancing
 
