@@ -559,3 +559,44 @@ Kvantitativne otazky
 ### Nastroje na validaciu
 
 Lean Startup Machine Valdation Board PowerPoint Template
+
+## Business modelovanie
+
+### Biznis model, zamer, plan
+
+Model = vyjadruje, ako chce firma zarabat peniaze, generovat zisk  
+Plan = dokument, ktory predstavuje strategiu firmy  
+Zamer = skrateny biznis plan, zvacsa 3-5 stran, vyzaduje ho napr. ministerstvo pri ziadosti o ziskanie prispevku na podnkanie
+
+### Biznis plan
+
+Podnikatelsky plan
+
+- Dokument, ktory sprostredkuva prvy a najdolezitejsi dojem o firme
+- Mapuje a analyzuje cele obdobie od umyslu podnikat az po obdobie
+- Pripravuje sa na dlhe obdobie, preto treba zohladnovat rizika
+- Podkladovy material pre invesotra
+- Poskytuje info o podniku
+
+Na ake otazky by mal odpovedat
+
+- Aky uzitok bude mat realizacia podnikatelskeho planu pre zakaznika
+- Aky uzitok bude mat ten, ktoreho podnikatelskym planom oslovujeme
+- Ake rizika mozu ohrozit realizaciu podnikatelskeho planu a ako im budeme predchadzat
+
+Struktura
+
+- Titulny list
+- Zhrnunie projektu
+- Identifikacia firmy
+- Popis predmetu podnikania, vyrobkov a sluzieb
+- Trh a konkurencia
+- Marketing
+- Vyrobny proces
+- Techicko-organizacny plan
+- Financny plan
+- Prilohy
+
+### Biznis modelovanie
+
+### BCM plan
