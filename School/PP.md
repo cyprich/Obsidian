@@ -572,17 +572,48 @@ Zamer = skrateny biznis plan, zvacsa 3-5 stran, vyzaduje ho napr. ministerstvo p
 
 Podnikatelsky plan
 
-- Dokument, ktory sprostredkuva prvy a najdolezitejsi dojem o firme
-- Mapuje a analyzuje cele obdobie od umyslu podnikat az po obdobie
-- Pripravuje sa na dlhe obdobie, preto treba zohladnovat rizika
-- Podkladovy material pre invesotra
+- **Dokument**, ktory sprostredkuva prvy a najdolezitejsi dojem o firme
+- Mapuje a analyzuje **cele obdobie** od umyslu podnikat az po obdobie
+- Pripravuje sa na **dlhe obdobie**, preto treba zohladnovat rizika
+- **Podkladovy material** pre invesotra
+
+Vyznam podnikatelskeho planu
+
 - Poskytuje info o podniku
+- Podklad na presviedcanie investorov, manazment firmy, ...
+- Zabezpecuej kontrolu stanovenych cielov
+- Prezentacia podniku v pripade potreby ziskania financnych prostriedkov
 
 Na ake otazky by mal odpovedat
 
 - Aky uzitok bude mat realizacia podnikatelskeho planu pre zakaznika
 - Aky uzitok bude mat ten, ktoreho podnikatelskym planom oslovujeme
 - Ake rizika mozu ohrozit realizaciu podnikatelskeho planu a ako im budeme predchadzat
+
+---
+
+Druh podnikatelskeho planu podla ucelu spracovania
+
+- Pre existujuci alebo zacinajuci podnik
+- S cielom ziskat partnera pre podnikanie
+- Pre banku alebo investora
+
+Treba dbat na specifika podnikatelskeho planu
+
+Pred spracovanim treba odpovedat na 2 klucove otazky
+
+- Kto je adresatom podnikatelskeho planu
+- Ake ocakavame reakcie adresata - co od neho chceme
+
+---
+
+Format podnikatelskeho planu
+
+- Lahko citatelny
+- Nepouzivat moc male pismo
+- Rozsah < 30 stran (vratane priloh)
+- Skratky v obmedzenom mnozstve + vysvetlenie
+- Odborna technologia - vysvetlit pre citatela z ineho odboru
 
 Struktura
 
@@ -597,6 +628,84 @@ Struktura
 - Financny plan
 - Prilohy
 
+Zakladne casti
+
+1. Opis produktu, opis vyrobku
+2. Analyza trhu
+3. Marketing
+4. Strategia, manazment a ludske zdroje
+5. Technicko-organizacny plan
+6. Financny plan
+
 ### Biznis modelovanie
 
-### BCM plan
+### BMC model
+
+Biznis Model Canvas - prehladne vizualne zobrazenie napadu
+
+Vyuzitie
+
+- Branstorming novych napadov
+- Utriedenie myslienky v predhladnej a jednoduchej forme biznis planu
+- Prvotna validacia napadu
+- Porozumenie zakaznikom - ake maju problemy
+- Porozumenie konkurencii
+- Kde zakaznici hladaju riesenia? Ako k nim dostanem moj produkt
+- Analyzovanie existujucich obchodnuch modelov
+
+3 celky - efektivita, hodnota, financie
+
+![obrazok](pp-bmc-model-1.png)  
+
+![obrazok](pp-bmc-model-2.png)  
+
+#### 1. Zakaznicke segmenty
+
+Kto je nas zakaznik?  
+Je rozdiel medzi zakaznikom ktori plati (kupuje nas produkt) a tym, ktory pouziva nas produkt?  
+Je diferenciacia medzi pouzivatelom a kupujucim dolezita?
+
+Segmentacia - rozdelenie potencialnych zakaznikov na zvonku heterogenne a zvnutra homogenne skupiny podla
+
+- Kvalitativnych a kvantitativnych charakteristik
+  - Demograficke
+  - Psychograficke
+  - Behavioralne
+
+#### 2. Hodnota pre zakaznika
+
+Definujte problem, ktory riesite
+
+Ako v sucasnosti riesi dany problem zakaznik?  
+Ake riesenia skusil?  
+Co sa mu nepacilo na rieseni, ktore vyskusal?  
+Kolko platil za toto riesenie?  
+Kde hladal riesenia?
+
+Dolezity vztah medzi segmentami zakaznikov a hodnotou pre zakaznika  
+Kazdy segment je spojeny s hodnotou pre zakaznika
+
+#### 3. Kanaly
+
+Ako si ziskam zakaznika?  
+Ako mu dam vediet o svojom produkte?  
+Ake nastroje na komunikaciu s potencionalnym zakaznikom vyuzijem?  
+Ako ho odmenim za vernost a pozitivne referencie?  
+Ktore distribucne kanaly zkaznik preferuje?  
+Sposob dorucenia produktu alebo sluzby?
+
+#### 4. Vztah so zakaznikmi
+
+Ako si ziskam zakaznika?  
+Ako si ho udrzim?  
+Ako si s nim vybudujem dlhodoby vztah?  
+Aky servis mu budem zabezpecovat, aby o mne hovoril druhym?
+
+#### 5. Klucove zdroje
+
+Ake klucove zdroje su dolezite pre vyrobu produktov alebo sluzieb?
+
+- Fyzicke - vyrobne zariadenie, budovy, vozidla, stroje, ...
+- Ludske - zamestnanci
+- Intelektualne - znacky, znalosti, partnerstva, patenty
+- Financne - hotovost, moznosti akcii
