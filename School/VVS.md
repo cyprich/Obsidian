@@ -45,7 +45,7 @@ Digitalne vs. Analogove
 
 ESP32-C6 pinout
 
-![ESP32-C6 pinout](../others/images/vvs-esp-pinout.png)
+![ESP32-C6 pinout](vvs-esp-pinout.png)
 
 24-26, 28-30 vyhradene pre externu Flash, nepouzivat  
 6, 7, 12, 13, 16, 17 - pouzivat opartne (USB, JTAG, UART)  

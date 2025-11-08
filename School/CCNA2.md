@@ -255,7 +255,7 @@ Refer to the image. PC1 sends an ARP broadcast frame. Which PC will receive the 
 - ~~PC5~~
 - ~~PC6~~
 
-![](../others/images/ccna2_vlan_obrazok1.png) 
+![](ccna2_vlan_obrazok1.png) 
 
 Refer to the image. PC2 sends an ARP broadcast frame. Which PC will receive the ARP broadcast frame? (Choose all that apply.)
 - ~~PC1~~
@@ -264,7 +264,7 @@ Refer to the image. PC2 sends an ARP broadcast frame. Which PC will receive the 
 - ~~PC5~~
 - PC6
 
-![](../others/images/ccna2_vlan_obrazok2.png) 
+![](ccna2_vlan_obrazok2.png) 
 
 Refer to the image. PC3 sends an ARP broadcast frame. Which PC will receive the ARP broadcast frame? 
 - ~~PC1~~
@@ -273,7 +273,7 @@ Refer to the image. PC3 sends an ARP broadcast frame. Which PC will receive the 
 - PC5
 - ~~PC6~~
 
-![](../others/images/ccna2_vlan_obrazok3.png) 
+![](ccna2_vlan_obrazok3.png) 
 
 ## 3.5 Dynamic Trunking Protocol 
 True or False? DTP is an open standard IEEE protocol that specifies auto negotiation of switch trunk links 
@@ -394,11 +394,11 @@ A Cisco switch currently allows traffic tagged with VLANs 10 and 20 across trunk
 Refer to the images. Which statements best describe the different types of inter-VLAN routing solutions? (Choose all that apply.)  
 
 Scenario A  
-![](../others/images/ccna2_intervlan_obrazok1.png)   
+![](ccna2_intervlan_obrazok1.png)   
 Scenario B  
-![](../others/images/ccna2_intervlan_obrazok2.png)  
+![](ccna2_intervlan_obrazok2.png)  
 Scenario C  
-![](../others/images/ccna2_intervlan_obrazok3.png)  
+![](ccna2_intervlan_obrazok3.png)  
 
 - ~~Scenario B and C are both Router-on-a-stick inter-VLAN routing~~
 - Scenario A is a Layer 3 inter-VLAN solution 
@@ -2360,7 +2360,7 @@ What network address and subnet mask combination would be used to create a defau
 # Module 16: Troubleshoot Static and Default Routes
 ## 16.1. Packet Processing with Static Routes
 Refer to the exhibit  
-![](../others/images/ccna2_routes1.png) 
+![](ccna2_routes1.png) 
 
 True of False? R1 must encapsulate received packets into new frames before forwarding them to R2
 - True 

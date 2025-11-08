@@ -523,9 +523,9 @@ Mozeme dedit aj `record` - funguje to tak isto ako pri triedach
 `protected internal` alebo `internal protected` - moze byt v ramci projektu, alebo v potomkoch, alebo v potomkoch ineho projektu  
 `private protected` alebo `protected private` - iba v potomkoch v ramci daneho projektu (skor by to mohlo byt ze `private internal`)
 
-![obrazok1](../others/images/csharp-modifiers1.png)
+![obrazok1](csharp-modifiers1.png)
 
-![obrazok2](../others/images/csharp-modifiers2.png)
+![obrazok2](csharp-modifiers2.png)
 
 Ak neuvediem, akeho typu je trieda, tak by default je `internal` (`class MyClass { ... }` je to iste ako `internal class MyClass { ... }`)  
 Okrem `internal` mozem pouzit iba `public`  

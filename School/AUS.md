@@ -387,7 +387,7 @@ AUS Treap, Cerveno-cierny strom, AVL strom, Splay strom
 
 > Sme si sure ze *udajovych* struktur?  
 
-![obrazok](../others/images/aus_logicke_usporiadanie_stuktur.png)
+![obrazok](aus_logicke_usporiadanie_stuktur.png)
 
 - Sekvencia (asi pole) - 1 predchodca, 1 nasledovnik - `1:1`
 - Hierarchia (vyzera ako strom) - 1 predchodca, n nasledovnickov `1:n`

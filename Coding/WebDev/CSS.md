@@ -381,7 +381,7 @@ Previous code can be simplified to following...
 
 # Padding & Margin
 I think the best way to explain Padding vs. Margin is with the following image  
-![](../../others/images/css-padding-vs-margin.jpg)
+![](css-padding-vs-margin.jpg)
 
 I will try do describe it with words...  
 - **Content** is the element you are styling, whenever it's a text, image, `div` or anything else  
@@ -572,13 +572,13 @@ There are a lot more [selectors](https://developer.mozilla.org/en-US/docs/Web/CS
 
 # CSS Flexbox  
 Flexbox is a tool to organize elements in one dimension  
-There is a lot to know about Flexbox, so I will add a [Flexbox cheatsheet](../../others/images/css-flexbox-cheatsheet.png)
-![](../../others/images/css-flexbox-cheatsheet.png)
+There is a lot to know about Flexbox, so I will add a [Flexbox cheatsheet](css-flexbox-cheatsheet.png)
+![](css-flexbox-cheatsheet.png)
 
 # CSS Grid
 Grid is a tool to organize elements in two dimensions
-There is a lot to know about Grid, so I will add a [Grid cheatsheet](../../others/images/css-grid-cheatsheet.png)
-![](../../others/images/css-grid-cheatsheet.png)
+There is a lot to know about Grid, so I will add a [Grid cheatsheet](css-grid-cheatsheet.png)
+![](css-grid-cheatsheet.png)
 
 # `animation`
 ```css

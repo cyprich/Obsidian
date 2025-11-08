@@ -1,9 +1,8 @@
 # Coding
 
-🇨 [C++](./CPP.md)   
+🇨 [C++](./CPP.md)  
 🐍 [Python](./Python.md)  
-♨ [Java](./Java.md)  
 🔵 [Lua](./Lua.md)  
-🛢 [SQL](./SQL.md) and [PostgreSQL](./PostgreSQL.md)   
+🛢 [SQL](./SQL.md) and [PostgreSQL](./PostgreSQL.md)  
 🌐 [Web Development](./WebDev/README.md)  
-🦀 [Rust](./Rust.md)  
+🦀 [Rust](./Rust.md)

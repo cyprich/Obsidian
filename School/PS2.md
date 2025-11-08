@@ -8,7 +8,7 @@ Otazky z Netacadu na CCNA3 v subore [CCNA3](./CCNA3.md)
 
 Smerovaci proces
 
-![ps2_smerovac_proces.png](../others/images/ps2_smerovaci_proces.png)
+![ps2_smerovac_proces.png](ps2_smerovaci_proces.png)
 
 Metody spracovania paketov
 
@@ -247,7 +247,7 @@ Metrika = $BW + \sum{ \forall D }$
 
 Mozu sa pouzit aj K-values - vaha pre kazdy parameter
 
-![Priklad vypoctu EIGRP metriky](../others/images/ps2_priklad_eigrp_metrika.png)
+![Priklad vypoctu EIGRP metriky](ps2_priklad_eigrp_metrika.png)
 
 ### Load balancing
 
@@ -577,7 +577,7 @@ Topologie
 - Hub-and-Spoke - najbeznejsie - Hub (centrala) kde su pripojeni Spokes (zakaznici); Spokes nie su spojeni medzi sebou
 - Dual-homed - Ako Hub-and-Spoke, ale s redundanciou
 
-![topologie](../others/images/ps2_wan_topologie.png)
+![topologie](ps2_wan_topologie.png)
 
 Single-Homed vs. Dual-Homed
 
@@ -586,7 +586,7 @@ Single-Homed vs. Dual-Homed
 - Multihomed - dva uplinky, jeden ISP
 - Dual-Multihomed - dva uplinky, dvaja ISP - redundancia
 
-![vsetky mozne homed](../others/images/ps2_wan_homed.png)
+![vsetky mozne homed](ps2_wan_homed.png)
 
 ### Terminilogia
 

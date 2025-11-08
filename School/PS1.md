@@ -2147,7 +2147,7 @@ Neprekryvajuce sa kanaly: 36, 48, 60
 
 ### Channel Reuse
 
-![](../others/images/siete_channel_reuse.png)
+![](siete_channel_reuse.png)
 
 Oblast je pokryta tak, aby sa jednotlive kanaly neinterferovali _(is that even a word?)_
 
@@ -2184,7 +2184,7 @@ Ak je dopyt po konkretnom bezdrotovom kanali prilis vysoky, moze dojst k jeho na
   - Prenos kanalmi moze bezat simultanne
   - Komplexna technika pouzivana vo vysokorychlostnych prenosoch
   - `802.11a/g/n/ac`
-  - ![OFDM](../others/images/siete_ofdm.png)
+  - ![OFDM](siete_ofdm.png)
 
 ## Standardy IEEE 802.11
 

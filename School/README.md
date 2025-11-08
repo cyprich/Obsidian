@@ -1,6 +1,7 @@
 # School
 
-> Honorable mention: [My Repositories](https://github.com/cyprich?tab=repositories&q=school) tagged with `school` tag
+> ~~Honorable mention: [My Repositories](https://github.com/cyprich?tab=repositories&q=school) tagged with `school` tag~~
+> Most of my repos are private now
 
 🌐 [Siete](./Siete.md) (vseobecne zalezitosti)
 
