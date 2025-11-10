@@ -662,3 +662,104 @@ Verzie
 - USB3.2 Gen 2x2
 - USB4
 - USB4 2.0
+
+Endpoints
+
+- 0 je obojsmerny
+
+Typy rur (pipes) pre endpoint 0
+
+- Sprava - kratke obojsmerne spravy
+- Tok (stream)
+  - Izochronny - garantovana kapacita, neopakovane
+  - Prerusovanci - interrupt - rychla odozva, opakovany prenos - klavesnica, mys
+  - Hromadny (bulk) - zvysok prenosovej kapacity, menej dolezity prenos
+
+Enumeracia - host potrebuje zistit kto sa pripojil
+
+- Reset zbernice - urcenie rychlosti
+- Identifikacia zariadenia - PID, VID (product, vendor id)
+- Pridelenie adresy (7bit)
+- Zavedenie ovladacov
+
+Komunikacia - 3urovnove zapuzdrenie
+
+- Paket - najmensia jednotka
+- Transakcia - niekolko paketov (token, data, status)
+- Prenos - niekolko transakcii (setup, data, status)
+- Ramec - niekolko prenosov
+
+Casovy multiplex -
+
+## Bluetooth a BLE
+
+Povodny ciel - nahrada drotoveho spojenia na kratku vzdialenost  
+Firma Ericsson  
+Kratky dosah, nizka spotreba, low-cost  
+ISM Pasmo - 2.4 GHz  
+79 kanalov, 1 MHz  
+FHSS - Frequency hopping spread spectrum - 1600 hopov za sekundu
+
+Rychlost
+
+- Basic rate 1Mbps - GFSK (Gaussian Frequency Shift Keying)
+- Enhanced Data Rate (EDR) od v2.0
+  - 2Mpbs
+  - 3Mpbs
+
+Komunikacia
+
+- Zalozena na paketoch
+- Master/Slave architektura - 1 master, max. 7 slaves - piconet - novsia verzia max. 14 slaves
+- Scatternet - prepojenie viacerych piconetov (master v jednej sieti, slave v inej)
+- Synchronizacia mastrom - kazdych 312.5 $\micro$s - tik hodin 3.2 KHz
+- Slot - 625 $\micro$s
+- Par - 1250 $\micro$s - vymena paketov master-slave
+- Master zacina v parnom slote, slave v neparnom
+- Paket 1, 3 alebo 5 slotov
+- V jednom case komunikacia len s jednym - round-robin
+- $Vykon [dMb] = 10 \times log \dfrac{Vykon[mW]}{1mW}$
+
+Bluetooth profil
+
+- Definicia moznych aplikacii, popis psravania sa zariadenia
+- Nastevania (parametrizacia) a riadenie komunikacie
+- Jednoduche vytvorenie spojenia
+- Obsahuje
+  - Zavislost na inych formatoch (profiloch)
+  - Doporuceny format uzivatelskeho rozhrania
+  - Casti Bluetooth stacku pouzivane porfilom a nastavenia parametrov
+- Profily
+  - Advanced Audio Distribution Profile - A2DP
+  - Human Interface Device Profile - HID
+  - Hands-Free Profile - HFP
+  - Prenos suborov, remote control, tlac, video, LAN, Mesh, proximity
+  - ...
+
+### Bluetooth Low Energy
+
+Od BT verzie 4.0  
+Malo prenasanych dat - minimalizacia pouzivania radioveho prenosu  
+Nie je compatible s BT Classic - iba 40 kanalov so sirkou 2 MHz, discovery na 3 kanaloch (32 pri BT Classic)  
+Volitelne sifrovanie - AES CCM, 128bit kluc  
+Spatna kompatibilita  
+High-speed (povinne) alebo long-range (nepovinne, Coded PHY)  
+Asymetricke, vacsina prace na masterovi
+
+---
+
+Inzerovanie (Advertising)
+
+UUID
+
+### Bluetooth Mesh
+
+Topologia many-to-many (oproti hviezde pri klasicom BT) - preposielanie sprav  
+Iba software nadstavba
+
+Vlastnosti
+
+- Zvacseny dosah oproti BLE
+- Self-healing
+- Prenos sprav pomocou inzerovania a skenovania
+- .
