@@ -1141,3 +1141,156 @@ Scaling
 - Amazon Elastic Container Service Tasks
 - Amazon DynamoDB tables and indexes
 - Amazon Aurora Replicas
+
+## APIs
+
+> DevNet Associate M4 - Understanding and Using APIs
+
+Application Programming Interface allows one piece of software to talk to another
+
+Use cases
+
+- Automation tasks
+- Data integration
+- Functionality
+
+Design styles
+
+- Synchronous
+- Asynchronous
+
+Architectural Styles
+
+- RPC
+- SOAP
+- REST
+
+### Remote Procedure Call (RPC)
+
+Request-response model that allows an application to make a procedure call to another application  
+Call procedure of another application
+
+Not unified for languages at first, later `XML-RPC`, `JSON-RPC`, `NFS`, `SOAP`
+
+> Often was called something like wrapper around sockets
+
+### Simple Object Access Protocol (SOAP)
+
+Either architectural style, or protocol  
+Almost like upgrade to RPC  
+XML-based, only XML
+
+SOAP is
+
+- Independent - programming language and libraries
+- Extensible - reliability and security
+- Neutral - any protocol - SMTP, HTTP, TCP, UDP, JMS
+
+XML structure - envelope, header, body, fault
+
+### Representational State Transfer (REST)
+
+Either API protocol or architectural style
+
+Specifications/requirements for RESTful API
+
+- Client-server - independent, replaceable without change of the other
+- Stateless - client should store state, not server (authentication does not count)
+- Cache model - server must state whether the response is cacheable or not
+- Uniform interface - URL, manipulation of data, self-descriptive messages, ...
+- Layered system - ability to use load balancers, endpoints can be on different servers
+- Code-on-demand - you can get code from server, which you can run
+
+Uses HTTP(S) and all of its concepts
+
+- Requests/responses
+- Verbs
+- .
+- .
+
+URI - scheme, authority, path, query
+
+#### Headers
+
+Two types
+
+- Request headers - authorization
+- Entity headers - describes how does the request look like, functions that i support - key-value types - `Content-Type` (`application/json`), `Accept`
+
+#### Body
+
+Body of the  
+GET does not have body
+
+#### Responses
+
+Header, body, status
+
+Header
+
+- Response headers - `Set-Cookie`, `Cache-Control` (max cache age, ...)
+- Entity headers - `Content-Type`
+
+Response pagination - response is split into parts/chunks  
+Compressed response data - `gzip`, `compress`, `deflate`, `*`, ...
+
+---
+
+Sequence diagrams
+
+---
+
+#### Authentication and Authorization
+
+Authentication (who has access to what) vs. Authorization (who you are)
+
+Basic authentication - `username:password` with Base64 encoding  
+Bearer authentication - uses bearer token by 3rd party device, you are sending it with every request, server then asks 3rd party about this token  
+API Key - more for watching users (stats, ...) but can limit users
+
+These are not save
+
+Authorization Mechanisms
+
+- Oauth - uses JSON Web Tokens
+
+---
+
+### Rate limits
+
+Avoid a server overload from too many requests at once - better response times for all users
+
+Algorithms
+
+- Leaky bucket
+  - Bucket, which constantly leaks water
+  - User requests = adding water to it
+  - If bucket overflows, other requests are rejected
+- Token bucket
+  - Gives each user a defined number of tokens they can use within a certain increment of time
+  - Tokens are periodically added
+  - If user uses too many tokens, the request is rejected
+- Fixed windows counter
+  - Rate it limited to (for example) `2 requests/min`
+  - If there are more than 2 requests between `16:30` and `16:31`, the others are rejected
+- Sliding window counter
+  - Similar to before, but within 60 seconds for example, not limited to whole minute
+
+Knowing the Rate limit
+
+- X-Rate Limit-Limit - what is the limit
+- X-Rate Limit-Remaining - how much is left
+- X-Rate Limit-Reset - when it resets
+
+Exceeding the Rate Limit - ideally `429: Too Many Requests` response (or `403: Forbidden`, but this is not ideal)
+
+### Working with Webhooks
+
+With async API  
+You send a request, it responds something like "I'm getting it ready, i will send it to you when ready"  
+When it's ready, the server sends you a HTTP POST or something - HTTP Callback - problematic with NAT  
+It's just like client and server switches roles
+
+Used in - Cisco Webex Teams (sending you messages), Cisco DNA Center
+
+### Troubleshooting API Calls
