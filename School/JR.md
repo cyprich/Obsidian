@@ -861,3 +861,96 @@ pub trait Stream {
 Nepouzivaju sa pocas behu programu, ale kontroluju sa staticky pocas kompilacie  
 Pouzivaju sa len ako znacky alebo kvoli kontrole typovosti  
 Neuchovavaju ziadnu hodnotu a nemaju vplyv na beh programu
+
+## Makra
+
+Sposob metaprogramovania  
+Kod na vytvorenie noveho kodu v programe  
+Doteraz `prinln!`, `#[derive(...)]`
+
+V zaklade 3 kategorie
+
+- Vlastne makra anotovanim
+- Atributove makra
+- Funkcne makra
+
+Vyhodnocuju sa pred kompilatorom, na rozdiel od funkcii (za behu)  
+Riesia specificke problemy - Variadicke funkcie - variabilny pocet argumentov (Rust taketo funkcie nema)  
+Musia byt definovane/zahrnute pred zavolanim
+
+### Deklarativne makra
+
+Da sa prirovnat s `match`  
+Porovnavaju hodnotu so vzorom a vykonavaju kod asociovany s tymto vzorom  
+Hodnoty - literaly zdrojoveho kodu  
+Vsetko v case kompilacie
+
+```rs
+#[macro_export]
+macro_rules! vec { ... }
+```
+
+Niektore casti
+
+- `#[macro_export]` - aby sa dalo pouzit
+- `macro_rules! vec { ... }`
+- `( $( $x: expr), *) => { ... }` - podobne `match`
+  - `( $( $x: expr), *)`
+  - `$` premenna v makre - vzor (kod)
+  - `expr` - typ bude expression
+  - `$x` - nazov premennej?
+  - ...
+  - `,` - vyrazy oddelene ciarkou
+  - `*` - moze byt lubovolny pocet vyrazov
+- Telo kodu
+  - `let mut temp_vec = Vec::new();` - normalna premenna
+  - `$( temp_vec.push($x) )*` - vykonaj toto pre kazdy match
+  - `temp_vec` - vratim premennu
+
+Do makra mozeme poslat lubovoly pocet parametrov lubovolneho typu
+
+Syntax metapremennych `$meno:typ_fragmentu`
+
+- Fragmenty - block, expr, indent, item, lifetime, literal
+- Opakovania - \* akykolvek, + aspon 1 krat, ? nula az jeden
+
+### Proceduralne makra
+
+Zatial co deklarativne nahradzaju kod na zaklade zhody  
+Tieto sa podobaju na funkcie s parametrom "token stream"
+
+Inline-uju sa do kodu - nie vzdy musia fungovat - napr. pouzivat FQN pre importy
+Mozu byt ovplyvnene vonkajsimi prvkami
+
+```rs
+use proc_macro;
+#[some_attribute]
+pub fn some_name(input: TokenStream) -> TokenStream { ... }
+```
+
+3 kategorie - vlastny derive, atributove makra, funkcne makra
+
+#### Vlastny `derive`
+
+Ked chceme implementovat nejaky trait pre nejaky struct
+
+Vytvorit 2 libraries  
+Bednicky `proc_makro`, `syn`, `quote`
+
+`&ast.ident;`
+
+Makra by mali koncit `panic!` ak nieco zlyha
+
+`stringify!`
+
+#### Atributove makra
+
+Derive moze byt pouzity len pre struktury a enumy  
+Atributove makra mozu byt pouzite aj pre ostatne - funkcie
+
+#### Funkcne makra
+
+Podobne ako deklarativne makra, ale stale proceduralne  
+Tu ale vieme robit zlozitejsie veci (nie len match)  
+Pracuje so sekvenciou tokenov, aj navratova hodnota je sekvencia tokenov  
+Napr `sql!` makro na validaciu SQL kodu
