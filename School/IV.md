@@ -138,3 +138,23 @@ A/D prevod - z analogoveho na digitalny
 2. Vzorkovanie
 3. Kvantovanie - linearne alebo nelinearne (logaritmicky?)
 4. Kodovanie
+
+## Akcne cleny
+
+### LED diody
+
+Rozne farby tvary a prevedenia  
+THT, SMD  
+Pripojenie na GPIO cez rezistor
+
+Indikacne - iba take aby svietilo  
+Vykonove - osvetlenie v miestnosti napr.
+
+### Krokovy motor
+
+### Jednosmerny motor
+
+## Komunikacny subsystem
+
+Drotove - SPI, I2C, 1-Wire  
+Cez siet - Ethernet, WiFi, Bluetooth
