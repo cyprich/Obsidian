@@ -334,3 +334,27 @@ Architektonicka analyza
 Rozdelenie systemu do podsystemov
 
 ### Konceptualny model
+
+### Stereotypy
+
+### Diagramy tried
+
+Uz sme sa s nim stretli pri domenovom diagrame
+
+### Typy vztahov
+
+Asociacia - dlhsi vztah medzi instanciami  
+Agregacia a kompozicia - vztah celok/cast  
+Kompozicia - silnejsi typ agregacie, instancia casti len v jednom celku - ak je celok zmazany, zmazu sa aj casti
+
+Generalizacia
+
+> ak mam nejaku cast, tak ak ta cast je zdielana viacerymi celkami, tak v takom pripade tam nemoze byt kompozicia  
+> napr. kacka moze sidlit na dvoch rybnikoch, tak v takom pripade to v ziadnom pripade nemoze byt kompozicia  
+> cize ak je niekde cislo 2 alebo viac, nemoze to byt kompozicia
+
+> ked zmazem celok (dam zosrotovat auto) tak sa zmazu aj casti (zosrotuje sa aj motor)
+
+### Zrhnutie
+
+##
