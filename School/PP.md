@@ -655,9 +655,9 @@ Vyuzitie
 
 3 celky - efektivita, hodnota, financie
 
-![obrazok](pp-bmc-model-1.png)  
+![obrazok](pp-bmc-model-1.png)
 
-![obrazok](pp-bmc-model-2.png)  
+![obrazok](pp-bmc-model-2.png)
 
 #### 1. Zakaznicke segmenty
 
@@ -709,3 +709,167 @@ Ake klucove zdroje su dolezite pre vyrobu produktov alebo sluzieb?
 - Ludske - zamestnanci
 - Intelektualne - znacky, znalosti, partnerstva, patenty
 - Financne - hotovost, moznosti akcii
+
+## Rozhodovanie o forme podnikania
+
+Formy podnikania
+
+- **Mozeme si vybrat**
+  - **Zivnosti**
+  - **Obchodne spolocnosti**
+- Nemozeme si vybrat
+  - Druzstvo
+  - Statny podnik
+- Urcuje predmet podnikania
+  - Slobone povolania - osoba ktora podnika na zaklade ineho nez zivnostenskeho opravnenia podla osobitnych predpisov
+  - FO ktora vykonava polhonostpodarsku vyrobu a je zapisana do evidencie podla osobitneho predpisu - ludovo neoficialne tzv. farmari
+
+### Kriteria pre vyber formy podnikania
+
+Potrebna vyska kapitalu (financnych zdrojov)  
+Rozdelenie podnikatelskeho rizika (rucenie)  
+Danove a obvodove zatazenie  
+Osobnost buduceho podnikatela a jeho schopnost byt manazerom
+
+### Zivnost
+
+Zakon o zivnostenskom podnikani  
+Podla definicie vymedzenie podnikania = vymedzenie zivnosti
+
+Podmienky
+
+- Vseobecne - 18 rokov, sposobilost na pravne ukony, bezuhonnost
+- Osobitne (len pri niektorych druhoch) - odborna sposobilost (vyucenie v odbore + doklad o odbornej praxi), ina sposobilost (vykonanie skusky, certifikat)
+
+Druhy zivnosti
+
+- Remeselne - su uvedene, specificky vymenovane - treba odbornu sposobilost
+- Viazane - tiez vymedzene - treba certifikat alebo skusku
+- Volne
+
+### Obchodne spolocnosti
+
+Typy
+
+- Verejna obchodna spolocnost
+- Komanditna spolocnost
+- Spolocnost s rucenim obmedzenym
+- Akciova spolocnost
+- Jednoducha spolocnost na akcie
+
+Zakladne imanie
+
+- Penazne vyjadrenie suhrnu penaznych a nepenaznych vkladov vsetkych spolocnikov
+
+Vklad spolocnika
+
+- Suhrn penaznych prostridkov a inuch peniazmi ocenitelnych hodnot, ktore spolocnik vklada do spolocnosti a podila sa nimi na vysledku podnikania spolocnosti
+- Druhy
+  - Penazne - hotovost
+  - Nepenazne - budovy, patent, vozidlo - hodnota sa da vyjadrit v peniazoch znaleckym posudkom
+
+Statutarny organ
+
+- Osoby, ktore konaju v mene pravnickej osoby - za pravnicku osoby vykonavaju pravne ukony
+- Kadza PO musi mat statutarny organ
+
+Rucenie
+
+- Zodpovednost za zavazky vyplyvajuce z podnikania
+- 2 druhy
+  - Neobmedzene - celym svojim majetkom, aj osobnym
+  - Obmedzene - len do vysky vkladu do podnikania
+
+#### Verejna obchodna spoocnost
+
+Charakteriskika - spolocnost aspon 2 osob, ktore podnikaju pod spolocnym obchodnym menom a rucia za zavazky spolocnosti spolocne a nerozdielne celym svojim majetkom  
+Rucenie - neobmedzene  
+Statutarny organ - vsetci spolocnici by default, v spolocenskej zmluve sa mozu dohodnut  
+Doklad o zalozeni - spolocenska zmluva  
+Rozdelenie zisku - rovnym dielom medzi spolocnikov
+
+#### Komanditna spolocnost
+
+Charakteriskika - spolocnost v ktorej jeden alebo viac spolocnikov ruci za zavazky spolocnosti do vysky svojho nesplateneho vkladu zapisaneho v obchodnom registri (**komanditisti**) a jeden alebo viac spolocnikov celym svojim majetkom (**komplementari**)  
+Rucenie - komplementari neobmedzene, komanditisti do vysky nesplatenych vkladov (min 250 evri)  
+Statutarny organ - iba komplementari, v spolocenskej zmluve sa mozu dohodnut  
+Doklad o zalozeni - spolocenska zmluva  
+Rozdelenie zisku - medzi komplementarov (rovnakym dielom ak nie je urcene inak) a komanditistov (podla vysky splatenych vkladov) - moze byt aj napr. 75% komplementarom, 25% komanditistom
+
+Komanditisti velmi male prava
+
+- Podielat sa na zisku
+- Nahliadat do uctovnych knich
+- Ziskat rovnopis uctovnej zavierky
+
+Komanditisti vlozia zdroje, komplementar s nimi naklada/podnika
+
+#### Spolocnost s rucenim obmedzenym
+
+Charakteriskika - spolocnost, ktorej zakladne imanie tvoria vopred urcene vklady spolocnikov. Moze byt zalozena 1-50 osoba. Vhodna je pre male a stredne podnikanie  
+Rucenie - spolocnost celym majetkom, spolocnici do vysky svojho nesplateneho vkladu  
+Statutarny organ - konatelia  
+Doklad o zalozeni - spolocenska zmluva  
+Rozdelenie zisku - podla pomeru splateneho vkladu
+
+Zakladne imanie min. 5000 evri  
+Kazdy spolocnik min. 750 evri
+
+Pred podanim navrhu na zapis do OR
+
+- Kazdy penazny vklad splateny najmenej na 30%
+- .
+- .
+- .
+
+Organy
+
+- Valne zhromazdenie
+  - Vsetci spolocnici
+  - Zvolavaju ho konatelia, minimalne 1x za rok
+  - Moze ho zvolat aj spolocnik, ak vklad dosahuje 10% ZI
+  - Schopne uznasania ak je pritomna nadpolovicna vacsina
+  - Prijatie rozhodnutia - aspon 2/3 hlasov
+- Konatelia
+  - Staturarny organ
+  - Riadiaci organ
+  - Vykonny organ
+- Dozorna rada (nepovinne)
+  - Aspon traja clenovia
+  - Podavaju spravu valnemu zhromazdeniu
+
+#### Akciova spolocnost
+
+Charakteriskika - spolocnost, ktorej zakladne imanie je rozvrhnute na urcity pocet akcii s urcitou menoviout hodnotou. Minimalne 1 PO alebo 2 FO
+Rucenie -  
+Statutarny organ - predstavenstvo
+Doklad o zalozeni - zakladatelska zmluva (ak 2+ zakladatelia) alebo listina (ak 1 zakladatel)
+Rozdelenie zisku - dividenda
+
+ZI aspon 25000 evri
+
+Organy
+
+- Valne zhromadzenie
+- Predstavenstvo
+- Dozorna rada
+
+Dividenta - podiel na zisku pripadajuci na 1 akciu urcitej menovitej hodnoty  
+Napr. "40 eur zisku na 100 eur akcie"  
+1 akcia v menovitej hodnote 100 eur = 40 eur zisku  
+1 akcia v menovitej hodnote 1000 eur = 400 eur zisku
+
+#### Jednoducha spolocnost na akcie
+
+Charakteriskika - podstata rovnaka ako a. s., vymedzene su len rozdiely
+Rucenie -  
+Statutarny organ -
+Doklad o zalozeni -
+Rozdelenie zisku -
+
+ZI 1 euro  
+Minimalny pocet zakladajucich clenov - 1 osoba
+
+Nemoze byt zalozena na zaklade vyzvy na upisovanie akcii, t. j. cele ZI musi byt spratene zakladatelmi pri jej zalozeni
+
+### Porovnanie zivnosti a s.r.o
