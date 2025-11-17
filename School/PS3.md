@@ -654,3 +654,428 @@ UPnP
 - [www.upnp.org](www.upnp.org)
 - Zariadenie si vie otvorit dieru vo FW na jednoduchu konfiguraciu
 - Zahrnute v DLNA (Digital L N Alliance)
+
+## Bezpecnost
+
+### Zakladne pojmy
+
+Athentication - zistenie identity (kto)  
+Authorization - zistenie pravomoci (co moze robit)  
+Confidentiality, Privacy - informacie len pre opravnene osoby  
+Integrity - spravnost a uplnost informacii  
+Availability - informacia dostupna v momente vyziadania  
+Non repudiation (nepopieratelnost povodu) - nepopretie autorstva/prijatia  
+Anti-replay - ochrana pred podvrhnutim dat
+
+### HTTP Digest autentifikacia
+
+RFC 7235  
+Autentifikacny mechanizmus zalozeny na HTTP autentifikacii  
+Nasledovnik HTTP basic autentifikacie  
+Siroko pouzivany roznymi textovymi protokolmi
+
+Autentifikacia moze byt pouzita pri
+
+- Registracii
+- Vytvarani spojenia
+- Zmene spojenia
+- Ukoncenie spojenia
+
+Pouziva spravy
+
+- 401 Unauthorized
+- 407 Proxy Authentication Required
+- 403 Forbidden
+
+Princip
+
+- Pri vyzadovanej autentifikacii SIP server ziada o poskytnutie udajov
+- V odpovedi 401 alebo 407 SIP server poskytuje v hlavicke parametre na vypocet has funkcie
+- Klient musi zahrnut tieto hlavicky v odpovedi
+  - v hlavicke Authorization + poskytnut udaje na autentifikaciu, vypocitanu na zaklade hash funkcie
+  - Heslo sa vobec neprenasa
+
+Parametre autentifikacie
+
+- realm - domena
+- qop - quality of protection - hovori ci je len autentifikacia (auth) alebo aj integrita (auth-int)
+- nonce - nahodny retazec generovany serverom
+- cnonce - nahodny retazec generovany klientom
+- digestURI - `sip:domain` napr. `sip:kis.fri.uniza.sk`
+- nonceCount - poradie nonce
+
+Vypocet odpovede
+
+- Hash funkcia - MD5
+- Ak nie je qop definovane
+  - `response=MD%(HA1:nonce:HA2)`
+  - `HA1=MD5(username:realm:password)`
+  - `HA2=MD5(method:digestURI)`
+- Ak je qop definovane
+  - `reponse=MD5(HA1:nonce:nonceCount:cnonce:qop:HA2)`
+  - `HA1=MD5(MD5(username:realm:password):nonce:cnonce)`
+  - `HA2=(MD5(method:digestURI:MD5(entityBody)))`
+
+Vyhody
+
+- Heslo nie je plaintext
+- Ochrana voci podvrhnutiu relacie
+- Server si pamata nonces
+
+Nevyhody
+
+- Man-in-the-middle utoky
+- MD5 je prelomitelne
+
+### Zabezpecenie medii
+
+#### RTP
+
+#### SRTP
+
+RFC 3711
+
+Ponuka
+
+- Sifrovanie
+- Autentifikaciu
+- Integritu
+- Nepopieratelnost povodu
+- Ochrana pred replay utokom
+
+Pre sifrovanie pouziva AES
+
+K overeniu spravy a ochrane identity HMAC-SHA1
+
+- RFC 2104
+- 160bit tag z hlavicky a payloadu paketu
+- Pripojeny ku sprave
+
+Odvocenie kluca
+
+- Hlavny kluc
+- Periodicky odvodzovane kluce
+
+Spolieha sa na externu spravu klucov
+
+- MIKEY - Multimedia Internet Keying
+- ZRTP
+
+#### ZRTP
+
+Zimmerman RTP  
+RFC 6189  
+Pouziva SRTP
+
+Nesifruje data  
+Poziva Diffie-Hellman vymenu klucov
+
+#### RTPC
+
+RTP Control Protocol  
+RFC 3611
+
+Neprenasa data  
+Posiela statistiky (QoS, straty, round trip time)
+
+Ak RTP bezi na porte $n$, (kde $n mod 2 = 0$), tak RTCP bezi na porte $n+1$
+
+Asymetricke sifrovanie
+
+- Sukromy+verejny kluc
+- Ak sifrujem jednum klucom, desifrujem druhym
+
+Sifrovanie
+
+- Sifrujem verejnym klucom
+- Desifruje len vlastnik sukromneho kluca
+
+Elektronicky podpis
+
+- Sifrujem sukromnym klucom
+- Overi kazdy prisluchajucim verejnym klucom
+- Funguje takto
+  - Vytvorim Hash z dokumentu
+  - Zasiftujem Has svojim sukromnym klucom
+  - Pripojim zasifrovany Hash k dokumentu
+- Overuje sa takto
+  - Ziskam podpisany dokument
+  - Ziskam verejny kluc odosielatela
+  - Overim verejny kluc odosielatela - Certificate Revocation List (CRL)
+  - Vypocitam Hash z dokumentu
+  - Desifrujem ziskanym klucom prilozeny Hash
+  - Porovnam Hash hodnoty
+
+##### Pretty Good Privacy
+
+Autor Philip Zimmerman
+
+Nepouziva hierarchicky model
+
+- Pouzivatelia si podpisuju certifikaty navzajom
+- Jeden PGP certifikat - bezne viacero podpisov
+
+Kazy PGP pouzivatel ma zoznam verejnych klucov (Keyring), ktory si moze vymienat
+
+Pri pridavani kluca do keyringu
+
+- Absolutna dovera
+- Ciastocna dovera
+- Nedovera
+
+#### SRTPC
+
+### S/MIME
+
+Multipurpose Internet Mail Extension
+
+RFC 2045-9  
+RFC 4288-9
+
+Podporuje
+
+- Ine znakove sady ako ASCII (aj v hlavicke)
+- Netextove prilohy
+- Telo spravy pozostavajuce z viacerych casti
+
+Zavadza nove hlavicky  
+Ciel - nepozmenit standardy
+
+Pouzite v SMTP, HTTP, SIP, JPEG, GIF
+
+Priklad
+
+```txt
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=hranica
+
+This is a message with multiple parts in MIME format
+--hranica
+Content-Type: text/plain
+
+This is a body of the message
+--hranica
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: base64
+
+PGh0bWw+CiAgPGhlYWQ+CiAgPC9oZWFkPgogIDxib2R5PgogICAgPHA+VGhpcyBpcyB0aGUgYm9ke
+SBvZiB0aGUgbWVzc2FnZS48L3A+CiAgPC9ib2R5Pgo8L2h0bWw+Cg==
+--hranica--
+```
+
+#### Zabezpecenie MIME
+
+Ziskam certifikat druhej strany  
+Zasifrujem celu MIME spravu a odoslem
+
+Problem v SIP - halvicky musia ostat nad MIME spravou (via, from, to, call-uid, cseq)
+
+#### S/MIME
+
+Secure/Multipurpose Internet Mail Extensions  
+RFC 5751  
+Standard pre PKI a podpisovanie MIME dat  
+End-to-End sifrovanie
+
+Hlavicky
+
+- `application/pkcs7-mime` - zasifrovana cast
+- `application/pkcs7-signature` - certifikat
+
+Ponuka
+
+- Digitalny podpis
+  - Autentifikaciu
+  - Integritu
+  - Nepopieratelnost povodu
+- Sifrovanie
+  - Sukromie
+  - Zabezpecenie dat
+
+Vyhody
+
+- Sifrovanie komunikacie
+- Autentifikacia odosielatela
+- Definicie novych hlaviciek
+
+Nevyhody
+
+- Ziskanie certifikatu
+- Niektore protokoly musia pouzit workaround
+
+### TLS
+
+TLS a jeho predchodca SSL sluzia na sifrovanie dat
+
+TLS 1.2 - RFC 52465  
+TLS 1.3 ([draft](https://tools.ietf.org/html/draft-ietf-tls-tls13-18))
+
+Zalozene na certifikatoch (asymetricke sifrovanie)  
+Sifrovanie hop-by-hop
+
+Princip
+
+- 2 fazy
+  - TLS Handshake Protocol
+  - TLS Record Protocol
+
+Bali sa do TCP
+
+TLS Handshake
+
+- Klient posle Hello (typy TLS verzii, podporovanie sifry, ...)
+- Server posle Hello (vybrana verzia TLS, alg., ...) a certifikat
+- Klient posle pripadny certifikat a _pre-master heslo_ zasifrovane verejnym klucom
+- Generovanie zdielaneho hesla
+- Klient posle _Change cipher spec_ a _Client finished_
+- Server posle _Server finished_
+
+Komunikacia zabespecena symetrickym sifrovanim s novy zdielanym heslom
+
+Vyhody
+
+- Sifrovanie komunikcie
+- Autentifikacia odosielatela
+
+Nevyhody
+
+- Ziskanie certifikatu
+- Jemne zatazenie systemu
+
+### DTLS
+
+Datagram Transport Layer Security
+
+Zabezpecuje bezpecnost pre datagramove protokoly (UDP, DCCP, SCTP)  
+RFC 4347  
+RFC 6347  
+Postavene na TLS - `DTLS 1.0` = `TLS 1.1`, `DTLS 1.2` = `TLS 1.2`  
+Aplicacia si zabezpecuje usporiadanie paketov a straty
+
+Problemy
+
+- TLS nedovoluje desifrovanie lubovolne datagramu (Cipher Block Chaning)
+  - Riesenie - zakaz prudovych sifier
+- TLS Handshake spravy su posielane spolahlivo
+  - Extra casovac na _ClientHello_
+- Moze dojst k fragmentacii
+  - Srpavy su navrhnute malej velkosti
+  - Obsahuju _fragment offset_ a _fragment length_
+- Reordering
+  - Obsahuje sequence number
+
+Kde sa mozeme stretnut
+
+- Cisco AnyConnect VPN Client
+- f5 Networks Edge VPN Client
+- Chrome, Opera, Firefox - pre WebRTC
+
+Prelomeny - februar 2013
+
+### IPsec
+
+Rodina protokolov popisujucich sposob bezpecneho prenosu IP paketov
+
+Poskytuje
+
+- Utajenie obsahu
+- Integritu dat
+- Autentifikaciu odosielatela
+
+Pouziva protokoly
+
+- IKE - Internet Key Exchange - vymena klucov
+- AH - Authentication Header - autentifikacia
+- ESP - Encapsulating Security Payload - utajenie obsahu
+
+AH
+
+- Chrani cely obsah paketu (aj hlavicku)
+- Nesifruje
+- Poskytuje autentifikaciu a kontrolu integrity
+- Volitelne poskytuje ochranu proti opakovaniu (replay detection)
+
+ESP
+
+- Sifruje paket
+- Nesifruje hlavicku
+- Ponuka vsetky sluzby AH (autentifikacia, integrita, anti-replay)
+
+AH sa pouziva zriedkavo, ESP casto  
+Obe sa do IP paketu pridavaju ako pridavne hlavicky
+
+Prenosove rezimy
+
+- Transportny rezim - ponecha povodnu IP hlavicku
+- Tunelovy rezim - prida novu IP hlavicku
+
+Bezpecnostna asociacia (SA)
+
+- Jednosmerna relacia vytvorena pri kazdom IPsec spojeni
+- Virtualne spojenie dvoch zariadeni
+- Obsahuje vsetky informacie spojenia
+  - Typ protokolu (ESP, AH)
+  - Rezim prenosu (transportny, tunelovaci)
+  - Sifrovaci algoritmus (NULL, DES, 3DES, AES)
+  - Autentifikacny algoritmus (HMAC-MD5, HMAC-SHA1)
+  - Doba zivotnosti
+
+Sprava SA
+
+- Rucna konfiguracia
+  - Minimum problemov
+  - Zla skalovatelnost
+  - Neumoznuje casto menit kryptograficke kluce
+  - Minimalne pouzitie
+- Automaticka konfiguracia
+  - Internte Security Association and Key Mangement Protocol (ISAKMP)
+  - RFC 2408
+  - Odporucane
+
+### MACsec
+
+Zabezpecenie technologie Ethernet (L2)  
+Rozsirenie 802.1X  
+IEEE 802.1AE
+
+Zabezpeci komuniakiu medzi zariadniami (hop-by-hop)  
+Prevadza na backplane je nezabezpecena
+
+Ponuka
+
+- Autentifikaciu
+- Integritu dat
+- Dovernost (confidentiality)
+
+### IEEE 802.1X
+
+Protokol pre pristup do pocitacovej siete  
+Vyuzivany pri drotovej aj bezdrotovej sieti  
+Pokial sa klient neautentifikuje, prevadzka je zahadzovana  
+Pracuje na L2  
+Vyuziva protokoly Radius/Diameter
+
+Princip
+
+1. Klient sa pripoji k zariadeniu (switch/AP)
+2. AP akceptuje len EAP ramce, ostatne su zahadzovane
+3. Klient odosle autentifikacne udaje cez EAP
+4. AP preposle udaje Radius serveru
+5. Radius server overi udaje - lokalne aleo na Radius serveri v klientovej domovskej sieti
+6. Radius server odosle informacie AP
+
+Vyhody
+
+- Blokovanie neautorizovanych osob
+- Umiestenie zariadenia do specifickej VLAN
+
+Nevyhody
+
+- Chrani len pristup k sieti
+
+### Extensible Authentication Protocol (EAP)
+
+Autentifikacny framework, nie samotny mechanizmus  
+Najcastejsie pouzivany v bezdrotovych sietach (WPA/WPA2)  
+Zaistuje zjednanie autentifikacnych metod (okolo 40) - `EAP-TLS`, `EAP-PSK`, `EAP-MD5`, ...  
+Nie je protokol, len definuje format sprav, nie je zapuzdrovany
