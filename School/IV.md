@@ -130,7 +130,7 @@ SDA (Serial Data Line) - data
 
 1 wire - iba jedna komunikacna linka
 
-###
+### Prevod medzi nimi
 
 A/D prevod - z analogoveho na digitalny
 
@@ -158,3 +158,91 @@ Vykonove - osvetlenie v miestnosti napr.
 
 Drotove - SPI, I2C, 1-Wire  
 Cez siet - Ethernet, WiFi, Bluetooth
+
+## Moznosti ukladania a spracovania nameranych dat
+
+Bud lokalne alebo na vzdialeny server/ulozisko
+
+## Sukromie a bezpecnost
+
+### Architektura IoT
+
+1. Hardware (Devices)
+2. Komunikacna vrstva (Edge)
+3. Analyticka vrstva (Data Intelligence)
+4. Aplikacna vrstva (Services)
+
+Verifikacia dat - spravnost, uplnost, neporusenost  
+Filtrovanie dat - odstranenie chybnych, neuplnych, poskodenych, podvrhnutych  
+Agregacia dat - odstranovanie viacnasobnych zaznamov, statisticke predspracovanie dat, znizovanie objemu dat odosielanych dalej, uspora energie
+
+### SWOT analyza IoT
+
+Strengths, Weaknesses, Opportunities, Threats
+
+### OWASP IoT
+
+Neziskova organizacia
+
+### Typy kybernetickych utokov
+
+### Priebeh utoku
+
+1. Prieskum a ziskavanie informacii
+2. Testovanie (otvorene porty, ...)
+3. Ziskanie pristupu
+4. Udrzanie pristupu
+5.
+
+### Sifrovanie
+
+Symetricke, asymetricke
+
+## Zdroje napajania
+
+### Primarne clanky
+
+Baterie  
+Urcene na jedno vybitie  
+Existuju v roznych velkostiach s roznou kapacitou
+
+Jenorazove - nenabijatelne
+
+- ZnC - zinkovo-uhlikove - najmensia kapacita, malo napatia, nizke samovybijanie
+- ZnCl - chloridovo-zinkove
+- AlMn - alkalicko-manganove - idealne pre energeticky narocne pristroje
+-
+
+Alkalicke - nizsi vnutorny odpor, nizsia miera samovybijania, nevytekaju, citlive na prebitie a podbitie (nicenie clanku, zahrievanie, moznost poziaru)
+
+### Sekunarne clanky
+
+Akumulatory  
+Mozno pouzit viac krat  
+Schopnost akumulovat elektricku enrgiu opatovnym nabijanim  
+Zivotnost zavisi
+
+Viacnasobne pouzitie - nabijatelne
+
+- Pb - Olovene - najcastejsie v autach, teraz uz nie, vysoke samovybijanie
+- Bezudrzbovy oloveny akumulator
+  - VRLA - gelove akumulatory, zname ako ventilom riadene olovene akumulatory
+  - AGM - akumulatory s viazanym elektrolytom
+  - SLA -
+- NiCd - Niklovo-kadmiove
+- NiMH - Niklovo-metalhydridove
+- Li-Ion - litiovo-ionove
+- Li-Po - litiovo-polymerove
+
+### Linearne stabilizatory
+
+Stabilizuju vystupne napatie, ktore musi byt nizsie? ako vstupne
+
+### DC-DC menice
+
+Topologie
+
+- Nabojova pumpa
+- Znizovac napatia
+- Zvysovac napatia
+- Invertor
