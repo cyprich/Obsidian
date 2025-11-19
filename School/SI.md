@@ -357,4 +357,86 @@ Generalizacia
 
 ### Zrhnutie
 
-##
+###
+
+Nemali by byt cyklicke/krizove zavislosti medzi balickami
+
+### Analyza pripadov pouzitia
+
+Realizacia pripadov pouzitia
+
+- Modelovane interakcie medzi objektami
+- Ciele
+  - zistenie interakcii analytikcych tried
+  - Zistovanie zasielanych sprav
+    - Primarne operacie
+    - Primarne atributy
+    - Primarne vztahy
+  - .
+
+Vystup - diagram tried, komunikacny diagram, diagram nasadenia, sekvencny diagram, stavovy diagram, diagram baickov
+
+Navrhova trieda
+
+- _Uplna_ a dostacujuca
+- Jednoducha
+- Vysoko sudrzna
+- Bez tesnych vazieb
+
+#### Navrh tried
+
+#### Navrh rozhrani
+
+#### Navrh navrhovych realizacii pripadov pozitia
+
+## Agilne metodiky
+
+"Jedinou cestou ako overit spravnost navrhnuteho systemu, je co najskor ho vyvinut, predlozti ho zakaznikovi a na zaklade jeho reakcie upravit"
+
+Naopak od tradicnych pristupov (stanovime si funkcionalitu, cas a zdroje su variabilne), pri agilnych pristupov mame stanovene cas a zdroje, funkcionalita je variabilna
+
+Zakladne principy
+
+- Iterativny a inkrementalny vyvoj
+- Priama osobna komunikacia v time
+- Stale spojenie so zakaznikom
+- Rigorozne, opakovane, priebezne, automatizovane testovanie
+- Vyzaduju menej formalnych a byrokratickych artefaktov
+- Najsilnejsi doraz na zdrojovy kod
+
+Preferencne tezy agilneho programovania
+
+- Prijat a umoznit zmenu je omnoho efektivnejsie
+- Je treba byt pripraveny reagovat na nepredvidane udalosti
+
+Preferencne skupiny
+
+| Prednost                    | Pred                            |
+| --------------------------- | ------------------------------- |
+| Individuality a komunikacia | Procesy a nastroje              |
+| Prevadzky schopny softver   | Obsiahla a objemna dokumentacia |
+| Splupraca so zakaznikom     | Uzatvaranie roznych zmluv       |
+| Reakcia na zmenu            | Striktne plnenie planu          |
+
+Zakladne tezy
+
+- Hodnota pre zakaznika
+- Zmeny su vyhodou
+- Caste dodavky
+- Zakaznici pracuju s timom
+- Motivacia je klucova
+- Vzajomna konverzacia
+- Uspech posudzovany podla fungovania
+- Udrzatelny vyvoj
+- Perfektny navrh a riesenie
+- Jednoduchost
+- Kreatiita
+- Ako zvysit efektivitu
+
+### Co to je
+
+### XP
+
+### SCRUM
+
+### TDD
