@@ -659,7 +659,7 @@ UPnP
 
 ### Zakladne pojmy
 
-Athentication - zistenie identity (kto)  
+Athentication - zistenie identity (kto) (2FA - nieco co viem (heslo), nieco co mam (kluc, karticka), nieco co som (odtlacok prsta, sietnica oka))  
 Authorization - zistenie pravomoci (co moze robit)  
 Confidentiality, Privacy - informacie len pre opravnene osoby  
 Integrity - spravnost a uplnost informacii  
@@ -667,12 +667,16 @@ Availability - informacia dostupna v momente vyziadania
 Non repudiation (nepopieratelnost povodu) - nepopretie autorstva/prijatia  
 Anti-replay - ochrana pred podvrhnutim dat
 
-### HTTP Digest autentifikacia
+Real-time = dovtedy, kym to ma pre mna vyznam
+
+### HTTP MD5 Digest autentifikacia
 
 RFC 7235  
 Autentifikacny mechanizmus zalozeny na HTTP autentifikacii  
-Nasledovnik HTTP basic autentifikacie  
+Nasledovnik HTTP basic autentifikacie - plain text  
 Siroko pouzivany roznymi textovymi protokolmi
+
+Vysvetlenie na SIP
 
 Autentifikacia moze byt pouzita pri
 
@@ -731,8 +735,11 @@ Nevyhody
 
 #### RTP
 
+Real-time Transport Protocol
+
 #### SRTP
 
+Secure Real-time Transport Protocol  
 RFC 3711
 
 Ponuka
@@ -751,10 +758,7 @@ K overeniu spravy a ochrane identity HMAC-SHA1
 - 160bit tag z hlavicky a payloadu paketu
 - Pripojeny ku sprave
 
-Odvocenie kluca
-
-- Hlavny kluc
-- Periodicky odvodzovane kluce
+Odvocenie kluca - hlavny kluc sa nikdy nepouziva, iba sa z neho periodicky odvodzuju vedlajsie
 
 Spolieha sa na externu spravu klucov
 
@@ -775,12 +779,11 @@ Poziva Diffie-Hellman vymenu klucov
 RTP Control Protocol  
 RFC 3611
 
-Neprenasa data  
-Posiela statistiky (QoS, straty, round trip time)
+Neprenasa data, Posiela statistiky (QoS, straty, round trip time)
 
 Ak RTP bezi na porte $n$, (kde $n mod 2 = 0$), tak RTCP bezi na porte $n+1$
 
-Asymetricke sifrovanie
+### Asymetricke sifrovanie
 
 - Sukromy+verejny kluc
 - Ak sifrujem jednum klucom, desifrujem druhym
@@ -806,21 +809,29 @@ Elektronicky podpis
   - Desifrujem ziskanym klucom prilozeny Hash
   - Porovnam Hash hodnoty
 
-##### Pretty Good Privacy
+#### X.509 trust model - PKI
+
+Hierarchia podpisovania klucov  
+Korenova certifikacna autorita - vydava certifikat pre certifikacnu autoritu  
+Certifikacna autorita vydava certifikaty pouzivatelom
+
+Ak sa viem v hierarchii dostat ku niekomu inemu tak mu doverujem  
+Ak sa neviem, tak mi vyhodi nieco ze "pripojenie nie je bezpecne" (neznamena ze nie je sifrovane)
+
+#### Pretty Good Privacy
 
 Autor Philip Zimmerman
 
-Nepouziva hierarchicky model
-
-- Pouzivatelia si podpisuju certifikaty navzajom
-- Jeden PGP certifikat - bezne viacero podpisov
+Alternativa PKI, nepouziva hierarchicky model  
+Pouzivatelia si podpisuju certifikaty navzajom  
+Jeden PGP certifikat - bezne viacero podpisov
 
 Kazy PGP pouzivatel ma zoznam verejnych klucov (Keyring), ktory si moze vymienat
 
 Pri pridavani kluca do keyringu
 
-- Absolutna dovera
-- Ciastocna dovera
+- Absolutna dovera - ked ja niekoho certifikat vyslovene pridam/podpisem
+- Ciastocna dovera - medzi mnou a cielom je este niekto
 - Nedovera
 
 #### SRTPC
@@ -905,6 +916,10 @@ Nevyhody
 
 ### TLS
 
+Transport Layer Security  
+L4, doteraz sme sa bavili o L7  
+Actually pracuje niekde medzi L4 a L7, ale priraduje sa k L4
+
 TLS a jeho predchodca SSL sluzia na sifrovanie dat
 
 TLS 1.2 - RFC 52465  
@@ -917,7 +932,7 @@ Princip
 
 - 2 fazy
   - TLS Handshake Protocol
-  - TLS Record Protocol
+  - TLS Record Protocol - samotne data
 
 Bali sa do TCP
 
@@ -949,7 +964,7 @@ Datagram Transport Layer Security
 Zabezpecuje bezpecnost pre datagramove protokoly (UDP, DCCP, SCTP)  
 RFC 4347  
 RFC 6347  
-Postavene na TLS - `DTLS 1.0` = `TLS 1.1`, `DTLS 1.2` = `TLS 1.2`  
+Postavene na TLS - `DTLS 1.0` = `TLS 1.1`, `DTLS 1.2` = `TLS 1.2`, `DTLS 1.3`  
 Aplicacia si zabezpecuje usporiadanie paketov a straty
 
 Problemy
@@ -970,11 +985,14 @@ Kde sa mozeme stretnut
 - f5 Networks Edge VPN Client
 - Chrome, Opera, Firefox - pre WebRTC
 
+CBC - Cipher Block Chaining
+
 Prelomeny - februar 2013
 
 ### IPsec
 
-Rodina protokolov popisujucich sposob bezpecneho prenosu IP paketov
+Rodina protokolov popisujucich sposob bezpecneho prenosu IP paketov  
+L3
 
 Poskytuje
 
@@ -997,6 +1015,7 @@ AH
 
 ESP
 
+- Encryption Security Payload?
 - Sifruje paket
 - Nesifruje hlavicku
 - Ponuka vsetky sluzby AH (autentifikacia, integrita, anti-replay)
@@ -1006,8 +1025,8 @@ Obe sa do IP paketu pridavaju ako pridavne hlavicky
 
 Prenosove rezimy
 
-- Transportny rezim - ponecha povodnu IP hlavicku
-- Tunelovy rezim - prida novu IP hlavicku
+- **Transportny rezim** - ponecha povodnu IP hlavicku
+- **Tunelovy rezim** - prida novu IP hlavicku, vyuziva sa takmer vzdy
 
 Bezpecnostna asociacia (SA)
 
@@ -1016,7 +1035,7 @@ Bezpecnostna asociacia (SA)
 - Obsahuje vsetky informacie spojenia
   - Typ protokolu (ESP, AH)
   - Rezim prenosu (transportny, tunelovaci)
-  - Sifrovaci algoritmus (NULL, DES, 3DES, AES)
+  - Sifrovaci algoritmus (NULL (bez sifrovania), DES, 3DES, AES)
   - Autentifikacny algoritmus (HMAC-MD5, HMAC-SHA1)
   - Doba zivotnosti
 
@@ -1038,7 +1057,9 @@ Zabezpecenie technologie Ethernet (L2)
 Rozsirenie 802.1X  
 IEEE 802.1AE
 
-Zabezpeci komuniakiu medzi zariadniami (hop-by-hop)  
+Zabezpeci komunikaciu medzi zariadniami (hop-by-hop)  
+"Ako IPsec, ale medzi switchmi"
+
 Prevadza na backplane je nezabezpecena
 
 Ponuka
@@ -1047,13 +1068,27 @@ Ponuka
 - Integritu dat
 - Dovernost (confidentiality)
 
+Rezimy
+
+- CAK - Connectivity Association Key
+- SAK - Secure Association Key
+
+Ethertype `0x88e5`
+
+Hop-by-hop, ak posielam switchu ktory toto nepodporuje, tak sa posiela nesifrovane
+
+#### TrustSec
+
+Cisco rozsirenie MACsec  
+Pridana hlavicka `CMD` - Cisco Meta Data
+
 ### IEEE 802.1X
 
-Protokol pre pristup do pocitacovej siete  
-Vyuzivany pri drotovej aj bezdrotovej sieti  
+Protokol pre **pristup** do pocitacovej siete, iba pristup, nic viac  
 Pokial sa klient neautentifikuje, prevadzka je zahadzovana  
-Pracuje na L2  
-Vyuziva protokoly Radius/Diameter
+Vyuzivany pri drotovej aj bezdrotovej sieti  
+Pracuje na L1? L2?  
+Vyuziva protokoly Radius alebo Diameter
 
 Princip
 
@@ -1072,6 +1107,8 @@ Vyhody
 Nevyhody
 
 - Chrani len pristup k sieti
+
+Casto sa pouziva EAP
 
 ### Extensible Authentication Protocol (EAP)
 
