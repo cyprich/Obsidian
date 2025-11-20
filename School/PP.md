@@ -655,9 +655,9 @@ Vyuzitie
 
 3 celky - efektivita, hodnota, financie
 
-![obrazok](pp-bmc-model-1.png)
+![obrazok](../images/pp-bmc-model-1.png)
 
-![obrazok](pp-bmc-model-2.png)
+![obrazok](../images/pp-bmc-model-2.png)
 
 #### 1. Zakaznicke segmenty
 
