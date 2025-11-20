@@ -873,3 +873,141 @@ Minimalny pocet zakladajucich clenov - 1 osoba
 Nemoze byt zalozena na zaklade vyzvy na upisovanie akcii, t. j. cele ZI musi byt spratene zakladatelmi pri jej zalozeni
 
 ### Porovnanie zivnosti a s.r.o
+
+## Zakladatelsky rozpocet
+
+### Charakteriskika a struktura zakladatelskeho rozpoctu
+
+Financne zabezpecenie podnikatelskeho planu
+
+Casti
+
+- Rozpocet potrebneho dlhodobeho a obezneho majetku (aktiva) a financnych zdrojov (pasiva) pre jeho financovanie
+- Rozpocet nahladov a vynosov, resp. rozpocet prijmov a vydavkov (cash flow) - mesacny a rocny rozpocet
+
+[Register uctovnych zavierok](www.registeruz.sk)
+
+### Struktura majetku
+
+- Neobezny (dlhodoby) majetok
+  - Nehmotny
+  - Hnotny
+  - Financny
+- Obezny (kratkodoby) majetok
+  - Zasoby
+  - Pohladavky
+  - Kratkodoby financny majetok
+
+#### Neobezny (dlhodoby) majetok
+
+Oakovanym pouzivanim sa opotrebovava a svoju hodnotu postupne prenasa do hodnoty vyrabanych vyrobkov alebo do hodnoty poskytovanych sluzieb  
+Nehmotny, hmotny, financny
+
+##### Dlhodoby nehmotny
+
+- Doba pouzitelnosti >1 rok
+- Minimalne ocenenie 2400 eur
+- Napr. software, hmatatelny vysledok vyskumu, prava, licencie, know-how, ochranne znamky, patenty
+
+##### Dlhodoby hmotny
+
+- 3 skupiny
+  - Pozemny, budovy, stavby, umelecke diela, zbierky drahych kovov bez ohladu na obstaravaciu cenu ak nie su financnym majetkom
+  - Samostatne hnutelne veci - stroje, pristroje, dopravne prostriedky, kancelarska technika, inventar - ocenenie >1700 eur
+  - Pestovatelske celky trvalych porastov
+
+##### Dlhodoby financny
+
+- Cenne papiere, vklady, (akcie a dlhopisy), ktore su vlastnictve >1 rok
+- Pozicky (ktore my poskytneme) s dobou splatnosti >1 rok
+- Nehnutelnosti, umelecke diel a zbierky a predmety z drahych kovov, ktore podnik nakupuje z dovodu ulozenia volnych prenaznych prostriedkov majetku - ked nieco nepouzivam ale investujem do nich (poziciavam ich)
+
+Ocenovanie majetku
+
+- Obstaravacia cena = cena obstarania + naklady spojene s obstaranim (preprava, poistne, clo, montaz, certifikaty)
+- Cena vlastnych nakladov
+- Realna hodnota (znalecny posudok, kvalifikovany odhad, trhova cena)
+
+#### Obezny (kratkodoby) majetok
+
+Cas pouzitelnosti <1 rok  
+Spotrebuje sa naraz, cim sa jeho hodnota prenasa okamzite do hodnoty vyrobkov a sluzieb  
+Rozdelenie - zasoby, pohladavky, kratkodoby financny majetok
+
+##### Zasoby
+
+Zasoby = material, zasoby vlastnej vyroby, tovar
+
+Material - pouziva sa pri vyrobe vyrobkov, tvori ich zaklad alebo podstatu
+
+Zasoby vlastnej vyroby - nedokoncena vyroba, vlastne polotovary, vyrobky
+
+Tovar - podnik nakupi a bez zmeny dalej preda
+
+##### Pohladavky
+
+Pravo na plnenie zo strany dlznika  
+Vznika vystavenim faktury  
+Mozem ju predat (factoring, forfaiting)
+
+##### Kratkodoby financny majetok
+
+Kratkodoby financny majetok - peniaze v hotovosti a na bankovych uctoch
+
+### Zdroje financovania
+
+- Vlastne imanie
+  - Zakladne imanie
+  - Zakonne rezervne fondy
+  - Vysledok hodpodarenia
+  - ...
+- Cuzdie zdroje (docasne, musime ich vratit)
+  - Zavazky
+  - Uvery
+  - ...
+
+### Naklady, vynosy, prijmy, vydavky
+
+**Naklady** - penazne vyjadrenie spotreby podnikovych vyrobnych faktorov a ostatne vydavky ucelovo spojene s cinnostou podniku - iba to co spotrebujeme
+Carovne slovicko spotreba
+
+**Vydavky** - ubytok penaznych prostriedkov v hotovosti alebo na bankovom ucte
+
+Clenenie nakladov podla druhu
+
+- Na hospodarsku cinnost
+  - Spotreba materialu
+  - Spotreba energie
+  - Spotrebovane sluzby
+  - Mzdove naklady a odvody
+  - Dane a poplatky
+  - Odpisy DM
+  - Zostatkova cena DM
+  - Manka a skody
+- Na financnu cinnost
+  - Uroky
+  - Predane cenne papiere a vklady
+  - Kurzove straty
+  - Poistne
+
+---
+
+**Vynosy** - penazne vyjadrenie vzniknutych a realizovanych hodnot podniku. Vyjadruju ocenenie vystupov - vznikaju v momente realizacie vykonov  
+Carovne slovicko realizacia
+
+**Prijmy** - zvysenie penaznych prostriedkov v hotovosti alebo na bankovych uctoch
+
+Clenenie vynosov podla druhu
+
+- Z hospodarsej cinnosti
+  - Trzby z predaja
+    - Vyrobkov
+    - Sluzieb
+    - Tovaru
+  - Pokuty a penale
+  - Uroky z omeskania
+- Z financnej cinnosti
+  - Uroky
+  - Trzby z predaja cennych papierov
+  - Kurzove vynosy
+  - Uroky a dividendy z cennych papierov
