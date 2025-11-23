@@ -1156,8 +1156,8 @@ Use cases
 
 Design styles
 
-- Synchronous
-- Asynchronous
+- Synchronous - you request, you get - used when data can be given immediately
+- Asynchronous - you request, you get confirmation of receiving, you will get notification (or similar) when data is ready - used when data takes some time to process
 
 Architectural Styles
 
@@ -1168,7 +1168,8 @@ Architectural Styles
 ### Remote Procedure Call (RPC)
 
 Request-response model that allows an application to make a procedure call to another application  
-Call procedure of another application
+Call procedure of another application  
+Usually client makes synchronous request, blocking the server while the request is being processed
 
 Not unified for languages at first, later `XML-RPC`, `JSON-RPC`, `NFS`, `SOAP`
 
@@ -1177,16 +1178,22 @@ Not unified for languages at first, later `XML-RPC`, `JSON-RPC`, `NFS`, `SOAP`
 ### Simple Object Access Protocol (SOAP)
 
 Either architectural style, or protocol  
-Almost like upgrade to RPC  
-XML-based, only XML
+Almost like an upgrade to RPC  
+XML-based, only XML  
+Most commonly transferred via HTTP
 
 SOAP is
 
-- Independent - programming language and libraries
-- Extensible - reliability and security
+- Independent - programming language, OS, libraries
+- Extensible - can add features (reliability and security)
 - Neutral - any protocol - SMTP, HTTP, TCP, UDP, JMS
 
-XML structure - envelope, header, body, fault
+XML structure
+
+- Envelope - root element
+- Header - optional, if present it must be the first child of `Envelope`, contains application-specific stuff (authorization, specific attributes)
+- Body - actual data, must be in XML format, in its own namespace
+- Fault - optional, must be child of `Body`, can be only one, provides error and/or status info
 
 ### Representational State Transfer (REST)
 
@@ -1196,8 +1203,12 @@ Specifications/requirements for RESTful API
 
 - Client-server - independent, replaceable without change of the other
 - Stateless - client should store state, not server (authentication does not count)
-- Cache model - server must state whether the response is cacheable or not
+- Cache model - server must state whether the response is cacheable or not, if yes client can use it later
 - Uniform interface - URL, manipulation of data, self-descriptive messages, ...
+  - Identification of resources (document, image, person, collection of something, ...)
+  - Manipulation of resources through representations - resources from server must contain enough data/metadata so client can use it
+  - Self-descriptive messages - protocol type, data format of the message, request operation
+  - Hypermedia as the engine of application state
 - Layered system - ability to use load balancers, endpoints can be on different servers
 - Code-on-demand - you can get code from server, which you can run
 
@@ -1205,12 +1216,17 @@ Uses HTTP(S) and all of its concepts
 
 - Requests/responses
 - Verbs
-- .
-- .
+- Status codes
+- Headers, body
 
-URI - scheme, authority, path, query
+URI - scheme, authority, path, query  
+`scheme:[//authority][/path][?query]`  
+`http:[//192.168.10.10:3000][/v1/books][?name=DevNet]`  
+`http:[//192.168.10.10:3000][/v1/books][?name=DevNet&year=2025]`
 
 #### Headers
+
+Key-value pairs separated by colon - `[name]:[value]`
 
 Two types
 
@@ -1219,26 +1235,38 @@ Two types
 
 #### Body
 
-Body of the  
+Contains data pertaining to the resource that the client wants to manipulate  
 GET does not have body
 
 #### Responses
 
-Header, body, status
+Status, Header, Body
+
+Status = HTTP status
+
+- `1xx` - Informational
+- `2xx` - Success
+- `3xx` - Redirection
+- `4xx` - Client error
+- `5xx` - Server error
 
 Header
 
-- Response headers - `Set-Cookie`, `Cache-Control` (max cache age, ...)
-- Entity headers - `Content-Type`
+- Response headers - additional info that does not relate to the content of the message - `Set-Cookie`, `Cache-Control` (max cache age, ...)
+- Entity headers - describes the content of the body of the message - `Content-Type`
 
-Response pagination - response is split into parts/chunks  
-Compressed response data - `gzip`, `compress`, `deflate`, `*`, ...
+Body
 
----
+- Actual data
+- Optional, if provided you also have specify type in header (`Content-Type`)
+- If request was unsuccessful, you may provide info about why is it so
 
-Sequence diagrams
+Response pagination - response is split into parts/chunks if there is a lot of data  
+Compressed response data - must add `Accept-Encoding` to header with value of one of these: `gzip`, `compress`, `deflate`, `br`, `identity`, `*`, ...
 
----
+#### Sequence diagrams
+
+![obrazok](../images/vact-sequence-diagrams.png)
 
 #### Authentication and Authorization
 
@@ -1246,7 +1274,7 @@ Authentication (who has access to what) vs. Authorization (who you are)
 
 Basic authentication - `username:password` with Base64 encoding  
 Bearer authentication - uses bearer token by 3rd party device, you are sending it with every request, server then asks 3rd party about this token  
-API Key - more for watching users (stats, ...) but can limit users
+API Key (API Token) - more for watching users (stats, ...) but can limit users
 
 These are not save
 
@@ -1270,7 +1298,7 @@ Algorithms
   - Gives each user a defined number of tokens they can use within a certain increment of time
   - Tokens are periodically added
   - If user uses too many tokens, the request is rejected
-- Fixed windows counter
+- Fixed window counter
   - Rate it limited to (for example) `2 requests/min`
   - If there are more than 2 requests between `16:30` and `16:31`, the others are rejected
 - Sliding window counter
@@ -1278,9 +1306,9 @@ Algorithms
 
 Knowing the Rate limit
 
-- X-Rate Limit-Limit - what is the limit
-- X-Rate Limit-Remaining - how much is left
-- X-Rate Limit-Reset - when it resets
+- X-RateLimit-Limit - what is the limit
+- X-RateLimit-Remaining - how much is left
+- X-RateLimit-Reset - when it resets
 
 Exceeding the Rate Limit - ideally `429: Too Many Requests` response (or `403: Forbidden`, but this is not ideal)
 
