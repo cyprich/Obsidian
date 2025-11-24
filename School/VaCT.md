@@ -1322,3 +1322,140 @@ It's just like client and server switches roles
 Used in - Cisco Webex Teams (sending you messages), Cisco DNA Center
 
 ### Troubleshooting API Calls
+
+## Application Deployment
+
+> DevNet M6 - Application Deployment and Security
+
+### Deployment Environments
+
+Four-tier structure/model
+
+- Development - coding, smaller scale = programmer's notebook, larger scale = server
+- Testing - testing code, similar to production env, testing everything
+- Staging - after testing, almost identical to production
+- Production - what user sees
+
+In smaller scale, some of them may be merged (test+staging, dev+test)
+
+### Deployment Models
+
+#### Bare metal
+
+#### Virtual machines
+
+#### Container-based infrastructure
+
+#### Serverless Computing
+
+### Types of infrastructure
+
+Where to deploy
+
+- On-premise
+- Private Cloud
+- Public Cloud
+- Hybrid Cloud
+- Edge Cloud
+  - Used with IoT, embedded
+  - .
+
+Cloud has advantage over virtualisation - orchestration
+
+### Docker
+
+.
+
+- Namespaces - isolates processes, devices, ... from others
+- Control groups - `cgroups` - limit resources
+- Union File Systems - `UnionFS` - make FS from multiple layers - you can switch only one layer instead of everything, retry only one layer on error,
+
+Images are usually read-only
+
+Some commands
+
+```bash
+docker build
+docker images
+docker run -it image /bin/sh
+docker run -d image  # detached
+docker run -d -P image  # publish ports automatically
+docker run -d -P --name myapp image  # custom name
+docker run -d -p 8080:8080 image  # publish specific ports
+docker exec -it image /bin/sh
+docker stop image
+docker rm image
+```
+
+#### Dockerfile
+
+Text file which is required to compile the code
+Syntax
+
+- `FROM python` - source image
+- `WORKDIR /home/ubuntu` - where you will work
+- `COPY ./app.py /home/ubuntu` - copy files from host to container
+- `RUN pip install flask` - when container is created
+- `CMD python /home/ubuntu/app.py` - when container runs
+- `EXPOSE 8080` - port, TCP by default
+
+Everything makes separate layer in UnionFS
+
+#### Docker Compose
+
+Orchestration tool  
+No need to launch all docker commands all the time
+
+```yaml
+
+```
+
+```bash
+docker compose up
+docker compose up -d
+docker compose down
+```
+
+### CI/CD
+
+Continuous Integration/Continuous Deployment
+
+CI
+
+- Compiling
+- Unit/Integration Tests
+- Creates images
+- Publishing the version packages to DockerHub
+
+CD
+
+- .
+
+Strategies
+
+- Rolling upgrades - periodically
+- Canary pipeline - few users testing, if its ok its used, if not then not
+- Blue-green deployment - more environments, just changing the traffic flow (load balancers)
+
+Benefits of CI/CD
+
+- Integration with agile methodologies
+- Automated
+- Better quality, faster to market/users
+
+#### Jenkins
+
+### Networks for Application Development and Security
+
+Firewall  
+Jump box -  
+Load balancer - round robin, persistent sessions, least connections, IP hash  
+DNS  
+Reverse proxy
+
+> Port knocking
+
+### Securing Application
+
+Encryption  
+SSH, TLS,
