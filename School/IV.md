@@ -246,3 +246,55 @@ Topologie
 - Znizovac napatia
 - Zvysovac napatia
 - Invertor
+
+## Smart City
+
+Nema len jednu presnu definiciu  
+Nie je nejaka jednotna normalizacia
+
+Koncept smart city v sebe spaja niekolko zloziek
+
+- Inovativne vyuzitie informacnych technologii
+- Efektivnu dopravu
+- Udzratelnu spotrebu enerigi
+- Ciste zivotne prostredie
+
+Smart governance
+
+- Inteligentna sprava veci verejnych
+- Znaky
+  - Ucast obyvatelov na rozhodovani
+  - Kvalita verejnych a socialnych sluzieb
+  - Transparentne vladnutie
+  - Dlhodoba strategia rozvoja mesta
+
+Big Data
+
+- Vela senzorov, vela dat
+- Nie vsetky data su uzitocne
+- Potrebujeme len vycuc z toho alebo co
+
+Machine learning
+
+European Innovation Partnership on Smart cities and Communities
+
+## Inteligentne Budovy
+
+Tiez nie je len jedna definicia
+
+Inteligentna budova zabezpecuje produktivne a nakladovo efektivne prostredie pomocou optimalizacie 4 zkladnych prvkov
+
+- Stavebnej konstrukcie
+- Technickych zariadeni
+- Sluzieb a manazmentu a ich vzajomnych vztahov
+
+Inteligentna definicia je budova zabezpecujuca kvalitne vnutorne prostredie pri minimalnej spotrebe zdrojov a
+
+Aktivna, pasivna a latentna inteligencia
+
+## Priemysel 4.0
+
+Industry 1.0 - steam - 1784  
+Industry 2.0 - electrical energy - 1870  
+Industry 3.0 - electrical components - 1969  
+Industry 4.0 - IoT? digitalization - 2000?
