@@ -954,3 +954,194 @@ Podobne ako deklarativne makra, ale stale proceduralne
 Tu ale vieme robit zlozitejsie veci (nie len match)  
 Pracuje so sekvenciou tokenov, aj navratova hodnota je sekvencia tokenov  
 Napr `sql!` makro na validaciu SQL kodu
+
+## Podmienena kompilacia - `cfg`
+
+Atribut `cffg` a volanie `cfg!`
+
+```rs
+#[cfg(target_os="linux")]
+fn hello() {
+  println!("Hello from linux");
+}
+
+#[cfg(not(target_os="linux"))]
+fn hello() {
+  println!("Hello from somewhere else");
+}
+```
+
+Moznost konfiguracie
+
+- Hodnota - jednoslovny identifikator
+- Key-pair, kluce nemusia byt unikatne
+
+`all(...)`  
+`any(...)`  
+`not(...)`
+
+Aby sme zistili co mame
+
+`rustc --print cfg`  
+`rustc --print cfg --target <nazov_ciela>`  
+`rustc --print target-list`
+
+Makro `cfg!`
+
+```rs
+let maniche_kind = if cfg!{unix) { ... }
+```
+
+## Pokrocile traity
+
+Ak potrebujeme aby struktura implementovala aj `InyTrait`
+
+```rs
+trait Tr: InyTrait { ... }
+
+struct S { ... }
+
+// musim spravit aj tieto dve
+impl Tr for S { ... }
+impl InyTrait for S { ... }
+```
+
+## Typove aliasy
+
+```rs
+type Km = i32;
+
+// aby sme furt takyto typ nemuseli pisat
+let f: Byx<dyn Fn() + Send + 'static> = ...;
+
+type mojtyp = Byx<dyn Fn() + Send + 'static>;
+fn myfn(x: mojtyp) { ... }
+```
+
+## Nikdy typ
+
+Never type  
+Rust ma specialny typ `!`  
+Nikdy nema hodnotu
+
+```rs
+fn funkcia() -> ! { ... }
+```
+
+Napr. toto prejde
+
+```rs
+loop {
+  let pokus = match pokus {
+    Ok(_) => 5,
+    Err(_) => continue,
+  }
+}
+```
+
+`continue` vracia `!`  
+Tiez an `panic!` aj `loop`
+
+## Ukazovatele na funkcie
+
+```rs
+fn funk(x: i32) -> i32 { ... }
+fn funk2(f: fn(i32) -> i32, x: i32) -> { f(x) }
+```
+
+`f` je ukazovatel na funkciu ktora ma jeden parameter typu `i32` a vracia `i32`  
+Da sa pouzit namiesto closure?
+
+## Unsafe
+
+Staticka analyza kodu je better be safe than sorry  
+Ale niekedy moze zamietnut kod ktory vieme ze je validny a vieme co robime
+
+```rs
+unsafe { ... }
+```
+
+Dovoluje nam
+
+- Dereferencovat surove ukazovatele
+- Volat unsafe funkcie alebo metody
+- Pristupovat alebo menit hodnoty menitelnych statickych premennych
+- Implementovat unsafe traity
+- Pristupovat k prvkom `union`-u
+
+Borrow checker sa stale vykonava  
+Blok nie je automaticky nebezpecny
+
+Unsafe ma 2 nove typy referencii - surove nemenitelne `*const T` a menitelne `*mut T`  
+V podstate take normalne pointre z C/C++?
+
+```rs
+let mut num = 5;
+
+// vytvorenie nie je unsafe
+let r1 = &raw const num;
+let r2 = &raw mut num;
+
+// dereferencovanie je unsafe
+unsafe {
+  println!("r1 is: {}", *r1);
+  println!("r2 is: {}", *r2);
+}
+```
+
+Adresa v pamati
+
+```rs
+let addr = 0x012345usize;
+let r = address as *const i32;  // undefined behavior
+```
+
+Unsafe funkcie a metody  
+Mozeme volat iba z unsafe bloku  
+Teoreticky nemusime pouzivat `unsafe fn ...`, ale iba `fn ...`, ale bolo by fajn upozornit pouzivatela
+
+```rs
+unsafe fn funkcia() {
+  ...
+  unsafe { ... }
+  ...
+}
+```
+
+Bezpecne rozhranie unsafe kodu
+
+### Volanie funkcii inych jazykov v Ruste - `extern`
+
+```rs
+unsafe extern "C" {
+  fn abs(input: i32) -> i32;
+}
+
+fn main() {
+  unsafe {
+    println!("Abs val of -3 according to C is: {}", abs(-3));
+  }
+}
+```
+
+Mozeme aj povedat ze funkcia je safe  
+Toto oznacenie z nej nerobi bezpecnu
+
+```rs
+unsafe extern "C" {
+  safe fn abs(input: i32) -> i32;
+}
+
+fn main() {
+  println!("Abs val of -3 according to C is: {}", abs(-3));
+}
+```
+
+### Pouzitie Rust funkcii v inych jazykoch
+
+```rs
+#[unsafe(no_mangle)]  // aby sa nemenila hlavicka/meno funkcie
+pub extern "C" fn call_from_c {
+  println!("Just call some Rust from C");
+}
+```
