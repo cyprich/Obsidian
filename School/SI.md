@@ -435,8 +435,30 @@ Zakladne tezy
 
 ### Co to je
 
-### XP
+### Extremne programovanie (XP)
+
+Komunikacia, jednoduchost, spatna vazba odvaha, respekt
+
+Testovanie, pisanie zdrojoveho kodu, pocuvanie, navrh
+
+Vyhody
+
+- Praca v sulade s instinktami
+- Interaktivna
+- Inkrementalna
+- Priamy postup k cielu
+- Bez formalit
+- Podpora v IDE, CASE
+
+Nevyhody
+
+- Detaily jednoduche, zlozite vykonat
+- Tazke zavedenie
+- Vsetci clenovia timu
+- Nie je vhodne pre kazdeho cloveka
 
 ### SCRUM
 
 ### TDD
+
+Test-driven development
