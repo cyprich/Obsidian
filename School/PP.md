@@ -1011,3 +1011,86 @@ Clenenie vynosov podla druhu
   - Trzby z predaja cennych papierov
   - Kurzove vynosy
   - Uroky a dividendy z cennych papierov
+
+## Cenotvorba
+
+### Charakteristika a cenotvorba
+
+Cena
+
+- Penazna suma dohodnuta pri nakupe a predaji tovaru
+- Penazny vyraz hodnoty alebo uzitkovej hodnoty
+- Prvok marketingoveho mixu, ktoreho ulohou je spolu s ostatnymi nastrojmi zabezpecit dosiahnutie merketingovych cielov podniku
+
+Cenotvorba
+
+- Proces stanovenia cien, ktory zohladnuje vnutorne a vonkajsie faktory
+
+Zakladne faktory bez ohladu na
+
+- .
+- .
+- .
+
+Horna hranica ceny - vnimanie hodnoty zakaznikom  
+Dolna hranica ceny - naklady
+
+Zakladne pristupy tvorby ceny
+
+- Nakladovo orientovany pristup - vychadza z nakladov na jednotku vykonu
+- Dopytovo (hodnotovo) orientovany pristup - vychadza zo zakaznika - aku hodnotu zakaznik prisudzuje danemu vyrobku
+- Konkurencne orientovany pristup - zavisi od ceny konkurencnych produktov
+
+#### Nakladovo orientovany pristup
+
+Vychadza z kalkulacneho clenenia nakladov
+
+Clenenie nakladov podla ucelu vynalozenia - vyrobok, sluzba, utvar, cinnost
+
+- Priame - presne stanovene na jednotku vykonu (jeden vyrobeny kus) na zaklade normy
+- Nepirame (rezijne) - prepocitavaju sa na jednotku vykonu podla kalkulacnych metod
+  - Vyrobna rezia
+  - Spravna rezia
+  - Odbytove naklady
+
+Kalkulacny vzorec vyrobneho podniku
+
+- Pouzije sa na tvorbu ceny
+- Obsahuje priame a nepriame naklady na jednotku vykonu
+- Sklada sa z
+  - Priamy material
+  - Priame mzdy
+  - Ostatne priame naklady
+  - Vyrobna (prevadzkova) rezia
+  - (= Vlastne naklady vyroby prevadzky)
+  - Spravna rezia
+  - (= Vlastne naklady vykonu)
+  - Odbytove naklady
+  - (= Uplne vlastne naklady vykonu)
+  - Zisk (alebo strata)
+  - (= Predajna cena)
+
+Vykon = jednotny nazov pre sluzby a
+
+#### Dopytovo orientovany pristup
+
+Zalozeny na udajoch z trhu - poniky sa snazia ceny co najviac prisposobit momentalnej dopytovej situacii  
+Zistenie udajov sa pouzivaju nastroje prieskumu trhu - dotazniky, ankety  
+Pouzivaju ju zvacsa podniky, ktore su schopne zvladnut narocnejsie a nakladne priskumy
+
+Ak sa ocakava velky dopyt = mozno stanovit vysoku cenu  
+Rozhodnutie - vyssia cena na elitnom trhu alebo nizsia cena na masovom trhu
+
+#### Konkurencne orientovany pristup
+
+Nezaklada sa na vlastnej cenovej strategii, neudrziava pevnu vazby medzi cenou a nakladmi a dopytom  
+Bud sa podriaduje konkurencii alebo
+
+Cena moze byt
+
+- Nad cenou konkurencie
+  - Ak mame konkurencnu vyhodu - kvalitu, znacka, podpora predaja, ...
+- Pod cenou konkurencie
+  - Ak v nizsej cene zpociva jeho hlavna konkurencna vyhoda
+  - Vzbudzuje nedoveru kupujucich voci kvalite
+  - Spravidla nizsi zisk, dlhodobo
