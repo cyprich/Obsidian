@@ -1116,3 +1116,111 @@ Autentifikacny framework, nie samotny mechanizmus
 Najcastejsie pouzivany v bezdrotovych sietach (WPA/WPA2)  
 Zaistuje zjednanie autentifikacnych metod (okolo 40) - `EAP-TLS`, `EAP-PSK`, `EAP-MD5`, ...  
 Nie je protokol, len definuje format sprav, nie je zapuzdrovany
+
+## QoS
+
+Quality of Service
+
+IP siete s ktorymi pracujeme sa ku kazdemu toku dat zvyknu chovat rovnako  
+Toky dat ale rovnocene nie su
+
+QoE - experience - ako to clovek vnima  
+QoS - service - meratelne parametre (oneskorenie, straty, ...)
+
+SLA - Service Level Agreement
+
+ITU-T Odporucanie E.800
+
+- Quality
+- Service
+- Quality of Service
+
+Tradicna nekonvergovana siet - TV zvlast, WAN zvlast, PSTN (telefony) zvlast  
+Nevyhody - drahsie, vyssie naroky na udrzbu a administraciu
+
+Konvergovana siet - vsetko v jednom - hlas, video, realtime aplikacie
+
+### Faktory ovplyvnujuce QoS
+
+Prenosova kapacita
+
+- Rychlost interface-u
+- Mnohe toky o nu superia
+
+Celkove oneskorenie (fixne aj variabilne zlozky)
+
+Kolisanie oneskorenia - jitter
+
+Straty paketov
+
+- Pri zahlteni sa pakety mozu zahadzovat
+
+Differentiated services
+
+Ako ziskat disponibilnu kapacitu
+
+- Zrychlit linku
+- QoS
+- Komprimovat obsah a/alebo hlavicky
+
+### Druhy oneskorenia
+
+Processing delay
+
+- Oneskorenie pri spracovano
+- Od prijatia paketu (cez vsetky procesy) az po ulozenie do vystupneho frontu vystupneho rozhrania
+
+Queuing delay
+
+- Oneskorenie vo fronte
+- Cas vo vystupnom fronte rozhrania
+
+Serialization delay
+
+- Serializacne oneskorenie
+- Odoslanie paketu rozhranim na danej prenosovej rychlosti
+
+Propagation delay
+
+- Oneskorenie pri sireni
+- Prechod signalu po fyzickom mediu
+
+Processing a Queuing su variabilne  
+Propagation a Serialization su fixne
+
+### Druhy strat paketov
+
+Tail drop
+
+- To co presiahne bude zahodene
+
+Predchadzanie stratam
+
+- WRED - Weighted Random ? Detection - nahodne zahadzujeme
+
+### Nastroje pre poskytovanie QoS
+
+- Klasifikacia
+- Znackovanie (Marking)
+- Predchadzanie zahlteniu (Congestion avoidance)
+- Riesenie zahltenie (Congestion Management)
+- Tvarovanie a obmedzovanie prevadzky (Shaping, Policing)
+- Machanizmus efektivnosti linky (Link Efficiency Mechanisms)
+
+### Modely poskytovania kvality sluzby
+
+Best efort
+
+- Nic neriesime
+- Vynikajuca skalovatelnost
+
+Integrated Services (IntServ)
+
+- Zabezpecujeme bandwidth pre kazdu aplikaciu zvlast
+
+Differentiated Services (DiffServ)
+
+- Toky dava do tried
+- Pre siete zvlast - dobra skalovatelnost
+
+### Resource Reservation Protocol (RSVP)
