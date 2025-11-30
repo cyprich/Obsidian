@@ -1331,7 +1331,7 @@ Used in - Cisco Webex Teams (sending you messages), Cisco DNA Center
 
 Four-tier structure/model
 
-- Development - coding, smaller scale = programmer's notebook, larger scale = server
+- Development - coding; smaller scale project = programmer's PC, larger scale = server
 - Testing - testing code, similar to production env, testing everything
 - Staging - after testing, almost identical to production
 - Production - what user sees
@@ -1342,9 +1342,25 @@ In smaller scale, some of them may be merged (test+staging, dev+test)
 
 #### Bare metal
 
+Most basic  
+Installing directly on the target machine  
+Direct access to HW - sometimes needed in High Performance Computing (HPC)  
+Difficult to isolate different workloads
+
 #### Virtual machines
 
+Either _Type 1_ Hypervisor (running on HW), or _Type 2_ Hypervisor (running as an application)  
+Easier to isolate  
+Easier to reproduce  
+Easier to distribute  
+(Sometimes) Ability to make snapshots
+
 #### Container-based infrastructure
+
+Docker  
+Does not contain whole OS - less resource usage,  
+Easier to isolate  
+Ability to orchestrate with Kubernetes for example
 
 #### Serverless Computing
 
@@ -1358,16 +1374,15 @@ Where to deploy
 - Hybrid Cloud
 - Edge Cloud
   - Used with IoT, embedded
-  - .
+  - Enables resources (HW) to be closer to where they are needed
+  - Less powerful HW
 
 Cloud has advantage over virtualisation - orchestration
 
 ### Docker
 
-.
-
 - Namespaces - isolates processes, devices, ... from others
-- Control groups - `cgroups` - limit resources
+- Control groups - `cgroups` - limit resources used by app
 - Union File Systems - `UnionFS` - make FS from multiple layers - you can switch only one layer instead of everything, retry only one layer on error,
 
 Images are usually read-only
@@ -1377,15 +1392,24 @@ Some commands
 ```bash
 docker build
 docker images
+
 docker run -it image /bin/sh
 docker run -d image  # detached
 docker run -d -P image  # publish ports automatically
 docker run -d -P --name myapp image  # custom name
 docker run -d -p 8080:8080 image  # publish specific ports
+
+docker ps
 docker exec -it image /bin/sh
 docker stop image
 docker rm image
+
+docker login
+docker tag
+docker push
 ```
+
+> Note: replace `image` with the actual image name (found with `docker images`)
 
 #### Dockerfile
 
@@ -1398,6 +1422,8 @@ Syntax
 - `RUN pip install flask` - when container is created
 - `CMD python /home/ubuntu/app.py` - when container runs
 - `EXPOSE 8080` - port, TCP by default
+
+Other keywords - `MAINTAINER`, `ENV`, `ENTRYPOINT`, `VOLUME`, `USER`, `ARG`, `ONBUILD`, `STOPSIGNAL`, `LABEL`
 
 Everything makes separate layer in UnionFS
 
@@ -1430,6 +1456,8 @@ CI
 CD
 
 - .
+
+Jenkins
 
 Strategies
 
