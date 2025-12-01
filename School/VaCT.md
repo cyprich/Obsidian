@@ -1487,3 +1487,99 @@ Reverse proxy
 
 Encryption  
 SSH, TLS,
+
+## Infrastructure and Automation
+
+> DevNet Associate M7 - Infrastructure and Automation
+
+### Infrastructure and Automation
+
+Automation solutions
+
+- Walk - read only automation
+- Run - activate policies and provide self-service across multiple domains
+- Fly - deploy applications, network configurations, and more through CI/CD
+
+Advantages of automation
+
+### DevOps and SRE
+
+Dev
+
+- Developers
+- Programming and all around it
+
+Ops
+
+- Operators (administrators)
+- Deployment, OS, resources, network, storage
+
+Core principles
+
+- A focus on automation
+- The idea that _failure is normal_
+- A reframing of _availability_ in terms of what a business can tolerate
+
+SRE - Site Reliability Engineering
+
+SLO - Service Level Objective  
+SLI - Service Level Indicators
+
+[https://sre.google/books/](https://sre.google/books/)
+
+### Basic Automation Scripting
+
+Bash, programming languages using SDKs, Python
+
+Procedural Automation (imperative)
+
+Idempotency - when running a script multiple times, you will always get the exact same state
+
+### Automation Tools
+
+Ansible, Puppet, Chef
+
+What do automation tools do for us
+
+- Simplify and standardize
+- .
+- .
+- .
+- .
+
+Concepts
+
+- Statelessness
+
+#### Ansible
+
+#### Puppet
+
+#### Chef
+
+### Infrastructure as Code
+
+GitOps - whole config in Git
+
+> NetOps - network config
+
+Multiple branches - production, test, development
+
+### Automation Testing
+
+Software Defined Networks (SDN)  
+Python Automated Test System (pyATS)
+
+### Network Simulation
+
+Cisco VIRL - Virtual Internet Routing Laboratory  
+VRL was renamed to CML - Cisco Modelling Labs
+
+GNS3
+
+- 3 parts
+  - GUI desktop client
+  - Server (or VM), connects to GUI
+  - Web GUI
+
+[https://gns3.com](https://gns3.com)
