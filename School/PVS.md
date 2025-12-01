@@ -763,3 +763,171 @@ Vlastnosti
 - Self-healing
 - Prenos sprav pomocou inzerovania a skenovania
 - .
+
+## Spolahlivy prenos dat
+
+Zdroje chyb
+
+- Sum
+- Impulzy
+
+Typy chyb
+
+- Nahodne s urcitou pravdepodobnostou
+- Zhluky (burst)
+
+Spolahlivy prenos - odosielatel je informovany o uspesnom doruceni dat  
+Spatna vazba
+
+- Potvrdzovacia
+  - Pozitivne potvrdenie - data boli prijate
+  - Negativne potvrdenie - data neboli prijate
+  - Pozitivne aj negativne potvrdzovanie
+- Detekcna
+- Informacna
+
+Sposob kontroly - extra info
+
+- Len detekcia - kontrolne sucty, parita, CRC
+- Detekcia s opravou (samoopravne kody, 2D parita)
+
+Typy potvrdzovania (bud `ACK` alebo `NAK`)
+
+- Jednotlive
+  - Po kazdom pakete
+  - Druhy paket sa posle ked prvy je potvrdeny
+- Priebezne (kontinualne)
+  - Posiela sa furt, prelina sa
+  - Necaka sa na potvrdenie
+  - 2 druhy
+    - Selektivne - retransmission jedneho paketu ktory sa stratil (viac efektivne)
+    - S navratom - retransmission vsetkym paketov, zacinajuc tym paketom ktory sa stratli (mozno mensi zmatok)
+
+### Detekcne kody
+
+- Kazdy kod detekuje len urcity pocet chyb, kazdy je vhodny na nieco ine
+- Detekcia **nikdy** nie je 100%
+- Ochrana voci nahodnym chybam, nie umyselnym
+
+Hammingova vzdialenost
+
+- Pocet bitov, v ktorych sa dve slova lisia
+- Pre kody: minimalna vzdialenost dvoch kodovych slov ($d$) (akoze najhorsia moznost)
+  - Detekcia: $d - 1$ chyb, cize $d$ musi byt minimalne `2`
+  - Oprava: $\dfrac{d - 1}{2}$, cize $d$ musi byt minimalne `3`
+
+Cize napr. ked mame `10110` a `00111`, tak sa lisia v 2 bitoch, cize vieme detekovat
+
+#### Opakovaci kod
+
+- Opakovenie dat niekolko krat
+- Nizky _code rate_ - pomer uzitocnych dat
+- Mozem _code rate_ prisposobit vlastnostiam kanala - malo sumu = malo opakovania, vela sumu = vela opakovania
+- Opakovanie dat jeden krat - detekcny kod - posielam `0` -> `00`, pride mi `01` alebo `10`, tak viem ze nieco je zle
+- Opakovanie dat viac krat - samoopravny kod - posielam `0` -> `000`, pride mi `100`, tak viem ze `1` je zle
+
+#### Sucet modulo M
+
+Postup
+
+1. Scitat slova (scitavaju sa postupne ako sa prijimaju data)
+2. Vydelit cislom `M`
+3. Kontrolny sucet = zvysok po deleni; Ina moznost = doplnok zvysku
+
+Ked budem delit cislom `15`, tak zvysok moze byt `0` az `15`  
+Ak dostanem `3`, tak doplnok (do `M` (do `15`)) je `12`
+
+Ak ? = `0` tak sme prijali spravne (?)
+
+Vlastnosti
+
+- Dokaze odhalit chybu v jednom bite
+- Pri 2 bitoch moze byt problem ak chyba nastane v tom istom bite, pravdepodobnost $< \frac{1}{n}$
+- Nezohladnuje poradie udjov
+- Nezachyti vkladanie/mazanie nul
+
+#### Fletcher checksum
+
+Okrem obycajneho suctu sa robi aj _sucet suctov_
+
+| Prenasane cislo | Sucet | Sucet suctov |
+| --------------- | ----- | ------------ |
+| 5               | 5     | 5            |
+| 6               | 11    | 16           |
+| 7               | 18    | 34           |
+| 8               | 26    | 60           |
+| 9               | 25    | 95           |
+| Sucet mod 9     | 8     | 5            |
+
+Prenesieme aj checksum `8` aj `5`
+
+V praxi sa deli takym cislom, aby zvysok mal co najviac moznosti - pri 8bit najcastejsie modulo 256 alebo 255 (alebo prvocislo?) - aby sa nahodou nestalo ze zly chechsum padne na take iste cislo ako dobry checksum
+
+Rozne druhy
+
+- Fletcher-16 (8bit sucet, 8bit sucet suctov)
+- Fletcher-32 (16bit a 16bit)
+- Fletcher-64 (32bit a 32bit)
+
+#### Kod 2 z 5
+
+V 5bit slove su 2 jednotky  
+Napr. na zakodovanie desiatkovych cislic (0-9)
+
+Hammingova vzdialenost = `2`
+
+Moc sa pri prenose nepouziva  
+Vyuzitie skor pri niektorych ciarovych kodoch
+
+#### Parita
+
+Pre male bloky dat (1 bajt)
+
+Hovori o pocte jednotiek - parna alebo neparna - doplna na parny resp. neparny pocet jednotiek  
+Dokaze odhalit neparny pocet chyb
+
+Sposob generovania parnej parity
+
+- XOR vsetkych bitov
+- Sucet modulo 2
+- CRC (polynom x + 1)
+
+#### CRC
+
+Cyclic Redundancy Check
+
+Odhaluje zhluky chyb (bursts) do dlzky `n`  
+Lahka implementacia do HW  
+Analyticke vyhodnotenie ucinnosti
+
+$\dfrac{data}{polynom} = celociselna cast + zvysok CRC$
+
+Data povazujeme za polynom - data = koeficienty polynomu  
+To iste ako delenie so zvyskom
+
+Namiesto odcitania sa pouziva XOR
+
+Vypocet
+
+1. Pod data napisem polynom - napr. `1011` = $1x^3 + 0x^2 + 1x^1 + 1x^0$
+2. Ak `0` tak pokracujeme, aj `1` tak `data XOR polynom`
+3. Opakujeme pr vsetky datove bity
+4. Ostane CRC
+
+Treba si za data doplnit `n-1` nul, kde `n` je stupen polynomu
+
+```txt
+              CRC
+data 101001 | 000
+poly 1011   |
+     -------------
+     000101 | 000
+        101 | 1
+        000 | 100
+```
+
+Polynom musi mat prvu aj poslednu `1`, cize potom nemusime prenasat jednu z nich
+
+> Polynom musi byt "prvocislo"?
+
+Priklady generujucich polynomov
