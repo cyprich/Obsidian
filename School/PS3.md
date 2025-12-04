@@ -1224,3 +1224,118 @@ Differentiated Services (DiffServ)
 - Pre siete zvlast - dobra skalovatelnost
 
 ### Resource Reservation Protocol (RSVP)
+
+## Alternativne riesenie k protokolu SIP pre VoIP
+
+### XMPP
+
+Extensible Messaging and Presence Protocol  
+Povodne z komunity Jabber  
+Pouziva XML
+Open source
+
+[xmpp.org](https://xmpp.org)
+
+RFC 3920, 3921  
+TCP/5222 - Klient to Server  
+TCP/5269 - Server to Klient
+
+XMPP Standards Foundndation (XSF)
+
+Architektura
+
+- Hierarchicka
+- Domena - jeden sever
+- Pouziva DNS
+- Klient vzdy komunikuje len so svojim serverom, nie s inym serverom, nie s inym klientom
+
+Adresova schema - Jabber ID (JID) - `[node]@domain[/resource]`
+
+- Node =
+- Domain =
+- Resource =
+
+XMPP Stream - komunikacia - TCP stream  
+TCP relacia obalena v XMPP relacii?
+
+Klient sa prihlasi na server  
+Server posle zoznam sluzieb/funkcii
+
+Podpora sifrovania - TLS, SASL
+
+Sposob komunikacie
+
+- `<message/>` - jeden smer, jeden prijemca
+  - typy - chat, groupchat (posielam na server, preto iba jeden), error, ...
+  - telo - text
+- `<presence/>` - jeden smer, viac prijemcov
+  - chat, available, away, subscribe, ...
+- `<iq/>` - oba smery - ziadost/odpoved
+  - Request
+  - Response
+
+Uzavretie spojenia - poslanie prazdneho streamu
+
+Zmensenie objemu dat - kompresia  
+Znizenie oneskorenia
+
+#### Rozsirenia
+
+CAP - Common Alerting Protocol (XEP-0127) - upozornenia o povodniach, tsunami, ...  
+Entity Capabilities (XEP-0115) - ake funkcie entita (klient/server) podporuje
+
+#### Spolupraca s DNS
+
+DNS SRV zaznamy
+
+- `_xmpp-server._tcp.domain`
+- `_xmpp-client._tcp.domain`
+
+### WhatsApp
+
+Proprietary  
+Sifrovanie - Signal protokol  
+Klient-server  
+Data - WebSocket (obojsmerna komunikacia) + protobuf2 (serializacia) + JSON
+
+Polozky JSON - ceonversation, participant, fromMe, group, remoteJid, sent, id
+
+### M🤮crosoft Teams
+
+Text a video vychadza zo Skype  
+V sucasnosti text proprietary protokol od MS
+
+MSN Messenger  
+MSNP24 - MS Notification Protocol 24
+
+Predchodca Skype - Skype for Byssiness - povodne MS Link
+
+Zdielanie suborov - Sharepoint (a.k.a. OneDrive for Business)  
+Mail cez Exchange
+
+Da sa spojit s VoIP rieseniami pomocou SIP Gateway
+
+### Skype
+
+Povodne z aplikacie KaZaa - P2P aplikacia pre zdielanie suborov (najma hudba, este ked neexistoval torrent)  
+P2P overaly siet
+
+Signalizacia - TCP  
+Media - UDP aj TCP  
+Kodey - iLBC, iSAC, iPCM
+
+Zabezpecenie
+
+- Sifrovanie 256b AES
+- Vymena kluco 1024b RSA
+- Prihlasovanie a autentifikacia pouzivatelov cez certifikaty
+
+Zakladne entity
+
+- Skype client - klientska aplikacia, urdziava zoznam SuperNodes v host cache (zoznam `IP:Port`)
+- SuperNode - verejne dostupny node, medzilahly prvok, zvycajne rychlejsi internet, povodne lubovolny klient neskor servery MS, relay agent pri 2 klientoch za NAT
+- Authentication/Login server - auth `meno:heslo`, ukladanie zoznamu kontaktov
+
+Konferencny hovor - Hub (SuperNode) and Spoke (Client)
+
+Potlacenie ticha - ziadny extra mechanizmus, sucast medii - keepalive za NAT
