@@ -1094,3 +1094,82 @@ Cena moze byt
   - Ak v nizsej cene zpociva jeho hlavna konkurencna vyhoda
   - Vzbudzuje nedoveru kupujucich voci kvalite
   - Spravidla nizsi zisk, dlhodobo
+
+## Predaj a zdanovanie prijmov
+
+### Predaj
+
+Predaj
+
+- Spojovaci clanok medzi vyrobou a spotrebou
+- Zahrna subor cinnosti, ktorych cielom je realizacia vykonov podniku
+- Existencny vyznam pre podnik
+
+Zakladne ulohy predaja
+
+- Realizacia priskumu potrieb
+- Planovanie predaja a usmernovanie zamerania vyroby na uspokojovanie pozadovanych potrieb
+- Ovplyvnovanie pozicie podniku na trhu
+- Zabezpecenie konkretneho predaja na trhu vratane
+- .
+
+Kriticky objem vyroby a predaja - nulovy bod, bod zvratu - objem predaja pri ktorom $trzby = naklady$
+
+- Predaje vyssie ako bod zvratu produkuju zisk
+- Predaje nizsie ako bod zvratu produkuju stratu
+
+$T = c \times Q$  
+$N = N_f + N_v = N_f + (n_v \times Q)$  
+$T = N \Rightarrow BZ = Q = \dfrac{N_f}{c - n_v}$
+
+Ak chceme dosiahnut zisk $Z$, tak potom $\dfrac{N_f + Z}{c - n_v}
+
+Kde
+
+- $T$ = Trzby
+- $c$ = Cena
+- $Q$ = Mnozstvo
+- $N$ = Naklady
+- $N_f$ = Fixne naklady
+- $N_v$ = Variabilne naklady
+- $n_v$ = Jednotkove variabilne naklady
+- $BZ$ = Bod zvratu
+
+Naklady podla objemu vykonov - ako sa zmenia naklady ak sa zmeni objem vyroby (vykohov)
+
+- Fixne naklady - nemenia sa s objemom vyroby (v ramci vyrobnej kapacity)
+  - Absolutne fixne naklady - najomne, vykurovanie, osvetlenie
+  - Relativne fixne naklady - odpisy, DPH
+- Variabilne naklady - menia sa s objemom vyroby
+  - Proporcionalne naklady - spotreba priameho materialu
+  - Progresivne naklady - naklady opravy, mzdove zvyhodnenia
+  - Degresivne naklady - opravy DHM, naklady na technologicke palivo
+
+### Marketingova strategia predaja
+
+Premieta nastroje odbytovej politiky do...
+
+4P pri marketingovom mixe
+
+- Product
+- Price
+- Place (distribucia)
+- Promotion
+
+### Zdanovanie prijmov
+
+#### Dan z prijmov FO
+
+Dan z/zo
+
+- zavislej cinnosti
+- **podnikania**
+- inej samostatnej zarobkovej cinnosti
+- prenajmu
+- pouzitia diela a umeleckeho vykonu
+- kapitaloveho majetku
+- ostatne prijmy
+- podiel na zisku (dividenda)
+- ...
+
+#### Dan z prijmov PO
