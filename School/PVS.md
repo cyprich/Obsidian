@@ -931,3 +931,122 @@ Polynom musi mat prvu aj poslednu `1`, cize potom nemusime prenasat jednu z nich
 > Polynom musi byt "prvocislo"?
 
 Priklady generujucich polynomov
+
+### Hash
+
+Pouzivane pri elektronickom podpise, distribucii suborov  
+Message digest  
+Keyed hash - moznost ochrany pred umyselnym podvrhnutim
+
+## Samoopravne kody
+
+ECC (Error Correction Code), oznacovane aj ako FEC (Forward Error Correction)
+
+- Pridanie dodatocnych informacii
+- Vyuziva sa ked je narocne alebo nemozne opakovanie prenosu
+
+Hammingova vzdialenost aspon 3 - 2 chyby detekovat alebo 1 chybu opravit
+
+Systematicke - priamo obsahuju povodne data  
+Nesystematicke - data su zakodovane
+
+Blokovo - pracuju s blokom dat  
+Konvolucne - tok bitov - doplnkove data su pridavane priebezne
+
+Vlastnost _"vsetko alebo nic"_
+
+- Spravna funkcnost nad urcitym prahom ruchu
+- Pod prahom uplne nefunkcne
+
+### 2D parita
+
+Robi sa parita "po riadkoch" a zaroven "po stlpcoch", nasledne aj "parita parit"
+
+Vdaka tomuto je Hammingova vzdialenost `4` => datekcia `3`, oprava `1`  
+Vieme opravit aj viac, ak je neparny pocet chyb v jednom riadku (stlpci)
+
+Moze byt aj `n`-dimenzionalna
+
+### Opakovanie bitov
+
+Kazdy bit prenesieme `n`-krat
+
+Hammingova vzdialenost = `n`  
+Ak `n = 3`, je to Hammingov kod `H(3,1)`
+
+### Hamingove kody
+
+`H(n,k)`
+
+- `n` = pocet bitov kodu
+- `k` = pocet bitov dat
+
+`r = n - k` - pocet kontrolnych (paritnych) bitov
+
+Najcastejsie $H(2^r - 1, 2^r - r - 1)$ - `H(3,1)`, `H(7,4)`, `H(15,11)`, `H(31,26)`
+
+Dokonaly kod - najlepsi pomer $\dfrac{k}{n}$ pre vzdialenost `d=3`
+
+Vzdy nam ostava jeden bit - mozeme spravit paritu  
+SECDED (Single Error Correcting, Double Error Detecting)  
+ECC Pamate
+
+`H(7,4)`
+
+- Datove bity $D$, Paritne bity $P$
+- $D_4 D_3 D_2 P_3 D_1 P_2 P_1$
+- (Prijata parita) XOR (Vypocitana parita)
+- Vypocet parity
+  - $P_1 = D_1 \oplus D_2 \oplus D_4$
+  - $P_2 = D_1 \oplus D_3 \oplus D_4$
+  - $P_3 = D_2 \oplus D_3 \oplus D_4$
+
+### Reed-Solomon kody
+
+Oprava 2 typov chyb
+
+- Erasure - pozname miesto, nepozname hodnotu
+- Error - nepozname nic
+
+$2 \times e + v \leq (n-k)$
+
+Kde
+
+- $e$ - pocet errors
+- $v$ - pocet erasure
+- $n$ - celkova dlzka kodu
+- $k$ - dlzka dat
+- $n - k$ - minimalna vzdialenost - pridane informacie
+
+Optimalny FEC kod
+
+Kodovanie
+
+- Znaky spravy = koeficienty polynomu
+- Delenie generujucim polynomov
+- Zvysok = RS kod
+
+Generujuci polynom - $(x-a^0) \times (x-a^1) \times (x-a^2) \times (x-a^3) \times \dots$, napr. $a = 2$
+
+### Hadamard-ov kod (Reed-Muller)
+
+### Glay-ov kod
+
+### Turbo kody
+
+### LDPC kody
+
+### Polar code
+
+## Sifrovanie
+
+Zabezpecenie dat proti
+
+- Odpocuvaniu
+- Umyselnej zmene
+- Zamene identity
+
+Dva sposoby
+
+- Symetricke
+- Asymetricke
