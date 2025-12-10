@@ -459,6 +459,39 @@ Nevyhody
 
 ### SCRUM
 
+Dopredu nevieme uplne presne co bude pri vyvoji nutne robit  
+Zavadza teda kazdodenne stretnutia, ktore prinesu slabe, zato caste zablesky svetla
+
+Klucove pojmy
+
+- Flexibilne predmety dodania
+- Flexibilny harmonogram
+- Male timy
+- Caste revizie
+- Spolupraca
+- Backlog
+- Sprint
+- Riziko
+- Scrum meeting - co som spravil, co idem robit dnes, ci mam s niecim problem co idem prebrat; idealne nie viac ako 15 minut
+
+Vyhody
+
+- Reakcie na zmeny
+- Sloboda volby riesenia
+- OOP
+- Prepracovany sposob odhadu pracnosti
+
+Nevyhody
+
+- Skor suhrn vzorov
+- Tazke zavedenie
+- Vsetci clenovia timu
+- Nie vhodne pre kazdeho cloveka
+
 ### TDD
 
 Test-driven development
+
+## Testovanie
+
+Cielom softveroveho testera je vyhladavat chyby, vyhladavat ich co najskor a zaistit ich opravu
