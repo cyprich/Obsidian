@@ -1173,3 +1173,133 @@ Dan z/zo
 - ...
 
 #### Dan z prijmov PO
+
+## Ochrana dusevneho vlastnictva
+
+Preco chranime svoj majetok
+
+- Aby sme ho mohli pouzivat (ja, nie ktokolvek)
+- Aby sme z neho mohli mat prospech (prenajom)
+
+Dusevne vlastnictvo = majetok nehmotnej povahy, ktory je vysledkom tvorivej ludskej cinnosti
+
+- V podniku suvisia s predmetom cinnosti, business modelom
+  - Priemyselne podniky - technika - patent, uzitkovy vzor
+  - Vyrobne podniky - vyrobky pre konecneho uzivatela - dizaj, ochranna znamka
+  - IT podniky - autorske prava
+
+Ziskanie vylucneho prava
+
+- Pouzitie
+- Ziskanie prospechu
+  - Konkurencna vyhoda pri vstupe na trh
+  - Uddrzanie konkurencnej vyhody po vstupe na trh
+  - Maximalizacia marze
+  - Moznost udelenia suhlasu na puzitie - licencia
+
+Predmetom autorskeho prava je dielo z oblasti literatury, umenia alebo vedy, ktore je jedinecnym vysledkom tvorivej dusevnej cinnosti autora vnimatelnymi zmyslami, bez ohladu na jeho podobu, obsah, kvalitu, ucel, formu jeho vyjaadrenia alebo mieru jeho dokoncenia
+
+### Autorske prava
+
+Vyhradne - len autor si vyhradzuje tie prava
+
+#### Vyhradne osobnostne prava
+
+Rozhodnut o zverejneni alebo o nezverejneni svojho diela
+
+Byt oznaceny ako autor a rozhodnut o sposobe takehoto oznacenia
+
+Nedotknutelnost svojho diela
+
+#### Vyhradne majetkove prava
+
+Pravo na pouzitie diela
+
+- Spracovanie diela
+- Spojenie diela s inym dielom
+- Zaradenie diela do databazy
+- Vyhotovenie rozmnozeniny diela
+- Verejne rozsirovanie originalu diela alebo rozmnozeniny diela (prevodom vlastnickeho prava, vypozicanim, najmom)
+- Uvedenie diela na verejnosti (vystavenie originalu diela alebo rozmnozeniny diela, verejne vykonavanie diela, verejny prenos diela)
+
+Pravo na udelenie suhlasu na pouzitie diela
+
+- Na zaklade licencnej zmluvy
+
+#### Licencna zmluva
+
+Nalezitosti
+
+- Sposob pouzitia diela
+  - Spracovanie diela, Spojenie diela s inym dielom, ...
+- Rozsah
+  - Neobmedzeny
+  - Obmedzeny
+    - Vecne - max. 500 ks kopii, iba na CD (nie cez internet), predaj pre zdravotnicke zariadenia, ...
+    - Uzemne - len na Slovensku, Krajiny EU, ...
+- Cas, na ktory autor licenciu udeluje, alebo sposob jeho urcenia
+  - Datum
+  - Naplnenie rozsahu pouzitia diela
+- Odmenu alebo sposob jej urcenia, ak sa autor s nadobudatelom nedohodol na bezodplatnom poskytnuti licencie
+  - Pevna suma
+  - Zavislost od prijmov z licencie
+
+Druhy
+
+- Vyhradna - prava len nadobudatel
+- Nevyhradna - prava maju
+  - Nadobudatel
+  - Autor
+  - Iny pravneny uzivatel - dalsi nadobudatel
+
+#### Zamestnanecke dielo v autorskom zakone
+
+Dielo vytvorene autorom na splnenie povinnosti vyplyvajucich mu z pracovnopravneho vztahu alebo z obdobneho pracovneho vztahu
+
+Majetkove prava autora k zamestnaneckemu dielu vykonava vo svojom mene a na svoj ucet zamestnavatel, ak nie je dohodnute inak
+
+Zamestnavatel ma pravo zverejnit dielo, oznacit ho svojim nazvom, dokoncit dielo, zmenit dielo
+
+#### Skolske dielo v autorskom zakone
+
+Autorom su deti, ziaci, alebo studenti (SOC, bakalarske prace, diplomove prace)
+
+Dielo vytvorili na splnenie svojich skolskych alebo studijnych povinnosti, ktore maju na zaklade ich pravneho vztahu ku skole  
+Skola vynalozila urcite naklady (poskytla nastroje, zariadenie, energie, ...), cim pomohla ziakovi alebo studentovi vytvorit dielo
+
+Autor je na navrh skoly povinny uzavriet so skolou nevyhradnu, bezodplatnu licencnu zmluvu na nekomercne ucely pouzitia diela
+
+Ak to autor odmietne, skola ma pravo sa domahat jej uzavretia na sude
+
+### Prava priemyselneho vlastnictva
+
+Registrovane (upravene zakonmi a vyhlaskami)
+
+- Patenty
+  - Na vynalezy - predmety zariadenia, sposoby vyroby, pracovne postupy, pouzitie znamej veci na novy ucel
+- Uzitkove vzory
+  - Na technicke riesenia - predmety, zariadenia
+- Topografie polovodicovych vyrobkov
+- Dizajny
+- Ochranne znamky
+- Oznacenia povodu vyrobkov
+- Zemepisne oznacenia
+
+Neregistrovane (upravene v obchodnom zakonniku)
+
+- Know-how
+- Obchodne tajomstvo
+
+Znaky pre registraciu patentu
+
+- Novost
+  - Ci nie je sucastou stavu techniky
+  - Stav techniky = vsetko, co bolo kdekolek pred dnom, o dktoreho patri prihlasovatelovi pravo prednosti, spristupnene verejnosti akymkolvek sposobom
+- Vynalezcovska cinnost
+- Priemyselna vyuzitost
+
+Co sa nepovazuje za vynalezy
+
+- Objavy, vedecke teorie a matematicke metody
+- Esteticke vytvory (dizajny)
+- Plany, pr
