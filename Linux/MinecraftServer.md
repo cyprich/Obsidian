@@ -131,6 +131,14 @@ mv modify <world> set hunger false
 mv entity-spawn-config modify lobby monster set spawn false
 ```
 
+Where to spawn by default
+
+```bash
+mv config first-spawn-override true
+mv config first-spawn-location lobby
+mv setspawn lobby:0,-61,3,180,0
+```
+
 ### Regions
 
 Required plugins: `WorldEdit`, `WorldGuard`
@@ -192,11 +200,11 @@ rg flag <name> food deny
 Available flags: allowed-cmds, block-break, block-place, block-trampling, blocked-cmds, breeze-charge-explosion, build, chest-access, chorus-fruit-teleport, copper-fade, coral-fade, creeper-explosion, crop-growth, damage-animals, deny-message, deny-spawn, enderdragon-block-damage, enderman-grief, enderpearl, entity-item-frame-destroy, entity-painting-destroy, entry, entry-deny-message, exit, exit-deny-message, exit-override, exit-via-teleport, exp-drops, fall-damage, farewell, farewell-title, feed-amount, feed-delay, feed-max-hunger, feed-min-hunger, fire-spread, firework-damage, frosted-ice-form, frosted-ice-melt, game-mode, ghast-fireball, grass-growth, greeting, greeting-title, heal-amount, heal-delay, heal-max-health, heal-min-health, ice-form, ice-melt, interact, invincible, item-drop, item-frame-rotation, item-pickup, lava-fire, lava-flow, leaf-decay, lighter, lightning, mob-damage, mob-spawning, moisture-change, mushroom-growth, mycelium-spread, natural-health-regen, natural-hunger-drain, nonplayer-protection-domains, notify-enter, notify-leave, other-explosion, passthrough, pistons, potion-splash, pvp, ravager-grief, receive-chat, respawn-anchors, ride, rock-growth, sculk-growth, send-chat, sleep, snow-fall, snow-melt, snowman-trails, soil-dry, spawn, teleport, teleport-message, time-lock, tnt, use, use-anvil, use-dripleaf, vehicle-destroy, vehicle-place, vine-growth, water-flow, weather-lock, wind-charge-burst, wither-damage,
 ```
 
-## Authentication with `AuthMe`
+### Authentication with `AuthMe`
 
 Required plugins: `AuthMe`
 
-### When logged in as player
+#### When logged in as player
 
 Register (first time only)
 
@@ -216,7 +224,7 @@ Change password
 changepassword <oldPassword> <newPassword>
 ```
 
-### When logged in server
+#### When logged in server
 
 Register player
 
@@ -231,3 +239,53 @@ AllowUnregisteredLogin: false
 kickNonRegistered: true
 ForceSingleSession: true
 ```
+
+### Holograms with `DecentHolograms`
+
+Required plugins: `DecentHolograms`
+
+Create hologram
+
+```bash
+dh hologram create <name> [-l:world:x:y:z] [--center] [content]
+
+dh hologram create rules -l:lobby:0:-58:0
+```
+
+Add text (line) to page `1` or `rules` hologram
+
+```bash
+dh line add rules 1 Do not kill animals unless necessary
+dh line add rules 1 If you destroy something, repair it
+dh line add rules 1 Resources are shared, but think of others
+dh line add rules 1 Do not modify others builds without permission
+
+# colored version
+dh line add rules 1 &cDo not kill&r animals unless necessary
+dh line add rules 1 If you &9destroy&r something, &9repair&r it
+dh line add rules 1 Resources are &ashared&r, but think of others
+dh line add rules 1 &eDo not modify&r others builds without permission
+dh line add rules 1 &6-------
+```
+
+Insert on line specific place rather than at the end
+
+```bash
+dh line insert rules 1 1 &6Rules
+```
+
+Different icons/items/heads/entities/stuff
+
+> Note: the `#` symbol here is not a commend and is required
+> Note: by using the `{player}` you will see your head
+
+```bash
+dh line add rules 1 #ICON: SUSPICIOUS_STEW
+dh line add rules 1 #ENTITY: WOLF
+dh line add rules 1 #ICON: PLAYER_HEAD (YungCypo)
+dh line add rules 1 #ICON: PLAYER_HEAD ({player})
+```
+
+#### Actions
+
+[link](https://wiki.decentholograms.eu/general/actions/)
