@@ -24,7 +24,7 @@ RFC 1034 and 1035 a mnohe dalsie
 
 Port 53
 
-- TCP ak sprava >512 B, alebo sa prenasaju cele zony
+- TCP ak sprava (IBA DATA!) >512 B, alebo sa prenasaju cele zony
 - UDP v ostatnych pripadoch (velkost <=512 B zarucuje, ze paket nemusi byt fragmentovany ani pri najmensom MTU - 576B)
 
 Takmer zadadne sa pouziva UDP (nizka rezia)
@@ -39,6 +39,10 @@ Standardne nesifrovany, ale su riesenia
   - RFC 8484
 
 #### Pojmy v DNS
+
+**Zona**
+
+Cast stromu, o ktorej ma server uplnu znalost a je za nu zodpovedny
 
 **Domena**
 
@@ -60,7 +64,7 @@ Standardne nesifrovany, ale su riesenia
 - Stub - hlupy - uplne spolieha na server a ocakava definitivnu odpoved
 - Rekurzivny - nehlupy - spracuje aj ciastocnu odpoved, ak ho server "odkaze" na iny server, vie si s tym poradit
 
-Kazdy uzol ma svoje vlastne meno (hostname) a patri do istej domeny
+Kazdy uzol ma svoje vlastne meno (**hostname**) a patri do istej domeny
 
 - hostname + domena = **Fully Qualified Domain Name** (FQDN)
 - Komponenty FQDN sa oddeluju bodkou a volaju sa **labels** - max 63 znakov dlhy, `[a-z][A-Z][0-9]`, standardne len ASCII znaky, da sa aj inak
@@ -209,8 +213,24 @@ RFC 2543
 RFC 3261  
 Velmi vela rozsirujucich RFC
 
+SIP je je signalizacny protokol pracujuci na urovni aplikacnej vrstvy  
+Definuje, ako sa ma iniciovat, modifikovat a ukoncovat interaktivne multimedialne komunikacne spojenie medzi 2+ pouzivatelmi
+
+Vlastnosti
+
+- Jednoduchost
+- Flexibilny a lahko rozsiritelny
+- Skalovatelny
+- Bohata podpora vyvoja sluzieb (aktivator)
+
+Princip cinnosti - trojcestny mechanizmus
+
+- Invite
+- .
+- .
+
 IP telefonia, telekomunikacia, multimedialna komunikacia  
-Klucovy protokol pre
+Klucovy protokol pre ...
 
 SIP je stabilna a odskusana technologia s mnohymi produktmi a rieseniami  
 Funguje na mnohych otvorenych komercnych produktoch (Cisco, ...) ale aj open-source
@@ -218,7 +238,7 @@ Funguje na mnohych otvorenych komercnych produktoch (Cisco, ...) ale aj open-sou
 Vyhody - nizsie ceny, kvalitnejsie sluzby, kvalitnejsi zvuk/obraz, ...  
 Nevyhody - podvody s fake ID, robocalling, telemarketing nevyziadane volania, ...
 
-Textore a binarne protokoly
+Textove a binarne protokoly
 
 |         | Vyhody                                                                                     | Nevyhody                                                                                     |
 | ------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
@@ -244,34 +264,91 @@ Casti?
 
 ### Princip cinnosti
 
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
+1. Princip klient/server - klient smeruje poziadavky na server, server spracovava ziadosti klientov
+2. SIP je transakcne orientovany stavovy aplikacny protokol - request-response, spravy su asociovane v transakcii - vymena jednej ziadosti a nasledujucich odpovedi
+3. Signalizacne spravy su textove (ASCII)
+4. Styl a uprava hlaviciek je podobna ako SMTP alebo HTTP/1.1 - URI a URL adresovanie, chybove spravy, parsovanie, prilohy sprav ako MIME
+5. SIP je end-to-end orientovany signalizacny protokol, logika umiestnena primarne v koncovych systemoch (servery, klienti)
 
-### SIP Entity
+_"Protokolova transakcia"_ je transakcia vytvorena vymenou ziadosti a nasledne generovanych odpovedi vyvolanych jej spracovanim  
+Musi byt jednoznacne identifikovana (kvoli spracovaniu) - ID transackie a _Branch parameter_ (tzv. magic cookie)
+
+_"Protokolovy dialog"_ je dialog v principe tvoreny viacerymi transakciami  
+Stav dialogu zavisi od transakcii  
+Tiez musi byt identifikovany
+
+Kroky
+
+1. DNS dopyt - pouzivatel `peter@uniza.sk` potrebuje vediet IP adresu servera `uniza.sk`, na ktoru bude dalej posielat poziadavky
+2. Peter posiela `INVITE sip:jan@uniza.sk` - from `sip:peter@uniza.sk` to `sip:jan@uniza.sk` - na SIP router
+3. SIP router sa dotazuje na databazu, ci pozna pouzivatela `jan`
+4. Databaza vrati SIP routeru IP adresu pouzivatela `jan`
+5. SIP router posiela `INVITE sip:jan@158.193.1.1:12345` (konkretna IP a port) - presmerovanie INVITE = Proxying
+6. Pouzivatel `jan` z IP `158.193.1.1` posle response `200 OK` na SIP router (_pozor_, stale je from `sip:peter@uniza.sk` to `sip:jan@uniza.sk` aj ked sa fyzicky ide opacnym smerom)
+7. SIP Router preposle tuto odpoved pouzivatelovi `peter`
+8. Pouzivatel `peter` posle `ACK` **priamo** pouzivatelovi `jan`. Tymto sa ukonci trojcestny handshake, cim je signalizacia ukoncena
+9. Tok medii prebieha **priamo** medzi pouzivatelmi `peter` a `jan`
+
+![obrazok](../images/ps3_sip_princip.png)
+
+> 3-way handshake = INVITE, OK, ACK
+
+### SIP URI
+
+SIP je internetovy protokol, preto pouziva internetove adresovanie - URI (Uniform Resource Identifier) = **SIP URI**  
+Obsahuje dostatok informacii na zalozenie a udrzanie komunikacie so zdrojom  
+Na preklad sa zvycajne pouziva DNS a ENUM
+
+![obrazok](../images/ps3_uri_url.png)
+
+HTTP URI = protokol + hostname + cesta a nazov suboru + fragment = `https://` + `www.example.com` + `/author/book` + `#page155`
+SIP URI = `sip:user@host:port;uri_parametre_hlavicky`, napr. `sip:peter@uniza.sk:12345;user=phone`
+
+Typy SIP URI
+
+- AOR - Address of Record
+  - Identifikuje pouzivatela (nie zariadenie)
+  - `sip:peter@uniza.sk`
+  - Potrebuje DNS SRV zaznam pre lokalizaciu SIP servera obsluhujuceho domenu `uniza.sk`
+- FQDN - Fully Qualified Domain Name
+  - Identifikuje dane zariadenie na ktorom je dostupny pouzivatel
+  - `sip:peter@158.193.1.1`
+  - `sip:peter@pc6.kis.fri.uniza.sk`
+  - `sip:+424531323@uniza.sk;user=phone`
+  - Vyuziva sa v Contact hlavicke na smerovanie SIP sprav medzi konkretnymi zariadeniami
+  - Vyzaduje A alebo AAAA DNS zaznam
+- GRUU - Globally Routable UA URIs
+
+Sip adresa moze prenasat aj heslo  
+`sip:peter:tajneheslo@uniza.sk`  
+Neodporuca sa pouzivat - prenasane ako clear text
+
+### SIP Sietove Entity
 
 - User Agent (UA)
-  - Bud UA Client alebo UA Server
+  - Bud UA Client alebo UA Server = **UAC, UAS**
   - Stavovy
 - SIP Server
-  - Registrar
-  - Proxy server
-  - Redirect
+  - Registrar server - prijima ziadosti o registracii klientov
+  - Proxy server - presmeruje dotaz k nasledujucemu serveru (viac serverom = forking)
+  - Redirect server - vrati klientovi odkaz na dalsi server
+  - Location service - info o mieste, kde sa nachadza pouzivatel, nie je sucastou SIP ale databaza, LDAP, ...
 
 Klient - entita, ktora vysiela dotazy a prijima odppovede - UAC, Proxy Server  
 Server - entita, tkora prijima dotazy, spracuje ich a vysiela spat odpovede - UAS, Registrar, Redirect, Proxy Server
+Realizacie implementuju _SIP Server_ - moze byt kombinacia Registrar, Redirect, Proxy, B2BUA
+
+Realizacia UA
+
+- Softphone - softverova aplikacia
+- Hardphone - Cisco, Avaya, GrandStream, Snom, ...
+- Messenger a pod.
 
 SIP Gateway
 
 - Specialny typ UA
 - Rozhranie medzi SIP sietou a sietou s inym signalizacnym protokolom (H.323, ISDN)
-- Gateway != SIP Proxy
+- **Gateway != SIP Proxy**
 
 Back 2 Back User Agent - B2BUA
 
@@ -299,9 +376,161 @@ Typy SIP Proxy serverov
 - Stateless
 - Statefull
 
+Lokalizacia SIP servera
+
+- Manualne oslovenie IP adresy
+- Multicast
+- Poskytnute v DHCP
+- DNS SRV (meno servera a port) + NAPTR (ake technologie su dostupne)
+
+SIP Proxy
+
+- medzilahla entita, v podstate SIP Router
+- Zodpoveda za
+  - Smerovanie, detekcia sluciek
+  - Kontrolu spravnosti SIP sprav - syntax, adresa, autorizacia
+  - Spracovanie a smerovanie SIP sprav - odpoved na dotaz, presmerovanie dotazu k cielovemu UAS
+  - Bezpecnost - autentifikacia, autorizacia
+- Spravy a polia ktorym nerozumie ignoruje
+
+### SIP Spravy
+
+Povodne UDP, teraz hlavne TCP
+
+> **UAC** = User Agent Client
+> **UAS** = User Agent Server
+
+Dva druhy sprav
+
+- Request - posiela UAC -> UAS, identifikovane menom (INVITE, BYE, ...)
+- Response - posiela UAS -> UAC, identifikovane ciselnym kodom (`xxx`)
+
+Format spravy
+
+```txt
+STARTOVACI_RIADOK
+HLAVICKA
+
+[TELO_SPRAVY]
+```
+
+Startovacia hlavicka = `metoda` + `sip uri` + `verzia sip`
+
+#### SIP Hlavicka
+
+Hlavicka SIP spravy sa sklada z poli hlaviciek
+Mena su znakovo citlive  
+Poradie nie je dolezite
+
+Delia sa na
+
+- Vyzadovane (mandatory) - To, From, Via, Call-ID, Cseq, Max-Forwards
+- Nepovinne (optional) - Subject, Date, Authentication, ...
+
+Niektore hlavicky maju vyznam len v ziadostiach, niektore len v odpovediach
+
+#### SIP Telo
+
+Moze byt prazdne  
+Moze nieco obsahovat - prilohy v email  
+Vacsinou obsahuje popis spojenia v SDP protokole - akou formou chceme komunikovat (hlas, text-chat, video, prenos suboru)
+
+#### SIP Metody
+
+INVITE, REGISTER, BYE, ACK, CANCEL, OPTIONS
+
+INVITE
+
+- Ziadost o zalozenie spojenia
+- Obsahuje
+  - Ako budeme komunikovat (v SDP enkapsulovane v SIP INVITE)
+  - Dodatocne info - QoS ktore mozem poziadat od siete, alebo bezpecnostne info
+
+ACK
+
+- Ukoncuje _"Session setup three way handshake"_
+- Uzatvara transakciu
+- Potvrdzujem nim prijem "finalnej odpovede", ktora moze byt
+  - 2xx accept
+  - 3xx redirect
+  - 4xx client error
+  - 5xx server error
+  - 6xx global failure
+
+Spojenie je nadviazane po vymene min. 3 sprav - INVITE, 200 OK, ACK
+
+BYE
+
+- Ukoncenie _zalozeneho_ spojenia (hovoru)
+
+CANCEL
+
+- Ukoncenie _vytvaraneho_ spojenia - este nezalozenych
+- Napr. INVITE bol poslany, ale finalna odpoved nebola prijata
+- Proxy ju potvrdzuje spravou `200 OK`
+- UAC ju potvrdzuje spravou `ACK`
+- Po prijati CANCEL sa prestane spracovavat INVITE (aj UAC aj UAS)
+
+REGISTER
+
+- Klient informuje o svojej SIP URI a IP adrese
+- Podporuje tym mobilitu v SIP (neviazeme sa na konkretnu IP)
+- Ma zmysel len pri prijimani hovorov na SIP URI adresu s domenou (AOR)
+
+OPTIONS
+
+- Zistenie vlastnosti SIP Servera (alebo jeho dostupnost)
+- Odpoved obsahuje podporovane SIP metody, rozsirenia, kodeky, ...
+- Odpoved rovnako ako na INVITE - 200 OK, 486 Busy Here, ...
+
+INFO
+
+- UA si navzajom vymienaju doplnkove signalizacne informacie, ale nemenia sa charakteristiky zalozeneho spojenia
+
+PRACK
+
+- Provisional Response ACK
+- Potvrdzujem prijem odpovedi `1xx provisional`
+- Ak nie je prijaty PRACK, odpoved je poslana znovu
+
+#### Odpovede
+
+Generovane serverovskymi entitami  
+Podobne HTTP - cislo (`xyz`) + vysvetlujuci text
+
+Triedy
+
+- 1xx info or provisional
+  - Status volania pred jeho dokoncenim
+  - 100 Trying, 180 Ringing, 181 Call Is Being Forwarded, 182 Call Queued, 183 Session Progres
+- 2xx successful
+  - Obsahuje telo s popisom medii volaneho UAS
+  - 200 OK
+- 3xx redirect
+  - Nova pozicia volaneho (iny proxy alebo ina SIP URI) alebo informaciu o alternativnej sluzbe ktoru je mozne vyuzit
+  - 300 Multiple Choices, 301 Moved permanently, 302 Moved Temporarily, 305 Use Proxy, 380 Alternative Service
+  - Tieto odpovede su finalne
+- 4xx client error
+  - Chyba na strane klienta
+  - 400 Bad Request, 401 Unauthorized, ....
+- 5xx server error
+  - Chyba na strane servera, klient moze pokusit ziadat o spracovanie znovu
+  - 500 Internal Server Error, 501 Not Implemented, 502 Bad Gateway, 503 Service Unavailable, 504 Gateway Timeout, 505 Version Not Supported
+- 6xx global failure
+  - Spracovavanie dotazu zlyhalo, a nemoze byt nikdy uspesne
+  - 600 Busy Everywhere, 603 Decline, 604 Does Not Exist Anywhere, 606 Not Acceptable
+
+Neuspesne finalne odpovede (3xx - 6xx) su vzdy potvrdzoane hop-by-hop  
+Odpovede 200 OK su potvrdzovane end-to-end
+
 ## SDP
 
-Session Description Protocol
+Session Description Protocol  
+RFC 4566, 2327
+
+Navrhnuty ako popisny protokol popisujuci multimedialne spojenie zakladane cez multicastovy backbone internetu  
+Nie je transportny protokol, definuje len format pre popis multimedialneho spojenia  
+Neiniciuje samotne spojenie, ale vyuziva ine protokoly (SIP, SAP, RSTP, HTTP, email MIME)
 
 Informacie poskytovane v SDP
 
@@ -312,9 +541,63 @@ Informacie poskytovane v SDP
 - Dalsie info o spojeni
 - Jazyk
 
+Sklada sa z riadkov `type=value`  
+Riadky maju definovane poradie, niektore su povvine niektore volitelne
+
+Sklada sa z casti
+
+- Session-level sekcia - zacina `v=`
+- Media-level sekcia (jedna alebo viac) - zacina `m=`
+
+Napr.
+
+```txt
+v=0
+o=peter 0 0 IN IP4 192.168.1.1
+s=-
+c=IN IP4 192.168.1.1
+t=0 0
+m=audio 5000 RTP/AVP 0 8 96
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=rtpmap:96 iLBC/8000
+m=video 5002 RTP/AVP 97
+a=rtpmap:97 H264/90000
+m=message 4535 TCP/MSRP *
+```
+
+Hodnoty
+
+- `v` = verzia
+- `o` = meno vlastnika, ID relacie, verzia, typ siete, typ adresy, IP adresa
+- `s` = meno relacie
+- `c` = typ siete, typ adresy, samotna IP adresa pre tok medii
+- `m` = typ media, port, transport
+  - typ moze byt: audio, video, text, application, message
+- `a` = mapuje parameter `m` na kodovaciu schemu
+
+Dalsie mozu byt
+
+- `s` - nema pre SIP vyznam ale nemoze byt vynechany
+- `t` pri SIP zvycajne hodnota `0 0`
+- `a` moze mat rozne hodnoty - Recvonly, Sendonly, Sendrecv
+
 ## Transportne protokoly vo VoIP aplikaciach
 
 Transportna vrstva - TCP, UDP
+
+Transportne protokoly pre media
+
+- UDP-Lite
+- Datagram Congestion Control Protocol (DCCP)
+- Real-time Transport Protocol
+- RTP Control protocol
+
+Transportne protokoly pre signalizaciu
+
+- Stream Control Transmission Protocol
+
+Ulohy transportnej vrstvy
 
 - Segmentacia rekombinacia dat
 - Dorucovanie medzi aplikaciami
@@ -341,14 +624,23 @@ Nehodi sa ani TCP ani UDP
 
 RFC 3828
 
-UDP ma checksum ktory chrani cely segment - ak je `0x0000` tak sa nema overovat  
-Zahadzuje nespravne pakety alebo akceptuje vsetky
+Klasicke UDP
 
-UDP-Lite  
-Pole `length` je nahradene `checksum coverage`  
-Pocet bajtov ktore su chranene checksumom
+- Ma checksum ktory chrani cely segment (ak je `0x0000` tak sa nema overovat)
+- Zahadzuje nespravne segmenty alebo akceptuje vsetky
+- Niektore aplikacie by boli radi za **ciastocne spravne segmenty** - tuto schopnost ma UDP lite
 
-Treba pamatat ze L2 technologie verifikuju cely ramec, ak je poskodeny tak sa zahodi cely
+UDP-Lite
+
+- UDP pole `length` je nahradene `checksum coverage`
+  - Pocet bajtov ktore su chranene checksumom
+  - Ak je ok tak spracujeme
+  - Ak nie je ok tak zahodime
+- Chybu v nechranenej casti ignorujeme
+- Ak je hodnota `8` tak sa verifikuje iba hlavicka - najmensia povolena hodnota
+- Ak je hodnota `0` (vynimka) tak sa verifikuje cely segment
+
+Treba pamatat ze L2 technologie verifikuju cely ramec - ak je poskodeny tak sa zahodi cely
 
 #### Datagram Congestion Control Protocol (DCCP)
 
@@ -361,7 +653,9 @@ Vychadza z dobrych vlastnosti TCP a UDP a pridava vlastne
 - Nespolahlivost
 - +Informuje o oneskori a stratach paketov
 
-Sekvencne ocislovane
+Pred komunikaciuou je potrebne vytvorit spojenie  
+Po komunikacii je potrebne uzavriet spojenie  
+Sekvencne ocislovane segmenty
 
 Data sa prenasaju v segmentoch typu `Data`
 
@@ -378,10 +672,9 @@ RFC 3550
 
 Pouziva existujuce transportne protokoly (tuto konkretne UDP)  
 Riesi veci na aplikacnej vrstve  
-Vzdy implementovany ako _userspace_ kniznica
+Vzdy implementovany v _userspace_ - kniznica alebo v samotnom programe
 
-Realne sa v praxi pouziva
-
+Realne sa v praxi pouziva  
 Vhodny pre unicast aj multicast
 
 Cislovanie paketov  
@@ -401,7 +694,13 @@ Je nezavisly od signalizacie - SIP, H.323, SCCP, H.248
 
 ##### RTCP - RTP Control Protocol
 
-Podporny protokol pre RTP
+Podporny protokol pre RTP  
+Poskytuje kontrolne a statisticke informacie o vybranom toku dat
+
+Sprava zapuzdrena v UDP  
+Zatial co RTP sa ma posielat z parneho portu, RTCP sa posiala z najblizsieho vacsieho neparneho portu (ak RTP = 20000, tak RTCP = 20001)
+
+Mnohe druhy sprav, definovane v RFC
 
 #### Prehlad hlasovych kodekov
 
@@ -416,6 +715,16 @@ Zavisi od neho
 - Naroky na prenosove pasmo
 
 Kvalita kodekov sa uvadza v tzv. **MOS** mierke - Mean Opinion Score
+
+| Hodnota MOS | Kvalita   |
+| ----------- | --------- |
+| 5           | Excellent |
+| 4           | Good      |
+| 3           | Fair      |
+| 2           | Poor      |
+| 1           | Bad       |
+
+> Ludia mali hodnotit
 
 Najbeznejsia digitalizacia hlasu prebieha v 3 krokoch
 
@@ -455,18 +764,6 @@ Doplnkove vlastnosti kodekov
 - Packet Loss Concealment (PLC)
   - Subor roznych technik
   - Znazi sa zakryt stratu paketu
-
-Tabulka MOS Score
-
-| Hodnota MOS | Kvalita   |
-| ----------- | --------- |
-| 5           | Excellent |
-| 4           | Good      |
-| 3           | Fair      |
-| 2           | Poor      |
-| 1           | Bad       |
-
-> Ludia mali hodnotit
 
 Az take velke rozdiely tam nie su
 
@@ -515,9 +812,9 @@ Pouzitie
 
 ## Prechod SIP cez NAT a firewall
 
-NAT
+### Opakovanie NAT
 
-- Tradicke NAT
+- Tradicne NAT
   - Basic NAT
     - Jednosmerne (outbound) - private to public
     - Jedna private IP na jednu verejnu
