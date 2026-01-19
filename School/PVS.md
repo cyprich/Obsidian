@@ -126,13 +126,13 @@ NRZ - No Return to Zero
 Problem so synchronizaciou je rieseny automaticky (samosynchnonizujuci) - obsahuje hodiny - na zaciatku kazdeho bitu sa zmeni z `0` na `1`  
 Platime za to nizsim vyuzitim kapacity $K = 33\%$
 
-![](pvs-unipolarny-rz-kod.png)
+![obrazok](pvs-unipolarny-rz-kod.png)
 
 **Bipolarny RZ kod** - kladne aj zaporne  
 Na zaciatku je tiez zmena - ak do kladneho tak je `1`, ak do zaporneho tak je `0`  
 $K = 50\%$
 
-![](pvs-bipolarny-rz-kod.png)
+![obrazok](pvs-bipolarny-rz-kod.png)
 
 **AMI kod** - Alternate Mark Inversion  
 `0` je vzdy na nule (0V)  
@@ -140,7 +140,7 @@ $K = 50\%$
 $K = 100\%$  
 Problem so synchronizaciou pri nulach - vyriesime tak ze tam dame `1` (na druhej strane ju musim potom odstranit) - napr. sa dohodneme ze "max. 5 nul"
 
-![](pvs-ami-kod.png)
+![obrazok](pvs-ami-kod.png)
 
 **NRZ** - bez navratu k `0`
 
@@ -149,7 +149,7 @@ Napatie = `1`
 Bez napatia = `0`  
 $K = 100\%$
 
-![](pvs-unipolarny-nrz-kod.png)
+![obrazok](pvs-unipolarny-nrz-kod.png)
 
 **Bipolarny NRZ**  
 Napatie = `1`  
@@ -158,7 +158,7 @@ $K = 100\%$
 
 Obidve ma problem so synchronizaciou aj pri `0`, aj pri `1`
 
-![](pvs-bipolarny-nrz-kod.png)
+![obrazok](pvs-bipolarny-nrz-kod.png)
 
 **NRZ space**  
 `0` = zmena na zaciatku bitu  
@@ -167,7 +167,7 @@ Pouziva sa napr. v USB
 Sync. - dlhy sled `1`  
 $K = 100\%$
 
-![](pvs-nrz-space.png)
+![obrazok](pvs-nrz-space.png)
 
 **Kod Manchester**  
 `1` = zmena 0 -> 1  
@@ -177,7 +177,7 @@ Pouzite v RFID, NFC, IEEE 802.3 - 10BASE-T)
 $K = 50\%$  
 Zmeny v strede bitu
 
-![](pvs-manchester.png)
+![obrazok](pvs-manchester.png)
 
 **Diferencny Kod Manchester**  
 `0` = bez zmeny  
@@ -187,20 +187,35 @@ Teraz zmeny na zaciatku bitu
 Pouzite v Token Ring LAN, ukladanie dat  
 $K = 50\%$
 
-![](pvs-diferencny-manchester.png)
+![obrazok](pvs-diferencny-manchester.png)
 
 **Fazova modulacia** - FM  
 `0` = zmena na zaciatku bitu  
 `1` = zmena v strede bitu  
 $K = 50\%$
 
-![](pvs-fm.png)
+![obrazok](pvs-fm.png)
 
 **Modifikovana Fazova Modulacia** - MFM  
 Ak po `1` ide `0`, potlacime zmenu, inak rovnako ako FM  
 Vyriesime problem s "malymi odsekmi", cim dosiahnemem kapacitu $K = 100\%$
 
-![](pvs-modifikovana-fm.png)
+![obrazok](pvs-modifikovana-fm.png)
+
+Sum
+
+| Kod                            | Princip                                                     | Kapacita |
+| ------------------------------ | ----------------------------------------------------------- | -------- |
+| Unipolarny RZ                  | log. 0 = kratky impulz, log. 1 = dlhy impulz                | 33%      |
+| Bipolarny RZ                   | log. 0 = zaporny impulz, log. 1 = kladny impulz             | 50%      |
+| Alternate Mark Inversion (AMI) | log. 0 = 0V, log. 1 = striedavo `+U` a `-U`                 | 100%     |
+| Unipolarny NRZ                 | log. 0 = OV, log. 1 = `+U`                                  | 100%     |
+| Bipolarny NRZ                  | log. 0 = `+U`, log. 1 = `-U`                                | 100%     |
+| NRZ Space                      | log. 0 = zmena na zaciatku bitu, log. 1 = bez zmeny         | 100%     |
+| Manchester                     | Hodiny `XOR` data                                           | 50%      |
+| Diferencny Manchester          | log. 0 = bez zmeny, log. 1 zmena v strede bitu              | 50%      |
+| Fazova modulacia               | log. 0 = zmena na zaciatku bitu, log. 1 zmena v strede bitu | 50%      |
+| Modifikovana Fazova modulacia  | Ako FM, ale vynechana zmena pri zmene `1` -> `0`            | 100%     |
 
 ## Generovanie Logickych Signalov
 
@@ -690,6 +705,17 @@ Komunikacia - 3urovnove zapuzdrenie
 - Ramec - niekolko prenosov
 
 Casovy multiplex -
+
+## Sum komunikacnych rozhrani
+
+| Rozhranie | Rychlost          | Dosah      | Sync           | Signalizacia              | Duplex | Topologia       | Master/slave          | Integrita              | Potvrdzovanie sprav       | Poradie bitov |
+| --------- | ----------------- | ---------- | -------------- | ------------------------- | ------ | --------------- | --------------------- | ---------------------- | ------------------------- | ------------- |
+| RS-232    | 115kbps           | 15m        | async          | single-ended              | full   | point-to-point  | nie                   | -                      | iba SW                    | LSB first     |
+| CAN       | 1Mbps, 5Mbps      | 40m @1Mbps | async          | diferencialna             | half   | bus             | multi-master          | CRC, ACK, bit stuffing | ACK slot                  | MSB first     |
+| LIN       | 20kbps            | 40m        | async (casove) | single-ended              | half   | bus             | 1 master, multi slave | checksum               | implicitne slave odpovede | LSB first     |
+| SPI       | desiatky Mbps     | 1m         | sync           | single-ended              | full   | master + slaves | master/slave          | -                      | iba SW                    | MSB alebo LSB |
+| I2C       | 100kbps - 3.4Mbps | 1m         | sync           | single-ended (open drain) | half   | bus             | master/slave          | ACK/NACK               | ACK/NACK                  | MSB first     |
+| 1-Wire    | 16kbps            | 100m       | async          | single-ended              | half   | bus             | master/slave          | volitelne CRC          | presence pulse            | LSB first     |
 
 ## Bluetooth a BLE
 
