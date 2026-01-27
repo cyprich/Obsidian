@@ -16,6 +16,20 @@ Dovody k rozbehnutiu vlastneho biznisu
 - Venovanie sa vlastnej zalube
 - ...
 
+Pravna uprava podnikania v Slovenskej republike
+
+- Obchodny zakonnik - vseobecne ustanovania, obchodne spolocnosti a druzstvo, obchodne zavazkove vztahy, spolocne prechodne a zaverecne ustanovenia
+- Zakon o zivnostenskom podnikani - vseobecne ustanovenia, druhy zivnosti, rozsah zivnostenskeho opravnenia, ..., prilohy
+- Zakon o dani z prijmov - zakladne ustanovenia, dan FO, dan PO, ...
+
+Znaky podnikania
+
+- Sustavnost - pravidelnost a opakovatelnost cinnosti, nie prilezitostne alebo nahodne
+- Samostatnost - podnikatel rozhoduje sam, nie je vo vztahu podriadenosti
+- Vykon cinnosti vo vlastnom mene - musi mat obchodne meno (FO vs. PO, podrobnosti neskor)
+- Vykon cinnosti na vlastnu zodpovednost - zavazky vyplyvajuce z podnikania (rucenie), porusenie pravnych predpisov, vysledok podnikatelskej cinnosti (zisk/strata)
+- Ucel dosiahnutia zisku (alebo meratelneho pozitivneho socialneho vplyvu)
+
 ### Obchodny zakonnik
 
 Pravne upravuje problematiku podnikania
@@ -105,33 +119,54 @@ Druhy PO
 
 - Osoba zapisana v OR
 - Osoba, ktora podnika na zaklade zivnostenskeho opravnenia
-- Osoba, ktora podnika na zaklade ineho zivnostenskeho opravnenia \_
-- \_
+- Osoba, ktora podnika na zaklade ineho zivnostenskeho opravnenia podla osobitnych predpisov
+- Fyzicka osoba, ktora vykonava polnohospodarsku vyrobu a je zapisana do evidencie podla osobitneho predpisu
 
 ### Formy podnikania
 
+Mozeme si vybrat
+
 - Zivnosti
 - Obchodne spolocnosti
+
+Nemozeme si vybrat
+
 - Druzstvo
 - Statny podnik
-- \_
-- \_
+
+Urcuje predmet podnikania
+
+- Slobodne povolania - osoba, ktora podnika na zaklade ineho nez zivnostenskeho opravnenia podla osobitnych predpisov
+- Fyzicka osoba, ktora vykonava polnohospodarsku vyrobu a je zapisana do evidencie podla osobitneho predpisu
 
 ### Startup
 
+Novovznikajuci projekt/firma  
 Je zalozene na nejakej inovativnosti  
 Ma potencial rychlo rast
 
 Charakteristicke vlastnosti
 
 - Nizke zaciatocne naklady
-- Vyssie podnikatelske riziko nez u tradicky podnikov
+- Vyssie podnikatelske riziko nez u tradicnych podnikov
 - Potencialne vyssia navratnost (v pripade, ked sa spolocnosti etabluje)
 
 Obsahova stranka startup podnikania
 
 - Kreovanie a rozpracovanie podnikatelskeho napadu
+  - Identifikacia problemu, generovanie napadov
+  - Validacia napadu (analyza dopytu), analyza konkurencie
+  - Tvorba koncepcie produktu, design thinking
+  - Testovanie prototypu produktu, design sprint
+  - Segmentacia, vzorovy zakaznik
+  - Cenotvorba, cash flow
+  - Business model
+  - Podnikatelsky plan
 - Zalozenie a vznik podnikatelskeho subjektu
+  - Vyber pravnej formy podnikania
+  - Zivnostenske opravnenie, spolocneska zmluva, zakladatelska listina
+  - Registracia v zivnostenskom a obchodnom registri
+  - Registracia na danovom urade, v Socialnej poistovni, v prislusnej zdravotnej poistovni
 
 ## Kreovanie podnikatelskych napadov
 
@@ -167,6 +202,7 @@ Hobby, praca
 Kupa
 
 - Odkupim napad od niekoho
+- _Franšíza_ = model podnikania, na zaklade ktoreho ziskava podnikatelsky subjekt prava na pouzitie obchodnej znacky a know-how ineho podnikatelskeho subjektu vo forme licencie
 
 Pozicanie
 
@@ -188,59 +224,109 @@ Nie kazdy napad musi byt zrealizovany
 
 ### Techniky kreovania napadov
 
-Brainstorming
+Mame zadefinovany problem, napad, produkt, sluzbu
 
+Mame
+
+- Brainstorming
+- Reverse Brainstorming
+- Lotus Brainstorming
+- Brainwriting
+- Brain netting
+- Story boarding
+- 6 thinking hats
+- S.C.A.M.P.E.R.
+- Word banking
+- What if
+- Heaven and Hell
+- Round Robin
+- Idea Napkin
+- ...
+
+**Brainstorming**
+
+- Iba hadzeme napady len tak z brucha
 - Ked nevieme ako riesit problem
 - Otvorena mysel, aj blaznive napady
-- Zameranie na kvantitu viac ako na kvalitu
+- Zameranie na kvantitu, nehodnotit kvalitu napadov
+- Clenovia skupiny maju vyuzivat napady ostatnych na generovanie novych
+- Matica hodnotenia napadov - male vs. velke usilie, mala vs. velka hodnota pre zakaznikov - podla toho mame napad realizovat, testovat, zohladnit, vyhnut sa
 
-Brainwriting
+**Brainwriting** - jednotlivec pise napady na papier  
+**Reverse Brainstorming** - zameranie na lepsie pochopenie problemu, neidentifikujeme riesenia ale priciny problemu  
+**Online brainstorming** - skupinovy hovor, softver pre brainstorming
 
-- Jednotlivec pise napady na papier
+**Lotus Brainstorming** alebo **Lotus Blossom**
 
-Lotus Brainstorming
-
+- Strukturovany brainstorming
 - 'V strede' je napad a rozpracovavame ho dookola
 - Rozpracovanie do vacsich detailov
 - Z jedneho napadu vznikne dalsich 8
 
-What if
+**What if** - zalozene na brainstormingu, hladame odpovede na neocakavane udalosti (co ak sa stane...), treba vyuzit pohlad inych ludi  
+**Storyboarding** - pomocou obrazkov, videi sa vytvori storyboard
 
-- Zalozene na brainstormingu
-- Tim sa snazi najst odpovede na neocakavane udalosti (co ak sa stane...) a vyuzit pohlad inych ludi
+**SCAMPER**
 
-Storyboarding
+- Substitute - co by som mohol pouzit namiesto tohto produktu/sluzby alebo jej casti?
+- Combine - co by som mohol skombinovat aby som vytvoril novy produkt/sluzbu?
+- Adapt - aky dalsi produkt by som mohol prisposobit svojej prilezitosti?
+- Modify - ako mozem zmenit existujuci produkt/sluzbu?
+- Put to another use -
+- Eliminate -
+- Reverse - ako mozem produkt alebo sluzbu obratit?
 
-- Pomocou obrazkov, videi sa vytvori storyboard
+**6-Thinking hats**
 
-SCAMPER
+- Riesenie problemov z viacerych pohladov
+- Vyhody
+  - Orgnizovane premyslanie
+  - Zlepsenie kreativneho myslenia
+  - Rozvoj kritickeho myslenia a zvedavosti
+  - Praktizovanie aktivneho pocuvania, pytania sa a odpovedania
+  - Inkluzivne myslenie
+- Hats
+  - White - facts
+  - Black - cautions
+  - Blue - process
+  - Red - feelings
+  - Yellow - benefits
+  - Green - creativity
 
-- Substiture, Combine, Adapt, Modify, Put to another use, Eliminate, Reverse
+**Customer Journey Mapping**
 
-6-Thinking hats
+- Uvedomenie si potreby
+- Vyber
+- Objednavanie a nakup
+- Platba
+- Dorucenie
+- Servis po nakupe
+- Opravy, reklamacie
 
-- White - facts
-- Black - caution
-- Blue - process
-- Red - feelings
-- Green - creativity
-- Yellow - benefits
-
-Idea napkin
-
-Customer Journey Mapping
-
-Round Robin
+**Round Robin**
 
 - Vyuziva prvky brainstormingu
 - Zalozena na cirkularnom procese
   - Vyberie sa myslienka/napad, ktory chceme rozpracovat
-  - Jeden clen ho rozpracuje a posunie dalsiemu clenovi
+  - Prvy clen ho rozpracuje a posunie druhemu clenovi
+  - Druhy clen kriticky zhodnoti napad a posunie tretiemu clenovi
+  - Treti clen vylepsi napad
   - Opakovanie dookola
 
-Checklist dobreho naparu
+**Idea napkin**
 
-- Riesi konkretny prbolem/potrebu?
+1. Definovanie zakaznickeho segmentu
+2. Strucne popisat koncept
+3. Rozpracovat koncept - nakreslit, napisat funkcie, (pri sluzbe) popisat postup poskytnutia sluzby
+4. Popisat ake potreby riesi produkt/sluzba
+5. Stanovit prinosy riesenia
+6. Definovat nazov
+
+---
+
+Checklist dobreho napadu
+
+- Riesi konkretny problem/potrebu?
 - Je unikatny a odlisitelny od konkurencie?
 - Ma potencial na skalovanie?
 - Je realizovatelny vzhladom na zdroje a regulacie?
@@ -253,17 +339,17 @@ Checklist dobreho naparu
 Analyza trhu pomaha pochopit
 
 - Zakaznika - kto, jeho potreby, spravanie, motivacie
-- Velkost trhu - pocet potencialnych zakaznikov
-- Konkurenciu
-- Trendy a prostredie
+- Velkost trhu - pocet potencialnych zakaznikov, aky je dopyt a potencial rastu
+- Konkurenciu a ich silne a slabe stranky
+- Trendy a prostredie - zmeny v technologiach, spolocnosti, preferenciach zakaznikov
 
 Analyza trhu
 
 - Proces!
 - Dokladne preskumanie trhu v ramci konrketneho odvetia/oblasti
-- Pomaha identifikovat sposob aky lepsie pozicionovat podnikanie za ucelom zvysenia konkurensiechopnosti a lepsieho uspokojovania potrieb zakaznikov
+- Pomaha identifikovat sposob akym lepsie pozicionovat podnikanie za ucelom zvysenia konkurenciechopnosti a lepsieho uspokojovania potrieb zakaznikov
 
-Trh
+Trh je rozdeleny na
 
 - TAM - Total Addressable Market - celkovy trh - vsetci, ktori by teoreticky mohli produkt pouzit
 - SAM - Serviceable Available Market - dostupny trh - skupina, ktoru mozes oslovit
@@ -271,7 +357,7 @@ Trh
 
 Metody zberu dat
 
-- Primarny vyskum - ja zbieram data
+- Primarny vyskum - ja zbieram nove data
   - Dotazniky, rozhovory, pozorovanie, testovanie, ...
   - Vyhody - data presne na mieru, poznanie nazorov cielovej skupiny, moznost overenia hypotez
   - Nevyhody - Financne a casovo narocne, znalosti v oblasti analyzy trhu
@@ -283,6 +369,7 @@ Benefity analyzy trhu
 - Redukcia rizik
 - Sledovanie trendov
 - Benchmarking
+- Planovanie trzieb
 
 ### Konkurencia
 
@@ -304,47 +391,52 @@ Odlisenie od konkurencie
 
 ### Analyza konkurencie
 
-Zamerriava sa na identifikovanie ucastnikov trhu, ktor9 ponukaju rovnake alebo...
+Zameriava sa na identifikovanie ucastnikov trhu, ktory ponukaju rovnake alebo podobne produkty/sluzby  
+Ich cielom je odhalit ich silne stranky, slabe stranky a postavenie na trhu  
+Pomaha pochopit fungovanie trhu, hotnodit trendy  
+Pomaha pri planovani buducnosti
+
+Postup?
 
 1. Stanovenie produktov a sluzieb, ktore chceme zhodnotit
-2.
-3.
-4.
-5.
-6.
-7.
-8. Sledujte vysledky
+2. Vyhladanie priamych konkurentov
+3. Identifikacia nepriamych konkurentov
+4. Stanovenie oblasti, ktoru chceme analyzovat
+5. Prieskum vsetkych konkuretnov
+6. Sumariazacia zisteni
+7. Identifikacia oblasti zlepsenia
+8. Sleddovanie vysledkov
 
 Faktory
 
-- Trhovy podiel
-- Marketing
-- Vlastnosti produktu
-- Unikatnost
-- Cena
+- Trhovy podiel - stanovenie % podielu na trhu, orientovat sa na priamych konkurentov
+- Marketing - ake marketingove nastroje vyuzivaju
+- Vlastnosti produktu - vsetky ficurky produktu
+- Unikatnost - cim sa odlisuju od ostatnych
+- Cena - cenova strategia konkurencie
 - Silne stranky
 - Slabe stranky
 - Lokalita
-- Kultura
-- Hodnotenia zakaznikov
+- Kultura - ciele a spokojnost zamestnancov, podnikova kultura
+- Hodnotenia zakaznikov - zamerat sa aj na pozitivne aj negativne
 
 ### Metody analyzy trhu a konkurencie
 
-#### Pestel/Steep analyza
+#### PESTEL/STEEP analyza
 
-Zhodnocuje podnikatelske prostredie, v ktorom podnik realizuje svoju podnikatelsku cinnost
+Zhodnocuje **podnikatelske prostredie**, v ktorom podnik realizuje svoju podnikatelsku cinnost
 
-- Politicke
-- Ekonomicke
-- Socialne
-- Technologicke
-- Environmentalne
-- Legalne
+- Politicke - dane, zahranicny obchod, protimonopolne nariadenia, politicka situacia
+- Ekonomicke - nezamestnanost, inflacia, minimalna mzda, urokove sadzby
+- Socialne - demografia, zivotny styl, kultura
+- Technologicke - technologicka infrastruktura, vyskum a vyvoj
+- Environmentalne - vplyvy (rizika) zmeny klimy
+- Legalne - regulacia odvetvia, zakony o zamestnanosti a ochrane spotrebitela, ochrana dusevneho vlastnictva
 
 #### SWOT analyza
 
 Strengths, Waknesses, Opportunities, Threats  
-Metoda strategickeho planovania pouzivana na hodnotenie podniku/produktu/projektu za ucelom naplnenia stanoveneho ciela
+Metoda **strategickeho planovania** pouzivana na hodnotenie podniku/produktu/projektu za ucelom naplnenia stanoveneho ciela
 
 Vieme ovplyvnit
 
@@ -356,26 +448,55 @@ Nevieme ovplyvnit
 - Prilezitosti
 - Hrozby
 
+Postup
+
+1. Identifikovat silne a slabe stranky, prilezitosti a hrozby
+2. Priradit vahu vsetkym faktorom (ako su dolezite)
+3. Ohodnotenie faktorov od 1 (najmenej) do 5 (najviac)
+4. Vynasobime vahy a body
+
 Strategie
 
-- Ofenzivna
-- Defenzivna
-- Strategia spojenectva
-- Strategia uniku
+- Ofenzivna - prevladaju silne stranky a prilezitosti
+- Defenzivna - prevladaju silne stranky a hrozby
+- Strategia spojenectva - prevladaju prilezitosti a slabe stranky
+- Strategia uniku - prevladaju slabe stranky z hrozby
 
 #### Porterov model 5 sil
 
-- Threat of new entrants
-- Threat of substitutes
-- Bargaining power of suppliers
-- Bargaining power of customers
-- Competitive rivalry
+Nastroj analyzy konkurencneho prostredia
+
+Sily
+
+- Threat of new entrants - ake narocne je vstupit do odvetia
+- Threat of substitutes - kolko je takych produktov, ktore mozu moj nahradit
+- Bargaining power of suppliers - ako nas ovplyvnuju dodavatelia - cena, kvalita dodavanych produktov a sluzieb
+- Bargaining power of customers - ako nas ovplyvnuju odberatelia - ich sila, struktura
+- Competitive rivalry - aki su sucasni konkurenti, ich struktura
 
 #### BCG matica
 
-Boston Consulting Group
+Boston Consulting Group  
+Nastroj na analyzu produktoveho portfolia a jeho konkurenciechopnosti na trhu
+
+Zlozenie
+
+- Hviezdy - veduce postavenie na trhu, financne narocne, vyzadujuce investicie ale rentabilne
+- Otazniky - nedavno uvedene na trh, nie je iste ako sa budu vyvijat, predstavuju prilezitost ale aj riziko
+- Dojne kravy - stalice na trhu, generuju pravidelne zisky, nevyzaduju zvlastnu pozornost
+- Psy - generuju slabe zisky alebo aj stratu, je potrebne ich inovovat alebo vyradit
 
 #### Buyers Journey Mapping
+
+1. Uvedomenie - co zaujima zakaznicky segment? kde hladaju riesenia?
+2. Zvazovanie - ake specificke problemy vasich zakaznikov riesite?
+3. Nakup - aka je pridana hodnota vasho produktu, ktora zabezpecuje konkurencnu vyhodu?
+4. Udrziavanie - ponuka vase riesenie konzistentnu vyhodu? je jednoduche spolupracovat s vami?
+5. Obhajoba, Odporucanie - budu zakaznici odporucat vase riesenia inym ludom?
+
+#### Strategic group analyza
+
+#### Business model canvas
 
 ## Segmentacia zakaznikov, Persona
 
@@ -403,12 +524,20 @@ Cieleny marketing
   5. Vymedzenie pristupov umiestnenia
   6. Vyber, rozvoj a uplatnenie koncepcie umiestnenia
 
+Trhovo nediferencovany marketing (masovy) - jeden produkt na jeden trh  
+Trhovo nediferencovany marketing (vyrobkovo diferencovany) - viac produktov  
+Cieleny diferencovany marketing - viac produktov, kazdy na iny trhovy segment  
+Cieleny koncentrovany marketing - jeden produkt na viac trhovych segmentov
+
 ### Segmentacia
+
+Metoda marketigoveho riadenia, na zaklade ktorej sa snazi podnik rozdelit trh do urcitych skupin, ktore su charakteristicke spolocnymi znakmi a ktorym chce podnik ponukat svoj produkt alebo sluzbu  
+Zacala v 50. rokoch 20. storocia, neskor vychadzala z dat scitania ludu, financne data, psychograficke data, behavioralne data
 
 Benefity segmentacie zakaznikov
 
 - Efektivnejsia marketingova strategia
-- Optimalizacia zakaznickej cesty
+- Optimalizacia zakaznickej cesty (Customer Journey Mapping)
 - Moznost predikovania spravania sa zakanznikov
 - Personalizacia zakaznickej skusenosti
 - Zlepsenie zakaznickej lojality a opatovny nakup
@@ -424,10 +553,10 @@ Nedostatky segmentacie zakaznikov
 
 Proces segmentacie
 
-- Definovanie trhu
-- Analyza sucasnych/potencialnych zakaznikov
-- Vytvorenie person
-- Definovanie segmentov a ich pomenovanie
+1. Definovanie trhu
+2. Analyza sucasnych a potencialnych zakaznikov
+3. Vytvorenie person
+4. Definovanie segmentov a ich pomenovanie
 
 Typy segmentacia trhu
 
@@ -438,18 +567,18 @@ Typy segmentacia trhu
 
 Segmentacia zakaznikov
 
-- Demograficka segmentacia - Kto? - vek, pohlavie, prijem, zamestnanecky status, vzdelanie, ...
-- Geograficka segmentacia - Kde? - krajina, stat, region, mesto, hostota, jazyk, klima, populacia
-- Psychograficka segmentacia - Preco? - zivotny styl, nazory, zaujmy, obavy, hodnoty, personalita, postoje
-- Behavioralna segmentacia - Co? - ocakavany prospech, miera pouzivania/nakupu, lojalita, kroky vykonavane pri nakupe
+- Demograficka segmentacia - **Kto?** - vek, pohlavie, prijem, zamestnanecky status, vzdelanie, ...
+- Geograficka segmentacia - **Kde?** - krajina, stat, region, mesto, hostota, jazyk, klima, populacia
+- Psychograficka segmentacia - **Preco?** - zivotny styl, nazory, zaujmy, obavy, hodnoty, personalita, postoje
+- Behavioralna segmentacia - **Co?** - ocakavany prospech, miera pouzivania/nakupu, lojalita, kroky vykonavane pri nakupe
 
 Ine sposoby segmentacie
 
-- Hodnotova segmentacia
-- Firmograficka segmentacia
-- Generacna segmentacia
-- Segmentacia podla zivotnej fazy
-- Sezonna segmentacia
+- Hodnotova segmentacia - co su zakaznici ochotni minut
+- Firmograficka segmentacia - podobna demografickej, zohladnujeme charakteristiky podnikov (priemysel, zisk, pocet zamestnancov)
+- Generacna segmentacia - segmentacia podla ich prislusnosti ku generacii
+- Segmentacia podla zivotnej fazy - studenti, mladi rodicia, senori, ...
+- Sezonna segmentacia - podla rocnych obdobi (Vianoce)
 
 ### Persona
 
@@ -458,14 +587,13 @@ Ako keby jedna osoba predstavuje celu skupinu
 
 Negativna persona - reprezentuje ludi, ktorych nechceme ako zakaznikov
 
-### Trhove zacielenie a umiestnenie
-
-#### Trhove zacielenie
+### Trhove zacielenie
 
 Rozhodnutie o tom, na ktory segment sa chce podnik zameriavat  
 Moze byt 1+ segmentov
+Zohladnuje sa velkost segmentu, kupna sila, pritazlivost, zdroje podniku
 
-Sustredenie na
+Sustredit sa mozeme na
 
 - Jeden segment
 - Vyberova specializacia - kazdy iny produkt na iny trh
@@ -473,7 +601,7 @@ Sustredenie na
 - Vyrobkova specializacia - jeden vyrobok, viac trhov
 - Uplne pokrytie trhu - viac vyrobkov, viac trhov
 
-#### Trhove umiestnenie
+### Trhove umiestnenie
 
 Po rozhodnuti, na ktore segmenty sa podnik zameria je potrebne definovat prostriedky pre ziskanie zakaznika
 
@@ -486,7 +614,7 @@ Faktory, ktore vytvaraju celkovy dojem o produkte
 
 ## Validacia napadu
 
-Proces ziskavania informacii zamerany na **zistanie zaujmu** zvoleneho zakaznickeho segmentu o produkt alebo sluzbu
+Proces ziskavania informacii zamerany na **zistenie zaujmu** zvoleneho zakaznickeho segmentu o produkt alebo sluzbu
 
 - Vystavenie podnikatelskeho napadu realnemu svetu predtym nez predstavite finalny produkt alebo sluzbu
 - Serie rozhovorov s ludmi z cieloveho segmentu
@@ -509,9 +637,9 @@ Kedy validovat
 
 Proces validacie
 
-1. Stanovanie ciela - co chceme validovat (problem, produkt, vlastnosti, cena), co chceme zisti (maju ludia zaujem, riesi produkt/sluzba dany ciel, ...)
+1. Stanovanie ciela - co chceme validovat (problem, produkt, vlastnosti, cena), co chceme zistit (maju ludia zaujem, riesi produkt/sluzba dany ciel, ...)
 2. Definovanie hypotez (vyrokov, mozu obsahovat predikciu ktoru je mozne si overit), je potrebne zacat od klucovej hypotezy; zaroven treba stanovit kriteria na zhodnotenie hypotezy
-3. Zber dat - prieskumy, rozhovory, email, vytvorenie MVP (Minimum Viable Product (najjednoduchsia verzia produktu)), fyzicky prototyp, Crowdfundingova platforma, AB testovanie, pozorovanie
+3. Zber dat - stanovit si ako ideme testovat hypotezy - prieskumy, rozhovory, email, vytvorenie MVP (Minimum Viable Product (najjednoduchsia verzia produktu)), fyzicky prototyp, Crowdfundingova platforma, AB testovanie, pozorovanie
 4. Validacia - rozhodnutie - potvrdenie alebo vyvratratenie hypotezy - ak sa potvrdila tak vylepsovat napad, ak sa nepotvrdila hlavna tak vymysliet nieco ine, ak sa nepotvrdila nejaka vedlajsia (cena, vlastnosti) tak rozmyslat ci sa to neda nejak upravit
 
 ### Rozhovory
@@ -564,16 +692,16 @@ Lean Startup Machine Valdation Board PowerPoint Template
 
 ### Biznis model, zamer, plan
 
-Model = vyjadruje, ako chce firma zarabat peniaze, generovat zisk  
-Plan = dokument, ktory predstavuje strategiu firmy  
-Zamer = skrateny biznis plan, zvacsa 3-5 stran, vyzaduje ho napr. ministerstvo pri ziadosti o ziskanie prispevku na podnkanie
+Biznis model = vyjadruje, ako chce firma zarabat peniaze, generovat zisk  
+Biznis plan = dokument, ktory predstavuje strategiu firmy  
+Biznis zamer = skrateny biznis plan, zvacsa 3-5 stran, vyzaduje ho napr. ministerstvo pri ziadosti o ziskanie prispevku na podnkanie
 
 ### Biznis plan
 
 Podnikatelsky plan
 
 - **Dokument**, ktory sprostredkuva prvy a najdolezitejsi dojem o firme
-- Mapuje a analyzuje **cele obdobie** od umyslu podnikat az po obdobie
+- Mapuje a analyzuje **cele obdobie** od umyslu podnikat az po obdobie, kedy sa podnikatelovi zacnu varacat vlozene prostriedky
 - Pripravuje sa na **dlhe obdobie**, preto treba zohladnovat rizika
 - **Podkladovy material** pre invesotra
 
@@ -587,14 +715,12 @@ Vyznam podnikatelskeho planu
 Na ake otazky by mal odpovedat
 
 - Aky uzitok bude mat realizacia podnikatelskeho planu pre zakaznika
-- Aky uzitok bude mat ten, ktoreho podnikatelskym planom oslovujeme
+- Aky uzitok bude mat ten, ktoreho podnikatelskym planom oslovujeme (banka, investor, partner, ...)
 - Ake rizika mozu ohrozit realizaciu podnikatelskeho planu a ako im budeme predchadzat
 
----
+Druh podnikatelskeho planu **podla ucelu** spracovania
 
-Druh podnikatelskeho planu podla ucelu spracovania
-
-- Pre existujuci alebo zacinajuci podnik
+- Pre existujuci alebo zacinajuci podnik?
 - S cielom ziskat partnera pre podnikanie
 - Pre banku alebo investora
 
@@ -605,17 +731,15 @@ Pred spracovanim treba odpovedat na 2 klucove otazky
 - Kto je adresatom podnikatelskeho planu
 - Ake ocakavame reakcie adresata - co od neho chceme
 
----
-
 Format podnikatelskeho planu
 
 - Lahko citatelny
 - Nepouzivat moc male pismo
-- Rozsah < 30 stran (vratane priloh)
+- Rozsah <= 30 stran (vratane priloh)
 - Skratky v obmedzenom mnozstve + vysvetlenie
-- Odborna technologia - vysvetlit pre citatela z ineho odboru
+- Odborna terminologia - vysvetlit pre citatela z ineho odboru
 
-Struktura
+Struktura podnikatelskeho planu
 
 - Titulny list
 - Zhrnunie projektu
@@ -653,7 +777,11 @@ Vyuzitie
 - Kde zakaznici hladaju riesenia? Ako k nim dostanem moj produkt
 - Analyzovanie existujucich obchodnuch modelov
 
-3 celky - efektivita, hodnota, financie
+3 celky - hodnota, efektivita, financie
+
+- Zakaznicke segmenty, Hodnota pre zakaznika, Kanaly, Vztah so zakaznikmi
+- Klucove zdroje, Klucove aktivity, Klucovi partneri
+- Zroje prijmov, Struktura nakladov
 
 ![obrazok](../images/pp-bmc-model-1.png)
 
@@ -722,7 +850,7 @@ Formy podnikania
   - Statny podnik
 - Urcuje predmet podnikania
   - Slobone povolania - osoba ktora podnika na zaklade ineho nez zivnostenskeho opravnenia podla osobitnych predpisov
-  - FO ktora vykonava polhonostpodarsku vyrobu a je zapisana do evidencie podla osobitneho predpisu - ludovo neoficialne tzv. farmari
+  - FO ktora vykonava polnohospodarsku vyrobu a je zapisana do evidencie podla osobitneho predpisu - ludovo neoficialne tzv. farmari
 
 ### Kriteria pre vyber formy podnikania
 
@@ -763,7 +891,7 @@ Zakladne imanie
 
 Vklad spolocnika
 
-- Suhrn penaznych prostridkov a inuch peniazmi ocenitelnych hodnot, ktore spolocnik vklada do spolocnosti a podila sa nimi na vysledku podnikania spolocnosti
+- Suhrn penaznych prostridkov a inych peniazmi ocenitelnych hodnot, ktore spolocnik vklada do spolocnosti a podiela sa nimi na vysledku podnikania spolocnosti
 - Druhy
   - Penazne - hotovost
   - Nepenazne - budovy, patent, vozidlo - hodnota sa da vyjadrit v peniazoch znaleckym posudkom
@@ -818,9 +946,8 @@ Kazdy spolocnik min. 750 evri
 Pred podanim navrhu na zapis do OR
 
 - Kazdy penazny vklad splateny najmenej na 30%
-- .
-- .
-- .
+- Hodnota splatenych penaznych aj nepenaznych vkladov musi byt aspon 50% zo zakonom stanovenej minimalnej vysky ZI
+- Ak je spolocnik len jeden, musi byt ZI splatene v plnej vyskej
 
 Organy
 
@@ -837,6 +964,8 @@ Organy
 - Dozorna rada (nepovinne)
   - Aspon traja clenovia
   - Podavaju spravu valnemu zhromazdeniu
+
+Po novom sa da zalozit aj zjednodusenym sposobom - online, su tak ale obmedzene podmienky
 
 #### Akciova spolocnost
 
@@ -870,7 +999,7 @@ Rozdelenie zisku -
 ZI 1 euro  
 Minimalny pocet zakladajucich clenov - 1 osoba
 
-Nemoze byt zalozena na zaklade vyzvy na upisovanie akcii, t. j. cele ZI musi byt spratene zakladatelmi pri jej zalozeni
+Nemoze byt zalozena na zaklade vyzvy na upisovanie akcii, t. j. cele ZI musi byt splatene zakladatelmi pri jej zalozeni
 
 ### Porovnanie zivnosti a s.r.o
 
@@ -878,9 +1007,9 @@ Nemoze byt zalozena na zaklade vyzvy na upisovanie akcii, t. j. cele ZI musi byt
 
 ### Charakteriskika a struktura zakladatelskeho rozpoctu
 
-Financne zabezpecenie podnikatelskeho planu
+Charakteristika = Financne zabezpecenie podnikatelskeho planu
 
-Casti
+Struktura = Casti
 
 - Rozpocet potrebneho dlhodobeho a obezneho majetku (aktiva) a financnych zdrojov (pasiva) pre jeho financovanie
 - Rozpocet nahladov a vynosov, resp. rozpocet prijmov a vydavkov (cash flow) - mesacny a rocny rozpocet
@@ -888,6 +1017,8 @@ Casti
 [Register uctovnych zavierok](www.registeruz.sk)
 
 ### Struktura majetku
+
+![obrazok](https://www.plantuml.com/plantuml/dpng/FSuz3iCW30NWtQTWvnAPgafLVuPEtPpYAZzWLs0XfQSla8Zj0vuURqYAKSFCBk0Nm5vn8PNLWBKtaf5-l1KMJq5qzxdhD3Fok_dUeozCCZQLCgKuemVRxqtsc9HfCNcBzTpUdf8nLZraykWmhwtW4b5NSJNsERuoOHy800EnEuR_0G00)
 
 - Neobezny (dlhodoby) majetok
   - Nehmotny
@@ -900,7 +1031,7 @@ Casti
 
 #### Neobezny (dlhodoby) majetok
 
-Oakovanym pouzivanim sa opotrebovava a svoju hodnotu postupne prenasa do hodnoty vyrabanych vyrobkov alebo do hodnoty poskytovanych sluzieb  
+Opakovanym pouzivanim sa opotrebovava a svoju hodnotu postupne prenasa do hodnoty vyrabanych vyrobkov alebo do hodnoty poskytovanych sluzieb  
 Nehmotny, hmotny, financny
 
 ##### Dlhodoby nehmotny
@@ -920,7 +1051,7 @@ Nehmotny, hmotny, financny
 
 - Cenne papiere, vklady, (akcie a dlhopisy), ktore su vlastnictve >1 rok
 - Pozicky (ktore my poskytneme) s dobou splatnosti >1 rok
-- Nehnutelnosti, umelecke diel a zbierky a predmety z drahych kovov, ktore podnik nakupuje z dovodu ulozenia volnych prenaznych prostriedkov majetku - ked nieco nepouzivam ale investujem do nich (poziciavam ich)
+- Nehnutelnosti, umelecke diela a zbierky a predmety z drahych kovov, ktore podnik nakupuje z dovodu ulozenia volnych prenaznych prostriedkov majetku - ked nieco nepouzivam ale investujem do nich (poziciavam ich)
 
 Ocenovanie majetku
 
@@ -1022,15 +1153,13 @@ Cena
 - Penazny vyraz hodnoty alebo uzitkovej hodnoty
 - Prvok marketingoveho mixu, ktoreho ulohou je spolu s ostatnymi nastrojmi zabezpecit dosiahnutie merketingovych cielov podniku
 
-Cenotvorba
+Cenotvorba - proces stanovenia cien, ktory zohladnuje vnutorne a vonkajsie faktory
 
-- Proces stanovenia cien, ktory zohladnuje vnutorne a vonkajsie faktory
+Zakladne faktory bez ohladu na predmet cinnosti a velkost
 
-Zakladne faktory bez ohladu na
-
-- .
-- .
-- .
+- Naklady
+- Dopyt (zakaznici)
+- Konkurencia
 
 Horna hranica ceny - vnimanie hodnoty zakaznikom  
 Dolna hranica ceny - naklady
@@ -1040,6 +1169,19 @@ Zakladne pristupy tvorby ceny
 - Nakladovo orientovany pristup - vychadza z nakladov na jednotku vykonu
 - Dopytovo (hodnotovo) orientovany pristup - vychadza zo zakaznika - aku hodnotu zakaznik prisudzuje danemu vyrobku
 - Konkurencne orientovany pristup - zavisi od ceny konkurencnych produktov
+
+Vyznam kalkulacneho clenenia nakladov
+
+- Zistenie nakladov na jednotku vyrobku
+- Podklad pre tvorbu ceny
+- Podklad pre tvorbu financneho planu
+
+Priamy material = hodnoty, ktore priamo prechadzaju do vyrobku, zakladny material, pomocny material, technologicke palivo, energia  
+Priame mzdy = mzdy zamestnancov, ktori bezprostredne zabezpecuju vyrobu - mzdy vyrobnych robotnikov za odpracovany cas  
+Ostatne priame naklady = priame naklady vztahujuce sa na dany vyrobok, odpisy, naklady na zarucne opravy, socialne a zdravotne poistenie z miezd vyrobnych robotnikov  
+Prevadzkova rezia = naklady suvisiace s riadenim a obsluhou vyroby, palivo, energia, nahrady miezd, mzdy obsluznych zamestnancov  
+Spravna rezia = naklady suvisiace s riadenim a spravou podniku, poplatky za telefon, internet, mzdy, socialne a zdravotne poistenie, odpisy  
+Odbytove naklady = naklady suvisiace s odbytom a expediciou vyrobkov, naklady na prieskum trhu, reklama, obaly, doprava
 
 #### Nakladovo orientovany pristup
 
@@ -1089,9 +1231,9 @@ Bud sa podriaduje konkurencii alebo
 Cena moze byt
 
 - Nad cenou konkurencie
-  - Ak mame konkurencnu vyhodu - kvalitu, znacka, podpora predaja, ...
+  - Ak mame konkurencnu vyhodu - kvalita, znacka, podpora predaja, ...
 - Pod cenou konkurencie
-  - Ak v nizsej cene zpociva jeho hlavna konkurencna vyhoda
+  - Ak v nizsej cene spociva jeho hlavna konkurencna vyhoda
   - Vzbudzuje nedoveru kupujucich voci kvalite
   - Spravidla nizsi zisk, dlhodobo
 
@@ -1110,11 +1252,12 @@ Zakladne ulohy predaja
 - Realizacia priskumu potrieb
 - Planovanie predaja a usmernovanie zamerania vyroby na uspokojovanie pozadovanych potrieb
 - Ovplyvnovanie pozicie podniku na trhu
-- Zabezpecenie konkretneho predaja na trhu vratane
-- .
+- Zabezpecenie konkretneho predaja na trhu vratane volby distribucnych ciest
+- Riadenie odbytovych zasob
 
-Kriticky objem vyroby a predaja - nulovy bod, bod zvratu - objem predaja pri ktorom $trzby = naklady$
+Kriticky objem vyroby a predaja
 
+- Nulovy bod, bod zvratu = objem predaja pri ktorom $trzby = naklady$
 - Predaje vyssie ako bod zvratu produkuju zisk
 - Predaje nizsie ako bod zvratu produkuju stratu
 
