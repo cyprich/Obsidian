@@ -1,0 +1,18 @@
+@startuml
+
+start 
+:Vyber auta;
+
+if () then (uspesny)
+    fork
+        :Financovanie; 
+    fork again 
+        :Objednavanie;
+    end fork
+    :Prevzatie;
+    stop
+else (neuspesny)
+    stop 
+endif
+
+@enduml

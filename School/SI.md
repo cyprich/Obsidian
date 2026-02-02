@@ -1258,7 +1258,7 @@ Dostaneme nieco taketo
 
 > Generalizacia a Specializacia sa oznacuju rovnako
 
-![vztahy](../images/si_vztahy.puml)
+![vztahy](../images/si_vztahy.png)
 
 #### Koniec odbocky
 
@@ -1876,8 +1876,7 @@ Klucove pojmy
 Fazy
 
 1. Planovanie - pred prvym sprintom si pripravime veci
-2. Sprinty - vela krat sa opakuju kroky: develop, review, adjust, wrap
-3. Koniec - closure - vsetko je hotove
+2. Sprinty - vela krat sa opakuju kroky: develop, review, adjust, wra./images/si_tdd.png3. Koniec - closure - vsetko je hotove
 
 Vyhody
 
