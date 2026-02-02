@@ -1,0 +1,21 @@
+@startuml
+
+class VychodiskovePostavenie 
+class Kamen 
+class Policko  
+class HraciaPlocha 
+class Hrac
+class Hra 
+class Tah
+
+VychodiskovePostavenie -- "0..*" Kamen : je tvorene z >
+Kamen -- "0..*" Kamen : preskakuje >
+Kamen -- "0..1" Policko: lezi na >
+Policko -- "0..1" Kamen : obsahuje >
+Hrac "1..*" -- "0..*" Kamen : pouziva >
+Hrac -- Tah : vykonava >
+Hrac "1..*" -- Hra : hra >
+Hra -- "1" HraciaPlocha : obsahuje >
+HraciaPlocha "1" -- "64" Policko: ma >
+
+@enduml

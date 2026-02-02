@@ -1,0 +1,44 @@
+@startuml
+
+skinparam linetype ortho
+skinparam ClassAttributeIconSize 0
+
+entity Zapas {
+    .. <<column>> ..
+    * PK zapasID: NUMBER(10)
+    * datum: DATE
+    * typHry: NUMBER(3)
+    .. <<PK>> ..
+    + PK_Zapas: NUMBER(10)
+}
+
+entity ZapasHrac {
+    .. <<column>> ..
+    * pfK hracID: NUMBER(10)
+    * pfK zapasID: NUMBER(10)
+    * pocetBodov: NUMBER(10)
+    .. <<PK>> ..
+    + PK_ZapasHrac(NUMBER, NUMBER)
+    .. <<FK>> ..
+    + Hrac(NUMBER)
+    + Zapas(NUMBER)
+
+}
+
+entity Hrac {
+    .. <<column>> ..
+    * PK hracID: NUMBER(10)
+    * heslo: NVARCHAR2(20)
+    * meno: VARCHAR2(20)
+    * NICK: VARCHAR2(20)
+    * ranking: NUMBER(5)
+    .. <<unique>> .. 
+    + UQ_Hrac_meno(VARCHAR2)
+    .. <<PK>> .. 
+    + PK_Hrac(NUMBER)
+}
+
+Zapas -o{ ZapasHrac 
+ZapasHrac }o- Hrac
+
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+
+skinparam ClassAttributeIconSize 0
+
+class SkokovaHra {
+    - faza: FazaHry 
+    - image: Image {readOnly}
+    - jePauza: bool 
+    - minPocetHracov: byte {readOnly}
+    - maxPocetHracov: byte {readOnly}
+    - pocetHracov: byte
+    - nazov: String {readOnly}
+    + Aktivuj(pocetHracov: byte): bool
+    + DajIkonu(): Image 
+    + DajLimitHracov(max: byte*, min: byte*): void 
+    + DajNazov(): String
+    - DajPocetHracov(): byte
+    + HracOdstupil(): bool 
+    + JeKoniec(): bool 
+    - NastavDlheSkoky(): void
+    - NastavPocetHracov(pocet: byte): void
+    - OverPravidla(typ: TypPravidiel): bool
+    + Pokracuj(): bool 
+    + Spusti(): bool 
+    + SkokovaHra()
+}
+
+@enduml

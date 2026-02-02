@@ -1,0 +1,37 @@
+@startuml
+
+skinparam packageStyle rectangle
+skinparam ClassAttributeIconSize 0
+
+package Symetria as S {
+    class +Hrac
+    class +Skore 
+    class +Symetria 
+    class +Zapas
+}
+
+package Hra as H {
+    class //+Hra// 
+    class +HraciaPlocha
+    class +Kamen
+    class +Policko
+    class +Pravidlo 
+    class +Tah
+}
+
+package SkokovaHra as SH {
+    class +SkokovaHra
+    class -PravidloPoctuSkokov
+    class -PravidloDlhehoSkoku
+    class -PravidloKratkehoSkoku
+}
+
+package Hadivka as HA {
+    class +Hadivka
+}
+
+S .right.> H 
+SH .left.> H
+HA .up.> H
+
+@enduml

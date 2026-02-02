@@ -1,0 +1,35 @@
+@startuml
+
+actor Hrac as A1 
+actor "Registrovany hrac" as A2 
+actor Administrator as A3 
+actor "Organizator turnaja" as A4
+
+A2 --|> A1
+A3 ..[hidden] A4
+
+note left of A1 
+    Akakolvek osoba
+    ktora hra niektoru z hier
+end note
+
+note left of A2
+    Hrac, ktory je
+    v systeme registrovany,
+    ma k dispozicii navyse
+    dalsie funkcie systemu
+end note 
+
+note right of A3 
+    Ulohou je sprava systemu 
+    Ma najvyssie prava v systeme 
+end note 
+
+note right of A4 
+    Osoba s pravami organizovat
+    turnaje, vytvarat nove, 
+    riadit prebiehajuce, ...
+end note
+    
+
+@enduml

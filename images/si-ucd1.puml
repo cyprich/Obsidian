@@ -1,0 +1,29 @@
+@startuml
+
+left to right direction
+
+rectangle Asociacia {
+    actor Predavac
+    Predavac -- (Objednanie auta) 
+}
+
+rectangle Zavislost {
+    actor Ucitel 
+    (Vytvorit novu otazku) ..> Ucitel : <<extend>>
+    Ucitel ..> (Vlozit otazku) : <<include>>
+}
+
+rectangle Generalizacia {
+    actor Zamestnanec 
+    actor Robotnik 
+    actor Uctovnik 
+
+    Robotnik --|> Zamestnanec
+    Uctovnik --|> Zamestnanec
+
+    (Editacia otazky) --|> (Editacia)
+    (Editacia odpovede) --|> (Editacia)
+
+}
+
+@enduml

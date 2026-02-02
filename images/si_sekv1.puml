@@ -1,0 +1,53 @@
+@startuml
+
+autoactivate on
+
+actor Hrac 
+boundary UvodneOkno 
+boundary HryForm
+control Symetria
+control SpravcaHier
+boundary HraciaPlocha
+entity Hra
+
+Hrac -> UvodneOkno : VyberHry()
+UvodneOkno -> Symetria : VyberHry()
+Symetria -> SpravcaHier : DajPodporovaneHry()
+
+group loop - Vytvaranie hier [pre kazdu podporovanu hru]
+    SpravcaHier --> Hra ** : Vytvor()
+    SpravcaHier -> SpravcaHier : PridajDoZoznamu(Hra)
+end
+
+SpravcaHier -> SpravcaHier : Utried()
+SpravcaHier --> Symetria : :hry
+Symetria --> UvodneOkno : Zatvor()
+
+Symetria -> HryForm : Zobraz(hry)
+
+group loop - Zobrazenie hier [pre kazdu hru]
+    HryForm -> Hra : DajIkonu():image
+    HryForm -> Hra : DajNazov():nazov
+    HryForm -> Hra : DajPocetHracov():pocet
+    HryForm -> HryForm : Zobraz()
+end
+
+HryForm -> HryForm : Zvyrazni(prva)
+
+group loop - Volba hry [kym hrac nestlaci "Hraj"] 
+    Hrac -> HryForm : Oznac(hra)
+    HryForm -> HryForm : Zvyrazni(hra)
+    HryForm --> Hrac
+end
+
+Hrac -> HryForm : Hraj(hra)
+HryForm -> Symetria : Hraj(hra)
+Symetria -> Hra : Aktivuj()
+Hra --> Symetria
+destroy Hra
+Symetria --> HryForm : Zatvor()
+Symetria -> HraciaPlocha : Zobraz(hra)
+
+
+
+@enduml

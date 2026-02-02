@@ -1,0 +1,34 @@
+@startuml
+
+state Spustena {
+    state DlheSkoky
+    state KratkeSkoky
+
+}
+
+state Ukoncena {
+    state Dohrana
+    state Nedohrana
+}
+
+state Aktivovana
+state Vytvorena 
+state Prerusena
+
+[*] -> Vytvorena : vyber hry
+Vytvorena -> Aktivovana : aktivuj 
+
+Aktivovana --> KratkeSkoky : [vsetci hraci sa prihlasili]
+Aktivovana --> Ukoncena : [vyprsal cas]
+KratkeSkoky -> DlheSkoky : [ziaden kratky skok]
+Spustena -> Spustena : tah \n[uplynul cas nalebo \nhrac potvrdil skok]
+Spustena --> Nedohrana : hrac sa vzdal\n[zostal posledny hrac]
+DlheSkoky -> Dohrana : [ziaden mozny skok]\n/vyhodnotenie
+
+Spustena --> Prerusena : stop
+Prerusena --> Spustena : start
+Prerusena ----> Nedohrana : [vyprsal cas]
+
+Ukoncena --> [*] : [posledny hrac opustil hru]
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+
+left to right direction
+
+actor Hrac as A1
+
+rectangle "Hra jedneho hraca" {
+    usecase "Zobrazenie hintu" as UC1
+    usecase "Vykonanie tahu" as UC2
+    usecase "Undo" as UC3
+    usecase "Redo" as UC4
+    usecase "Ukoncenie hry" as UC5
+    usecase "Aktualizacia vysledku" as UC6
+    usecase "PC tah" as UC7
+}
+
+A1 -- UC1
+A1 -- UC2
+A1 -- UC3
+A1 -- UC4
+A1 -- UC5
+
+UC7 .> UC2 : <<extend>>
+UC2 .> UC6 : <<include>>
+
+
+@enduml

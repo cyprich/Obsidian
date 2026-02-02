@@ -1,0 +1,94 @@
+@startuml
+
+
+' elements
+interface "Stav hry"
+label "Vykonavany tah"
+label "Hraci"
+
+component Engine {
+    component Zapas {
+        component Evaluator 
+        component Runner 
+        component "Vybrana hra"
+        interface "Pravidla hodnotenia"
+        interface "Pravidla tahov"
+        portout " " as P1
+    }
+
+    component Loader {
+        component Konfiguracia 
+        component Hra
+
+
+        port "Vybrana hra" as P2
+        portout " " as P3
+    }
+
+    component AI
+    interface IHra 
+
+    portout mozne 
+    portout nastavene
+}
+
+label Nastavenia as N1
+interface Nastavenia as N2
+
+folder Hry 
+
+component "Skokova hra"
+component "Hadivka"
+component "..."
+
+note as NO1
+    Offline hra 
+    "Hruby klient" 
+end note 
+
+note as NO2
+    Dostatocna flexibilita 
+    na rozsirovanie o nove hry
+end note 
+
+note as NO3 
+    Podpora roznych zariadeni a OS
+    Maximalizovat reuse 
+end note 
+
+' relations 
+' inside zapas
+Evaluator ..> "Pravidla hodnotenia" : <<use>>
+"Pravidla hodnotenia" - "Vybrana hra"
+Runner -0)- Evaluator : ITah 
+Runner ..> "Pravidla tahov" 
+"Pravidla tahov" - "Vybrana hra"
+P1 -> "Vybrana hra"
+P1 .> IHra : <<use>>
+
+' inside loader
+Hra --0)- Konfiguracia : Nastavenia
+Hra -- P2 
+Konfiguracia -- P3
+
+' inside engine
+Zapas .> AI
+IHra .. P2
+P3 -- mozne 
+P3 -- nastavene 
+
+' outside engine
+"Stav hry" - Engine
+"Vykonavany tah" )-- Engine
+Hraci )-- Engine
+
+mozne --( N1 
+nastavene -- N2
+
+Loader .> Hry : <<use>>
+"Skokova hra" ..> Hry : <<reside>>
+"Hadivka" ..> Hry : <<reside>>
+"..." ..> Hry : <<reside>>
+
+
+@enduml

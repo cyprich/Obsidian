@@ -1,0 +1,31 @@
+@startuml
+
+skinparam ClassAttributeIconSize 0
+
+class Kamen {
+    - farba 
+    - hodnota 
+}
+
+class Hra {
+    - minHracov
+    - maxHracov
+    - nazov
+    + Spusti()
+}
+
+class VychodiskovePostavenie 
+class Policko  
+class HraciaPlocha 
+class Hrac
+class Tah
+
+VychodiskovePostavenie --> "0..*\n-rozlozenieKamenov" Kamen 
+Policko o-- "0..1\n-naPloche" Kamen 
+HraciaPlocha "1" *-- "64\n-policka" Policko
+Hra *-- "1" HraciaPlocha 
+Hra *-- "36\n-kameneVHre" Kamen
+Hrac "1..*" --> "0..*\n-HraneHry" Hra 
+Hra ---> "-protiHraci" Hrac 
+
+@enduml

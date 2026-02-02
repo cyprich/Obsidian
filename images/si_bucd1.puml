@@ -1,0 +1,18 @@
+@startuml
+
+actor/ "Zakaznik" as A1
+
+rectangle Bankomat {
+    usecase/ "Vyber z bankomatu" as UC1
+    usecase/ "Vydanie potvrdenky" as UC2
+    usecase/ "Zistenie stavu uctu" as UC3
+    usecase/ "Identifikacia klienta" as UC4
+}
+
+A1 -- UC1
+A1 -- UC3
+UC2 .> UC1 : <<extend>>
+UC1 ..> UC4 : <<include>>
+UC3 .> UC4 : <<include>>
+
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+
+hide empty description
+
+state "Pridanie noveho testu" as S1 
+state "Spustenie testov" as S2 
+state "Realizacia drobnej zmeny" as S3 
+state "Spustenie testov" as S4 
+
+[*] -> S1 
+S1 -> S2 
+S2 -> S3 : [Testy neuspesne]
+S2 -> S1 : [Testy uspesne]
+S3 -> S4 
+S4 -> S3 : [Testy neuspesne]
+S4 -> S1 : [Pokracovanie vyvoja]
+S4 -> [*] : [Koniec vyvoja]
+
+@enduml

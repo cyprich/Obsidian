@@ -1,0 +1,32 @@
+@startuml
+
+left to right direction
+skinparam packageStyle rectangle
+
+package "Generalizacia a Specializacia" #Moccasin {
+    class Game 
+    class Chess 
+    class Checkers 
+    Checkers --|> Game 
+    Game <|-- Chess
+}
+
+package Agregacia #LightGreen {
+    class Pond 
+    class Duck 
+    Pond "0..1" o-- "0..*" Duck
+}
+
+package Kompozicia #Pink {
+    class Car 
+    class Carburetor 
+    Car "0..1" *-- "1..1" Carburetor
+}
+
+package Asociacia #LightBlue {
+    class Person 
+    class Magazine 
+    Person "0..*" -- "0..*" Magazine : subscribes 
+}
+
+@enduml 

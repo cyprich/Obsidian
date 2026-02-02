@@ -1,0 +1,61 @@
+@startuml
+
+left to right direction
+
+actor Hrac as A1
+actor "Registrovany hrac" as A2
+
+rectangle Hra {
+    usecase (Prezeranie napovedy) as UC1
+    usecase (Prezeranie demo ukazky) as UC2
+    usecase (Hranie hry) as UC3
+    usecase (Hranie hry viacerych hracov) as UC4
+    usecase (Hranie hry jedneho hraca) as UC5
+    usecase (Registracia hraca) as UC6
+    usecase (Spustenie novej hry) as UC7
+    usecase (Prihlasenie sa) as UC8
+    usecase (Vyber typu hry) as UC9
+}
+
+A2 ---|> A1
+
+A1 -- UC1 
+A1 -- UC2
+A1 -- UC3
+A1 -- UC6
+A2 -- UC7
+
+UC2 ..> UC9 : <<include>>
+UC3 ..> UC9 : <<include>>
+UC4 -|> UC3 
+UC3 <|- UC5 
+UC7 ..> UC8 : <<include>>
+UC7 ..> UC9 : <<include>>
+UC8 ..> UC6 : <<extend>>
+UC9 ..> UC1 : <<extend>>
+
+note left of UC1
+    Pre novych hracov je dolezite 
+    poskytnut zakladne pravidla hry 
+    ako aj napovedu o strategii. 
+    Hracovi sa na jeho vyziadanie 
+    zobrazia vseobecne pravidla. 
+    V pripade zaujmu si moze vybrat 
+    konkretnu hru a zobrazit jej pravidla 
+end note 
+
+note right of UC9 
+    V ramci vyberu hry system zobrazi 
+    zoznam podporovanych hier. 
+    Hrac si vyberie jednu hru. 
+    Ak hra umoznuje definovat rozne 
+    variacie pravidiel, system ich zobrazi. 
+    Hrac oznaci pozadovane variacie. 
+    V pripade, ak sa niektore variacie 
+    navzajom vylucuju, system automaticky 
+    zablokuje zostavajuce odporujuce 
+    alternativy po vybere niektorej z nich
+end note 
+
+
+@enduml

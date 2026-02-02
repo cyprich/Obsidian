@@ -1,0 +1,70 @@
+@startuml
+
+node Server {
+    artifact "Aplikacny server" <<artifact>>
+
+    component "Business Layer" {
+        component Statistiky
+        component "Engine/Hry/AI"
+        component Administracia
+        component Hraci
+        component Turnaje
+    }
+
+    component "Data Access Layer"
+    component "Service Layer"
+}
+
+node "Databazovy server" {
+    component "Mongo DB"
+}
+
+node "PC Windows, Linux, Mac" as PC {
+    artifact "Desktop Symetry Hra" <<artifact>> {
+        component "Engine/Hry/AI"
+    }
+}
+
+node LAN 
+
+node "Mobil Android, IOS" as MOBIL {
+    artifact "Mobile Symetry Hra" <<artifact>> {
+        component "Engine/Hry/AI"
+    }
+}
+
+interface "REST API"
+
+node Internet 
+
+node "Manager PC" {
+    node "Web Browser" <<executionEnvironment>> as B1 {
+        component "Manazment/Statistiky" as M
+    }
+}
+
+node "Online Hrac PC" {
+    node "Web Browser" <<executionEnvironment>> as B2 {
+        component Turnaje as T
+        component Hra as H
+    }
+}
+
+"Service Layer" .> "Business Layer"
+"Service Layer" -- "REST API"
+"Business Layer" .> "Data Access Layer"
+"Data Access Layer" .> "Mongo DB"
+
+Server -- "Databazovy server"
+Server -- Internet 
+Internet -- "Manager PC" 
+Internet -- "Online Hrac PC" 
+
+PC -- LAN 
+LAN -- MOBIL
+
+M ..> "REST API"
+T ..> "REST API"
+H ..> "REST API"
+
+@enduml

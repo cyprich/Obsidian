@@ -1,0 +1,18 @@
+@startuml
+
+class VychodiskovePostavenie 
+class Kamen 
+class Policko  
+class HraciaPlocha 
+class Hrac
+class Hra 
+class Tah
+
+VychodiskovePostavenie --> "0..*" Kamen 
+Policko --> "0..1" Kamen 
+HraciaPlocha "1" --> "64" Policko
+Hra --> "1" HraciaPlocha 
+Hra --> "36" Kamen
+Hrac "1..*" --> Hra 
+
+@enduml

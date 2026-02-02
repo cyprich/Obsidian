@@ -1,0 +1,35 @@
+@startuml
+
+skinparam ClassAttributeIconSize 0
+
+class Hra {
+    - minPocetHracov 
+    - maxPocetHracov
+    - nazov
+}
+
+class SkokovaHra
+
+class Pravidlo {
+    +Skontroluj()
+}
+
+class PravidloPoctuSkokov {
+    +Skontroluj()
+}
+
+class PravidloKratkehoSkoku {
+    +Skontroluj()
+}
+
+class PravidloDlhehoSkoku {
+    +Skontroluj()
+}
+
+SkokovaHra -|> Hra 
+Hra o-- "0..*\n-pravidla" Pravidlo
+Pravidlo <|-- PravidloPoctuSkokov
+Pravidlo <|-- PravidloKratkehoSkoku
+Pravidlo <|-- PravidloDlhehoSkoku
+
+@enduml

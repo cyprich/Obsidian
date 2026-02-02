@@ -1,0 +1,47 @@
+@startuml
+
+package GUI {
+    component Web {
+        component "Manazment/statistiky" as M
+        component Turnaje as T1
+        component Hra 
+    }
+
+    component "Hra GUI" {
+        component Android 
+        component "Windows desktop"
+        component "Linux desktop"
+        component "Mac desktop"
+    }
+}
+
+package "Biznis vrstva" {
+    component "Business layer" {
+        component Administracia 
+        component Statistiky 
+        component Turnaje as T2
+        component Hraci 
+    }
+
+    component Client {
+        component "Engine/Hry/AI" as E
+    }
+}
+
+package Perzistencia {
+    component "Server data storage"
+    component "Podporovane hry"
+}
+
+M ..> Administracia 
+M ..> Statistiky
+T1 ..> T2 
+T1 ..> Hraci 
+Hra ..> Statistiky 
+Hra ..> Hraci 
+Hra ..> E
+"Hra GUI" ..> E
+"Business layer" ..> "Server data storage"
+E ..> "Podporovane hry"
+
+@enduml
