@@ -948,7 +948,7 @@ ALG
 
 UPnP
 
-- [www.upnp.org](www.upnp.org)
+- [www.upnp.org](https://www.upnp.org)
 - Zariadenie si vie otvorit dieru vo FW na jednoduchu konfiguraciu
 - Zahrnute v DLNA (Digital L N Alliance)
 

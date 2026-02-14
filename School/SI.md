@@ -2,6 +2,8 @@
 
 Softverove Inzinierstvo
 
+Mam tu aj [poznamky z cviceni](./SI_old.md) ale tam nie je nic moc
+
 ## Uvod
 
 Inzinierstvo = pouzitie vedeckych principov pri navrhu a tvorbe strojov, stavieb, struktur, ...

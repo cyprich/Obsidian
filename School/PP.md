@@ -1014,7 +1014,7 @@ Struktura = Casti
 - Rozpocet potrebneho dlhodobeho a obezneho majetku (aktiva) a financnych zdrojov (pasiva) pre jeho financovanie
 - Rozpocet nahladov a vynosov, resp. rozpocet prijmov a vydavkov (cash flow) - mesacny a rocny rozpocet
 
-[Register uctovnych zavierok](www.registeruz.sk)
+[Register uctovnych zavierok](https://www.registeruz.sk)
 
 ### Struktura majetku
 
