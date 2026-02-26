@@ -31,16 +31,20 @@ Machine Learning
 
 - Trochu zlozitejsie
 - **Natrenovane** na datach
+- **Strukturovane data s priznakmi**
 - My urcujeme priznaky
 - Zlozitejsi spam filter - na zaklade viac parametrov + dame sadu sprav na ktorej si to natrenuje
 
 Deep Learning
 
 - Najzlozitejsie
+- Nestrukturovane - text, audio, video
 - Dame stroju vela vela dat, povieme mu ktore spravy su spam a ktore nie, on si sam pride na to ako to bude vyhodnocovat
 
 DL je podkategoria ML  
 ML je podkategoria AI
+
+Este podkategoria DL - Generativna AI - vstup moze byt vsetko, vystup moze byt vsetko - chatgpt
 
 ### Ulohy pre AI
 
@@ -197,3 +201,104 @@ Preco Deep Learning?
   - Nevyhoda - casto nie je interpretovatelne - pri MNIST nevieme popisat co robi konkretny pixel
 
 Extrakcia priznakov je casto klucova - a DL je cesta
+
+## Zaklady hlbokeho strojoveho ucenia
+
+### Neuronova siet
+
+Neuronova siet = funkcia
+
+- Zoberie vektor s vela komponentami (28x28 = 784 rozmerny vektor)
+- Vrati nam nejaku hodnotu (napr. ci je obrazok cislo 5)
+
+realita - kvantifikacia - model
+
+$R^3 \rightarrow R$
+
+Parametre $x_1$, $x_2$, $x_3$
+$w_1x_1 + w_2x_2 + w_3x_3 > T$
+
+$\sum_{i=1}^{3} w_i x_i + b >= 0$  
+$\mathbf{w} \cdot \mathbf{x} + b >= 0$
+
+Ak $\sum_{i=1}^{3} w_i x_i + b > 0$ tak mam vysledok `1`, inak vysledok `0`  
+Pouzijem _Heaviside-ovu funkciu_ - pre hodnoty $=< 0$ dava `0`, pre hodnoty $> 0$ dava `1`
+
+Ucenie vahy ($\mathbf{w}$) a biasu ($\mathbf{b}$) = parametrov alebo hyperparametrov = **proces ucenia sa modelu**
+
+Do neuronu dame vstupy s vahami, neuron da nam vystup
+
+#### Perceptron
+
+Heaviside-ova funkcia
+
+- `0` ak $\mathbf{w} \cdot \mathbf{x} + b <= 0$
+- `1` ak $\mathbf{w} \cdot \mathbf{x} + b > 0$
+
+**Perceptron** - typ neuronu, ktory pouziva aktivacnu funkciu `H` (Heaviside)
+
+Viac perceptronov
+
+- Neprehladne ked mame specificky vyberat ze ktory vstup do ktoreho perceptronu
+- Riesenie - kazdy vstup do kazdeho perceptronu a menime vahy
+- Vahy $\mathbf{w}_{ij}$ - z parametru $i$ do percepronu $j$
+- Biasy $b_j$, kde $j \in (1, 2, 3)$
+
+Parametre = vahy + biasy;
+
+##### Problem nespojitosti
+
+Mala zmena ma velky dopad na vysledok (prekrocenie treshholdu)
+
+> Napr. pocasie za zmeni o 1 stupen tak sa zrazu nejde na festival
+
+Tento problem vyplyva zo skoku vo funkcii `H`
+
+#### Sigmoidovy neuron
+
+Sigmoidova funkcia
+
+- Taka vlnka
+- Ak je vystup velmi zaporny $\rightarrow$ `0`
+- Ak je vystup velmi kladny $\rightarrow$ `1`
+- Ak je vystup niekde medzi, tak vystup bude niekde medzi `0` a `1`
+
+Vzorec: $\sigma(z) = \dfrac{1}{1 + e^{-z}}$
+
+#### Aktivacna funkcia ReLU
+
+- Ak $vystup < 0 \rightarrow 0$
+- Ak $vystup \ge 0 \rightarrow <1 .. \infty >$ (nad $1$ rastie linearne)
+
+$max(0, z)$
+
+---
+
+Ciel - najst take $\mathbf{w}$ a $\mathbf{b}$ aby predikovane hodnoty $\hat{y}$ boli co najblizsie $y$  
+$\hat{y} = F_{w, b}(x)$ sa ma podobat na $y$ = minimalizacia SME (mean square error) - rozdiely na druhu  
+Vstupy $x$, data $y$, predikcia $\hat{y} = F_{w, b}(x)$  
+V podstate metoda najmensich stvorcov z AP  
+$min(SME(w,b))$
+
+Pri jednom parametri - jediny neuron - hladanie minima = $derivacia = 0$  
+Pri viacerych premennych - $parcialne derivacie = 0$  
+Pri 784 je to problem - sustava 784 rovnic
+
+Riesenie - **iterovanie**
+
+- Som v horach, strasna hmla, nevidim na 2 metre, snazim sa dostat dole
+- Iterujem
+  - Stojim na mieste, pootacam sa dookola, najdem _smer najvacsieho sklonu_ - kolmo na vrstevnicu
+  - Spravim par krokov dopredu
+- $(x_{n+1}, y_{n+1}) = (x_n, y_n) - \ni \cdot (Dx, Dy)$
+- $n = n+1$
+- Moze sa stat ze nepridem dole na parkovisko ku autu, ale niekde do ineho udolia/jazierka/cojaviemco
+
+Iterovanie (derivacie) nemusia fungovat pri perceptrone (Heavisideova funkcia)
+
+#### Learning rate
+
+Dlzka kroku ked idem dole z kopca
+
+- Moze sa stat ze je moc maly - moc dlho pojdeme - dlho to trva
+- Moze sa stat ze je moc velky - mozeme prepasnut to minimum a nikdy minimum nenajdeme
