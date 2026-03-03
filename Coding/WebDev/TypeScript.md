@@ -647,3 +647,254 @@ function downloadStatus(status: Status) {
 
 downloadStatus("idle");
 ```
+
+## Type narrowing
+
+**Type guards** can use variety of operators that check for variable's type
+
+Operators:
+
+- `typeof`
+- `in`
+
+### Operator `typeof`
+
+Checks if value has specific type
+
+```ts
+let myVariable: string | number = 1;
+
+if (typeof myVariable === "string") {
+  // do something
+}
+
+if (typeof myVariable === "number") {
+  // do something
+}
+```
+
+Possible values to check are:
+
+- `string`
+- `number`
+- `boolean`
+- `symbol`
+
+> (no custom types?)
+
+### Operator `in`
+
+To check if type has specific method
+
+```ts
+type Tennis = {
+  serve: () => void;
+};
+
+type Soccer = {
+  kick: () => void;
+};
+
+function play(sport: Tennis | Soccer) {
+  if ("serve" in sport) {
+    return sport.serve();
+  }
+
+  if ("kick" in sport) {
+    return sport.kick();
+  }
+}
+```
+
+### Using else
+
+Nothing special, just `else` block after `if` block
+
+```ts
+if (typeof myVariable === "string") {
+  // do something
+} else {
+  // do something else
+}
+```
+
+If you are using `return` statement inside `if` block, you can omit the `else` block (nothing new again)
+
+```ts
+function doSomething(myVariable: string | number): string {
+  if (typeof myVariable === "string") {
+    // do something
+    return "a";
+  }
+
+  // do something else
+  return "b";
+}
+```
+
+## Advanced object types
+
+### Interface
+
+```ts
+interface Robot {
+  identify: (id: number) => void;
+}
+
+class OneSeries implements Robot {
+  identify(id: number) {
+    console.log(`beep! I'm ${id.toFixed(2)}.`);
+  }
+
+  answerQuestion() {
+    console.log("42!");
+  }
+}
+```
+
+### Interface and Class
+
+```ts
+// Write an interface here
+interface Directory {
+  addFile: (name: string) => void;
+}
+
+class DesktopDirectory implements Directory {
+  addFile(name: string) {
+    console.log(`Adding file: ${name}`);
+  }
+
+  showPreview(name: string) {
+    console.log(`Opening preview of file: ${name}`);
+  }
+}
+
+const Desktop = new DesktopDirectory();
+
+Desktop.addFile("lesson-notes.txt");
+Desktop.showPreview("lesson-notes.txt");
+```
+
+Class constructor is just method named `constructor`
+
+```ts
+class Dog {
+  name: string,
+
+  constructor(name: string) {
+    this.name = name
+  }
+}
+
+let dog = new Dog("feri")
+```
+
+Parameters with props
+
+```ts
+interface DogProps {
+  name: string;
+}
+
+class Dog {
+  name: string;
+
+  constructor(props: DogProps) {
+    this.name = props.name;
+  }
+}
+
+let dog = new Dog({ name: "feri" });
+```
+
+### Extended interface
+
+Interface can `extend` another interface
+
+```ts
+interface Shape {
+  color: String;
+}
+
+interface Square extends Shape {
+  sideLenght: number;
+}
+```
+
+### Composed/Nested types
+
+Idk it looks like just json to me
+
+```ts
+interface About {
+  general: {
+    id: number;
+    name: string;
+    version: {
+      versionNumber: number;
+    };
+  };
+}
+```
+
+To prevent deep nesting, you can separate each level into its separate interface
+
+```ts
+interface About {
+  general: General;
+}
+
+interface General {
+  id: number;
+  name: string;
+  version: Version;
+}
+
+interface Version {
+  versionNumber: number;
+}
+```
+
+### Index Signatures
+
+Sometimes you might not know what data you will get, for example from API or something...
+You might not know the name of the variables  
+If you had `json` like this, what type will you give it?
+
+```json
+{
+  "shopping": 150,
+  "food": 210,
+  "utilities": 100
+}
+```
+
+Solution - index signatures
+
+```ts
+interface Budget {
+  [category: string]: number;
+}
+
+const result: Budget = getBudgetFromApi();
+```
+
+### Optional type members
+
+We had this already?
+
+```ts
+interface ExampleInterface {
+  name: string;
+  size?: number;
+}
+
+function doSomething(value: ExampleInterface) {
+  console.log(value.name);
+
+  if (value.size) {
+    console.log(value.size);
+  }
+}
+```
