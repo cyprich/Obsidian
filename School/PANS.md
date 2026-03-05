@@ -211,78 +211,153 @@ Neuronova siet = funkcia
 - Zoberie vektor s vela komponentami (28x28 = 784 rozmerny vektor)
 - Vrati nam nejaku hodnotu (napr. ci je obrazok cislo 5)
 
-realita - kvantifikacia - model
+**Proces**: Realita - Kvantifikacia - Model
 
-$R^3 \rightarrow R$
+- Oblacnost, unava - Hotnoty $x, y$ - Funkcia $z = f(x, y)$
+- Obrazok 28x28 pixelov - Vektor s 784 komponentami - Funkcia $z = f(\mathbf{x})$, kde $\mathbf{x}$ je vektor, funkcia vracia cislo $\in <0 .. 1>$
 
-Parametre $x_1$, $x_2$, $x_3$
-$w_1x_1 + w_2x_2 + w_3x_3 > T$
+Priklad s festivalom
 
-$\sum_{i=1}^{3} w_i x_i + b >= 0$  
-$\mathbf{w} \cdot \mathbf{x} + b >= 0$
+- Uplne jednoducho - dcera chce ist ak su aspon 2 podmienky splnene
+  - $x_1 + x_2 + x_3 > 1$
+- Pridame vahy - zvazi to viac ak s nou pojde priatel
+  - $0.2x_1 + 1.8x_2 + 1x_3 > 1$
+- Vo vseobecnosti
+  - $w_1x_1 + w_2x_2 + w_3x_3 > T$
 
-Ak $\sum_{i=1}^{3} w_i x_i + b > 0$ tak mam vysledok `1`, inak vysledok `0`  
-Pouzijem _Heaviside-ovu funkciu_ - pre hodnoty $=< 0$ dava `0`, pre hodnoty $> 0$ dava `1`
+Parametre $x_1$, $x_2$, $x_3$ - do vektora $\mathbf{x}$  
+Vahy $w_1, w_2, w_3$ - do vektora $\mathbf{w}$  
+Bias $b$  
+Ci ideme je funkcia $\sum_{i=1}^{n} w_i x_i + b >= 0$, alebo vektorovo $\mathbf{w} \cdot \mathbf{x} + b >= 0$
 
-Ucenie vahy ($\mathbf{w}$) a biasu ($\mathbf{b}$) = parametrov alebo hyperparametrov = **proces ucenia sa modelu**
+Ak predchadzajuca funkcia $>=0$ tak rozhodnutie je $1$, inak je rozhodnutie $0$
+Pouzijem **Heaviside-ovu funkciu** - pre hodnoty $=< 0$ dava $0$, pre hodnoty $> 0$ dava $0$
+
+![heaviside funkcia](../images/pans-heaviside.png)
+
+Matematicky zapis $y = f(\mathbf{x}) = H(\mathbf{w} \cdot \mathbf{x} + b)$  
+Funkcia $H(z)$ (Heaviside-ova funkcia) sa nazyva aktivacna funkcia
+
+Ucenie vahy ($\mathbf{w}$) a biasu ($\mathbf{b}$) = parametrov (alebo hyperparametrov) = **proces ucenia sa modelu**  
+Hladanie parametrov tak, aby model sedel na data
 
 Do neuronu dame vstupy s vahami, neuron da nam vystup
 
-#### Perceptron
+### Perceptron
 
-Heaviside-ova funkcia
+Typ neuronu  
+Je aktivovany Heaviside-ovou funkciou
 
 - `0` ak $\mathbf{w} \cdot \mathbf{x} + b <= 0$
 - `1` ak $\mathbf{w} \cdot \mathbf{x} + b > 0$
 
 **Perceptron** - typ neuronu, ktory pouziva aktivacnu funkciu `H` (Heaviside)
 
+![perceptron](../images/pans-perceptron1.png)
+
 Viac perceptronov
 
+- Napr. priklad s festivalom - nemame iba dceru ale aj dalsich 2 synov
 - Neprehladne ked mame specificky vyberat ze ktory vstup do ktoreho perceptronu
-- Riesenie - kazdy vstup do kazdeho perceptronu a menime vahy
+- Riesenie - kazdy vstup do kazdeho perceptronu a menime vahy, tam kde nechceme nic dame vahu 0
 - Vahy $\mathbf{w}_{ij}$ - z parametru $i$ do percepronu $j$
 - Biasy $b_j$, kde $j \in (1, 2, 3)$
 
-Parametre = vahy + biasy;
+Parametre = vahy + biasy
 
-##### Problem nespojitosti
+![perceptrony](../images/pans-perceptron2.png)
 
-Mala zmena ma velky dopad na vysledok (prekrocenie treshholdu)
+Rozhodneme sa ze na festival pojdeme ak chcu ist aspon dvaja
+
+![perceptrony](../images/pans-perceptron3.png)
+
+#### Problem nespojitosti
+
+Mala zmena ma velky dopad na vysledok (prekrocenie thresholdu)
 
 > Napr. pocasie za zmeni o 1 stupen tak sa zrazu nejde na festival
 
-Tento problem vyplyva zo skoku vo funkcii `H`
+Tento problem vyplyva zo skoku vo funkcii $H$
 
-#### Sigmoidovy neuron
+Riesenie - pouzitie inej aktivacnej funkcie
 
-Sigmoidova funkcia
+### Aktivacne funkcie
 
-- Taka vlnka
+#### Heaviside-ova funkcia
+
+Uz sa spominala predchvilou  
+Perceptron
+
+![heaviside](../images/pans-heaviside.png)
+
+#### Sigmoidova funkcia
+
+Taka vlnka
+
 - Ak je vystup velmi zaporny $\rightarrow$ `0`
 - Ak je vystup velmi kladny $\rightarrow$ `1`
 - Ak je vystup niekde medzi, tak vystup bude niekde medzi `0` a `1`
 
 Vzorec: $\sigma(z) = \dfrac{1}{1 + e^{-z}}$
 
-#### Aktivacna funkcia ReLU
+![sigmoid](../images/pans-sigmoid.png)
+
+#### ReLU
+
+Rectified Linear Unit
 
 - Ak $vystup < 0 \rightarrow 0$
 - Ak $vystup \ge 0 \rightarrow <1 .. \infty >$ (nad $1$ rastie linearne)
 
 $max(0, z)$
 
----
+![relu](../images/pans-relu.png)
+
+### Terminologia
+
+- Vstupna vrstva
+- Skryte vrstvy
+- Vystupna vrstva
+- Aktivacna vrstva
+- Neuron
+- Vahy
+- Biasy
+- Vrstva
+- Sirka - pocet neuronov v jednej vrstve
+- Hlbka - pocet vrstiev
+- Parametre - vahy + biasy
+
+![siet](../images/pans-siet1.png)
+
+### Formalizacia ucenia sa neuronovej siete
+
+Pome to dat nejak dokopy  
+Priklad s festivalom
+
+- 6 vstupov - pocasie, mhd, kamarati, ...
+- 3 deti - rozhodnu sa na zaklade vstupov
+- 2 rodicia - rozhodnu sa na zaklade deti
+- 1 vystup - rozhodne sa podla toho co povedia rodicia
+
+**Siet je funkcia**
+
+- Zoberie vstupy $x_1, ..., x_6$
+- Vrati nam vystup - hodnotu, cislo $\in <0..1>$
+- Ma vnutri parametre $\mathbf{w}$ a $\mathbf{b}$
+- K dispozicii ma mnoho dvojic $\mathbf{x}, y$
 
 Ciel - najst take $\mathbf{w}$ a $\mathbf{b}$ aby predikovane hodnoty $\hat{y}$ boli co najblizsie $y$  
-$\hat{y} = F_{w, b}(x)$ sa ma podobat na $y$ = minimalizacia SME (mean square error) - rozdiely na druhu  
+$\hat{y} = F_{w, b}(x)$ sa ma podobat na $y$ = minimalizacia MSE (mean square error) - rozdiely na druhu  
+Minimalizujeme $MSE(\mathbf{w}, \mathbf{b}) = \dfrac{1}{n} \sum_{data}(\hat{y} - y)^2 = \dfrac{1}{n} \sum_{data}(F_{w, b}(x) - y)^2$  
 Vstupy $x$, data $y$, predikcia $\hat{y} = F_{w, b}(x)$  
 V podstate metoda najmensich stvorcov z AP  
-$min(SME(w,b))$
+$min(MSE(w,b))$
 
-Pri jednom parametri - jediny neuron - hladanie minima = $derivacia = 0$  
+#### Minimalizacia $MSE(\mathbf{w}, \mathbf{b})$
+
+Pri jednom parametri - jediny neuron - hladanie minima funkcie = miesto kde $derivacia = 0$  
 Pri viacerych premennych - $parcialne derivacie = 0$  
-Pri 784 je to problem - sustava 784 rovnic
+Pri 784 premennych je to fess problem - sustava 784 rovnic
 
 Riesenie - **iterovanie**
 
@@ -290,9 +365,12 @@ Riesenie - **iterovanie**
 - Iterujem
   - Stojim na mieste, pootacam sa dookola, najdem _smer najvacsieho sklonu_ - kolmo na vrstevnicu
   - Spravim par krokov dopredu
-- $(x_{n+1}, y_{n+1}) = (x_n, y_n) - \ni \cdot (Dx, Dy)$
+- $(x_{n+1}, y_{n+1}) = (x_n, y_n) - \eta \cdot (Dx, Dy)$
 - $n = n+1$
 - Moze sa stat ze nepridem dole na parkovisko ku autu, ale niekde do ineho udolia/jazierka/cojaviemco
+
+$(w_{n+1}, b_{n+1}) = (w_n, b_n) - \eta \cdot (dF/dw, dF/db)$  
+Klucovy krok su parcialne derivacie $F$
 
 Iterovanie (derivacie) nemusia fungovat pri perceptrone (Heavisideova funkcia)
 
