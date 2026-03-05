@@ -1,8 +1,8 @@
 # Siete
 
-Take vseobecne srandicky o sietach co som nevedel kam zaradit, alebo som zvazil ze by bolo fajn ich mat pokope  
+Take vseobecne srandicky o sietach co som nevedel kam zaradit, alebo som zvazil ze by bolo fajn ich mat pokope
 
-Poznamocky v suboroch [PS1](./PS1.md) a [PS2](./PS2.md)
+Podrobnejsie poznamocky v suboroch [PS1](./PS1.md), [PS2](./PS2.md) a [PS3](./PS3.md)
 
 ## Basic config
 

@@ -41,3 +41,7 @@ Zimny semester
 🌐 [PS3](./PS3.md)  
 💰 [PP](./PP.md)  
 🤖 [IV](./IV.md)
+
+Letny semester
+
+🧠 [PANS](./PANS.md)
