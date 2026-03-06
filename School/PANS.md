@@ -380,3 +380,266 @@ Dlzka kroku ked idem dole z kopca
 
 - Moze sa stat ze je moc maly - moc dlho pojdeme - dlho to trva
 - Moze sa stat ze je moc velky - mozeme prepasnut to minimum a nikdy minimum nenajdeme
+
+## Trening neuronovej siete - od chyby k vahe
+
+### Data, parametre, hyperparametre
+
+Supervised learning pracuje s parmi `(X, Y)`
+
+- `X` - priznaky (features) - co vieme zmerat o kazdom priklade - plocha bytu, pocet izieb, ...
+- `Y` - label (stitok/anotacia) - co chceme predpovedat - cena bytu
+
+V buducnosti chcem co najpresnejsie predikovat `X`, ktore momentalne nepozna
+
+#### Parametre vs. Hyperparametre
+
+Parametre
+
+- Hodnoty, ktore sa bude siet ucit
+- Napr. Vahy, Biasy
+- Nastavia sa pocas trenovania - optimalizacna metoda ich aktualizuje automaticky v kazdom krokou (gradient descent)
+
+Hyperparametre
+
+- Nastavenia, ktore volime mey - pred treningom, alebo mimo nich
+- Napr. Learning rate, pocet vrstiev, aktivacna funkcia
+- Nastavia sa mimo treningu, optimalne hodnoty hladame na validacnych datach
+
+Priklad
+
+| Uloha             | Hyperparameter                                                              | Parameter                                      |
+| ----------------- | --------------------------------------------------------------------------- | ---------------------------------------------- |
+| k-NN              | `k` = pocet susedov, nastavovali sme na validacnych datach                  | Ziadne (k-NN si nic netrenuje)                 |
+| Linearna regresia | Ziadne (zadavame iba data)                                                  | Koeficienty $w_1, w_2, b$ (najdene analyticky) |
+| Neuronova siet    | Learning rate $\eta$, pocet vrstiev, pocet neuronov, aktivacna funkcia, ... | Vahy a biasy - $w, b$                          |
+
+### Stratova funkcia a minimalizacia (optimalizacia)
+
+Treningovy cyklus (toto iterujeme)
+
+1. Data `(X, Y)`
+2. Forward pass - predikcie siete $\hat{y} = f(X, w)$ - vypocty
+3. Loss - $L(\hat{y}, y)$ - zmeranie chyby, napr. MSE
+4. Gradient - $\partial L / \partial w$ - **backpropagation**
+5. Aktualizacia vah - optimalizacia
+
+#### Vystupna vrstva zavisi od ulohy
+
+- Regresia
+- Binarna klasifikacia
+- Multi-class klasifikacia
+
+|                   | Regresia                                  | Binarna klasifikacia                  | Multi-class                        |
+| ----------------- | ----------------------------------------- | ------------------------------------- | ---------------------------------- |
+| Pocet vystupov    | 1 vystupny neuron                         | 1 vystupny neuron                     | $N$ vystupnych neuronov (1/trieda) |
+| Aktivacna funkcia | Bez aktivacnej funkcie                    | Sigmoid $\sigma (z)$                  | Softmax                            |
+| Vystupny rozsah   | Vystup $\in \mathbb{R}$ - lubovolne cislo | Vystup $\in (0, 1)$ - pravdepodobnost | Vektor pravdepodobnosti, sucet = 1 |
+| Priklad           | Cena bytu, predikcia teploty              | Spam/nie spam, chory/zdravy           | Pes, macka, vtak, cifry 0-9        |
+
+#### Linearna regresia
+
+$\hat{y} = w \cdot x + b$
+
+Najjednoduchsi priklad
+
+> Aktivacna funkcia prinasa nelinearitu, my chceme _linearnu_ regresiu
+
+Treningovy cyklus
+
+1. Vypocet forward pass - $\hat{y} = w \cdot x + b$
+2. Vypocet chyby - Loss $L = (y - \hat{y})^2$
+3. Gradient - parcialne derivacie - $\eta L / \partial w$
+4. Update parametrov - $w \leftarrow w - \eta \cdot \partial L / \partial w$
+
+#### Stratova funkcia
+
+Stratova funkcia $\dfrac{1}{n} \sum (\hat{y_i} - y_i)^2$ - MSE (mean squared error)  
+Potrebujeme zisti ci siet predikuje dobre - potrebujeme jedno cislo - stratu
+
+- Na druhu lebo nech sa to nevykompenzuje (kladne + zaporne), cize vzdy bude kladne
+- Vacsia chyba = vacsi dopad, su penalizovane viac
+- $\dfrac{1}{n}$ lebo priemer, $n$ je pocet dat alebo coho to idk, proste priemer
+
+#### Minimalizacia straty - 1D
+
+MSE je ako funkcia vahy $w$, teda $L(w)$ je krivka, ktorej minimum hladame  
+Kde je minimum? Tam kde je derivacia = 0
+
+Gradient descent ($\partial L / \partial w$) hovori o tom, ktorym smerom strata rastie, ked zvysime $w$
+
+- Ak je gradient kladny - strata rastie smerom doprava - my musime ist dolava
+- Ak je gradient zaporny - strata rastie smerom dolava - my musime ist doprava
+
+**Vypocitame sklon krivky v aktualnom bode a ideme opacnym smerom**
+
+$w \leftarrow w - \eta \cdot \partial L / \partial w$
+
+$\partial L / \partial w > 0$ = krivka stupa - $w$ zmensime
+$\partial L / \partial w <= 0$ = krivka klesa - $w$ zvacsime
+
+#### Minimalizacia straty - 2D a mnoho D
+
+Mame 2 vahy - $w_1, w_2$, MSE je plocha
+
+$\nabla L = [\partial L / \partial w_1, \partial L / \partial w_2]$
+
+Zvlast pocitame pre kazdu vahu  
+Kazdu vahu potom updatneme zvlast
+
+- $w_1 \leftarrow w_1 - \eta \cdot \partial L / \partial w_1$
+- $w_2 \leftarrow w_2 - \eta \cdot \partial L / \partial w_2$
+
+Pri vyssich dimenziach ako 2 je to to iste, len s viac vahami
+
+#### Learning rate $\eta$ - velkost kroku
+
+Ak prilis maly - pomala konvergencia (trva dlho), mozeme uviaznut v lokalnom minime  
+Ak prilis velky - preskakujeme minimum, divergencia, loss stupa namiesto klesania  
+"Optimalny" - plynula konvergencia, uplne optimalny neexistuje
+
+Learning rate $\eta$ je hyperparameter, volime ho my, byva to male cislo ($\approx 0.001$), este sa k tomu dostaneme
+
+Kazdy krok je narocne vypocitat - forward pass, derivacie, ...
+
+### Backpropagation
+
+Ako zistit, ktoru vahu zmenit a o kolko
+
+Siet ma miliony/biliony vah  
+Po forward passe vieme stratu $L$  
+Ako zistit konkretne ktoru vahu zmenit a o kolko
+
+- Nahodne zmeny - mozno ok pre mensie siete, pri vacsich nepouzitelne
+- Numericky gradient
+  - Pre kazdu vahu $w$ spocitame $(L(w + \epsilon) - L(w)) / \epsilon$
+  - Je to presne, ale pri 1M vahach je to 1M doprednych krokov
+- Metaheuristiky? - trochu "prehladame" miesto kde dostavame dobre vysledky, ten isty problem co pri nahodnych zmenach
+- Backpropagation
+  - Analyticky gradient pomocou **Chain rule**
+  - Siet je velka funkcia - $a ( a ( a (w \cdot x + b)))$, kde $a$ je aktivacna funkcia
+  - 1 spatny prechod
+  - $\partial L / \partial w$ pre kazdu vahu naraz, rovnaka presnost
+
+Backward pass = backpropagation + gradient descent
+
+#### Preco nie numericky gradient
+
+Pri numerickom gradiente je takyto postup
+
+1. Vyber vahu $w_1$ (z tisicov vah)
+2. Spusti forward pass s $w_1 + \epsilon$ - cely dataset
+3. Spocitaj gradient pre $w_1$ - derivacia
+4. Opakuj pre $w_2, w_3, ... w_n$, kde $n$ = pocet vah (tisice/miliony)
+
+Pri backprop sa vyuziva chain rule - $\partial L / \partial w = \partial L / \partial a \cdot \partial a / \partial z \cdot \partial z / \partial w$
+
+1. Pri forward passe ulozime medzivysledky
+2. Spocitaj $\partial L / \partial \hat{y}$ pri vystupe - zaciatok spatneho prechodu
+3. Sir gradienty dozadu (chain rule) - vrstva po vrstve
+4. Vysledok = $\partial L / \partial w$ pre kazdu vahu - vsetky naraz, jeden prechod
+
+Tym padom pri numerickom gradiente mame tisice/miliony/miliardy forward passow pre kazdy krok treningu  
+Pri backprop mame jeden forward + jeden backward na kazdy krok
+
+Backprop vyuziva medzivysledky z forward passu - nepotrebuje opakovat dopredny prechod pre kazdu vahu
+
+#### Backdrop $\ne$ Gradient descent
+
+Backprop
+
+- Vypocita gradienty $\partial L / \partial w$ pre kazdu vahu
+- Nic nemeni, len pocita
+- Vystup je vektor gradientov - $[\partial L / \partial w_1, \partial L / \partial w_2, ...]$
+
+Optimizator - napr. gradient descent
+
+- Vezme gradienty a aktualizuje na ich zaklade vahy
+- $w \leftarrow w - \eta \cdot \partial L / \partial w$
+- Su aj ine optimizatory - Adam, RMSProp - tiez vyuzivaju gradienty, aktualizuju inak
+
+Backprop pocita gradienty, optimizator s nimi actually nieco robi
+
+**trening = backdrop + optimizator + data**
+
+#### Chain rule
+
+Chain rule je zaklad backprop
+
+Strata $L$ zavisi od aktivacie $a$  
+Aktivacia $a$ zavisi od $z$  
+$z$ zavisi od $w$
+
+Otazka - o kolko zmena $w$ ovplyvni $L$
+
+![chainrule](../images/pans-chain-rule.png)
+
+Normalne pri forward pass ideme takto
+
+1. Vaha $w$
+2. Linearna kombinacia $z = w \cdot x + b$
+3. Aktivacia $a = \delta (x)$
+4. Strata $L(a, y)$
+
+Tuto ideme odkonca, dobime derivacie
+
+1. Vieme stratu, spravime $\partial L / \partial a$
+2. $\partial a / \partial z$
+3. $\partial z / \partial w$
+
+$\partial L / \partial w = \partial L / \partial a \cdot \partial a / \partial z \cdot \partial z / \partial w$
+
+Treba sa pozerat na derivacie  
+Derivacie aktivacnych funkcii, derivacie neviem coho  
+Staci vediet 1. derivaciu  
+System musi mat derivaciu
+
+Backprop zvycajne nenajde globalne minimum  
+Najde lokalne alebo uviazne v sedlovom bode  
+Pre hlboke siete sedlove body dominuju nad lokalnymi minimami  
+V praxi to vacsinou nevadi
+
+Backprop nemeni architekturu siete, iba hodnoty vah a biasov  
+Pocet vrstiev a neuronov je fixny pocas celeho treningu
+
+Velkost kroku zavisi od $\eta$ aj $| \partial L / \partial w |$ (hyperparameter aj strmost povrchu)  
+Blizsie k minimu su kroky prirodzene mensie
+
+Nie kazdy forward pass musi vidiet cely dataset, v buducnosti budeme pouzivat mini-batche
+
+### Problemy pri treningu siete
+
+#### Vanishing gradient
+
+Sigmoid
+
+- Dobre vlastnosti
+  - V strede spravi mala zmena velky rozdiel - rozhodnost
+- Neprijemne vlastnosti
+  - Uplne "na zaciatku a na konci" sa "hybe pomaly" - saturovany
+    - Velmi to spomali trening pri tychto hodnotach
+  - Derivacia sigmoidu = max 0.25
+    - V kazdom kroku sa zmeni minimalne o 0.25 nasobok
+    - Nasobime max. 0.25
+    - Po viac vrstvach sa moze stat ze vysledok bude 0
+    - Prve vrstvy su takmer bez gradientu - prestanu sa ucit
+
+ReLU - rectified linear unit
+
+- Derivacia 0 alebo 1
+  - V bode 0 actually nema ale tvarime sa ze ma - dame tam proste ze je bud 0 alebo 1
+- Cize sa ten trening nespomali ako pri sigmoide
+- Nevyhoda - pri 0 sa neuron neuci, "da sa z toho nejak dostat ale vy sa z toho nedostanete"
+  - Riesenie - leaky relu, elu, ...
+
+Vanishing gradiet = siet sa uci cim dalej tym pomalsie
+
+#### Exploding gradient
+
+Pri predchadzajucich problemoch bol problem s malymi vahami  
+Preco nedrzat velke vahy?  
+Vahy sa mozu zacat exponenscialne zvysovat, potom nepresnosti s pocitanim a dalsie obmedzenia
+
+Riesienie - zamedzit _nieco_ >1
+
+#### Preco ReLU
