@@ -8,4 +8,5 @@
 ⛏️ [Minecraft Server](./MinecraftServer.md)  
 🅰️ [Arch Linux Installation](./Arch.md)  
 📁 [Samba](./Samba.md)  
-❄️ [NixOS](./NixOS.md)
+❄️ [NixOS](./NixOS.md)  
+☁️ [OpenStack](./Openstack.md) (it does not work)
