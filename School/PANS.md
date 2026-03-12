@@ -643,3 +643,260 @@ Vahy sa mozu zacat exponenscialne zvysovat, potom nepresnosti s pocitanim a dals
 Riesienie - zamedzit _nieco_ >1
 
 #### Preco ReLU
+
+> preco nie tho
+
+## Trening a vyhodnotenie - od vystupu siete po generalizaciu
+
+### Binarna klasifikacia
+
+Jeden vystup, detekujeme ci vstup je dana trieda  
+Transformujeme sigmoid funkciou  
+Vystup sigm ide do loss funkcie, na zaklade ktorej klasifikujeme
+
+$p$ = predikcia  
+Loss - **binary cross-entropy** - $- (y \cdot \log p + (1 - y) \cdot \log (1-p))$  
+Vystup $p = P(trieda 1 | x) \in (0, 1)$ - klasifikacia na zaklade thresholdu (typicky 0)  
+Ake je pravdepodobnost ze trieda je $1$ na zaklade $x$
+
+### Viac tried
+
+Napr. rozoznavanie viac zvieratiek  
+Musim si povedat ze napr. pes = 0, macka = 1, vtak = 2, ...
+
+Problem - tymto hovorim ze pes je viac podobny macke ako vtakovi  
+Tiez hovorime ze macka = priemer medzi psom a vtakom  
+Tiez problem ze sa to bude snazit napchat do priemeru (najmensia chyba), cize ked poviem ze vsetko su macky tak bude najmensia chyba  
+Pri este viac triedach - okrajove triedy mozno vobec nebudu
+
+Riesenie - **one-hot kodovanie** - tolko vystupov kolko mame tried  
+(to predtym bolo _ordinalne_ kodovanie)  
+One-hot = prave jedna jednotka  
+Ocakava sa ze vzdy bude spravny vysldok len jedna trieda  
+Dame to do viacrozmerneho priestoru  
+Napr. pes = (1, 0, 0), macka = (0, 1, 0), vtak = (0, 0, 1)  
+Kazda trieda ma vlastny nezavisly vystup  
+Vysledky su vektory, ktore su na seba kolme, skalarny sucin = 0  
+**Vektory su nezavisle**  
+Vsetky vzdialenosti su na seba nezavisle
+
+Kazda trieda dostane vlastny neuron (na vystupe)
+
+#### Softmax
+
+Multi-triedne rozdelenie pravdepodobnosti  
+Spravi to ze suma vsetkych vystupov = 1, vsetky vystupy su medzi 0, 1
+Cize v podstate normalizacia  
+Normalizacia na rozdelenie pravdepodobnosti
+Sigmoid toto robi na jednom neurone, softmax to robi na vela neuronoch
+
+$softmax(z_i) = \dfrac{e^{z_i}}{\sum_{j=1}^{K}e^{z_j}}$
+
+**Logit**  
+O tomto uz sme sa bavili predtym, len chybala definicia  
+$\sum x \cdot w + b$  
+Surovy vystup zo siete  
+Aplikujeme softmax na vsetky logity - na vsetky vystupy zo siete
+
+Preco softmax a nie nejaky priemer - velke rozdiely chcem zosilnovat  
+Nechceme to zosilnovat vahami, lebo to vyvolava nestabilitu (mala zmena na zaciatku = velka zmena na vystupe), viac nachylne na pretrenovanie a explozie
+
+#### Cross-entropy
+
+Loss funkcia i guess  
+$L = - \sum_{k=1}^{K} y_k \cdot \log \hat{p}_k$  
+Po zjednoduseni $L = - \log \hat{p}_c$
+
+Po softmaxe dostaneme napr. vystup $(0.8, 0.1, 0.1)$, co sa dobre porovnava s $(1, 0, 0)$ - spravime skalarny sucin  
+Dostaneme napr. ze $0.8$ v tomto pripade  
+Dame na zaciatok minus $\rightarrow -0.8$  
+Chceme minimalizovat, cize chceme co najmensie cislo  
+Keby po softmax dostaneme $(0.1, 0.8, 0.1) \rightarrow 0.1 \rightarrow -0.1$, toto nie je az taky maly vystup = je horsie
+
+V skutocnosti optimalizujeme logity (nie uplny vysledok?), potom sa nam zoptimalizuje aj transformacia
+
+Dosledok - GPU pocita len jeden logaritmus  
+Aj pri 100 clenoch je to je len jeden - ten uplne posledny na konci (cross-entropy)  
+Softmax ale musi prejst cez vsetky triedy
+
+#### Ako natavit threshold
+
+Ako povieme ze ktora trieda je vysledok  
+Aby si bola siet "ista"  
+Napr. ze "vysledok musi byt aspon 0.9, inak povieme ze neviem"  
+By default moze byt ze 0.5  
+Mozeme ho ale posunut - ten "stred" bude az 0.7 napr  
+Vacsinou vzdy je jedna chyba "drahsia"  
+Pri rontgene - na jednu stranu mozeme povedat ze zdravy clovek je chory (zbytocna panika), alebo chory clovek je zdravy (neodhalime chorobu) - potrebujeme to nastavit co optimalnejsie
+
+> Jedno z rieseni by mohlo byt dalsiu triedu niekde v strede
+
+Vystupna vrstva zavisi od ulohy
+
+### Metriky vyhodnotenia klasifikatora
+
+Ako merat uspesnot klasifikatora  
+`Siet dosiahla 90% accuracy. Je to dobry vysledok? A je to vobec 90%?`
+
+**Confusion matrix**
+
+|           | Skutocnost          | Skutocnost          |
+| --------- | ------------------- | ------------------- |
+| Predikcia | True Positive (TP)  | False Positive (FP) |
+| Predikcia | False Negative (FN) | True Negative (TN)  |
+
+True positive - ja som povedal ze je pravda, a actually to je pravda  
+True negative - ja som povedal ze nie je, a actually nie je
+
+False positive - klamal som - povedal som ze je ale nebol - povedal som ze positive ale nebola to pravda  
+False negative - nezachytil som - ja som povedal ze nie je ale bol - povedal som ze je negative ale nebola to pravda
+
+#### Accuracy
+
+**Accuracy** = $(TP + TN) / celkovy pocet$
+
+Mozeme dostat napr. ze accuracy = 96%
+
+Otazka - Je to dobre?
+
+Odpoved - depends - podla vyvazenosti realnych dat - aka je distribucia v realite
+
+- ak realne je 50% spamu, 50% nie, tak nas sytem je dobry
+- ak realne je to 95% na 5% tak nas system je fess zly
+
+#### Baseline nahody - co dosiahne klasifikator bez ucenia
+
+$P(correct) = P(A) P(\overline{A}) + P(B) P(\overline{B})$
+
+Ak je rozdelenie napr. 95/5
+
+- Ak predpovedame vzdy vacsinovu triedu (vzdy povieme ze je pravda) - `95%`
+- Ak vyberame 50/50 - `50%`
+- Ak kopirujeme rozdelenie tried (95 pravda, 5 nepravda) - `90.5%`
+
+Cize v konecnom dosledku - 90% natrenovane moze byt horsie ako "nahoda" - zavisi od situacie (rozdelenia?)
+
+#### Precision a recall
+
+Take dve dvojicky
+
+$P = TP / (TP + FP)$  
+$R = TP / (TP + FN)$
+
+Precision - z tych ktore som oznacil ako spam, aku mam uspesnost, kolko bolo actually tak  
+Recall - kolko dat sme zachytili - ked mam 1000 spamov, kolko som ich zachytil
+
+Precision = presnost  
+Recall = kolko zachytim
+
+V podstate take opozita
+
+- Ak poviem ze toto je spam, tak si chcem byt sure
+- Nasledok - nedetekujeme vsetky
+
+Napriklad z 1000 spamov - povieme ze 10 je urcite spam (s pravdepodobnostou asi 100%), ale v skutocnosti ich bolo 300  
+Mozeme mat extremne presny system, ale len kvoli tomu ze vo velmi vela pripadoch poviem ze to nie je spam (aj ked actually bol)
+
+Ked vieme tieto 2 cisla tak vieme skoro vsetko povedat o systeme  
+Problem - mame 2 cisla ale nam sa paci ked mame len jedno cislo  
+Riesenie - harmonicky priemer = F1 score
+
+#### F1 score
+
+a.k.a. hramonicky priemer
+
+$F1 = 2 \cdot P \cdot R / ( P + R )$
+
+Rozsah od 0 (najhorsie) do 1 (najlepsie)  
+Hovori jednak ako su daleko cisla od seba, aj nieco o samotnych hodnotach
+
+Preco nie priemer - chceme zachytavat extremy  
+Napr. P = 0.99, R = 0.01  
+Priemer = 0.5 (zdanlivo OK)  
+Harmonicky priemer = 0.02 (nie dobre)
+
+Alebo keby mame taketo dva pripady  
+P = 0.99, R = 0.01  
+P = 0.50, R = 0.50  
+Podla priemeru sa moze zdat ze to je to iste, ale pritom vobec
+
+Chceme zistit ci su cisla v harmonii
+
+Cielom je mat co najvyssie F1 score, alebo sa trochu priklonit k P alebo R ak potrebujem
+
+#### Precision-Recall krivka
+
+Optimum - ako keby mame co najvacsie to F1 score  
+Threshold ktory mi da najvacsie F1 score je ako keby najlepsi
+
+### Rozdelenie datasetu
+
+Ako spravne rozdelit na train-validation-test  
+Napr. 70/15/15
+
+Train - uci sa vahy = parametre, ci vacsia tym lepsie nauceny model, pocitanie gradientov  
+Validation - ladenie hyperparametrov, sledovanie overfittingu  
+Test - zaverecne vyhodnotenie, pouziva sa iba raz (na samom konci), simuluje realne nasadenie
+
+Ako ma byt split cca
+
+- Maly dataset ($\approx j 100$) - 70/15/15
+- Stredny dataset ($\approx j 1000$) - 80/10/10
+- Velky dataset ($\approx j 100k$) - 95/2.5/2.5
+
+Test otvorit len raz alebo velmi malo krat, v ziadnom pripade nemenit test
+
+#### Pravidlo entity
+
+Jedna entita patri len do jednej sady
+
+Ak mame data o zakaznikovi  
+Ak o jednom zakaznikovi dame nieco do train, nieco do valid, nieco do test - tak to je zle  
+Jeden zakaznik train, druhy valid, treti test - dobre
+
+Ak by sme to robili "zle", tak sa system nauci rozoznavat pacienta, nie priznaky ktore chceme
+
+#### k-fold cross-validacia
+
+Ak mame velmi malo dat  
+Alebo velmi vela dat o malo entitach (entity nemozeme rozdelit $\rightarrow$ mame malo dat)
+
+Napr. `k = 3`  
+Dataset si rozdelime na 3 skupiy  
+Povieme ze 2 su train, jedna valid  
+Budeme trenovat 3 krat, postupne striedam skupiny  
+Napr. 3 pacienti - validujem na jednom, potom validujem na druhom, potom validujem na tretom (pricom trenujem na tych dalsich)
+
+Nevyhody - `k`-nasobne pomalsie - musim `k`-krat trenovat
+
+### DOMACA ULOHA
+
+> w4 prednaska
+
+1% ludi ma rakovinu  
+Typek chodi a kazdemu a hovori ze nema rakovinu  
+Aky ma recall, aka precision
+
+> Zabudol som si napisat ze za kolko ludmi pride, tak povedzme ze 100  
+> Actually neviem ci to vobec je treba zadefinovat
+
+| Confusion matrix | Skutocnost | Skutocnost |
+| ---------------- | ---------- | ---------- |
+| Predikcia        | TP = 0     | FP = 0     |
+| Predikcia        | FN = 1     | TN = 99    |
+
+$P = TP / (TP + FP)$  
+$P = 0 / (0 + 0)$  
+$P = 0%$, resp. nedefinovane, neda sa vypocitat
+
+$R = TP / (TP + FN)$  
+$R = 0 / (0 + 1)$  
+$R = 0%$
+
+$acc = (TP + TN) / celkovy pocet$  
+$acc = (0 + 99) / 100$  
+$acc = 99%$
+
+$F1 = 2 \cdot P \cdot R / ( P + R )$  
+$F1 = 2 \cdot 0 \cdot 0 / ( 0 + 0 )$  
+$F1 = 0$, resp. nedefinovane
