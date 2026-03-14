@@ -48,6 +48,27 @@ psql
 exit
 ```
 
+Some of the most used commands here in PostgreSQL shell 
+
+```bash 
+# list databases 
+\l
+
+# connect to database `monitoring`
+\c monitoring
+
+# list tables in current database 
+\dt
+```
+
+You usually use SQL to do stuff like this (don't forget `;` at the end of command)
+
+```sql 
+create database monitoring; 
+grant all on database monitoring to username;
+grant all on schema public to username;
+```
+
 ### PostgreSQL commands
 
 ```sql
