@@ -525,6 +525,25 @@ Dalsi priklad - ked mame nepovinne clenstvo
 select * from personal_data full join contact using (personal_id);  -- osoby ku ktorym mam kontakty, ku ktorym nemam kontakty + kontakty ku ktorym nemam osobu
 ```
 
+```
+## Prednaska o rok neskor
+
+asi w5, select 2
+
+inner join - vnutorne spojenie
+semi join - in, exists
+anti join - not in, not exists
+
+outer join - vonkajsie spojenie
+
+> right outer join to iste ako inner join?
+
+left outer join, right outer join, full outer join
+full outer join ma zmysel len ked jedno z toho moze byt null
+full join = full outer join
+
+```
+
 ### Agregacne funkcie
 
 Doteraz `min()`, `max()` `avg()`, `sum()`, `count()`, `mod()`
@@ -1932,4 +1951,3 @@ begin
 end;
 /
 ```
-
