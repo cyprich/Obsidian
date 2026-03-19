@@ -650,53 +650,85 @@ Riesienie - zamedzit _nieco_ >1
 
 ### Binarna klasifikacia
 
-Jeden vystup, detekujeme ci vstup je dana trieda  
+Jeden vystup, bud ano alebo nie, detekujeme ci vstup je dana trieda  
 Transformujeme sigmoid funkciou  
+Podla vystupu sa rozhodneme ci ano alebo nie, napr. ak $\ge 0.5$ tak ano  
 Vystup sigm ide do loss funkcie, na zaklade ktorej klasifikujeme
 
+> Ordinalne kodovanie
+
 $p$ = predikcia  
-Loss - **binary cross-entropy** - $- (y \cdot \log p + (1 - y) \cdot \log (1-p))$  
-Vystup $p = P(trieda 1 | x) \in (0, 1)$ - klasifikacia na zaklade thresholdu (typicky 0)  
+Loss funkcia - **binary cross-entropy** - $- (y \cdot \log p + (1 - y) \cdot \log (1-p))$  
+Vystup $p = P(trieda_1 | x) \in (0, 1)$ - klasifikacia na zaklade thresholdu (typicky 0.5)  
 Ake je pravdepodobnost ze trieda je $1$ na zaklade $x$
+
+#### Binary Cross-entropy
+
+Loss funkcia
+
+$- (y \cdot \log p + (1 - y) \cdot \log (1-p))$
 
 ### Viac tried
 
-Napr. rozoznavanie viac zvieratiek  
-Musim si povedat ze napr. pes = 0, macka = 1, vtak = 2, ...
+Napr. rozoznavanie viac zvieratiek
+
+Keby to chceme rozoznavat len na zaklade 1 vystupneho neuronu - **ordinalne kodovanie**  
+Povieme si (vymyslime si) napr. ze pes = 0, macka = 1, vtak = 2, ...
 
 Problem - tymto hovorim ze pes je viac podobny macke ako vtakovi  
 Tiez hovorime ze macka = priemer medzi psom a vtakom  
 Tiez problem ze sa to bude snazit napchat do priemeru (najmensia chyba), cize ked poviem ze vsetko su macky tak bude najmensia chyba  
-Pri este viac triedach - okrajove triedy mozno vobec nebudu
+Pri este viac triedach - okrajove triedy mozno vobec nebudu nikdy na vystupe
 
 Riesenie - **one-hot kodovanie** - tolko vystupov kolko mame tried  
-(to predtym bolo _ordinalne_ kodovanie)  
-One-hot = prave jedna jednotka  
-Ocakava sa ze vzdy bude spravny vysldok len jedna trieda  
+(to predtym bolo _ordinalne_ kodovanie)
+
+#### One-hot kodovanie
+
+One-hot = prave jedna jednotka (vo vektore)  
+Ocakava sa ze vzdy bude spravny vysledok len jedna trieda  
 Dame to do viacrozmerneho priestoru  
 Napr. pes = (1, 0, 0), macka = (0, 1, 0), vtak = (0, 0, 1)  
 Kazda trieda ma vlastny nezavisly vystup  
 Vysledky su vektory, ktore su na seba kolme, skalarny sucin = 0  
-**Vektory su nezavisle**  
-Vsetky vzdialenosti su na seba nezavisle
+**Vektory su nezavisle** - zmena jednej triedy nijak neovplyvni ostatne  
+Vsetky vzdialenosti su na seba nezavisle, vsetky vzdialenosti su rovnake ($\sqrt 2$)
 
-Kazda trieda dostane vlastny neuron (na vystupe)
+Keby si to predstavime v priestore
+
+![onehot](../images/pans-onehot.png)
+
+Kazda trieda dostane vlastny neuron (na vystupe)  
+Pre `k` tried = `k` vystupnych neuronov = `k` hodnot pred softmaxom  
+Loss sa pocita cez vsetky triedy - softmax + cross-entropy
+
+> Softmax = aktivacna funkcia
+> Cross-entropy = loss funkcia
 
 #### Softmax
 
 Multi-triedne rozdelenie pravdepodobnosti  
-Spravi to ze suma vsetkych vystupov = 1, vsetky vystupy su medzi 0, 1
+Spravi to ze suma vsetkych vystupov = 1, vsetky vystupy su medzi 0, 1  
 Cize v podstate normalizacia  
-Normalizacia na rozdelenie pravdepodobnosti
+Normalizacia na rozdelenie pravdepodobnosti  
 Sigmoid toto robi na jednom neurone, softmax to robi na vela neuronoch
+
+![softmax](../images/pans-softmax.png)
 
 $softmax(z_i) = \dfrac{e^{z_i}}{\sum_{j=1}^{K}e^{z_j}}$
 
-**Logit**  
+> argmax = trieda s najvacsou pravdepodobnostou = finalna predikcia
+
+#### Logit
+
 O tomto uz sme sa bavili predtym, len chybala definicia  
-$\sum x \cdot w + b$  
-Surovy vystup zo siete  
-Aplikujeme softmax na vsetky logity - na vsetky vystupy zo siete
+Surovy vystup zo siete (pred aktivaciou)  
+$\sum x \cdot w + b$
+
+Vystup zo siete je napr. $(-0.5, 0.4, 2.1)$ - toto su logity  
+Aplikujeme softmax na vsetky logity - na vsetky vystupy zo siete  
+Softmax z toho spravi napr. $(0.02, 0.08, 0.9)$ (vymyslam si hej, actually sa to pcita)  
+Dostaneme rozdelenie pravdepodobnosti (najvacsia pravdepodobnost vyhrava, v tomto pripade posledny neuron)
 
 Preco softmax a nie nejaky priemer - velke rozdiely chcem zosilnovat  
 Nechceme to zosilnovat vahami, lebo to vyvolava nestabilitu (mala zmena na zaciatku = velka zmena na vystupe), viac nachylne na pretrenovanie a explozie
@@ -705,6 +737,10 @@ Nechceme to zosilnovat vahami, lebo to vyvolava nestabilitu (mala zmena na zacia
 
 Loss funkcia i guess  
 $L = - \sum_{k=1}^{K} y_k \cdot \log \hat{p}_k$  
+Suma cez vsetkych $K$ tried
+Kedze vieme ze onehot dava ze vsade 0 ($y_k = 0$) okrem spravnej hodnoty ($y_c$) (skalarny sucin), tak dostaneme nieco taketo...  
+$L = -(0 + 0 + ... + 1 \cdot \log \hat{p}_c + 0 + ...)$  
+Cize $L = -(1 \cdot \log \hat{p}_c)$  
 Po zjednoduseni $L = - \log \hat{p}_c$
 
 Po softmaxe dostaneme napr. vystup $(0.8, 0.1, 0.1)$, co sa dobre porovnava s $(1, 0, 0)$ - spravime skalarny sucin  
@@ -715,23 +751,29 @@ Keby po softmax dostaneme $(0.1, 0.8, 0.1) \rightarrow 0.1 \rightarrow -0.1$, to
 
 V skutocnosti optimalizujeme logity (nie uplny vysledok?), potom sa nam zoptimalizuje aj transformacia
 
-Dosledok - GPU pocita len jeden logaritmus  
+Dosledok - GPU pocita len jeden logaritmus = $- \log \hat{p}_c$, nepocita sumu cez vsetky triedy  
 Aj pri 100 clenoch je to je len jeden - ten uplne posledny na konci (cross-entropy)  
-Softmax ale musi prejst cez vsetky triedy
+Softmax ale musi prejst cez vsetky triedy (suma v menovateli)
 
-#### Ako natavit threshold
+### Ako natavit threshold
 
 Ako povieme ze ktora trieda je vysledok  
 Aby si bola siet "ista"  
 Napr. ze "vysledok musi byt aspon 0.9, inak povieme ze neviem"  
 By default moze byt ze 0.5  
 Mozeme ho ale posunut - ten "stred" bude az 0.7 napr  
-Vacsinou vzdy je jedna chyba "drahsia"  
+0.5 tresta chyby rovnako, irl je vacsinou jedna chyba "drahsia"  
 Pri rontgene - na jednu stranu mozeme povedat ze zdravy clovek je chory (zbytocna panika), alebo chory clovek je zdravy (neodhalime chorobu) - potrebujeme to nastavit co optimalnejsie
 
 > Jedno z rieseni by mohlo byt dalsiu triedu niekde v strede
 
 Vystupna vrstva zavisi od ulohy
+
+| Uloha                   | Pocet vystupov | Aktivacia | Loss funkcia         | Vystup                                       |
+| ----------------------- | -------------- | --------- | -------------------- | -------------------------------------------- |
+| Regresia                | 1              | Ziadna    | MSE                  | Realne cislo                                 |
+| Binarna klasifikacia    | 1              | Sigmoid   | Binary Cross-Entropy | Pravdepodobnost $P(trieda_1 \| x) \in (0,1)$ |
+| Multi-class ($K$) tried | $K$            | Softmax   | Cross-Entropy        | $p_1, p_2, ..., p_K$ pricom $\sum = 1$       |
 
 ### Metriky vyhodnotenia klasifikatora
 
@@ -745,40 +787,49 @@ Ako merat uspesnot klasifikatora
 | Predikcia | True Positive (TP)  | False Positive (FP) |
 | Predikcia | False Negative (FN) | True Negative (TN)  |
 
+> Riadky = co model predikoval  
+> Stlpce = skutocnost  
+> Hlavna diagonala = spravne predikcie  
+> Vedlajsia diagonala = nespravne predikcie
+
 True positive - ja som povedal ze je pravda, a actually to je pravda  
 True negative - ja som povedal ze nie je, a actually nie je
 
 False positive - klamal som - povedal som ze je ale nebol - povedal som ze positive ale nebola to pravda  
 False negative - nezachytil som - ja som povedal ze nie je ale bol - povedal som ze je negative ale nebola to pravda
 
+V skutocnosti je ich ovela viacej ([link]())
+
+![pr](../images/pans-big-precitsion-recall.png)
+
 #### Accuracy
 
 **Accuracy** = $(TP + TN) / celkovy pocet$
 
-Mozeme dostat napr. ze accuracy = 96%
-
-Otazka - Je to dobre?
-
+Mozeme dostat napr. ze accuracy = 96%  
+Otazka - Je to dobre?  
 Odpoved - depends - podla vyvazenosti realnych dat - aka je distribucia v realite
 
 - ak realne je 50% spamu, 50% nie, tak nas sytem je dobry
-- ak realne je to 95% na 5% tak nas system je fess zly
+- ak realne je to 95% na 5% tak nas system je zly, iba o 1% lepsi ako "nahoda"
+
+Pre toto sa accuracy pouziva len pri vyvazenych datach
 
 #### Baseline nahody - co dosiahne klasifikator bez ucenia
 
 $P(correct) = P(A) P(\overline{A}) + P(B) P(\overline{B})$
 
-Ak je rozdelenie napr. 95/5
+Ak je rozdelenie dat napr. 95/5
 
 - Ak predpovedame vzdy vacsinovu triedu (vzdy povieme ze je pravda) - `95%`
 - Ak vyberame 50/50 - `50%`
 - Ak kopirujeme rozdelenie tried (95 pravda, 5 nepravda) - `90.5%`
 
-Cize v konecnom dosledku - 90% natrenovane moze byt horsie ako "nahoda" - zavisi od situacie (rozdelenia?)
+Cize v konecnom dosledku - 90% natrenovane moze byt horsie ako "nahoda" - zavisi od situacie (rozdelenia, pocet tried, ...)
 
 #### Precision a recall
 
-Take dve dvojicky
+Take dve dvojicky, take dva opaky
 
 $P = TP / (TP + FP)$  
 $R = TP / (TP + FN)$
@@ -788,6 +839,8 @@ Recall - kolko dat sme zachytili - ked mam 1000 spamov, kolko som ich zachytil
 
 Precision = presnost  
 Recall = kolko zachytim
+
+![pr](../images/pans-precision-recall.png)
 
 V podstate take opozita
 
@@ -812,7 +865,7 @@ Hovori jednak ako su daleko cisla od seba, aj nieco o samotnych hodnotach
 
 Preco nie priemer - chceme zachytavat extremy  
 Napr. P = 0.99, R = 0.01  
-Priemer = 0.5 (zdanlivo OK)  
+Priemer = 0.5 (zdanlivo relative OK, aj trochu precizne aj recallove)  
 Harmonicky priemer = 0.02 (nie dobre)
 
 Alebo keby mame taketo dva pripady  
@@ -826,17 +879,34 @@ Cielom je mat co najvyssie F1 score, alebo sa trochu priklonit k P alebo R ak po
 
 #### Precision-Recall krivka
 
+Zmenou thresholdu sa posuvame po krivke - bud viac k precision alebo viac k recall (podla toho co potrebujeme)  
+Vyssi threshold = vyssia precision, nizsi recall, a naopak
 Optimum - ako keby mame co najvacsie to F1 score  
 Threshold ktory mi da najvacsie F1 score je ako keby najlepsi
+
+![prkrivka](../images/pans-pr-krivka.png)
+
+#### Ktoru metriku kedy pouzit
+
+| Metrika          | Vzorec                               | Kedy pouzit                           | Na co pozor                               |
+| ---------------- | ------------------------------------ | ------------------------------------- | ----------------------------------------- |
+| Accuracy         | $\dfrac{TP+TN}{N}$                   | Vyvazeny dataset                      | Nevyvazene data                           |
+| Precision        | $\dfrac{TP}{TP+FP}$                  | Drahy FP - spam, pozicky              | Ignoruje FN                               |
+| Recall           | $\dfrac{TP}{TP+FN}$                  | Drahy FN - onkologia, podvody         | Ignorue FP                                |
+| F1-score         | $F1 = 2 \cdot P \cdot R / ( P + R )$ | Kompromis medzi P a R, da jedno cislo | Penalizuje ked je jedna hodnota moc nizka |
+| Confusion matrix | -                                    | Vzdy ako prvy pohlad                  | Nie je to cislo                           |
+
+Nie je "univerzalna najlepsia" metrika, vyber zavisi od toho, co chceme dosiahnut, co nas viac stoji (FP alebo FN)
 
 ### Rozdelenie datasetu
 
 Ako spravne rozdelit na train-validation-test  
 Napr. 70/15/15
 
-Train - uci sa vahy = parametre, ci vacsia tym lepsie nauceny model, pocitanie gradientov  
-Validation - ladenie hyperparametrov, sledovanie overfittingu  
-Test - zaverecne vyhodnotenie, pouziva sa iba raz (na samom konci), simuluje realne nasadenie
+_Opakovanie..._  
+Train - siet sa uci vahy = parametre, ci vacsi tym lepsie nauceny model, siet ich vidi pri kazdej epoche; pocitanie gradientov  
+Validation - ladenie hyperparametrov, sledovanie overfittingu, model ju nevidi priamo ale ovlyvnuje ju  
+Test - zaverecne vyhodnotenie, **pouziva sa iba raz** (na samom konci), simuluje realne nasadenie
 
 Ako ma byt split cca
 
@@ -844,7 +914,8 @@ Ako ma byt split cca
 - Stredny dataset ($\approx j 1000$) - 80/10/10
 - Velky dataset ($\approx j 100k$) - 95/2.5/2.5
 
-Test otvorit len raz alebo velmi malo krat, v ziadnom pripade nemenit test
+Test otvorit len raz alebo velmi malo krat, v ziadnom pripade nemenit test  
+Test sada mysi byt dostatocne velka na statisticky nestabilne metriky - nie podiel, ale absolutny pocet rozhoduje
 
 #### Pravidlo entity
 
@@ -856,6 +927,10 @@ Jeden zakaznik train, druhy valid, treti test - dobre
 
 Ak by sme to robili "zle", tak sa system nauci rozoznavat pacienta, nie priznaky ktore chceme
 
+![split](../images/pans-split.png)
+
+_Rozdel entity, nie zaznamy_
+
 #### k-fold cross-validacia
 
 Ak mame velmi malo dat  
@@ -863,11 +938,13 @@ Alebo velmi vela dat o malo entitach (entity nemozeme rozdelit $\rightarrow$ mam
 
 Napr. `k = 3`  
 Dataset si rozdelime na 3 skupiy  
-Povieme ze 2 su train, jedna valid  
+Povieme ze 2 kupiny su train, jedna valid  
 Budeme trenovat 3 krat, postupne striedam skupiny  
-Napr. 3 pacienti - validujem na jednom, potom validujem na druhom, potom validujem na tretom (pricom trenujem na tych dalsich)
+Najprv trenujem na 1. a 2., potom na 1. a 3., potom na 2. a 3. (pricom na tej zostavajucej validujem)
 
-Nevyhody - `k`-nasobne pomalsie - musim `k`-krat trenovat
+Napr. 3 pacienti - validujem na jednom, potom validujem na druhom, potom validujem na tretom (pricom trenujem na tych dalsich dvoch)
+
+Nevyhody - `k`-nasobne pomalsie - musim `k`-krat trenovat, komplikovanejsi pipeline (?)
 
 ### DOMACA ULOHA
 
