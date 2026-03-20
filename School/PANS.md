@@ -977,3 +977,190 @@ $acc = 99%$
 $F1 = 2 \cdot P \cdot R / ( P + R )$  
 $F1 = 2 \cdot 0 \cdot 0 / ( 0 + 0 )$  
 $F1 = 0$, resp. nedefinovane
+
+## Konvolucne neuronove siete
+
+Konvolucne NN - velmi prepojene s hlbokymi NN  
+Plne prepojene NN su takmer vzdy nepouzitelne
+
+Z historie...  
+Dvaja ujovia (Hubel a Wiesel) zistili ze su dva typy buniek v mozgu - jednoduche a komplexne  
+Kazda jednoducha bunka reaguje na jednoduchy pattern _na jednom mieste_  
+Ina jednoducha na inom mieste  
+Komplexne bunky agreguju udaje z jednoduchych  
+Velky boom v CNN v roku 2012 - AlexNet
+
+### Konvolucia
+
+<img alt="gif" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ibb.co%2FSxZ9WYs%2Fnagesh-cnn-intro-4.gif&f=1&nofb=1&ipt=1908415c9541b925cff8bf929f1e1fb3cba1b35ffb73ef502969b3014bddfa80"/>
+
+Konvolucia hlada konkretny vzor na konkretnom miete  
+Na zaciatku siete jednoduche patterny, postupne zlozitejsie  
+Pooling = komplexne bunky
+
+Aky je dany priznak silny na danom mieste  
+Vysledok = jedno cislo
+
+#### Convolution vs. Cross-correlation
+
+Actually zo spracovania obrazu a matematiky sa toto nazyva cross-correlation  
+Convolution je nieco ine, ale v terminologiii NN to nazyvame convolution
+
+|              | Mathematical convolution                                              | Cross-correlation (to co CNN actually pocita)                          |
+| ------------ | --------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+|              | $(f \ast g)$                                                          | $(f \bigstar g)$                                                       |
+|              | $(f \ast g)[n] = \sum f[k] \cdot g[n - k]$                            | $(f \bigstar g)[n] = \sum f[k] \cdot g[n + k]$                         |
+| Kernel       | $K = \begin{matrix} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{matrix}$ | $K' = \begin{matrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 1 \end{matrix}$ |
+| Kernel       | Flip o $180 \degree$                                                  | Priamo bez flipu                                                       |
+| Komutativne? | Ano, $f \ast g = g \ast f$                                            | Nie, ale pri CNN nam to nevadi                                         |
+
+#### Viacej kanalov
+
+<img alt="gif" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Famaarora.github.io%2Fimages%2Fcnn.gif&f=1&nofb=1&ipt=1046de51518ad030a89faab034ad3bd4ac0ed4cd51a74350c4e1066acb36d35c"/>
+
+Ked mame napr. RGB obrazok, tak sa robi konvolucia pre kazdu zlozku zvlast  
+Zvlast `R`, zvlast `G`, zvlast `B`  
+Ako keby sa to rozsekalo na pasiky (rezy)  
+Potom sa to zase "zlepi" naspak dokopy
+
+Viacrozmerna konvolucia - RGB obrazku - rez  
+Kazdy rez detekuje ine priznaky na rovnakych poziciach
+
+![img](../images/pans-conv-multichannel.png)
+
+#### Padding
+
+Pridanie "prazdnych okrajov" okolo obrazku  
+Ako keby sa umelo zvacsi obrazok pridanim pixelov dookola - bud `0` alebo priemer alebo nieco
+
+Neprijemna vlastnost konvolucie - znizuje rozmer  
+Keby ho nepouzivame - kazdou konvoluciou sa zmensi obrazok  
+Postupne sa stracaju informacie  
+Okrajove pixely vplyvaju menej ako tie v strede
+
+Siet moze detegovat umele hrany - ale to nemusi byt az taky problem lebo okraje obrazku
+
+Pripadne `Conv2d(..., padding="same")` v pytorch zachova rozmer  
+Ak mame 3x3 kernel tak by to bolo to iste ako `Conv2d(..., padding=1)`
+
+Vseobecny vzorcek velkosti  
+$W_{out} = \dfrac{W_{in} - K + 2P}{S + 1}$
+
+> $W_{out}$ = vysledna velkost (sirka obrazku)  
+> $W_{in}$ = vstupna velkost (sirka obrazku)  
+> $K$ = kernel size  
+> $P$ = padding  
+> $S$ = stride
+
+#### Pocet parametrov
+
+Preco su tie CNN take super oproti Fully-connected?  
+FC su prepojene kazde z kazdym  
+Ak je obrazok 224x224, 3 channels (RGB) = ~150k parametrov  
+~150k parametrov pre jeden neuron  
+Musi sa ich znova ucit pre kazdu poziciu obrazku  
+Ignoruje strukturu obrazku  
+Extremne vela nulovych parametrov  
+Komplexne transofmacie
+
+Pri CNN  
+**Local connectivity** - kazdy neuron je spojeny iba s malym poctom blizkych (lokalnych) neuronov  
+**Parameter sharing** - jeden kernel je pouzity na cely obrazok, jedny vahy detekuju jeden input hocikde na obrazku  
+Ak pouzijeme 3x3 kernel = 9 parametrov  
+Ovela efektivnejsie vypoctovo aj parametrovo, "odolne" voci posunom
+
+Klucovy dosledok - **Translation equivariance**  
+Because the same kernel is used everywhere, the network learns to detect a feature regardless of where it appears on the image  
+Cat on the left = cat on the right
+
+Chceme detegovat rovnake priznaky na inych poziciach - ak sa obrazok posunie o 1px tak sa siet nemoze rozbit/prepocitavat alebo co idk  
+Robime to iste na inych polohach  
+Ak sa bude obrazok posuvat, tak sa bude aj priznakova mapa posuvat
+
+A co ked je obrazok rozne "zoomnuty", otoceny, svetelne podmienky?  
+Treba to mat v datach aby sa to siet naucila
+
+#### Receptive field
+
+![img](../images/pans-receprive-field.png)
+
+V prednaske bol iba tento obrazok, tak sa to pokusim len nejak vlastnymi slovami  
+V podstate ze aku cast obrazka vidi jeden neuron  
+Alebo aka cast obrazku vplyva na jeden neuron
+
+Ak sa postupne konvoluciou zmensuje obrazok  
+Na jeden pixel v `Map 3` vplyva 7x7 pixelov z `Map 2` na ktore vplyva 11x11 pixelov z `Map 1`  
+Ako sa postupne mapa meni velkost - v konecnom dosledku mozeme mat 1x1 zavisle od 11x11 (z predpredchadzajucej vrstvy)
+
+#### Feature maps
+
+Priznakove mapy  
+Vystupy konvolucnej vrstvy v CNN  
+Detekuje nejake priznaky  
+Postupne po vrstvach detekujemm zlozitejsie veci - hrany, krivky, textury, ...  
+Vkladame nelinearitu po kazdej vrstve  
+Zlozite veci rozdelime na vela jednoduchych
+
+#### Stride
+
+Ako sa posuvam - doteraz bolo o 1, aj v gifoch vyssie  
+Nemusim sa ale posuvat len o 1px ale aj o viac  
+Vacsi stride = nizstia narocnost, ale mozem missnut nieco  
+Mam pocit ze vacsi stride = vacsie zmensenie obraku  
+Vacsinou sa stale pouziva 1  
+Idealne stride mensi ako velkost kernelu
+
+---
+
+Male kernely mozu vyt v registroch/L1/L2 cache procesora  
+Extremne rychle  
+Krasna paralelizacia  
+Pocitame to iste nad inymi datami
+
+---
+
+#### Pooling
+
+Pri complex cells  
+Uz sa az tak nepouziva
+
+Zoberie sa kernel a stride a aplikuje sa na vstup  
+Kernel nema ziadne vahy, ale namiesto toho nejaky algoritmus - average, max, ...
+
+> Cize napr. ked dame kernel size = stride, tak obrazok doslova rozsekame na na casti
+
+Kazda cast je reprezentovana najvacsou hodnotou (pri pouziti max)  
+Ma to aj vyhodu - odolnost voci malym odchylkam, vypoctovo je to jednoduchsie  
+Stracame ale nejake (priestorove) informacie, mozno aj nejake nepresnosti (pri pixel-perfect detekcii)  
+Na konci NN sa zvykne este pouzivat -
+
+Global average pooling - transformujeme napr. 7x7 -> 1x1
+
+##### Max pooling
+
+Zoberie sa najvacsia hodnota z okna
+
+##### Average pooling
+
+Zoberie sa priemer hodnot v okne (napr. 2x2)  
+Zachova viacej kontextualnej informacie  
+Az tak velmi sa nepouziva
+
+##### Global average pooling
+
+Priemer z celej feature map  
+Napr. $7x7x512 \rightarrow 1x1x512$  
+Nahradza fully-connected layer  
+Pouziva sa v modernych sietach - ResNet, MobileNet
+
+### Architektury
+
+input - conv - activation - pool - classification - class  
+kroky `conv - activation - pool` sa opakuju niekolko krat  
+Pri `conv` sa aplikuje `n` kernelov, kazdy detekuje nieco ine (edge, texture, ...), vystupom je `n` feature maps  
+Aktivacne funkcie (ReLU, Sigmoid) pridavaju nelinearitu  
+Pool = downsampling - znizovanie poctu parametrov, pridava robustnost  
+Pri konci sa casto vyuzivaju plne prepojene vrstvy, ked uz to mame pretransformovane na 1x1 - `classifier`  
+Vysledkom je class - trieda
+
+ResNet - skipovanie vrstiev - **residual learning**
