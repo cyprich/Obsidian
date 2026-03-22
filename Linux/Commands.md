@@ -2,21 +2,21 @@
 
 Linux commands that I keep forgetting :)
 
-# Compressing and archiving
+## Compressing and archiving
 
-## Compressing
+### Compressing
 
 ```shell
 tar -czf newfile.tar.gz oldfiles
 ```
 
-## Extracting
+### Extracting
 
 ```shell
 tar -xzf file.tar.gz
 ```
 
-## Listing
+### Listing
 
 Shows the file size before and after compressing
 
@@ -24,7 +24,7 @@ Shows the file size before and after compressing
 tar -l file.tar.gz
 ```
 
-## Extra compression
+### Extra compression
 
 Requires additional package(s) but has a lot better compression ratio
 
@@ -36,9 +36,9 @@ Requires additional package(s) but has a lot better compression ratio
 zstd -19 --ultra input -o output.zst
 ```
 
-# Working with text
+## Working with text
 
-## Cut
+### Cut
 
 ```shell
 cut -d: -f1,5-7 /etc/passwd
@@ -51,7 +51,7 @@ ls -l | cut -c1-11,50- > output.txt
 | -f  | Field       |
 | -c  | Characters  |
 
-## Sort
+### Sort
 
 ```shell
 sort -t ":" -k "3" -n -r /etc/passwd
@@ -65,7 +65,7 @@ sort -t, -k2 -k1 -k3n file.csv
 | -n  | Numeric sort |
 | -r  | Reverse sort |
 
-## Grep
+### Grep
 
 ```shell
 grep "bash" /etc/passwd
@@ -83,9 +83,9 @@ grep -A3 -B3 "ahoj" file.txt
 | -B  | Before - shows result along with 3 lines before result                    |
 | -C  | _-A_ and _-B_ combined                                                    |
 
-# Users
+## Users
 
-## Adding
+### Adding
 
 ```shell
 useradd
@@ -107,13 +107,13 @@ For example...
 `useradd -mb /test ferko` - user named `ferko` with home directory `/test/ferko`  
 `useradd -u 1009 -g users -G sales,research -m -c 'i really dont know much about this user...' ferko`
 
-## Changing User Password
+### Changing User Password
 
 User doesn't have password by default  
 `passwd jozko` - more interactive way to set password
 `echo "ferko:newPassword | sudo chpasswd` - more suitable for scripts
 
-## Modifying User
+### Modifying User
 
 ```shell
 usermod
@@ -132,7 +132,7 @@ usermod
 | -L  | Lock account            |
 | -U  | Unlock account          |
 
-## Deleting user
+### Deleting user
 
 ```shell
 userdel jozko
@@ -144,9 +144,9 @@ userdel jozko
 
 Filles that belong to user and are not in home folder will become **orphaned**
 
-# Groups
+## Groups
 
-## Creating group
+### Creating group
 
 ```shell
 groupadd -g 1006 name
@@ -160,7 +160,7 @@ groupadd -r name
 
 If GID is not provided while creating new group, the system will assign the next available GID, for example 1007
 
-## Modifying group
+### Modifying group
 
 ```shell
 groupmod -n oldName newName
@@ -174,7 +174,7 @@ groupmod -g 1008 name
 
 \*When changing GID, files that belong to the group will become **orphaned**!
 
-## Deleting group
+### Deleting group
 
 ```shell
 groupdel name
@@ -182,7 +182,7 @@ groupdel name
 
 When removing group, files that belong to the group will become **orphaned**!
 
-## Group info
+### Group info
 
 | Command               | Description                                |
 | --------------------- | ------------------------------------------ |
@@ -190,7 +190,7 @@ When removing group, files that belong to the group will become **orphaned**!
 | `getent group <name>` | Shows info about group with given \<name\> |
 | `find / --nogroup`    | Shows orphaned files                       |
 
-# Ownership and permissions
+## Ownership and permissions
 
 Change group
 
@@ -212,17 +212,17 @@ Change permissions
 chmod permissions file
 ```
 
-# System log
+## System log
 
 ```shell
 journalctl -xe
 ```
 
-# Network
+## Network
 
 These commands are for Ubuntu (not sure about others)
 
-## Basic commands
+### Basic commands
 
 ```bash
 ping <ip | domain>  # ping
@@ -234,7 +234,7 @@ ip a  # show ip addresses + more
 ip r  # show default route
 ```
 
-## WiFi
+### WiFi
 
 ```bash
 nmcli d  # list devices
@@ -245,7 +245,7 @@ nmcli d wifi connect <ssid> password <password>  # connects to wifi. replace <ss
 nmcli r wifi off  # disable wifi completely
 ```
 
-### Release/Renew IP address
+#### Release/Renew IP address
 
 ```bash
 # you might need to install this package
@@ -263,7 +263,7 @@ sudo dhclient wlp2s0
 ip a
 ```
 
-## Local DNS
+### Local DNS
 
 Add DNS entry for your PC
 You need to edit `/etc/hosts` file and add like something like this
@@ -274,7 +274,7 @@ You need to edit `/etc/hosts` file and add like something like this
 
 > On Windows it's located in `C:\Windows\System32\drivers\etc\hosts`
 
-## Set static IP
+### Set static IP
 
 You need to edit `/etc/netplan/50-cloud-init.yaml` or something similar, so it looks something like this
 
@@ -291,7 +291,7 @@ network:
          addresses: [8.8.8.8,8.8.8.4]
 ```
 
-# Grub
+## Grub
 
 Rebuild grub or something?  
 Not really what it actually does  
@@ -304,24 +304,27 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 ## CRON
 
-Execute scripts/commands periodically, on schedule  
+Execute scripts/commands periodically, on schedule
 
-To edit personal `cron` jobs type this command  
+To edit personal `cron` jobs type this command
+
 ```shell
 crontab -e
 ```
 
 To list personal `cron` jobs type this command
+
 ```shell
 crontab -l
 ```
 
-Cron jobs have this structure  
+Cron jobs have this structure
+
 ```shell
 0 3 * * * /path/to/script.sh
 ```
 
-Meaning of these columns  
+Meaning of these columns
 
 | Field name   | Value (in this case) | Meaning (in this case)   |
 | ------------ | -------------------- | ------------------------ |
@@ -348,19 +351,21 @@ More examples of `cron` jobs
 0 */6 * * * /path/to/script.sh
 ```
 
-# Custom service 
+## Custom service
 
-Runs given script on system boot with systemd    
+Runs given script on system boot with systemd
 
-Open the config file for new service 
+Open the config file for new service
+
 ```shell
 nvim /etc/systemd/system/minecraft.service
 ```
 
-It should look something like this 
+It should look something like this
+
 ```shell
 [Unit]
-Description=Minecraft Server 
+Description=Minecraft Server
 After=network.target
 
 [Service]
@@ -375,7 +380,7 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
-To actually apply and use this, type these commands 
+To actually apply and use this, type these commands
 
 ```shell
 sudo systemctl daemon-reexec
@@ -383,7 +388,7 @@ sudo systemclt enable minecraft
 sudo systemclt start minecraft
 ```
 
-Also some helpful commands... 
+Also some helpful commands...
 
 ```shell
 sudo systemctl status minecraft
@@ -391,7 +396,31 @@ sudo systemctl restart minecraft
 sudo systemctl daemon-reload
 ```
 
-# Various
+## Swap
+
+Set up swap file (if not set up during system installation)
+
+```sh
+sudo fallocate -l 4G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+```
+
+You can add this to `/etc/fstab` to make it permanent
+
+```txt
+/swapfile none swap defaults 0 0
+```
+
+Check if it's working
+
+```sh
+free -h
+swapon --show
+```
+
+## Various
 
 Commands that do not deserve full section, but deserves to be there
 
@@ -420,7 +449,7 @@ sudo apt install stress
 stress --cpu 8 --io 4 --vm 4 --vm-bytes 1024M --timeout 10s
 ```
 
-## Fingerprint
+### Fingerprint
 
 You can log in into your device with fingerprint  
 First of all, make sure you have physical fingerprint sensor  
@@ -428,9 +457,9 @@ Make sure you have installed `fprintd` package (`yay -S fprintd`)
 To scan finger, use the command `fprintd-enroll`  
 Follow instructions on screen and you should be ready to go
 
-## Read data from `.img` 
+### Read data from `.img`
 
-Inspect partitions 
+Inspect partitions
 
 ```bash
 fdisk -l /path/to/image/file.img
@@ -448,50 +477,50 @@ Mount partition of created loop device
 sudo mount -o ro /dev/loop0p1 /mnt
 ```
 
-Clean up when done  
+Clean up when done
 
 ```bash
 sudo umount /mnt
 sudo losetup -d /dev/loop0
 ```
 
-## Do nothing on closing the lid 
+### Do nothing on closing the lid
 
 You need to edit file `/etc/systemd/logind.conf`  
-You need to add line (probably uncoment and change)  
+You need to add line (probably uncoment and change)
 
 ```
 HandleLidSwitch=ignore
 ```
 
-Then you need to restart the services  
+Then you need to restart the services
 
 ```bash
 sudo systemctl restart systemd-logind
 ```
 
-## Automount drive on boot with `fstab`
+### Automount drive on boot with `fstab`
 
 Edit the file `/etc/fstab`  
-Add line like this, but with appropriate values  
+Add line like this, but with appropriate values
 
 ```
 /dev/disk/by-label/drive  /media/drive    ext4    defaults,noatime        0       2
 ```
 
-Make sure the mountpoint exists  
+Make sure the mountpoint exists
 
 ```bash
 sudo mkdir /media/drive
 ```
 
-Consider changing the ownership to yourself  
+Consider changing the ownership to yourself
 
 ```bash
 sudo chown -R $USER:$USER /media/drive
 ```
 
-Reload dameons or something?  
+Reload dameons or something?
 
 ```bash
 sudo systemctl daemon-reload
@@ -499,15 +528,15 @@ sudo systemctl daemon-reload
 
 Mount everything defined in `/etc/fstab`
 
-```bash 
+```bash
 sudo mount -a
 ```
 
-# Cool programs
+## Cool programs
 
 Mostly useless programs, just for fun
 
-## cowsay
+### cowsay
 
 Cow says whatever you told it to
 
@@ -526,23 +555,23 @@ ______
 More characters can be specified with `-f`  
 Cow files are located at `/usr/share/cow`
 
-### xcowsay
+#### xcowsay
 
 Some kind of graphic alternative to `cowsay`
 
-### ponysay
+#### ponysay
 
 Alternative to `cowsay`, displays My Little Pony character
 
-### charasay
+#### charasay
 
 Alternative to `cowsay`, displays various characters
 
-## btop
+### btop
 
 Alternative to `top`, but a lot better
 
-## neofetch
+### neofetch
 
 Shows info about your system
 
@@ -571,17 +600,19 @@ Shows info about your system
 
 ```
 
-### fastfetch
+#### fastfetch
 
 Alternative to `neofetch`, shows more info
 
-### onefetch
+#### onefetch
 
 Similar to `neofetch`, but it's made for Git Repositories
 
-## cmatrix
+#### pfetch
 
-## figlet
+### cmatrix
+
+### figlet
 
 Displays given text in this fancy-pants-ahh style
 
@@ -598,24 +629,25 @@ Displays given text in this fancy-pants-ahh style
 With `-f` you can specify 'font'  
 Fonts are located at `/usr/share/figlet/fonts`
 
-## sl
+### sl
 
 Steam locomotive  
 Displays a train on your screen, when you mistype `ls`
 
-## cbonsai
+### cbonsai
 
 Shows bonsai tree  
 `-l` makes it live grow
 
-## pipes.sh
+### pipes.sh
 
 Nice-looking screensaver  
 `yay -S pipes.sh`
 
-## asciiquarium
+### asciiquarium
 
 Ascii aquarium
 `yay -S asciiquarium`
 
-## astroterm
+### astroterm
+
