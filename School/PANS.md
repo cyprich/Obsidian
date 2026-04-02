@@ -1314,3 +1314,175 @@ Obrazok flipneme, crop+resize, color jitter, rotacia, blur
 Augumentacia musi zachovat label a realitu - vertikalny flip moc nie, prilis velky crop moc nie
 
 ### Inicializacia a transfer learning
+
+## Transformery
+
+Neuronove siete na spracovanie sekvencii  
+Nie obrazy, nie tabulkkove
+
+Problem ostatnych - neuvazuju nejak v celku, v kontexte
+
+Zavislosti v sekvenciach - slova medzi sebou maju zavislost
+Doteraz feed-forward = vzdy sa siri z predu dozadu  
+Recurrent - nie len od vstupu na vystup, ale aj spojenia ktore uchovavaju kontext, pamatanie vnutorneho vztahu
+
+### Rekurentne NN
+
+Vyuzivaju hidden state a feedback loops
+
+Nevyhody
+
+- Neviem "naraz" povedat celu vetu
+- Nevyuzivaju potencial GPU
+- Problem s dlhymi zavislostami - pri velmi dlhom texte "zabudne" kontext, na konci si nepamata veci zo zaciatku
+
+### Transformer
+
+Architektura na spracovanie sekvencii
+
+Kroky
+
+- Tokenizacia
+- Tvorba ebeddingov
+- Self-attention - najvacsi dopad/vyhoda
+
+Self attenton - normalizacia - skip connection - feed forward
+
+Predtym ako dam sekvenciu do siete - tokenizacia  
+Rozbijem na mensie casty - tokeny - ktore sa poslu do siete
+
+Embeddingy - cielne srandy zo slov ktore sa davaju do siete - lebo siet pocita s cislami
+
+#### Self-attention
+
+_Attention is all you need_
+
+Mechanizmus, ktory sa pouziva na urcenie dolezitosti tokenov  
+Za ucelom lepsie pochopit vztahy
+
+Attention = mechanizmus DL, riadi modely, ab yuprednostnovali alebo venovali pozornost najrelevantnejsim castiam vstupnych udajov  
+Nedavame doraz **kazdemu** slovu (tokenu), ale iba dolezitym podstatnym
+
+Ako?  
+Attention score = vaha dolezitosti a pozicii
+
+Self-attention - ako je kazde slovo zavisle od kazdeho ineho  
+Veta `How are you doing?` - attention kazde slovo s kazdym  
+Vznikne nejaka matica
+
+Self-attention
+
+- Query - Q - co hladam
+- Key - K - co mam, co nesiem
+- Value - V - co budem posielat dalej
+
+Tieto vektory sa definuju pre kazdy token
+
+Zistovanie attention score z vektorov
+
+- Query A - mas nieco uzitocne?
+- Key B - toto mozem poskytnut
+- Vysledok - skalarny sucin vektorov - AB - skalarna hodnota - skore
+
+Toto sa robi pre vsetky tokeny  
+Dame do matice  
+Vynasobime matice  
+Dostaneme maticu
+
+> Softmax
+
+Ked zistime svore, musime poslat nieco dalej - Value  
+Vynasobime (nieco) s (niecim) a dostaneme kontextovu reprezentaciu slova
+
+Ako zislam vektory (Q, K, V)  
+Kazdy self-attention blok si udrzuje 3 matice vah, kazdu pre jeden vektor  
+Ked sa vektor vynasobi maticou, dostaneme  
+Matice sa trenuju - v CNN to boli kernely  
+"Matice" su jednoduche linearne vrstvy
+
+#### Tokenizacia
+
+Mam vetu  
+Ako z nej spravim hodnoty (cisla) ako vstup do siete  
+Rozsekame na tokeny (napr. na slova)  
+Potrebujem kazdy token zakodovat do embedding vektora  
+Embedding vektory sa budu uz kazdy s kazdym dopytovat na seba (ta vec z self attention)
+
+Embedding vektor - N-rozmerny vektor, ktory nesie informaciu o tokene  
+Potrebujeme aby ked su tokeny vyznamovo blizke, tak nech su vektory blizko pri sebe
+
+Matica embedding vektorov - slovnik  
+Koduje vyznm slova bez ohladu na kontext
+
+Slovnik GPT-3 - `~50k` tokenov, `~12k` rozmerny vektor = $~50k \cdot ~12k = ~617M$ parametrov = W_e$
+Z kade ziskam maticu $W_e$? Su to parametre, model si ho tvori sam
+
+Nie je dolezit len co token znamena, ale aj kde sa nachadza - na zaciatku, na konci  
+K embedding vektoru sa prilepi kodovanie pozicie  
+Vysledna vektorova reprezentacia tokenu = vyznam + pozicia, potom je priparaveny vstupit do transformerovych blokov  
+Vypocita sa attention -> obohateny o (?), potom moze ist do MLP, ...  
+Kazdy model je schopny pracovat len s urcitym poctom vektorov, limitovany na pocet tokenov ktore vie naraz spracovat = **velkost kontextu**
+
+Ako ziskam vystup? Po tomto mam stale len cisla  
+Co s tym spravime? Zavisi od toho co chcem docielit  
+Zoberieme napr. posledny vektor vystupnej sekvencie  
+Slovo dostaneme pomocou matice unembedding vektorov  
+Transponovana matica  
+Tiez je trenovana  
+Softmax  
+Dostaneme vektor pravdepodobnosti vystupnych slov alebo co
+
+3 hlavne architektury
+
+- Cisty enkoder - BERT
+- Cisty dekoder
+  - GPT
+  - spracovava vystup, snazi sa generovat dalsi vystup slovo po slove
+  - Rozdiel oproti enkoderu ma maskovany attention - diva sa len na predchazajuce slova (nevidi do buducnosti)
+- Aj aj
+  - Ked chcem na vstupe sekvenciu, na vystupe tiez; chcem pre vetu generovat inu vetu
+  - Preformulovanie textu - enkoder pochopi, dekoder vypluje
+  - Prekladac - enkoder pochopi, dekoder prelozi do druheho jazyka
+
+### Vision Transformery - ViT - sekvencne spracovanie obrazu
+
+CNN su krali minulosti  
+Limitacie - lokalne receptivne pole - pozera sa na lokalny kontext, zanedbava globalny  
+Toto riesia transformery, ktore vnimaju zavislosti bez ohladu na toho ako su daleko od seba  
+Na obrazok sa nedivame ako na obrazok, ale ako na sekvenciu tokenov  
+Transformujem 2D obrazok na 1D vektor
+
+ViT architektura  
+Na zaciatku potreujem obrazok dat do 1D - embedded patches  
+Spravim embeddingy, info o pozicii
+
+Linarna transofmacia a embeddingy
+
+Kodovanie pozicii
+
+Ako z enkoderu budem ziskavat features ktore ma zaujimaju  
+Klasifikacny Token  
+Vo ViT sa dava na zaciatok prazdny token ktory je klasifikacny  
+Ocakava sa ze cela (?) informacia sa da do tohto tokenu  
+Tento token sa potom da do FC vrstvy
+
+Multi-head attention  
+Podobne ako self-attention, ale nie jedna attention pre cele ale viacej nezavislych  
+V CNN mame viacej kernelov, kazdy sa uci nejaky priznak  
+Tuto to je ze mame heads, kazda si vsima nejake ine vztahy/dolezite veci
+
+Vyhody ViT oproti CNN
+
+- Pozera sa na cely obrazok naraz,
+
+Limitacie
+
+- Velmi vela parametrov - GPT3 - 175B
+- Narocne data
+- Treba velmi velke mnoztvo dat
+- Nedostatok induction bias - slabsi na malych suboroch udajov, treba dlho trenovat
+
+Ako sa to da vyriesit - Transfer Learning
+
+- Predtrenujem - Pre-training - trenovanie n arozsiahlom, vseobecnom subore udajov (jft-300m)
+- Fine-tuning - dotrenujem, doladim na moju specificku ulohu; tym padom znizuje poziadavku na specificke anotovane data
