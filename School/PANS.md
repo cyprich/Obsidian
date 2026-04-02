@@ -1164,3 +1164,153 @@ Pri konci sa casto vyuzivaju plne prepojene vrstvy, ked uz to mame pretransformo
 Vysledkom je class - trieda
 
 ResNet - skipovanie vrstiev - **residual learning**
+
+## Overfitting
+
+Preco sa model uci naspamat a kedy to zastavit  
+Dobra presnost pri treningu, pri nasadeni nepouzitelny
+
+### Bias a variance
+
+Dva zdroje chyby modelu
+Velky bias - triafam sipky na to iste miesto, ale nie do stredu - **underfitting**  
+Model je prilis jednoduchy
+
+Velky variance - skacem kade tade - **overfitting**  
+Model prilis zlozity
+
+Chceme najst nejaku rovnovahu
+
+$E((y - y_{pred}^2)) = bias^2 + variance + irreducible noise$
+
+Bias
+
+- Systematicka chyba
+- Model nedokaze zachytit skutocne vzory v datach
+- Fittovanie priamky na nelinearny problem
+
+Variance
+
+- Nestabilita modelu
+- Hlboka siet na malych datach
+- Ked siet moc "overthinkuje" - siet sa uci hluposti, moze zacat memoizovat
+- Zvysuje sa ked je prilis vela parametrov (vahy)
+
+Ireeducible noise
+
+- Neodstranitelny sum
+- Nieco co model nedokaze zachytit - farby aut pri ciernobielych datach
+- Ked je v datach nejaky nahodny prvok - hod mincou - nedokazeme popisat fyziku za tym
+
+Krivky pocas trenovania - train loss vs. val loss
+
+- Ak su krivky daleko od seba - velky rozdiel medzi train a val - overfitting
+- Ak su krivky vysoko - vysoke chyby - underfitting
+
+#### Early stopping
+
+Najlepsia obrana proti overfittingu  
+Pri velmi dlhom trenovani zacina loss stupat  
+Early stopping - trenuj iba dovtedy kym loss klesa
+
+**Best Checkpoint** - bod, kde je model najelpsie natrenovany - ako keby asi globalne minimum?  
+**Patience** - kolko epoch este trenuj po dosiahnuti best checkpoint  
+**Early stop** - ked skonci patience - koncime s trenovanim
+
+### Regularizacne metody
+
+Ako prinutit model generalizovat namiesto memoizovania  
+Early stop nestaci  
+Zmenit model nie je vzdy mozne - ak chceme aby vahy davali vyznam
+
+#### Normalizacia a standardizacia vstupov
+
+Velky nepomer medzi datami ktore vyjadruju nieco ine - vek (desiatky) a prijem (10k, 100k)
+
+Normalizacia -
+Standardizacia - Z-score
+
+Metody velmi podobne, ale rozdielne v dvoch veciach
+
+- Cistlivost na outliers - standardizacia robustnejsia
+- Ohranicenie - obrazky su 28x28 - viem presnu hranicu = normalizacia
+
+Vzdy sa pocita iba z train
+
+#### L2 regularizacia
+
+$L_{reg} = L + \frac{\lambda}{2} \cdot \sum_i w_i^2$
+
+$L$ = povodny loss  
+$\lambda$ - regularizacny clen - typicky $10^{-2}, 10^{-4}$ - proti explodingu  
+$\sum$ - penalizacia za velke vahy
+
+Weight decay  
+Po derivaciach - $\lambda w_j$  
+Snazi sa znizit loss znizenim vah - 4 male vahy maju mensi vply v ako jedna velka
+
+"Proporcne znizuje"
+
+Vacsinou v DL pouzivame toto, ale mozeme aj obidve
+
+#### L1 regularizacia
+
+To este len to nie je na druhu  
+Deivacia absolutneho clena je znamienko - $+1$ alebo $-1$  
+Snazi sa vynulovat vahy (namiesto zmensenia)
+
+"Stale znizuje"
+
+Vacsinou pouzivame v tradicnom ML
+
+#### Dropout
+
+Nahodne vypinanie neuronov  
+Nad siet dam masku - nuly a jednotky - podla Bernoulliho rozdelenia  
+$Bernoulli(1-p)$  
+`p` je hyperparameter - dropout rate  
+Kazdy forward vypnem ine neurony  
+Jednotlive neurony sa nespoliehaju jeden na druhy  
+Neurony sa ucia podstatne a robustne veci nezavisle od ostatnych  
+Je to trochu redundatne, ale to praveze pomaha pri  
+Assemble effect - viac malych > menej (1) velkych  
+Namiesto trenovanie jednej velkej siete naucime viac malych, spravime priemer
+
+Hyperparameter `p`
+
+- $p = 0$ - ziadny dropout
+- $p = 0.5$ - bezne pre plne prepojene vrstvy
+- $p = 0.1 - 0.2$ - bezne pre konvolucne vrstvy
+
+Ale co pri inferencii - ked mame vsetky neurony zapnute  
+Pri treningu su iba niektore  
+Musime preskalovat
+
+#### Batch normalization
+
+Preco nerobit normalizaciu vsade (nie len pri vstupe)  
+Vnutri siete - po aktivacnych funkciach  
+Ked mame vanishing gradient problem - stracame smerodajnu odchylku (data)  
+V skutocnosti je to standardizacia nie normalizacia
+
+Batch - podmnozina trenovacich dat - napr. 64 dat s ktorymi trenujeme
+
+Kroky
+
+1. Vypocet priemeru
+2. Vypocet smerodajnej odchylky
+3. $\hat{x}$ = standardizacia - odpocitam od kazdej hodnoty priemer, cele to vydelim smerodajnou odchylkou; _numericka stabilita (?)_
+4. $\hat{x}$ naskalujeme (natiahneme) a posunieme ($+ \beta$) - trenovacie parametre (siet si ich upravuje sama?)
+
+Mozeme si to predstavit ako dalsiu vrstvu  
+Idealne medzi vrstvu (linear/konvolucnu) a aktivacnu funkciu
+
+Nie je idealne aj batch normalization aj dropout, nie je to strasne ale nie az tak ok
+
+#### Datova augumentacia
+
+Pridame nejake umele data  
+Obrazok flipneme, crop+resize, color jitter, rotacia, blur  
+Augumentacia musi zachovat label a realitu - vertikalny flip moc nie, prilis velky crop moc nie
+
+### Inicializacia a transfer learning
