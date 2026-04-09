@@ -1486,3 +1486,79 @@ Ako sa to da vyriesit - Transfer Learning
 
 - Predtrenujem - Pre-training - trenovanie n arozsiahlom, vseobecnom subore udajov (jft-300m)
 - Fine-tuning - dotrenujem, doladim na moju specificku ulohu; tym padom znizuje poziadavku na specificke anotovane data
+
+## Trening NN
+
+Ako sa vlastne NN nieco nauci - celkovy pohlad  
+Take opakovanie
+
+treningova slucka
+
+- data
+- forward - siet vypocita vystup, aktivacne funckie
+- loss
+- backpropagation
+- update
+
+batch vs. epoch
+
+- je velmi drahe robit forward (a backward) nad celymi datami
+- zobereme z dat mensiu, statisticky vyznamnu vzorku, idealne z kazdej triedy nejake data, idealne nahodne, cim vacsia zvorka tym lepsie ale pomalsie
+- toto je batch
+- typicky velkost 32-256
+- vacsi batch - pomalsie, pamatovo narocnejsie (musia sa cele zmestit do pamate gpu),
+- update vah
+- epocha = vsetky kroky ktore by potreboval na vsetky data
+
+Stochastic gradient descent - batch size = 1  
+Batch gradient descent - batch size = 1000
+
+Inicializacia vah - ake vahy dat na zaciatok (pred prvym treningom)
+
+- Ak su vsetky vahy 0 - vsetky vysledky budu 0, tiez nechceme aby bolo vsetko rovnake - nie dobre
+- Nahodne male cisla - v rozsahu 0-1 (ako normalizacia) - lepsie
+- Xavier/He init
+- Idealne - zobrat nejaku predtrenovanu siet, ale nemusi nam vyhovovat architektura, biasy, ... ktore nemozeme zmenit. idealne zahodit poslednu vrstvu lebo ta riesi konkretny problem a my chceme riesit iny
+
+Aktivacne funkcie pridavaju nelinearitu, musia mat prvu derivaciu
+
+### Regularizacia
+
+Problem - overfitting
+Siet sa uci naspamat
+Ak je siet moc velka
+
+L2 regularizacia - tresta velke vahy  
+Dropout - nahodne vypnutie neuronov
+
+---
+
+Train loss a val loss klesaju spolocne - dobre  
+Val loss klesa pomalsie - normalne  
+Val loss stupa ked train klesa - overfitting
+
+Ked vela kolise - velky learning rate
+Ked je stabilne ale ide velmi pomaly dole - maly learning rate
+
+### Optimizery
+
+Gradient Descent GD, Stochastic GD, Minibatch SGD
+
+GD - update na zaklade celeho datasetu, presny ale pomaly pre velke data
+SGD - update z 1 data
+Minibatch SGD - update z x dat
+
+Zavadza sa novy parameter - Momentum  
+"Pamat gradientu" - pohybuje sa rychlejsie v konstatnom smere, pomalsie ak sa smer meni  
+Nemame len LR ale aj momentum
+
+$w \leftarrow w - \ni \cdot v_t$  
+$v_t = \beta \cdot v_{t-1} + g_t$
+
+$\beta$ = momenturm, vacsinou velmi velky (0.9)  
+Ak by sme dali $\beta = 0$ tak by to bol klasicky SGD  
+Snazim sa pomocou neho sa snazim odstranit sum  
+Rekurzivny vzorec, najnovsia hodnota ma najvacsi vplyv, po case zabuda  
+Pamatam si vsetko, ale cim je to davnejsie tym menej to vplyva
+
+Adam - sam si vie momentum odhadnut a adaptovat za behu v kazdom kroku, velmi dobre s nim pracuje
