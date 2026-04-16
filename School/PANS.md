@@ -1318,7 +1318,7 @@ Augumentacia musi zachovat label a realitu - vertikalny flip moc nie, prilis vel
 ## Transformery
 
 Neuronove siete na spracovanie sekvencii  
-Nie obrazy, nie tabulkkove
+Nie obrazy, nie tabulkove data
 
 Problem ostatnych - neuvazuju nejak v celku, v kontexte
 
@@ -1343,7 +1343,7 @@ Architektura na spracovanie sekvencii
 Kroky
 
 - Tokenizacia
-- Tvorba ebeddingov
+- Tvorba embeddingov
 - Self-attention - najvacsi dopad/vyhoda
 
 Self attenton - normalizacia - skip connection - feed forward
@@ -1351,7 +1351,7 @@ Self attenton - normalizacia - skip connection - feed forward
 Predtym ako dam sekvenciu do siete - tokenizacia  
 Rozbijem na mensie casty - tokeny - ktore sa poslu do siete
 
-Embeddingy - cielne srandy zo slov ktore sa davaju do siete - lebo siet pocita s cislami
+Embeddingy - ciselne srandy zo slov ktore sa davaju do siete - lebo siet pocita s cislami
 
 #### Self-attention
 
@@ -1404,7 +1404,7 @@ Matice sa trenuju - v CNN to boli kernely
 
 Mam vetu  
 Ako z nej spravim hodnoty (cisla) ako vstup do siete  
-Rozsekame na tokeny (napr. na slova)  
+Rozsekame na tokeny (napr. na slova, ale nemusi byt vzdy len takto)  
 Potrebujem kazdy token zakodovat do embedding vektora  
 Embedding vektory sa budu uz kazdy s kazdym dopytovat na seba (ta vec z self attention)
 
@@ -1412,12 +1412,12 @@ Embedding vektor - N-rozmerny vektor, ktory nesie informaciu o tokene
 Potrebujeme aby ked su tokeny vyznamovo blizke, tak nech su vektory blizko pri sebe
 
 Matica embedding vektorov - slovnik  
-Koduje vyznm slova bez ohladu na kontext
+Koduje vyznam slova bez ohladu na kontext
 
 Slovnik GPT-3 - `~50k` tokenov, `~12k` rozmerny vektor = $~50k \cdot ~12k = ~617M$ parametrov = W_e$
 Z kade ziskam maticu $W_e$? Su to parametre, model si ho tvori sam
 
-Nie je dolezit len co token znamena, ale aj kde sa nachadza - na zaciatku, na konci  
+Nie je dolezite len co token znamena, ale aj kde sa nachadza - na zaciatku, na konci  
 K embedding vektoru sa prilepi kodovanie pozicie  
 Vysledna vektorova reprezentacia tokenu = vyznam + pozicia, potom je priparaveny vstupit do transformerovych blokov  
 Vypocita sa attention -> obohateny o (?), potom moze ist do MLP, ...  
