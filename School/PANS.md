@@ -1610,3 +1610,76 @@ Nielen, ze odkazu spravit latentny pristor, ale aj vedia z neho vygenerovat niec
 Autoencoder - zober poskodeny obrazok, na vystupe mi daj opraveny  
 Alebo dam grayscale, daj mi farebny  
 Vytvorime bottleneck - encoder zakoduje z 784 priestoru do 32, to bude bottlenect, decoder transformuje 32 do 784
+
+## Vysvetlitelnost NN
+
+Saliencne mapy a Grad CAM
+
+Model sa nemusi ucit len z objektu, ktory ma rozpoznavat  
+Pozadie, svetlo, zoom, text, ...  
+Na beznych satach moze mat vysoku uspesnost, ale na nebeznych nemusi
+
+### Vysvetlitelnost ci interpretovatelnost
+
+Priklad - odhad ceny bytu  
+$cena = w_1 \cdot pocetizieb + w_2 \cdot plocha bytu + b$  
+Vieme co je $w_1, w_2$ => interpretovatelny
+
+Interpretovatelnost
+
+- modelu rozumieme priamo z jeho struktury
+- vieme citat priamo
+
+Vysvetlitelnost
+
+- model je prilis zlozity na priame poochopenie
+- musime skumat pomocou nastrojov
+
+Ako sa pytame NN na jej rozhodnutie?
+
+1. .
+2. .
+3. na co sa model pozeral - saliency maps, grad-cam metody
+
+### Saliencne mapy
+
+Ako sa zmeni rozhodnutie siete, ak zmenim pixely vo vstupnoom obrazku?  
+Ako sa zmeni rozhodnutie o konkretnej triede, ak -||-
+
+siet je $f(x,w) = \hat{y}$  
+obrazok je $x$
+
+zmena = parcialna derivacia -> backprop  
+skore konkretnej triedy (4) podla pixelu 3 = $\dfrac{\partial f_4(x)}{\partial x_3}$  
+Saliencne mapy - mapa toho ze ktory pixel ako ovplyvni - heatmap  
+Pre kazdy obrazok zvlast (alebo triedu?)  
+Tieto mapy su ale zasumene/rozpixeloane/...  
+My by sme potrebovali skor oblast - v tom nam pomoze vnutro cnn - grad cam
+
+### Grad CAM
+
+Ako sa zmeni rozhodnutie o konkretnej siete, ak zmenime nejaku priznakovu mapu
+
+$\dfrac{\partial f_4(x)}{\partial A_3}$  
+Len co je to ta $A_3$ (priznakova mapa)
+
+Ako to vypocitat
+
+1. spravim saliencnu mapu pre $A_3$ - pixel by pixel $\partial$; vznikne matica 14x14
+2. spriemerujeme 14x14 = 196 do jednej vahy $\alpha_3$
+3.
+
+$\sum_{}^{}$
+
+grad cam
+
+- gradient podla poslednej conv vrstvy
+- ukazuje dolezite oblasti
+- citatelnejsi, viac oblastny
+
+naco je to dobre
+
+- debug modelu
+- odhalenie biasu a leakage
+- kontrola, ci sa model pozera na spravne casti obrazu
+- budovanie dobry v citlivych aplikaciach
