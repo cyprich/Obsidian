@@ -1562,3 +1562,51 @@ Rekurzivny vzorec, najnovsia hodnota ma najvacsi vplyv, po case zabuda
 Pamatam si vsetko, ale cim je to davnejsie tym menej to vplyva
 
 Adam - sam si vie momentum odhadnut a adaptovat za behu v kazdom kroku, velmi dobre s nim pracuje
+
+## Embeddings
+
+Ako NN rozumeju svetu
+
+Embedding bude v podstate kodovanie, len inym sposobom  
+Ordinalne kodovanie - problem "macka je priemer medzi psom a vtakom", vzdialenosti medzi nimi nedavaju zmysel  
+One-hot kodovanie - dobry pri klasifikacnej ulohe, problem - velky priestor z vacsiny prazdny, hovorime ze slova nemaju vztahy
+
+Embedding je funkcia $f(objekt) \rightarrow \mathbf{R}^n$, kde predpokladame ze objekty budu blizke body  
+Napr. $f("pes") \rightarrow (0.21, 0.90, -0.02, ...)$
+
+Latentny priestor = priestor kde ziju embeddingy  
+Jeden objekt dostane jebem embeding, ale vsetky objekty tvoria latentny priestor  
+Latentny priestor = cela mapa  
+Typicky 100-1000 rozmerov  
+Vektory sa daju scitat, odcitat, porovnavat, ...
+
+Cosine similarity
+~~$\dfrac{cos(A,B) = A \cdot B}{||A|| \cdot ||B||}$~~ Vzorec je iba kosinus uhla  
+Euklidovska zvdialenost nie je dobra vo viacrozmenrych priestoroch  
+Skor je dolezity uhol medzi nimi
+
+Word2Vec  
+Historicky milnik  
+NLP - natural language processing
+
+Doteraz sme robili supervised learning - mame labels  
+Skip-gram - zobereme centralne slovo vety, vymazeme ostatne, model ich musi predikovat = self-supervised  
+CBOW - opacne - zobereme slova okolo, ma sa predikovat stredne - autocorrect
+
+Embeddingy nie us len pre slova  
+CNN tiez vytvara embeddingy
+
+Netflix - pouzivatel = vektor  
+Kazdy film/serial = vektor
+
+Spotify  
+Discover weekly  
+Kazda skladba = vektor, ~128 dimenzii, ~100M skladieb  
+Kazdy pouzivatel = vektor, jeho posluchy, likes, skips, ...
+
+### Encoder - decoder architektura
+
+Nielen, ze odkazu spravit latentny pristor, ale aj vedia z neho vygenerovat nieco uzitocne naspat  
+Autoencoder - zober poskodeny obrazok, na vystupe mi daj opraveny  
+Alebo dam grayscale, daj mi farebny  
+Vytvorime bottleneck - encoder zakoduje z 784 priestoru do 32, to bude bottlenect, decoder transformuje 32 do 784
