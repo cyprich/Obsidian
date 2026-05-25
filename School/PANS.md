@@ -402,7 +402,7 @@ Parametre
 
 Hyperparametre
 
-- Nastavenia, ktore volime mey - pred treningom, alebo mimo nich
+- Nastavenia, ktore volime my - pred treningom, alebo mimo neho
 - Napr. Learning rate, pocet vrstiev, aktivacna funkcia
 - Nastavia sa mimo treningu, optimalne hodnoty hladame na validacnych datach
 
@@ -475,7 +475,7 @@ Gradient descent ($\partial L / \partial w$) hovori o tom, ktorym smerom strata 
 
 $w \leftarrow w - \eta \cdot \partial L / \partial w$
 
-$\partial L / \partial w > 0$ = krivka stupa - $w$ zmensime
+$\partial L / \partial w > 0$ = krivka stupa - $w$ zmensime  
 $\partial L / \partial w <= 0$ = krivka klesa - $w$ zvacsime
 
 #### Minimalizacia straty - 2D a mnoho D
@@ -727,7 +727,7 @@ $\sum x \cdot w + b$
 
 Vystup zo siete je napr. $(-0.5, 0.4, 2.1)$ - toto su logity  
 Aplikujeme softmax na vsetky logity - na vsetky vystupy zo siete  
-Softmax z toho spravi napr. $(0.02, 0.08, 0.9)$ (vymyslam si hej, actually sa to pcita)  
+Softmax z toho spravi napr. $(0.02, 0.08, 0.9)$ (vymyslam si hej, actually sa to pocita)  
 Dostaneme rozdelenie pravdepodobnosti (najvacsia pravdepodobnost vyhrava, v tomto pripade posledny neuron)
 
 Preco softmax a nie nejaky priemer - velke rozdiely chcem zosilnovat  
@@ -737,7 +737,7 @@ Nechceme to zosilnovat vahami, lebo to vyvolava nestabilitu (mala zmena na zacia
 
 Loss funkcia i guess  
 $L = - \sum_{k=1}^{K} y_k \cdot \log \hat{p}_k$  
-Suma cez vsetkych $K$ tried
+Suma cez vsetkych $K$ tried  
 Kedze vieme ze onehot dava ze vsade 0 ($y_k = 0$) okrem spravnej hodnoty ($y_c$) (skalarny sucin), tak dostaneme nieco taketo...  
 $L = -(0 + 0 + ... + 1 \cdot \log \hat{p}_c + 0 + ...)$  
 Cize $L = -(1 \cdot \log \hat{p}_c)$  
@@ -1044,7 +1044,7 @@ Pripadne `Conv2d(..., padding="same")` v pytorch zachova rozmer
 Ak mame 3x3 kernel tak by to bolo to iste ako `Conv2d(..., padding=1)`
 
 Vseobecny vzorcek velkosti  
-$W_{out} = \dfrac{W_{in} - K + 2P}{S + 1}$
+$W_{out} = \dfrac{W_{in} - K + 2P}{S} + 1$
 
 > $W_{out}$ = vysledna velkost (sirka obrazku)  
 > $W_{in}$ = vstupna velkost (sirka obrazku)  
@@ -1105,14 +1105,14 @@ Zlozite veci rozdelime na vela jednoduchych
 
 Ako sa posuvam - doteraz bolo o 1, aj v gifoch vyssie  
 Nemusim sa ale posuvat len o 1px ale aj o viac  
-Vacsi stride = nizstia narocnost, ale mozem missnut nieco  
-Mam pocit ze vacsi stride = vacsie zmensenie obraku  
+Vacsi stride = nizsia narocnost, ale mozem missnut nieco  
+Mam pocit ze vacsi stride = vacsie zmensenie obrazku  
 Vacsinou sa stale pouziva 1  
 Idealne stride mensi ako velkost kernelu
 
 ---
 
-Male kernely mozu vyt v registroch/L1/L2 cache procesora  
+Male kernely mozu byt v registroch/L1/L2 cache procesora  
 Extremne rychle  
 Krasna paralelizacia  
 Pocitame to iste nad inymi datami
@@ -1127,7 +1127,7 @@ Uz sa az tak nepouziva
 Zoberie sa kernel a stride a aplikuje sa na vstup  
 Kernel nema ziadne vahy, ale namiesto toho nejaky algoritmus - average, max, ...
 
-> Cize napr. ked dame kernel size = stride, tak obrazok doslova rozsekame na na casti
+> Cize napr. ked dame kernel size = stride, tak obrazok doslova rozsekame na casti
 
 Kazda cast je reprezentovana najvacsou hodnotou (pri pouziti max)  
 Ma to aj vyhodu - odolnost voci malym odchylkam, vypoctovo je to jednoduchsie  
@@ -1172,7 +1172,7 @@ Dobra presnost pri treningu, pri nasadeni nepouzitelny
 
 ### Bias a variance
 
-Dva zdroje chyby modelu
+Dva zdroje chyby modelu  
 Velky bias - triafam sipky na to iste miesto, ale nie do stredu - **underfitting**  
 Model je prilis jednoduchy
 
@@ -1322,7 +1322,7 @@ Nie obrazy, nie tabulkove data
 
 Problem ostatnych - neuvazuju nejak v celku, v kontexte
 
-Zavislosti v sekvenciach - slova medzi sebou maju zavislost
+Zavislosti v sekvenciach - slova medzi sebou maju zavislost  
 Doteraz feed-forward = vzdy sa siri z predu dozadu  
 Recurrent - nie len od vstupu na vystup, ale aj spojenia ktore uchovavaju kontext, pamatanie vnutorneho vztahu
 
@@ -1391,7 +1391,7 @@ Dostaneme maticu
 
 > Softmax
 
-Ked zistime svore, musime poslat nieco dalej - Value  
+Ked zistime score, musime poslat nieco dalej - Value  
 Vynasobime (nieco) s (niecim) a dostaneme kontextovu reprezentaciu slova
 
 Ako zislam vektory (Q, K, V)  
@@ -1414,13 +1414,14 @@ Potrebujeme aby ked su tokeny vyznamovo blizke, tak nech su vektory blizko pri s
 Matica embedding vektorov - slovnik  
 Koduje vyznam slova bez ohladu na kontext
 
-Slovnik GPT-3 - `~50k` tokenov, `~12k` rozmerny vektor = $~50k \cdot ~12k = ~617M$ parametrov = W_e$
-Z kade ziskam maticu $W_e$? Su to parametre, model si ho tvori sam
+Slovnik GPT-3 - `~50k` tokenov, `~12k` rozmerny vektor = $~50k \cdot ~12k = ~617M$ parametrov = W_e$  
+Z kade ziskam maticu $W_e$?  
+Su to parametre, model si ho tvori sam
 
 Nie je dolezite len co token znamena, ale aj kde sa nachadza - na zaciatku, na konci  
 K embedding vektoru sa prilepi kodovanie pozicie  
 Vysledna vektorova reprezentacia tokenu = vyznam + pozicia, potom je priparaveny vstupit do transformerovych blokov  
-Vypocita sa attention -> obohateny o (?), potom moze ist do MLP, ...  
+Vypocita sa attention - obohateny o (?), potom moze ist do MLP, ...  
 Kazdy model je schopny pracovat len s urcitym poctom vektorov, limitovany na pocet tokenov ktore vie naraz spracovat = **velkost kontextu**
 
 Ako ziskam vystup? Po tomto mam stale len cisla  
@@ -1484,7 +1485,7 @@ Limitacie
 
 Ako sa to da vyriesit - Transfer Learning
 
-- Predtrenujem - Pre-training - trenovanie n arozsiahlom, vseobecnom subore udajov (jft-300m)
+- Predtrenujem - Pre-training - trenovanie na rozsiahlom, vseobecnom subore udajov (jft-300m)
 - Fine-tuning - dotrenujem, doladim na moju specificku ulohu; tym padom znizuje poziadavku na specificke anotovane data
 
 ## Trening NN
@@ -1524,7 +1525,7 @@ Aktivacne funkcie pridavaju nelinearitu, musia mat prvu derivaciu
 
 ### Regularizacia
 
-Problem - overfitting
+Problem - overfitting  
 Siet sa uci naspamat
 Ak je siet moc velka
 
@@ -1537,7 +1538,7 @@ Train loss a val loss klesaju spolocne - dobre
 Val loss klesa pomalsie - normalne  
 Val loss stupa ked train klesa - overfitting
 
-Ked vela kolise - velky learning rate
+Ked vela kolise - velky learning rate  
 Ked je stabilne ale ide velmi pomaly dole - maly learning rate
 
 ### Optimizery
@@ -1557,7 +1558,7 @@ $v_t = \beta \cdot v_{t-1} + g_t$
 
 $\beta$ = momenturm, vacsinou velmi velky (0.9)  
 Ak by sme dali $\beta = 0$ tak by to bol klasicky SGD  
-Snazim sa pomocou neho sa snazim odstranit sum  
+Snazim sa pomocou neho odstranit sum  
 Rekurzivny vzorec, najnovsia hodnota ma najvacsi vplyv, po case zabuda  
 Pamatam si vsetko, ale cim je to davnejsie tym menej to vplyva
 
@@ -1571,7 +1572,7 @@ Embedding bude v podstate kodovanie, len inym sposobom
 Ordinalne kodovanie - problem "macka je priemer medzi psom a vtakom", vzdialenosti medzi nimi nedavaju zmysel  
 One-hot kodovanie - dobry pri klasifikacnej ulohe, problem - velky priestor z vacsiny prazdny, hovorime ze slova nemaju vztahy
 
-Embedding je funkcia $f(objekt) \rightarrow \mathbf{R}^n$, kde predpokladame ze objekty budu blizke body  
+Embedding je funkcia $f(objekt) \rightarrow \mathbb{R}^n$, kde predpokladame ze objekty budu blizke body  
 Napr. $f("pes") \rightarrow (0.21, 0.90, -0.02, ...)$
 
 Latentny priestor = priestor kde ziju embeddingy  
@@ -1637,14 +1638,14 @@ Vysvetlitelnost
 
 Ako sa pytame NN na jej rozhodnutie?
 
-1. .
-2. .
-3. na co sa model pozeral - saliency maps, grad-cam metody
+1. co model povedal - aku triedu, s akou istotou, trafil sa? - vystupna vrstva
+2. co sa deje vo vnutri modelu - ake crty vo vrstvach, ako sa meni reprezentacia napriec sietou - skryte vrstvy
+3. na co sa model pozeral - ktore vstupy najviac ovplyvnili rozhodnutie - saliency maps, grad-cam metody - vstup
 
 ### Saliencne mapy
 
-Ako sa zmeni rozhodnutie siete, ak zmenim pixely vo vstupnoom obrazku?  
-Ako sa zmeni rozhodnutie o konkretnej triede, ak -||-
+Ako sa zmeni rozhodnutie siete, ak zmenim pixely vo vstupnom obrazku?  
+Ako sa zmeni rozhodnutie o konkretnej triede, ak zmenim pixely vo vstupnom obrazku?
 
 siet je $f(x,w) = \hat{y}$  
 obrazok je $x$
@@ -1683,3 +1684,196 @@ naco je to dobre
 - odhalenie biasu a leakage
 - kontrola, ci sa model pozera na spravne casti obrazu
 - budovanie dobry v citlivych aplikaciach
+
+## Object Detection
+
+- Classification - single class label
+- Localization - one class + one bounding box
+- Object Detection - multiple objects, each with class and bbox
+- Instance Segmentation - multiple objects, pixel-level masks
+
+Object Detection - 4 informacie stacia  
+Confidence - ako je si siet ista
+
+Problemy
+
+- Vnutorna variancia v ramci tried - strasne vela druhov psov,...
+- Invariancia voci velkosti
+- Pomery stran objektov
+- Occlusion - objekty sa prekryvaju - navzajom, s niecim inym
+- Real-time demands
+
+### Foundations
+
+Bounding box = bbox  
+GT = ground truth - to co je ozaj pravda
+
+Bbox representation
+
+- bud top-left + bottom-right - corner format
+- alebo center + w + h - center format
+
+Bboxy su zarovnane, neskosene (obdlzniky, vodorovne ciary su ozaj vodorovne)
+
+Ako vieme ci detekcia je "spravna"? niekolko moznosti
+
+- vzdialenosti centerov + threshold
+  - problem - scale dependent voci velkosti bbox - 20px odchylka je super ak ma objekt 4000px, zle ak ma 15px
+  - problem - ignoruje tvar/velkost objektu - width, height, scale
+- prienik 2 ploch
+  - problem - nie je normalizovane
+  - problem - 100% prienik ak odhad je vnutri GT
+  - riesenie - vydelit zjednotenim - IoU
+
+IoU - intersection over union  
+Vzorec $\dfrac{|A \cap B|}{|A \cup B|} = \dfrac{|A \cap B|}{|A| + |B| - |A \cap B|}$
+
+$A \cap B$ - prienik - intersection  
+$A \cup B$ - zjednotenie - union
+
+Problem - viac kandidatov - na jeden objekt dostaneme 4-5 detekcii  
+Ktore nechat?  
+**Non-Maximum Suppression**  
+Vyberiem bbox, ktory ma najvacsiu confidence  
+Vsetky ostatne v ramci daneho IoU potlacim  
+Az toto je vystup
+
+### Detection
+
+Ako actually detegovat objekty?  
+Mame viacej metod - traditional cv, one-stage deep, two-stage deep  
+Two-stage ma vyssiu accuracy ale je pomalsie, one-stage naopak  
+My budeme preberat one-stage DL, konkretne YOLO
+
+Prva vyzva - mame silnu backbone (cnn/nn/transformer) - chceme to pouzit na detegovanie bboxov  
+Musime premodelovat posledne vrstvy  
+Mame tu aj klasifikaciu aj regresiu - ale problem ze nevieme kolko bude objektov, potrebujeme fixny vystup (pocet neuronov)
+Problem - potrebujeme fixnu siet, ktora zvlada variabilny pocet objektov
+
+Podme postupne - keby mame len lokalizaciu jedneho objektu - x, y, w, h, class (onehot)  
+Problem - detegujeme len jeden objekt, nie viac
+
+Dalsie riesenia, spravime niekolko ($n$) bboxov  
+Problem, co ak actually mame $n+1$  
+Co ak mame velmi velke $n$, napr. 100 a actually budu len 2 bboxy - vela prazdnych outputov a nevieme co s nimi
+
+Druha moznosti - na kazdej pozicii spravime predikciu  
+Dense prediction  
+Velmi vela predikcii, vypoctovo narocne
+
+Musime vyriesit 3 problemy
+
+- scale bbox
+- aspect ratio bbox
+- overlapping center
+
+Ako riesit
+
+- Two-stage
+  - Where first, then what
+  - Najskor hladaju kandidatov na objekt, potom ich klasifikuju
+  - Vacsinou fixne pravidla - najdi 64, 128, ... bboxov a potom klasifikuj
+  - More precise, slower
+- One-stage
+  - Predict everything at once
+  - Strudcured grid of cells, each cell owns it's prediction(s)
+  - Higher speed, one forward pass
+
+#### Sliding window
+
+Apply clssifier at every possible position and scale  
+Musim prejst obrazkom niekolko krat pre niekolko scales (vacsinou 4-6 krat, ale velmi zalezi od podmienok/poziadaviek; stride)  
+Hlavny problem - vypoctova zlozitost
+
+OverFeat  
+Sliding window - prekryvajuce sa pixely nemusime 2krat pocitat (receptive field?), co vyrazne znizi vypoctovu zlozitost
+
+#### YOLO
+
+You Only Look Once
+
+Prva verzia a podstatne myslienky  
+Dostanem obrazok, a chcem vsetko rovno na kompletku spravit  
+Vidi cely obrazok, nie iba vyrazy, ma globalny kontext  
+End-to-end - da sa naraz naucit?
+
+Podstata  
+Potrebujeme zjednodusit - grid $S \times S$ - 5x5 - Grid-based detection  
+Chceme ukotvit bboxy na pozicie  
+Bunka zabezpecuje detekciu objektu, ktoreho center padne do tej bunky  
+Kazda bunka je rozdelena na `B` - kolko bboxov dokaze bunka spracovat - napr. 2  
+Chceme zachytavat confidence a bboxy  
+Klasifikacna mapa - pre kazdu bunku - za pravdepodobnosti ze je to objekt, dava ze aky je to objekt (iba jeden)  
+Predpokladame ze v jednej bunke je **iba jeden** typ triedy  
+Toto velmi zjednodusuje mozstvo a shape toho co co chceme detegovat  
+Funguje teda horsie, ak je v obrazku velmi ela malych objektov ktore sa prekryvaju (a su inych tried), ale takych uloh nebyva az tak vela  
+Vyrazne ale zvysuje rychlost  
+Pre kazdy cell 5 hodnot - !!!
+
+Confidence score a Class prediction  
+Pravdepodobnosti _nie_
+
+Ci to je objekt alebo nie, ak hej tak penalizovat zle
+
+Loss function
+
+1. center(xy)
+2. size(wh)
+3. confidence(obj)
+4. confidence(noobj)
+5. class prob
+
+### Metrics & Evaluation
+
+I guess vyhodnotenie ci sme spravne predikovali
+
+Kusok zlozitejsie ako pri normalnej klasifikacii
+
+Potrebujem zistit nie len jedno cislo (ci som spravne predikoval) ale viac hodnot:
+
+- localization quality - is the box tight around the object
+- classification quality - is the correct class predicted
+- precision
+- recall
+
+Co robi detekciu "spravnu"?
+
+- spravna trieda
+- dostatocny overlap - IoU > threshold
+- not a duplicate - dany bbox nedetekuje uz detekovany objekt inym bboxom
+
+Vyber thresholdu
+
+- 0.50 - box must cover >50% - even imprecise box can qualify as TP
+- 0.75 - must be tightly aligned, penalizes poor location
+- COCO - evaluates 10 thresholds, averages them
+
+FP hurts precision  
+FN hurts recall
+
+Precision-Recall tradeoff  
+Vyssi threshold = menej detekcii = vyssi precision, nizsi recall  
+Nizsi threshold = viace detekcii = vyssi recall, nizsi precision  
+Neexistuje "jeden najlepsi" threshold  
+Riesenie - **Average Precision** (AP) - threshold independent summary of precision  
+AP = "finalna znamka" detekcie?  
+AP je plocha pod Precision-Recall krivkou  
+Sumarizuje precision-recall tradeoff do jedneho cisla
+
+Mean average precision - `mAP`  
+Average recall - `AR`  
+Mean average recall - `mAR`
+
+#### COCO metrics suite
+
+| Metric   | IoU Thresholds                      | Description                                      |
+| -------- | ----------------------------------- | ------------------------------------------------ |
+| AP       | 0.50 : 0.05 : 0.95 (start:step:end) | Primary COCO metric - mean AP over 10 steps      |
+| AP50     | 0.50                                | AP@IoU=0.50 - VOC-style, loose match             |
+| AP75     | 0.&5                                | AP@IoU=0.75 - strict, tight boxes required       |
+| $AP^S$   | 0.50 : 0.95                         | Small objects - <32px - area $32^2 \approx 1024$ |
+| $AP^M$   | 0.50 : 0.95                         | Medium objects - 32px to 96px                    |
+| $AP^L$   | 0.50 : 0.95                         | Large objects - >96px - area $approx 9216$       |
+| $AR_1$   | 0.50 : 0.95                         | Average recall - max 1 detection per image       |
+| $AR_10$  | 0.50 : 0.95                         | Average recall - max 10 detection per image      |
+| $AR_100$ | 0.50 : 0.95                         | Average recall - max 100 detection per image     |
