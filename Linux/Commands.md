@@ -420,6 +420,15 @@ free -h
 swapon --show
 ```
 
+To resize, you just delete the old one and create new  
+
+```bash
+sudo swapoff /swapfile 
+sudo rm /swapfile 
+
+# follow steps to create swap
+```
+
 ## Various
 
 Commands that do not deserve full section, but deserves to be there
