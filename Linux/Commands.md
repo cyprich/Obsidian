@@ -302,6 +302,32 @@ sudo grub-install --terget=x86_64-efi --efi-directory=/boot/efi --bootloader-id=
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
+## Change boot order
+
+When Windows bootloader overwrites grub, this should fix it  
+You should live boot into some Linux, I did EndeavourOS
+
+Run `efibootmgr` to see your boot order
+
+```bash
+sudo efibootmgr
+```
+
+Somewhere at the top, you should see something like this:
+
+```txt
+BootOrder: 0000,0001,0002
+```
+
+To change order:
+
+```bash
+sudo efibootmgr -o 0001,0000,0002
+```
+
+If you have more entries, you should specify them as well  
+Best way is to just copy it, paste it, change it, execute it
+
 ## CRON
 
 Execute scripts/commands periodically, on schedule
@@ -420,11 +446,11 @@ free -h
 swapon --show
 ```
 
-To resize, you just delete the old one and create new  
+To resize, you just delete the old one and create new
 
 ```bash
-sudo swapoff /swapfile 
-sudo rm /swapfile 
+sudo swapoff /swapfile
+sudo rm /swapfile
 
 # follow steps to create swap
 ```
@@ -659,4 +685,3 @@ Ascii aquarium
 `yay -S asciiquarium`
 
 ### astroterm
-
